@@ -19,15 +19,16 @@ nav input{
 }
 
 .reports_menu{
-    border: 2px blue solid;
+   /* border: 2px blue solid;*/
     width: 18%;
     text-align: center;
     background-color: rgb(155, 139, 117);
+    overflow: auto;
     
 }
 .reports_div{
     padding-top: 1em;
-    border: 2px red solid;
+   /* border: 2px red solid;*/
     width: 82%;
     
    
@@ -40,15 +41,16 @@ nav input{
     transform: translateX(-50%);
     height:90vh;
     width: 82vw;
-    border: green 2px solid;
-    background-color: rgb(237, 217, 181);
+    border: rgb(65, 65, 65) 1px solid;
+    padding-left: 1vw;
+    background-color: rgb(188, 202, 212);
 }
 
 
 form textarea{
     width: 99%;
     height:50vh;
-    background-color: rgb(248, 248, 248);
+    background-color: rgb(230, 231, 233);
 }
 .forms{
     height:100%
@@ -56,13 +58,20 @@ form textarea{
 .history{
    
     background-color: rgb(227, 230, 230);
-    padding-left: 2px;
-    border: 2px rgb(199, 199, 194) solid;
+    border-radius: 1px;
+    border: 0.5px rgb(199, 199, 194) solid;
     text-align: left;
-    background-color: rgb(192, 179, 154);
-
-   
-  
+    background-color: rgb(232, 232, 232);
+    font-size: medium;  
+}
+a{
+    text-decoration: none;  
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    
+}
+a:visited{
+    color: rgb(26, 26, 26);
 }
 .link_block{
     display: block;
@@ -73,7 +82,7 @@ form textarea{
     position: fixed;
     top:0%;
     font-size: large;
-    padding-left: 4vw;;
+    padding-left: 3vw;;
     padding-top: 1vh;
 }
 html{
@@ -91,10 +100,56 @@ form select{
    width: 15%;
    height: 60%;
 
-   border: 2px blue solid;
+  
 }
 .add{
     border: 2px solid red;
   
        
+}
+
+.general_text_container{
+    border: 2px solid blue;
+    width: 69vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    height: 80vh;
+    overflow: auto;
+    text-justify: auto;
+    white-space: pre-wrap;
+    text-align:justify top;
+    transform-origin: top;
+    background-color: rgb(230, 231, 233);
+    font-family: 'Times New Roman', Times, serif;
+
+}
+.general_text{
+    top: 0%;
+    position: fixed;
+    
+}
+
+/***************************Home********************************/
+
+.home_head{
+    text-align: center;
+  
+}
+
+.home_container{
+    border: 2px teal solid;
+    height: 95vh;
+    font-size: smaller;
+    width: 75vw;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+   
+}
+.welcome_home{
+    border: 2px mediumspringgreen solid;
+    padding-top: 3vh;
+    height:15vh;
 }

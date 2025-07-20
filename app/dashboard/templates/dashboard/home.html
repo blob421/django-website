@@ -2,24 +2,21 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
- 
+  <div class="welcome_home">
     {% if user.is_authenticated %}
-    <h1>This is your dashboard</h1>
 
-    <p>Welcome {{user.username}}</p>
+    <h1 class="home_head">Welcome {{user.username}}</h1>
 
-    
+   </div>
       
      
-        </form>
+   <div class="home_container">
       {% endif %}
-      <h1>Messages</h1>
+      <h1 class="home_head">Messages</h1>
       {% for report in reports %}
-      <p>{{report.content}}</p>
+      <p class="home_head">{{report.content}}</p>
       {% endfor %}
- <div>
-    Some text
- </div>
+   </div>
  {% endblock %}
 
 

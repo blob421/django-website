@@ -12,7 +12,5 @@ urlpatterns = [
     path('role_dispatch/', views.role_dispatch, name='role_dispatch'),
     path('add_recipient/', views.AddRecipient.as_view(), name = 'add'),
     path('confirmation/', views.Confirmation.as_view(), name = 'ok'),
-         
-
-
+    
 ]
