@@ -17,6 +17,13 @@ nav input{
     padding:5px;
     
 }
+
+html{
+    background-color: rgb(237, 228, 208);
+    overflow-y: auto;
+   
+    
+}
 /****************************Report Panel*********************************/
 .reports_container{
     display: flex;
@@ -31,15 +38,7 @@ nav input{
     background-color: rgb(188, 202, 212);
 }
 
-.reports_menu{
-    border: 1.5px rgb(79, 79, 79) solid;
-    width: 18%;
-    text-align: center;
-    background-color: rgb(155, 139, 117);
-    overflow: auto;
-    border-radius: 4px;
-    
-}
+
 .reports_div{
     padding-top: 1em;
    /* border: 2px red solid;*/
@@ -66,32 +65,8 @@ max-width: 12em;
  transform-origin: left;
 
  }
-*/
-form textarea{
-    width: 95%;
-    height:50vh;
-    background-color: rgb(230, 231, 233);
-  
-
-}
-.forms{
-   
-    height:100%;
-
-
  
-   
-}
-.history{
-   
-    background-color: rgb(227, 230, 230);
-    border-radius: 1px;
-    border: 0.5px rgb(199, 199, 194) solid;
-    text-align: left;
-    background-color: rgb(232, 232, 232);
-    font-size: medium;  
-    
-}
+/*******************Anchor links*************/
 a{
     text-decoration: none;  
     color: black;
@@ -101,10 +76,51 @@ a{
 a:visited{
     color: rgb(26, 26, 26);
 }
+
+/***************FORMS***************/
+form textarea{
+    width: 95%;
+    height:50vh;
+    background-color: rgb(242, 242, 244);
+  
+
+}
+.forms{
+   
+    height:100%;
+
+}
+
+
+/******************Reports*******************/
+.history {
+  display: flex;
+  justify-content: center;     
+  align-items: center;       
+  height: 9vh;              
+  background-color: rgb(232, 232, 232);
+  border: 1px grey solid;
+  border-radius: 1px;
+  font-size: medium;
+  text-align: center;
+}
+
+.history:hover{
+    background-color: rgb(211, 221, 227);
+}
+
+.reports_menu{
+    border: 1.5px rgb(121, 120, 120) solid;
+    width: 18%;
+    text-align: center;
+    background-color: rgb(155, 139, 117);
+    overflow: auto;
+    
+}
 .link_block{
-    display: block;
-    padding-top: 0.5em;
-    border: 2px rgb(145, 129, 103) solid;
+    width:100%;
+    padding: 0.5rem;
+   
 }
 .title{
     position: fixed;
@@ -113,9 +129,7 @@ a:visited{
     padding-left: 3vw;;
     padding-top: 1vh;
 }
-html{
-    background-color: rgb(237, 228, 208);
-}
+
 
 .add_recipient{
     font-size:smaller;
@@ -123,21 +137,42 @@ html{
     
 }
 
-form select{
 
-   width: 15%;
-   height: 60%;
 
-  
+/*************Add Form************/
+.title_add{
+    text-align: center;
+    font-size: x-large;
 }
-.add{
-    border: 2px solid red;
-  
-       
+.add_contact_form{
+   
+    width: 23%;
+    height: 70%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
 }
+.add_contact_form select{
+    height: 90%;
+
+}
+.add_contact_form label{
+    position: right;
+
+}
+.button{
+    border-radius: 8px;
+    transform: scale(0.85);
+    background-color: rgba(240, 248, 255, 0.696);
+    border: 2px grey solid;
+}
+
+/******************* View a report **********************/
 
 .general_text_container{
-    border: 2px solid blue;
+    border: 2px solid rgb(156, 156, 156);
     width: 69vw;
     position: absolute;
     left: 50%;
@@ -159,27 +194,158 @@ form select{
     
 }
 
+
 /***************************Home********************************/
 
 .home_head{
     text-align: center;
+    padding-top: 4vh;
+ 
+    
   
 }
 
-.home_container{
-    border: 2px teal solid;
-    height: 95vh;
+.center_container{
+    border: grey 2px solid;
     font-size: smaller;
-    width: 75vw;
+    left: 50%;
+    position: absolute;
+    bottom: 0%;
+    height: 100%;
+    transform: translate(-50%);
+    width: 70vw;
+    background-color: rgb(188, 202, 212);
+  
+   
+}
+.left_container{
+    
+   
+  
+    background-color: rgb(237, 228, 208);
+    
+    font-size: smaller;
+    left: 0%;
+    position: absolute;
+    bottom: 0%;
+    height: 100%;
+    
+    width: 15vw;
+   
+}  
+.right_container{
+   
+   
+  
+    background-color: rgb(237, 228, 208);
+      
+    font-size: smaller;
+    right: 0%;
+    position: absolute;
+    bottom: 0%;
+    height: 100%;
+    
+    width: 15vw;
+    
+}  
+.text_container{
+    background-color: rgb(230, 231, 233);
+    height: 77%;
+    width: 80%;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    bottom:2%;
+    border: 1px grey solid;
+    border-radius: 3px;
+    
+    
+}
+
+.title_container{
+    top: 0%;
+    background-color: rgb(155, 139, 117);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-   
-}
-.welcome_home{
-    border: 2px mediumspringgreen solid;
-    padding-top: 3vh;
-    height:15vh;
+    width: 100%;
+     padding-top: 4vh;
+
 }
 
 
+.msg_button {
+  display: flex;
+  justify-content: center;      /* Center horizontally */
+  align-items: center;          /* Center vertically */
+  text-align: center;           /* Center multiline text */
+  overflow: hidden;             /* Prevent overflow */
+  word-wrap: break-word;        /* Wrap long words */
+
+    border: solid rgb(136, 136, 136) 2px;
+  
+    width: 100%;
+  
+    background-color: rgb(235, 235, 235);
+    border-radius: 35px;
+    height: 14vh;
+    text-align: center;
+    align-content: center;
+    
+    margin-top: 10px;
+    
+
+}
+.bubbles_div{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    
+}
+
+.msg_button:hover{
+    background-color: rgb(220, 230, 236);
+}
+
+.bubble_wrapper{
+ left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+  width: 80%;
+}
+.delete_bubblex{
+  font-weight: bold;
+  color: rgb(221, 162, 162);
+  align-items: baseline;
+  font-family:'Courier New', Courier, monospace
+  
+  
+}
+.bubblex_radius{
+    border: 1.7px solid rgb(136, 136, 136);
+    width: 5%;
+    border-radius: 10px;
+    height: 4vh;
+    position: fixed;
+    align-content: center;
+    background-color: rgb(235, 235, 235);
+    margin-top:14% ;
+    margin-left: 27%;
+}
+.bubblex_radius:hover{
+    background-color: rgb(254, 222, 222);
+}
+.delete_bubblex:visited{
+     color: rgb(221, 162, 162);
+}
+
+.no_messages{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    font-style: oblique;
+    color: rgb(63, 62, 62);
+    font-size: larger;
+    margin-top: 15%;
+}

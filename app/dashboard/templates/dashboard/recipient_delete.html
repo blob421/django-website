@@ -12,14 +12,14 @@
 
 </head>
 <body>
-    <h1 class="title_add"> Add contacts</h1>
+    <h1 class="title_add"> Delete contacts</h1>
 <div>
  {% load crispy_forms_tags %}
  <form method="post" class="add_contact_form">
       {% csrf_token %}
       
  {{form|crispy}}
-<button type="submit" class="button">Add</button>
+<button type="submit" class="button">Delete</button>
  <a href="{% url 'dashboard:reports' %}">
   <button type="button" class="button">Back</button>
 </a>

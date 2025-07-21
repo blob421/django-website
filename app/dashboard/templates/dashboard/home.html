@@ -2,21 +2,43 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-  <div class="welcome_home">
-    {% if user.is_authenticated %}
+ <div class="left_container">  </div> 
 
-    <h1 class="home_head">Welcome {{user.username}}</h1>
-
-   </div>
+  <div class="center_container">
+       {% if user.is_authenticated %}
+       <div class="title_container">  <h1 class="home_head">Welcome {{user.first_name}}</h1></div>
+       {% endif %}
+   
+      <div class="text_container">
+      <h2 class="home_head">Messages</h2>
       
-     
-   <div class="home_container">
-      {% endif %}
-      <h1 class="home_head">Messages</h1>
+      <div class="bubble_wrapper"> 
+    <div class="bubbles_div">
+      {% if reports %}
       {% for report in reports %}
-      <p class="home_head">{{report.content}}</p>
+  
+
+      
+      <div class="msg_button">
+   
+      <a href="{% url 'dashboard:reportview' report.id %}"> 
+      <div>{{report.user}}: {{report.title}}</div> </a>
+      <div class="bubblex_radius">
+        <a href="{% url 'dashboard:report_delete' report.id %}" class="delete_bubblex">></a>
+
+      </div>
+    
+       </div>
+      
       {% endfor %}
+      {% else %}
+      <p class="no_messages"> No messages for the moment</p>
+      {% endif %}
+       </div>
+      </div>
+      </div>
    </div>
+   <div class="right_container"></div>
  {% endblock %}
 
 

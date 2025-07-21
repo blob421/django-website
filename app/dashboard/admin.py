@@ -1,15 +1,66 @@
 from django.contrib import admin
 from . import models
-# Register your models here.
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import UserAdmin
 
 
-@admin.register(models.UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
-    search_fields = ['user__username', 'role__name']  
-    list_display = ['user', 'role'] 
 
+user_model = get_user_model()
+
+
+
+
+    
+class UserProfileInline(admin.StackedInline):  
+    model = models.UserProfile
+    can_delete = False
+    verbose_name_plural = 'Profile Details'
+    verbose_name = 'User profile'
+    fields = ['role']
 
 @admin.register(models.Role)
 class RoleeAdmin(admin.ModelAdmin):
     search_fields = ['name']  
-    list_display = ['name'] 
+    list_display = ['name']
+    
+
+
+
+@admin.register(user_model)
+class CustomUserAdmin(UserAdmin):
+    inlines = [UserProfileInline]
+    add_form_template = "admin/add_form.html"
+    fieldsets = (
+        ('Basic Info', {
+            'fields': ('username', 'email', 'first_name', 'last_name', 'street_address', 'phone','password', 'is_staff'),
+        }),
+     
+        ('Login Data', {
+            'fields': ('last_login', 'date_joined', 'groups'),
+        }),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+               
+                'username',
+                'email',
+                'first_name',
+                'last_name',
+                'street_address',
+                'phone',
+                'password1',
+                'password2',
+                'is_staff',
+                'notes',
+            ),
+        }),
+    )
+
+    list_display = ('email', 'first_name', 'last_name','username', 'is_staff')
+
+ 
+    search_fields = ('username', 'email', 'first_name', 'last_name')
