@@ -13,12 +13,13 @@ class MakeForm(ModelForm):
             
             if sender_id:
                 allowed_users = User.objects.filter(many_relation__id=sender_id)
+                allowed = allowed_users.filter(userprofile__role__name = 'manager')
                 # get me the user rows that has its id is in the relation
                 #Filters the users by the relation it has with this id 
                                              #filter by(relation.user.id)
                                              # the id of the user of the relation = id
              
-                self.fields['recipient'].queryset = allowed_users
+                self.fields['recipient'].queryset = allowed
 
 
 class AddRec(ModelForm):

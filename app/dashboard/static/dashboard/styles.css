@@ -17,22 +17,7 @@ nav input{
     padding:5px;
     
 }
-
-.reports_menu{
-   /* border: 2px blue solid;*/
-    width: 18%;
-    text-align: center;
-    background-color: rgb(155, 139, 117);
-    overflow: auto;
-    
-}
-.reports_div{
-    padding-top: 1em;
-   /* border: 2px red solid;*/
-    width: 82%;
-    
-   
-}
+/****************************Report Panel*********************************/
 .reports_container{
     display: flex;
     padding-top: 8vh;
@@ -46,14 +31,56 @@ nav input{
     background-color: rgb(188, 202, 212);
 }
 
+.reports_menu{
+    border: 1.5px rgb(79, 79, 79) solid;
+    width: 18%;
+    text-align: center;
+    background-color: rgb(155, 139, 117);
+    overflow: auto;
+    border-radius: 4px;
+    
+}
+.reports_div{
+    padding-top: 1em;
+   /* border: 2px red solid;*/
+    width: 82%;
+    
+   
+}
+/*
+form label{
+    max-width: 12em; 
+    transform: scale(0.65); 
+    transform-origin: left;
+}
+form input {
+ max-width: 12em;
+ transform: scale(0.65); 
+ transform-origin: left;
 
+}
+
+form select{
+max-width: 12em;
+ transform: scale(0.65); 
+ transform-origin: left;
+
+ }
+*/
 form textarea{
-    width: 99%;
+    width: 95%;
     height:50vh;
     background-color: rgb(230, 231, 233);
+  
+
 }
 .forms{
-    height:100%
+   
+    height:100%;
+
+
+ 
+   
 }
 .history{
    
@@ -63,6 +90,7 @@ form textarea{
     text-align: left;
     background-color: rgb(232, 232, 232);
     font-size: medium;  
+    
 }
 a{
     text-decoration: none;  
@@ -153,3 +181,5 @@ form select{
     padding-top: 3vh;
     height:15vh;
 }
+
+

@@ -2,28 +2,30 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
-
 ### USERS ###
 class Role(models.Model):
     name = models.CharField(max_length=50)
-    redirect_url = models.CharField(max_length=255) 
+    redirect_url = models.CharField(max_length=255, default='dashboard:home', help_text="* Path to dashboard, do not change")
+    description = models.TextField(blank=True)
+
     def __str__(self):
         return self.name
 
-# More like a blueprint with the elements I want to pick.
+
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.PROTECT) 
-# Limits to one use per row and imports from User directly | one user is linked to one user
+    user = models.OneToOneField(User, on_delete=models.PROTECT, 
+                                help_text='* You can add a new user with the plus sign ') 
+
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
-    # References Role by role id
-    receivers = models.ManyToManyField(User, blank = True, related_name='many_relation')
-    # Can have many users in this field | many users are linked to many users
-    # Many users that appear one time will have many users that appears multiple times
+    notes = models.TextField(blank=True)
+    receivers = models.ManyToManyField(User, blank = True, related_name='many_relation',
+                                       help_text='Allowed contacts ; ')
+    
+ 
+
     def __str__(self):
         return self.user.username
-    # So I can look up one user , and know what are the many users in receivers
-    # One user /for one role / for multiple users
+
     
 
 ### FORMS ###
