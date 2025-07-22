@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, View, UpdateView, DetailView, DeleteView
+from django.views.generic import View, UpdateView, DetailView, DeleteView
 from django.contrib.auth.views import LogoutView
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Reports, UserProfile
-from .forms import MakeForm, AddRec, DeleteRec
+from .models import Messages, UserProfile
+from .forms import MessageForm, RecipientForm, RecipientDelete
 
-# Create your views here.
+# Dispatches by role after login
 
 def role_dispatch(request):
     user_profile = request.user.userprofile
@@ -16,30 +15,42 @@ def role_dispatch(request):
     
     return redirect('dashboard:home')
 
-
+# Home view dashboard
 class HomeView(LoginRequiredMixin, View):
     def get(self, request):
-        template_name = 'dashboard/home.html'
+        template_name = 'dashboard/homeview.html'
         user_id = self.request.user.id
-        reports = Reports.objects.filter(recipient=user_id).order_by('-timestamp')[:9]
+        reports = Messages.objects.filter(recipient=user_id).order_by('-timestamp')[:9]
         context = {'user': self.request.user, 'reports': reports}
         response = render(request, template_name, context)
         return response
 
+######## Messages #################################
 
-class ReportsView(LoginRequiredMixin, View):
+class MessageDetail(LoginRequiredMixin, DetailView):
+    template_name = 'dashboard/message_detail.html'
+    context_object_name = 'report'
 
-    template = 'dashboard/reports.html'
+    def get_object(self):
+       report_id = self.kwargs['id']
+    
+       return Messages.objects.get(id=report_id, recipient=self.request.user)
+    
+
+# Create a message view dashboard, shows history too
+class MessageView(LoginRequiredMixin, View):
+
+    template = 'dashboard/messages.html'
     def get(self, request):
         pk = self.request.user.id
-        data = Reports.objects.filter(user_id=pk)
-        form = MakeForm(sender_id = self.request.user.id)
+        data = Messages.objects.filter(user_id=pk)
+        form = MessageForm(sender_id = self.request.user.id)
         context = {'data': data, 'form': form}
         return render(request, self.template, context)
        
 
     def post(self, request):
-        form = MakeForm(request.POST, sender_id=self.request.user.id)
+        form = MessageForm(request.POST, sender_id=self.request.user.id)
         if not form.is_valid():
             context = {'form': form}
             return render(request, self.template, context)
@@ -48,42 +59,38 @@ class ReportsView(LoginRequiredMixin, View):
         report.save()
         return redirect('dashboard:reports')  
     
-class UpdateReport(LoginRequiredMixin, UpdateView):
-    model = Reports
+
+class MessageUpdate(LoginRequiredMixin, UpdateView):
+    model = Messages
     fields = ['recipient','title', 'content']
     success_url = reverse_lazy('dashboard:reports')
 
-
-
-class Report(LoginRequiredMixin, DetailView):
-    template_name = 'dashboard/look_a_report.html'
-    context_object_name = 'report'
-
-    def get_object(self):
-       report_id = self.kwargs['id']
+class MessageDelete(DeleteView, LoginRequiredMixin):
+    model = Messages
+    success_url = reverse_lazy('dashboard:home')
     
-       return Reports.objects.get(id=report_id, recipient=self.request.user)
+### RECIPIENTS ##############################
 
 class AddRecipient(LoginRequiredMixin, View):
     template = 'dashboard/add_recipient.html'
     def get(self, request):
 
-        form = AddRec(sender_id=self.request.user.id)
+        form = RecipientForm(sender_id=self.request.user.id)
+        
         context = {'form': form}
         return render(request, self.template, context)
     
     def post(self, request):
         user_profile = UserProfile.objects.get(user=self.request.user)
-        form = AddRec(request.POST, sender_id=self.request.user.id, instance = user_profile)
+        form = RecipientForm(request.POST, sender_id=self.request.user.id, instance = user_profile)
         if not form.is_valid():
           
             context = {'form': form}
             return render(request, self.template, context)
     
 
-        ##Takes the newly selected ones and add them to the previous queryset
         add = form.save(commit=False)
-        previous_receivers = user_profile.recipients.all() #Users queryset
+        previous_receivers = user_profile.recipients.all() 
         new_receivers = form.cleaned_data['recipients']
         combined_receivers = previous_receivers | new_receivers
         add.save()
@@ -95,14 +102,14 @@ class DeleteRecipient(LoginRequiredMixin, View):
     template_name = 'dashboard/recipient_delete.html'
     
     def get(self, request):
-        form = DeleteRec(sender_id=self.request.user.id)
+        form = RecipientDelete(sender_id=self.request.user.id)
 
         context = {'form': form}
         return render(request, self.template_name, context)
     
     def post(self, request):
         user_profile = UserProfile.objects.get(user = self.request.user)
-        form = DeleteRec(request.POST, sender_id = self.request.user.id, 
+        form = RecipientDelete(request.POST, sender_id = self.request.user.id, 
                          instance = user_profile)
         if not form.is_valid():
             context = {'form': form}
@@ -115,18 +122,6 @@ class DeleteRecipient(LoginRequiredMixin, View):
         remove.save()
         remove.recipients.set(new)
         return redirect('dashboard:reports')
-
-
-
-class DeleteReport(DeleteView, LoginRequiredMixin):
-    model = Reports
-    success_url = reverse_lazy('dashboard:home')
-    
-
-class Confirmation(LoginRequiredMixin, View):
-    def get(self, request):
-      template_name= 'dashboard/confirmation.html'
-      return render(request, template_name)
 
 
 class Logout(LogoutView):

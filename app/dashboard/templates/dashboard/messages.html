@@ -5,16 +5,16 @@
  <div class="reports_container">
  <h class="title">Reports</h>
  <div class="reports_div">
-  <!----  {% load crispy_forms_tags %}-->
+
 <form method="post" class="text_field">
-<!--<a href="#" class="add_recipient" onclick="window.open('{% url 'dashboard:add' %}', 'popup', 'width=400,height=300'); return false;">Launch</a>-->
+
   <a class="add_recipient" href="{% url 'dashboard:add' %}">Add a recipient</a>
   <a class="add_recipient" href="{% url 'dashboard:recipient_delete' %}">Delete recipients</a>
 
 
   {% csrf_token %}
  <p class="forms"> {{ form.as_p }}</p>
-  <!---- <p class="forms">{{form|crispy}}</p>-->
+
   <input type="submit" name="send" value="send">
   </form>
  </div>

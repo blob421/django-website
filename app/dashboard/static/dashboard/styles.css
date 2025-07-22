@@ -46,42 +46,23 @@ html{
     
    
 }
-/*
-form label{
-    max-width: 12em; 
-    transform: scale(0.65); 
-    transform-origin: left;
-}
-form input {
- max-width: 12em;
- transform: scale(0.65); 
- transform-origin: left;
 
-}
-
-form select{
-max-width: 12em;
- transform: scale(0.65); 
- transform-origin: left;
-
- }
- 
 /*******************Anchor links*************/
 a{
     text-decoration: none;  
-    color: black;
+    color: rgb(54, 53, 53);
     font-family: 'Times New Roman', Times, serif;
     
 }
 a:visited{
-    color: rgb(26, 26, 26);
+    color: rgb(45, 55, 57);
 }
 
 /***************FORMS***************/
 form textarea{
     width: 95%;
     height:50vh;
-    background-color: rgb(242, 242, 244);
+    background-color: rgb(248, 248, 251);
   
 
 }
@@ -92,17 +73,20 @@ form textarea{
 }
 
 
-/******************Reports*******************/
+/******************Messages*******************/
 .history {
   display: flex;
   justify-content: center;     
   align-items: center;       
-  height: 9vh;              
+  height: 11vh;              
   background-color: rgb(232, 232, 232);
   border: 1px grey solid;
   border-radius: 1px;
-  font-size: medium;
+  font-size:smaller;
   text-align: center;
+  
+  
+  
 }
 
 .history:hover{
@@ -136,39 +120,109 @@ form textarea{
     text-decoration: none;
     
 }
-
-
+.btn-add-recipient{
+    width: 50%;
+    display: flex;
+    
+}
+.btn-back-add-recipient{
+    width: 50%;
+    display: flex;
+}
 
 /*************Add Form************/
 .title_add{
     text-align: center;
     font-size: x-large;
+    margin-top: 4vh;
+    color: rgb(61, 61, 61);
+    /* border: 2px solid black;*/
 }
 .add_contact_form{
-   
-    width: 23%;
-    height: 70%;
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    left:50%;
+    top:50%;
     transform: translate(-50%, -50%);
+    position: absolute;
+    /*border: 2px solid yellow;*/
+    width: 100%;
+    height: 100%;
+  
 
+ 
 }
-.add_contact_form select{
-    height: 90%;
 
+.add_contact_form select{
+
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  width: 100%;
+  height: 75%;
+  margin-top: 5%;
+  padding-top: 5%;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: medium;
+  border: 2.5px grey solid;
+  border-radius: 3px;
 }
 .add_contact_form label{
-    position: right;
-
-}
-.button{
-    border-radius: 8px;
-    transform: scale(0.85);
-    background-color: rgba(240, 248, 255, 0.696);
-    border: 2px grey solid;
+  /*border: 2px solid blueviolet;*/
+  top: 0%;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
+
+input:focus,
+select:focus {
+     border-style: outset;
+    outline-style: inset;
+    border-width: 2px;
+ outline-color: rgb(40, 194, 255);
+  background-color: #f8f8f8;
+  border: 2px solid rgb(96, 136, 255);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 14px rgb(114, 154, 248);
+}
+form button:hover{
+    background-color: rgb(100, 129, 216);
+}
+form button{
+    height:100%;
+    width: 100%;
+    border-radius: 5px;
+    background-color: royalblue;
+    color: azure;
+    border: 0.3px;
+    font-size: smaller;
+    
+   
+}
+.right_add_btn{
+    height: 10%;
+     width: 45%;
+    bottom:0%;
+    position: fixed;
+}
+.left_add_btn{
+    height:10%;
+    width: 45%;
+    bottom: 0%;
+    right: 0%;
+    position: fixed;
+  
+}
+.add_form_container{
+ /* border: 2px solid orangered;*/
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  height:77vh;
+  width: 29vw;
+    
+}
 /******************* View a report **********************/
 
 .general_text_container{
@@ -200,6 +254,8 @@ form textarea{
 .home_head{
     text-align: center;
     padding-top: 4vh;
+    color: rgb(38, 38, 38);
+    
  
     
   
@@ -245,7 +301,7 @@ form textarea{
     bottom: 0%;
     height: 100%;
     
-    width: 15vw;
+    width: 14vw;
     
 }  
 .text_container{
@@ -255,9 +311,10 @@ form textarea{
     left: 50%;
     position: absolute;
     transform: translateX(-50%);
-    bottom:2%;
+    bottom:1%;
     border: 1px grey solid;
     border-radius: 3px;
+    
     
     
 }
@@ -270,6 +327,8 @@ form textarea{
     transform: translateX(-50%);
     width: 100%;
      padding-top: 4vh;
+     border: 2px grey solid;
+     
 
 }
 
