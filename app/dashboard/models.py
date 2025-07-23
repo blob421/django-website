@@ -35,13 +35,12 @@ class UserProfile(models.Model):
     notes = models.TextField(blank=True)
     recipients = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                          blank = True, related_name='many_relation', default='----' )
-    
  
 
     def __str__(self):
         return self.user.username
 
-    
+
 
 ### FORMS ###
 class Messages(models.Model):
@@ -56,8 +55,19 @@ class Messages(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField(null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.title
 
+class Task(models.Model):
+       users = models.ManyToManyField(UserProfile, related_name='task_users')
+       description = models.TextField()
+       name = models.CharField(max_length=50)
+       creation_date = models.DateField(auto_now_add=True)
+       due_date = models.DateTimeField()
+       completed = models.BooleanField(default=False)
+       urgent = models.BooleanField(default=False)
 
+       def __str__(self):
+           return self.name

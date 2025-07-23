@@ -20,7 +20,7 @@
  </div>
 
  <div class="reports_menu">
-  <p> Reports History </p>
+  <div class="history_title"> Reports History </div>
    {% for report in data %}
    <div class="history">
     <a class ="link_block" href="{% url 'dashboard:report_update' report.id %}" target="_blank">{{report.title}}</a>

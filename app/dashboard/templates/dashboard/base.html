@@ -18,6 +18,7 @@
   
   <a href="{% url 'dashboard:home' %}">Home</a>
   <a href="{% url 'dashboard:reports' %}">Reports</a>
+  <a href="{% url 'dashboard:tasks_list' %}">Tasks</a>
 
   <form method="post" action='{% url "dashboard:logout" %}'>
     {% csrf_token %}

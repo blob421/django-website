@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import View, UpdateView, DetailView, DeleteView
+from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile
+from .models import Messages, UserProfile, Task
 from .forms import MessageForm, RecipientForm, RecipientDelete
+from django.utils import timezone
 
 # Dispatches by role after login
 
@@ -127,3 +128,30 @@ class DeleteRecipient(LoginRequiredMixin, View):
 class Logout(LogoutView):
     template_name = 'dashboard/logout.html'
 
+
+################### TASKS #######################
+class TasksList(LoginRequiredMixin, View):
+    template_name = 'dashboard/tasks_list.html'
+
+    def get(self, request):   
+    
+        tasks = Task.objects.filter(users=self.request.user.userprofile)
+        time = timezone.now()
+        print(str(tasks))
+        context = {'tasks': tasks, 'time': time}
+        return render(request, self.template_name, context)
+
+
+class TaskDetail(LoginRequiredMixin, DetailView):
+    template_name = 'dashboard/task_detail.html'
+    context_object_name = 'task'
+    
+    def get_object(self):
+        report_id = self.kwargs['pk']   
+        return Task.objects.filter(id = report_id, users=self.request.user.userprofile)
+    
+    
+class TaskDelete(LoginRequiredMixin, DeleteView):
+    model = Task
+    success_url = reverse_lazy('dashboard/tasks')
+        

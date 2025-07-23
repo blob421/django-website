@@ -1,10 +1,11 @@
  {% include 'dashboard/base.html' %}
  {% block content %}
  <div class="general_text_container">
-  <p class="general_text"> {{ report.content}} </p>
+ {% for tasks in task %}
+  <p class="general_text"> {{ tasks.description}} </p>
  </div>
-
- <a href="{% url 'dashboard:home' %}">
+ {% endfor %}
+ <a href="{% url 'dashboard:tasks_list' %}">
   <button type="button" class="look_btn_back">Back</button>
 </a>
 

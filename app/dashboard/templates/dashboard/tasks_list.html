@@ -1,0 +1,75 @@
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+ 
+<div class="flex_container_tasks">  
+
+
+
+
+ <div class='task_block_container1'> 
+<div class="task_title1"><p>Incomplete</p></div>
+ {% for task in tasks %}
+{% if task.due_date > time %}
+ {% if not task.completed %}
+ {% if not task.urgent %}
+<a href="{% url 'dashboard:task_detail' task.id %}">
+ <div class="task_blocks1">
+     <p class="task_title"> {{task.name}} </p>
+     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+ </div>
+</a>
+{% else %}
+<a href="{% url 'dashboard:task_detail' task.id %}">
+ <div class="task_blocks_urgent">
+     <p class="task_title"> {{task.name}} </p>
+     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+ </div>
+</a>
+
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+ </div>
+
+
+
+<div class="task_block_container3">
+<div class="task_title3"><p>Past due</p></div>
+ {% for task in tasks %}
+ {% if task.due_date < time %}
+ {% if not task.completed %}
+ <a href="{% url 'dashboard:task_detail' task.id %}">
+ <div class="task_blocks3">
+      <p class="task_title"> {{task.name}} </p>
+     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+ </div>
+ </a>
+ {% endif %}
+ {% endif %}
+{% endfor %}
+</div>
+
+
+
+
+ <div class="task_block_container2">
+ <div class="task_title2"><p>Completed</p></div>
+
+{% for task in tasks %}
+{% if task.completed %}
+<a href="{% url 'dashboard:task_detail' task.id %}">
+ <div class="task_blocks2">
+      <p class="task_title">{{task.name}} </p>
+     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+ </div>
+</a>
+{% endif %}
+{% endfor %}
+
+
+ </div>
+</div>
+ {% endblock %}
+

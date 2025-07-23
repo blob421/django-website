@@ -17,5 +17,8 @@ urlpatterns = [
     path('report_detail/<int:id>/', views.MessageDetail.as_view(), name='reportview'),
     path('delete_report/<int:pk>', views.MessageDelete.as_view(), name = 'report_delete'),
     path('update_report/<int:pk>', views.MessageUpdate.as_view(), name = 'report_update'),
-  
-]
+    ####### TASKS ############
+    path('tasks/', views.TasksList.as_view(), name = 'tasks_list'),
+    path('tasks/<int:pk>/', views.TaskDetail.as_view(), name='task_detail'),
+    path('tasks/delete/<int:pk>', views.TaskDelete.as_view(), name = 'task_delete')
+] 

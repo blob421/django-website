@@ -8,6 +8,7 @@ from django.contrib.auth.admin import UserAdmin
 
 user_model = get_user_model()
 
+admin.site.register(models.Task)
 
 
 
@@ -17,7 +18,7 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'Profile Details'
     verbose_name = 'User profile'
-    fields = ['role']
+    fields = ['role', 'tasks']
 
 @admin.register(models.Role)
 class RoleeAdmin(admin.ModelAdmin):
