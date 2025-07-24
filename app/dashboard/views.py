@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView
+from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView, CreateView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task
 from .forms import MessageForm, RecipientForm, RecipientDelete
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+user_model = get_user_model()
+from django.http import HttpResponse
 
 # Dispatches by role after login
 
@@ -51,7 +54,7 @@ class MessageView(LoginRequiredMixin, View):
        
 
     def post(self, request):
-        form = MessageForm(request.POST, sender_id=self.request.user.id)
+        form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
         if not form.is_valid():
             context = {'form': form}
             return render(request, self.template, context)
@@ -134,12 +137,18 @@ class TasksList(LoginRequiredMixin, View):
     template_name = 'dashboard/tasks_list.html'
 
     def get(self, request):   
-    
+        allowed = UserProfile.objects.filter(role__name='dev', user=self.request.user).exists()
+      
         tasks = Task.objects.filter(users=self.request.user.userprofile)
         time = timezone.now()
-        print(str(tasks))
-        context = {'tasks': tasks, 'time': time}
+      
+        context = {'tasks': tasks, 'time': time, 'allowed': allowed}
         return render(request, self.template_name, context)
+
+class TaskForm(LoginRequiredMixin, CreateView):
+     model = Task
+     fields = ['name', 'description', 'urgent', 'due_date', 'users']
+     success_url = reverse_lazy('dashboard:tasks_list')
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
@@ -155,3 +164,13 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     success_url = reverse_lazy('dashboard/tasks')
         
+#########PICTURES #################
+
+    
+def stream_file(request, pk):
+    pic = get_object_or_404(Messages, id=pk)
+    response = HttpResponse()
+    response['Content-Type'] = pic.content_type
+    response['Content-Length'] = len(pic.picture)
+    response.write(pic.picture)
+    return response

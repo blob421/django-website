@@ -2,9 +2,13 @@
 
  {% block content %}
  
+ {% if allowed %}
+ <a href="{% url 'dashboard:task_form' %}"> 
+    <button class="button_tasks_list" type="button">New task</button>
+ </a>
+ {% endif %}
+
 <div class="flex_container_tasks">  
-
-
 
 
  <div class='task_block_container1'> 

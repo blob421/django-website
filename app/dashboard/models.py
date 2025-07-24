@@ -27,15 +27,17 @@ class Role(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, 
                                 help_text='* You can add a new user with the plus sign ')
-    class Meta:
-
-        verbose_name_plural = "Add a user" 
-
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     notes = models.TextField(blank=True)
     recipients = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                          blank = True, related_name='many_relation', default='----' )
- 
+    team = models.ForeignKey('Team', on_delete=models.CASCADE, null=True)
+
+    class Meta:
+
+        verbose_name_plural = "Add a user" 
+
+  
 
     def __str__(self):
         return self.user.username
@@ -56,6 +58,9 @@ class Messages(models.Model):
     content = models.TextField(null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
+    
+    picture = models.BinaryField(null=True, blank=True, editable=True)
+    content_type = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -71,3 +76,10 @@ class Task(models.Model):
 
        def __str__(self):
            return self.name
+
+class Team(models.Model):
+    name = models.CharField(max_length=40, blank=True )
+    description = models.TextField(null=True)
+    def __str__(self):
+        return self.name
+    

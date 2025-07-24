@@ -20,5 +20,10 @@ urlpatterns = [
     ####### TASKS ############
     path('tasks/', views.TasksList.as_view(), name = 'tasks_list'),
     path('tasks/<int:pk>/', views.TaskDetail.as_view(), name='task_detail'),
-    path('tasks/delete/<int:pk>', views.TaskDelete.as_view(), name = 'task_delete')
+    path('tasks/create', views.TaskForm.as_view(), name = 'task_form'),
+    path('tasks/delete/<int:pk>', views.TaskDelete.as_view(), name = 'task_delete'),
+    ######### PICTURES #########
+    path('pic_picture/<int:pk>', views.stream_file, name='pic_picture'),
+
+
 ] 

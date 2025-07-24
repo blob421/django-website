@@ -10,7 +10,7 @@ user_model = get_user_model()
 
 admin.site.register(models.Task)
 
-
+admin.site.register(models.Team)
 
     
 class UserProfileInline(admin.StackedInline):  
@@ -18,7 +18,7 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'Profile Details'
     verbose_name = 'User profile'
-    fields = ['role', 'tasks']
+    fields = ['role', 'team']
 
 @admin.register(models.Role)
 class RoleeAdmin(admin.ModelAdmin):

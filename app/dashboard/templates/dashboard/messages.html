@@ -6,9 +6,9 @@
  <h class="title">Reports</h>
  <div class="reports_div">
 
-<form method="post" class="text_field">
+<form method="post" class="text_field" enctype="multipart/form-data">
 
-  <a class="add_recipient" href="{% url 'dashboard:add' %}">Add a recipient</a>
+  <a class="add_recipient" href="{% url 'dashboard:add' %}">Add a recipient |</a>
   <a class="add_recipient" href="{% url 'dashboard:recipient_delete' %}">Delete recipients</a>
 
 

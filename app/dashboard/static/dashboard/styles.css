@@ -20,33 +20,37 @@ nav input{
 
 html{
     background-color: rgb(237, 228, 208);
-    overflow-y: auto;
+    overflow-y: hidden;
+    max-height: 100%;
    
     
 }
 /****************************Report Panel*********************************/
+
 .reports_container{
     display: flex;
-    padding-top: 8vh;
+    padding-top: 3vh;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    height:90vh;
+    height:96vh;
     width: 82vw;
     border: rgb(65, 65, 65) 1px solid;
     padding-left: 1vw;
     background-color: rgb(188, 202, 212);
 }
 
-
+.text_field textarea{
+    height: 49vh;
+}
 .reports_div{
     padding-top: 1em;
    /* border: 2px red solid;*/
-    width: 82%;
-    
-   
+    width: 82%; 
 }
-
+.text_field label{
+    font-size: 14.5px;
+}
 /*******************Anchor links*************/
 a{
     text-decoration: none;  
@@ -74,6 +78,21 @@ form textarea{
 
 
 /******************Messages*******************/
+
+.message_update{
+    padding-top: 3%;
+    width: 60%;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+    height: 100%;
+}
+
+
+.message_update textarea{
+    width: 99.5%;
+   
+}
 .history_title{
 
  position: sticky;
@@ -119,7 +138,7 @@ form textarea{
     position: fixed;
     top:0%;
     font-size: large;
-    padding-left: 3vw;;
+    padding-left: 0.5vw;;
     padding-top: 1vh;
 }
 
@@ -127,6 +146,7 @@ form textarea{
 .add_recipient{
     font-size:smaller;
     text-decoration: none;
+    color: rgb(63, 101, 236) !important;
     
 }
 .btn-add-recipient{
@@ -138,7 +158,17 @@ form textarea{
     width: 50%;
     display: flex;
 }
-
+#thumbnail{
+    position: fixed;
+    top:10%;
+    right: 0%;
+}
+.overlay{
+    z-index: 1000;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
 /*************Add Form************/
 .title_add{
     text-align: center;
@@ -182,7 +212,8 @@ form textarea{
   transform: translateX(-50%);
 }
 
-
+.text_field textarea:focus,
+.message_update textarea:focus,
 input:focus,
 select:focus {
      border-style: outset;
@@ -242,6 +273,36 @@ form button{
     top: 50%;
     transform: translate(-50%,-50%);
     height: 80vh;
+    overflow-y: scroll;
+   
+    text-justify: auto;
+    white-space: pre-wrap;
+    text-align:justify top;
+    transform-origin: top;
+    background-color: rgb(230, 231, 233);
+    font-family: 'Times New Roman', Times, serif;
+    
+    overflow-wrap: break-word;   
+    overflow: hidden; 
+
+
+}
+.general_text{
+    top: 0%;
+    position: fixed;
+    margin-right: 1%;
+    margin-left: 1%;
+    
+}
+.general_medium_container{
+
+      border: 2px solid rgb(156, 156, 156);
+    width: 40vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    height: 80vh;
     overflow: auto;
     text-justify: auto;
     white-space: pre-wrap;
@@ -249,14 +310,7 @@ form button{
     transform-origin: top;
     background-color: rgb(230, 231, 233);
     font-family: 'Times New Roman', Times, serif;
-
 }
-.general_text{
-    top: 0%;
-    position: fixed;
-    
-}
-
 
 /***************************Home********************************/
 
@@ -443,6 +497,7 @@ form button{
     text-align: top;
       background-color: rgb(211, 211, 211);
       font-family: 'Times New Roman', Times, serif;
+      font-weight:lighter;
        font-size: 15px;
 
 }   
@@ -527,4 +582,17 @@ form button{
   padding: 10px;
   border-bottom: 1px solid #ccc;
   text-align: center;
+}
+
+.button_tasks_list {
+
+    height: 7vh;
+    width: 18vw;
+    border: grey solid 2px;
+    top: 7%;
+    position: fixed;
+    left: 13.7%;
+}
+.button_tasks_list:hover{
+    background-color: rgb(175, 235, 219);
 }

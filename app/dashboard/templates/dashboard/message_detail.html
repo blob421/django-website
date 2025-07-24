@@ -8,4 +8,33 @@
   <button type="button" class="look_btn_back">Back</button>
 </a>
 
+{% if report.content_type %}
+<div id="overlay" class="overlay" style="display: none; text-align: center;"
+     onclick="hideOverlay();">
+    <img style="width:90%;margin-top: 5px; border:3px solid black;" 
+         src="{% url 'dashboard:pic_picture' report.id %}">
+</div>
+{% endif %}
+
+{% if report.content_type %}
+<img id="thumbnail" style="max-width:15%;" 
+     src="{% url 'dashboard:pic_picture' report.id %}"
+     onclick="showOverlay();">
+{% endif %}
+
+<script>
+function showOverlay() {
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('thumbnail').style.display = 'none';
+}
+
+function hideOverlay() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('thumbnail').style.display = 'inline';
+}
+</script>
+
+
+
+
 {% endblock %}

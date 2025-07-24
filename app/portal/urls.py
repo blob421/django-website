@@ -23,3 +23,4 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
     path('', LoginView.as_view(template_name='dashboard/login.html')),
 ]
+
