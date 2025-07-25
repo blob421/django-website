@@ -2,10 +2,13 @@
 
  {% block content %}
 
-  <form method="post" class="text_field">
+  <form method="post" class="task_form">
       {% csrf_token %}
   
  <p class="forms"> {{ form.as_p }}</p>
-  <input type="submit" name="send" value="send">
+  <input type="submit" name="send" value="Submit" class="btn-submit-task-manage">
  </form>
+ <a href="{% url 'dashboard:task_delete' form.instance.id %}"><button class="del-btn" type="button">
+   Delete</button></a>
+
   {% endblock %}

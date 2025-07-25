@@ -54,7 +54,7 @@ class Messages(models.Model):
                on_delete=models.PROTECT,
                null=True, blank=True, default='')
     
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=60)
     content = models.TextField(null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
@@ -78,8 +78,12 @@ class Task(models.Model):
            return self.name
 
 class Team(models.Model):
+    team_lead =models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
+                                 related_name='team_lead', null=True)
+    pinned_msg = models.TextField(null=True , default='Sample msg')
     name = models.CharField(max_length=40, blank=True )
     description = models.TextField(null=True)
     def __str__(self):
         return self.name
-    
+
+

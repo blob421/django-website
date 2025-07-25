@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Messages, UserProfile
+from .models import Messages, UserProfile, Task, Team
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from itertools import chain
@@ -29,7 +29,7 @@ class MessageForm(ModelForm):
                 
                # allowed = allowed_users.filter(userprofile__role__name = 'manager')
                self.fields['recipient'].queryset = allowed
-
+            
 
      def clean(self):
           cleaned_data = super().clean()
@@ -93,6 +93,23 @@ class RecipientDelete(ModelForm):
                     
                self.fields['recipients'].queryset = allowed
    
+
+class TaskCreate(ModelForm):
+     class Meta:
+        model = Task
+        fields = ['name','description','users','urgent']
+
+     def __init__(self, *args, **kwargs):
+          team = kwargs.pop('team', None)
+          super().__init__(*args, **kwargs)
+
+          if team:
+         
+          
+             self.fields['users'].queryset = team
+
+
+
 
 
 

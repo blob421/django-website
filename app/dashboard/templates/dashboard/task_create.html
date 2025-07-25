@@ -1,11 +1,12 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-<div class="visual_frame_update"></div>
-  <form method="post" class="message_update">
+
+  <form method="post" class="task_manage_form">
       {% csrf_token %}
   
  <p class="forms"> {{ form.as_p }}</p>
   <input type="submit" name="send" value="send">
  </form>
+ 
   {% endblock %}

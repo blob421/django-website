@@ -1,11 +1,28 @@
  {% include 'dashboard/base.html' %}
  {% block content %}
+
+ {% for tasks in task %}
+ <div class="data_container">
+ <div class ="title_task_view">{{tasks.name}}</div>
+  <div class="flex_container_task_view">Due date:    {{tasks.due_date}} </div>
+  <div class="title_data">Team</div>
+ 
+    {% for user in tasks.users.all %}
+<div class="task_completed">{{user.user.username}}</div>
+    {% endfor %}
+ 
+  
+ </div>
+
+ {% endfor %}
  <div class="general_medium_container">
  {% for tasks in task %}
   <p class="general_text"> {{ tasks.description}} </p>
+  
  </div>
  {% endfor %}
- <a href="{% url 'dashboard:tasks_list' %}">
+
+ <a href="javascript:history.back()">
   <button type="button" class="look_btn_back">Back</button>
 </a>
 

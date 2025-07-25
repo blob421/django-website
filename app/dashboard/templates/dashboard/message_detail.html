@@ -1,12 +1,20 @@
  {% include 'dashboard/base.html' %}
  {% block content %}
+ <div class="visual_frame">   </div>
  <div class="general_text_container">
   <p class="general_text"> {{ report.content}} </p>
  </div>
-
- <a href="{% url 'dashboard:home' %}">
+<div class="data_container__view_msg">   
+ <a href="{% url 'dashboard:messages' %}">
   <button type="button" class="look_btn_back">Back</button>
 </a>
+
+<a href="{% url 'dashboard:messages_create' %}"> 
+<button type="button">Reply</button>
+</a>
+<div>From {{report.user.username}} : </div>
+</div>
+
 
 {% if report.content_type %}
 <div id="overlay" class="overlay" style="display: none; text-align: center;"
@@ -17,7 +25,7 @@
 {% endif %}
 
 {% if report.content_type %}
-<img id="thumbnail" style="max-width:15%;" 
+<img id="thumbnail" style="max-width:14.5%; right:0.2%;" 
      src="{% url 'dashboard:pic_picture' report.id %}"
      onclick="showOverlay();">
 {% endif %}

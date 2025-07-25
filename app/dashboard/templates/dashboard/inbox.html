@@ -1,0 +1,58 @@
+
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+ <div class="left_container">  </div> 
+
+  <div class="center_container">
+    
+       {% if user.is_authenticated %}
+       <div class="title_container">  <h1 class="home_head">Inbox</h1></div>
+       {% endif %}
+
+       <div class="btn-container-msg">
+     <div class="messages_send_msg_btn"><a href="{% url 'dashboard:messages_create' %}"><button>Send a message</button></a></div>
+      <div class="messages_view_msg_btn"> <a href="javascript:history.back()"><button>Go back</button></a></div>
+      </div>
+      
+      <div class="text_container_inbox">
+        
+      <h2 class="home_head">Messages</h2>
+      
+      <div class="bubble_wrapper_inbox"> 
+    <div class="bubbles_div_inbox">
+      {% if messages %}
+      {% for message in messages %}
+  
+
+      
+      <div class="msg_button_inbox">
+    
+    <div class="text_div_bubble_inbox">
+        
+      <a href="{% url 'dashboard:reportview' message.id %}" class="bubble_link_inbox"> 
+      <div class="msg_content_inbox"><strong>{{message.user}}: </strong>{{message.title}} </div> </a>
+       </div>
+      <p class="msg_date">{{message.timestamp}}</p>
+      <div class="bubblex_radius_inbox">
+        <a href="{% url 'dashboard:report_delete' message.id %}" class="delete_bubblex_inbox">></a>
+
+      </div>
+    
+       </div>
+      
+      {% endfor %}
+      {% else %}
+      <p class="no_messages"> No messages for the moment</p>
+      {% endif %}
+       </div>
+      </div>
+      </div>
+   </div>
+   <div class="right_container"></div>
+ {% endblock %}
+
+
+
+
+
