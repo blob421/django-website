@@ -3,7 +3,7 @@
  {% block content %}
  <h1 class="team_title">{{user.userprofile.team.name}} management</h1>
  <div class="team_second_title">Employee / tasks</div>
-
+<div class="border_container"></div>
  <div class="team_container1">
 <div class="team_tasks">
 
@@ -27,20 +27,31 @@
 
 
 <div class="team_management"> 
+
+
+
 <div class="btn-div">  
  <a href="{% url 'dashboard:task_manage_create' %}"> 
     <button class="button_tasks_list" type="button">New task</button>
  </a>
 </div>
+
+<div class="btn-div3">
+<a href="{% url 'dashboard:team_completed' %}"> 
+<button class="button_tasks_list">Review tasks</button>
+</a>   
+</div>
+
+
 <div class="btn-div2">
-   <a href="{% url 'dashboard:team_update' user.userprofile.team.id %}">
-   <button type="button" class="button_tasks_list">Pin a message for the team</button></a>
+<a href="{% url 'dashboard:team_update' user.userprofile.team.id %}">
+<button type="button" class="button_tasks_list">Pin a message for the team</button>
+</a>
 </div>
 
 
+
 </div>
-
-
 </div>
 
 

@@ -3,6 +3,7 @@
  {% block content %}
  
  <div class="reports_container">
+  
  <h class="title">Reports</h>
  <div class="reports_div">
 
@@ -16,6 +17,7 @@
  <p class="forms"> {{ form.as_p }}</p>
 
   <input type="submit" name="send" value="send">
+  
   </form>
  </div>
 
@@ -28,4 +30,9 @@
    {% endfor %}
  </div>
  </div>
+ <div class="send_msg_back">
+   <a href="{% url 'dashboard:messages' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
+
  {% endblock %}

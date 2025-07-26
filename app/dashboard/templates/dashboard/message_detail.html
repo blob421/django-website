@@ -5,14 +5,8 @@
   <p class="general_text"> {{ report.content}} </p>
  </div>
 <div class="data_container__view_msg">   
- <a href="{% url 'dashboard:messages' %}">
-  <button type="button" class="look_btn_back">Back</button>
-</a>
 
-<a href="{% url 'dashboard:messages_create' %}"> 
-<button type="button">Reply</button>
-</a>
-<div>From {{report.user.username}} : </div>
+<div><strong> From {{report.user.username}} :</strong> </div>
 </div>
 
 
@@ -43,6 +37,12 @@ function hideOverlay() {
 </script>
 
 
-
-
+<div class="send_msg_back_flex">
+ <a href="{% url 'dashboard:messages' %}">
+  <button type="button" class="del_btn2">Back</button>
+</a>
+<a href="{% url 'dashboard:messages_create' %}"> 
+<button type="button" class="del_btn2">Reply</button>
+</a>
+</div>
 {% endblock %}

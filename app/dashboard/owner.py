@@ -1,7 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, CreateView
 
-
+class OwnerCreateView(LoginRequiredMixin, CreateView):
+    def get_queryset(self):
+       qs = super(OwnerCreateView, self).get_queryset()
+       if self.request.user.userprofile.role.name == 'dev':
+           return qs
+       return qs.none()
+    
 class OwnerUpdateView(LoginRequiredMixin, UpdateView):
  
 

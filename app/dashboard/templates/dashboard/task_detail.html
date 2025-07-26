@@ -22,8 +22,9 @@
  </div>
  {% endfor %}
 
- <a href="javascript:history.back()">
-  <button type="button" class="look_btn_back">Back</button>
-</a>
+ <div class="send_msg_back">
+   <a href="{% url 'dashboard:tasks_list' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
 
 {% endblock %}

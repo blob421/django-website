@@ -2,11 +2,47 @@
 
  {% block content %}
 
-  <form method="post" class="task_manage_form">
+<form method="post" class="task_form">
+
+<div class="form_container">
       {% csrf_token %}
+
+<div> 
+   <div class="forms"> {{ form.name.label_tag }}</div>
+   <div class="form_margin">{{form.name}}</div>
+</div>
+
+<div>  
+  <div class="form_margin"> {{form.description.label_tag}}</div>
+ <div class="description_task_form"> {{form.description}} </div>
+</div>
+
+
+<div class="flex_form_container">
+    <div>{{form.due_date.label_tag}}</div>
+    <div class="due_date_task_form">{{form.due_date}}</div>
+          <div> {{form.urgent.label_tag}}</div>
+       <div> {{form.urgent}}</div>
+         <div> {{form.completed.label_tag}}</div>
+    <div> {{form.completed}}</div>
+
+</div>
+
+
+<div class="bot_flex_form_container">
+
   
- <p class="forms"> {{ form.as_p }}</p>
-  <input type="submit" name="send" value="send">
- </form>
+    <div class="task_form_select"> {{form.users}}</div>
+
+    <div class="task_form_btn_container">
+        <input type="submit" name="send" value="Submit" class="btn-submit-task-manage">
+           <a href="javascript:history.back()"><button class="del-btn" type="button">Back</button></a>
+   </div>
+</div>
+
+
+</div>
  
+ </form>
+
   {% endblock %}

@@ -4,12 +4,12 @@ from django.views.generic import View, UpdateView, DetailView, DeleteView, ListV
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team
-from .forms import MessageForm, RecipientForm, RecipientDelete, TaskCreate
+from .forms import MessageForm, RecipientForm, RecipientDelete
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from django.http import HttpResponse
-from .owner import OwnerUpdateView
+from .owner import OwnerUpdateView, OwnerCreateView
 
 # Dispatches by role after login
 
@@ -30,7 +30,7 @@ class BillboardView(LoginRequiredMixin, View):
 
 class HomeView(LoginRequiredMixin, View):
     def get(self, request):
-        template_name = 'dashboard/homeview.html'
+        template_name = 'dashboard/messages_view.html'
         user_id = self.request.user.id
         reports = Messages.objects.filter(recipient=user_id).order_by('-timestamp')[:9]
         context = {'user': self.request.user, 'reports': reports}
@@ -43,7 +43,7 @@ class InboxView(LoginRequiredMixin, ListView):
     context_object_name = "messages"
 
     def get_queryset(self):
-        return Messages.objects.filter(recipient = self.request.user)
+        return Messages.objects.filter(recipient = self.request.user).order_by('-timestamp')
     
 class MessageDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/message_detail.html'
@@ -113,7 +113,7 @@ class AddRecipient(LoginRequiredMixin, View):
         combined_receivers = previous_receivers | new_receivers
         add.save()
         add.recipients.set(combined_receivers)
-        return redirect('dashboard:reports')  
+        return redirect('dashboard:messages')  
     
 
 class DeleteRecipient(LoginRequiredMixin, View):
@@ -147,21 +147,12 @@ class Logout(LogoutView):
 
 
 ################### TASKS #######################
-class TaskManageCreate(LoginRequiredMixin, View):
+class TaskManageCreate(OwnerCreateView):
     template_name = 'dashboard/task_create.html'
-
-    def get(self,request):
-
-        profile = UserProfile.objects.get(id=self.request.user.id)
-        team = profile.team.name
-        team_member = UserProfile.objects.filter(team__name=team)
-
-        form = TaskCreate(team=team_member)
-        
-        context = {'form': form}
-        return render(request, self.template_name, context)
+    success_url = reverse_lazy('dashboard:team')
+    model = Task
+    fields = ['name','description','due_date','users','urgent']
     
-
 
 class TasksList(LoginRequiredMixin, View):
 
@@ -191,8 +182,8 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
-    fields = ['name', 'description', 'urgent', 'due_date', 'users']
-    success_url = reverse_lazy('dashboard/team')
+    fields = ['name', 'description', 'urgent', 'due_date', 'users', 'completed']
+    success_url = reverse_lazy('dashboard:team')
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -226,7 +217,17 @@ class TeamUpdate(OwnerUpdateView):
      success_url = reverse_lazy('dashboard:team')
      
     
-       
+class TeamCompletedTask(LoginRequiredMixin, ListView):
+    model = Task
+    template_name = 'dashboard/task_manage_list.html'
+    context_object_name = 'tasks'
+
+    def get_queryset(self):
+        team = Team.objects.get(team_lead = self.request.user.userprofile)
+        team_name = team.name
+        team_tasks = Task.objects.filter(completed=True, users__team__name = team_name)      
+        return team_tasks
+
 
 def stream_file(request, pk):
     pic = get_object_or_404(Messages, id=pk)

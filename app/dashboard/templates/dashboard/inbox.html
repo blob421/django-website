@@ -12,7 +12,7 @@
 
        <div class="btn-container-msg">
      <div class="messages_send_msg_btn"><a href="{% url 'dashboard:messages_create' %}"><button>Send a message</button></a></div>
-      <div class="messages_view_msg_btn"> <a href="javascript:history.back()"><button>Go back</button></a></div>
+    
       </div>
       
       <div class="text_container_inbox">
@@ -50,6 +50,12 @@
       </div>
    </div>
    <div class="right_container"></div>
+
+
+   <div class="send_msg_back">
+   <a href="{% url 'dashboard:messages' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
  {% endblock %}
 
 

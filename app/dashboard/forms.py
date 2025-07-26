@@ -5,7 +5,7 @@ user_model = get_user_model()
 from itertools import chain
 from django import forms
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
+from django.db.models import Q
 
 
 class MessageForm(ModelForm):
@@ -23,9 +23,18 @@ class MessageForm(ModelForm):
             super().__init__(*args)
             
             if sender_id:
-                 
-               allowed_users = user_model.objects.filter(many_relation__id=sender_id)
-               allowed = allowed_users.exclude(id=sender_id)
+                
+
+               profile = UserProfile.objects.get(user=sender_id)
+
+
+               combined_qs = UserProfile.objects.filter(
+               Q(team=profile.team) | Q(user__in=profile.recipients.all())
+               ).distinct()
+               #Since recipients are users and not userprofiles
+               #Give me all user profiles where there is a user in recipients
+               #allowed_users = user_model.objects.filter(many_relation__id=sender_id)
+               allowed = combined_qs.exclude(id=sender_id)
                 
                # allowed = allowed_users.filter(userprofile__role__name = 'manager')
                self.fields['recipient'].queryset = allowed
@@ -66,14 +75,17 @@ class RecipientForm(ModelForm):
         
         
           if sender_id:
-           
-               choices = user_model.objects.exclude(many_relation=sender_id)
-               allowed = choices.exclude(pk=sender_id)
+               profile = UserProfile.objects.get(user=sender_id)
+
+               existing_contacts = user_model.objects.exclude(many_relation=sender_id)
+               logged_in_account = existing_contacts.exclude(pk=sender_id)
+               team = logged_in_account.exclude(userprofile__team=profile.team)
+
              #  alloed= User.objects.filter(userprofile__role__name='manager') 
              #  allowed = choices.difference(alloed) # substracts managers
               
                     
-               self.fields['recipients'].queryset = allowed
+               self.fields['recipients'].queryset = team
              
 
 class RecipientDelete(ModelForm):

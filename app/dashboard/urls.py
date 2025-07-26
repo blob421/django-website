@@ -33,6 +33,7 @@ urlpatterns = [
     path('tasks/update/<int:pk>', views.TaskUpdate.as_view(), name = 'task_manage_update'),
     #######TEAM ##########
     path('team/update/<int:pk>', views.TeamUpdate.as_view(), name='team_update'),
+    path('team/completed/', views.TeamCompletedTask.as_view(), name='team_completed'),
 
 
 

@@ -37,11 +37,11 @@ class UserProfile(models.Model):
 
         verbose_name_plural = "Add a user" 
 
-  
+       
 
     def __str__(self):
         return self.user.username
-
+    
 
 
 ### FORMS ###
@@ -65,6 +65,7 @@ class Messages(models.Model):
     def __str__(self):
         return self.title
 
+
 class Task(models.Model):
        users = models.ManyToManyField(UserProfile, related_name='task_users')
        description = models.TextField()
@@ -76,6 +77,21 @@ class Task(models.Model):
 
        def __str__(self):
            return self.name
+       
+
+class CompletedTasks(models.Model):
+    users = models.ManyToManyField(UserProfile, related_name='task_completed_users')
+    description = models.TextField()
+    name = models.CharField(max_length=50)
+    completed = models.BooleanField(default=True)
+    urgent = models.BooleanField(default=False)
+    due_date = models.DateTimeField()
+    creation_date = models.DateField()
+
+    picture = models.BinaryField(null=True, blank=True, editable=True)
+    completion_note = models.TextField(null=True)
+
+
 
 class Team(models.Model):
     team_lead =models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
