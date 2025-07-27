@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Messages, UserProfile, Task, Team
+from .models import Messages, UserProfile, Task, Team, CompletedTasks
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from itertools import chain
@@ -120,10 +120,16 @@ class TaskCreate(ModelForm):
           
              self.fields['users'].queryset = team
 
+class SubmitTask(forms.Form):
+          picture = forms.FileField(required=False, label="File to upload <= 2MB")
+          completion_note = forms.CharField(widget=forms.Textarea)
 
+        
 
-
-
+class DenyCompletedTask(ModelForm):
+     class Meta:
+         model = Task
+         fields = ['deny_reason']
 
 
 

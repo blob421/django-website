@@ -12,7 +12,7 @@
 
 {% for task in tasks %}
 {% if task.completed %}
-<a href="{% url 'dashboard:task_detail' task.id %}">
+<a href="{% url 'dashboard:task_completed_detail' task.id %}">
  <div class="task_blocks2">
       <p class="task_title">{{task.name}} </p>
      <p class="task_due_date">Due date: {{task.due_date}}  </p>

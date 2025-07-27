@@ -58,13 +58,27 @@
  <div class="task_title2"><p>Completed</p></div>
 
 {% for task in tasks %}
-{% if task.completed %}
+ {% if task.completed %}
+ {% if not task.denied %}
 <a href="{% url 'dashboard:task_detail' task.id %}">
  <div class="task_blocks2">
       <p class="task_title">{{task.name}} </p>
      <p class="task_due_date">Due date: {{task.due_date}}  </p>
  </div>
 </a>
+
+{% else %}
+<a href="{% url 'dashboard:task_detail' task.id %}">
+ <div class="task_blocks2_denied">
+      <p class="task_title">{{task.name}} </p>
+     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+     <p>Denied: {{task.deny_reason}}</p>
+ </div>
+</a>
+
+
+{% endif %}
+
 {% endif %}
 {% endfor %}
 

@@ -1,0 +1,93 @@
+ {% include 'dashboard/base.html' %}
+ {% block content %}
+
+
+   <div class="data_container">
+       <div class ="title_task_view">{{task.name}}</div>
+       <div class="flex_container_task_view">Due date:    {{task.due_date}} </div>
+       <div class="title_data">Team</div>
+ 
+
+  <div class="left_bar_team_members_container">
+      {% for user in task.users.all %}
+      <div class="task_completed">{{user.user.username}}</div>
+      {% endfor %}
+  </div>
+  
+        {% if task.content_type %}
+        <img id="thumbnail2" style="right:0.2%;" 
+            src="{% url 'dashboard:stream_completed_task_img' task.id %}"
+            onclick="showOverlay();">
+        {% endif %}
+</div>
+
+  <div class="text_frames_container_management">  
+    <div class="title_task_description_management">Task description</div>
+    <div class="general_medium_container_management">
+   
+    <p class="general_text_management"> {{ task.description}} </p>
+  
+    </div>
+
+    <div class="title_completion_note"> Completion note</div>
+    
+    <div class="second_text_container_management">
+    <p class="general_text_management2">  {{task.completion_note}}</p>
+    </div>
+
+   </div>
+     <div class="send_msg_back">
+      <a href="{% url 'dashboard:tasks_list' %}"><button class="del_btn2" type="button">Back</button></a>
+
+    </div>
+</div>
+
+
+ <div class="task_detail_right_panel">
+
+
+    <div class="task_completed_btn_container">
+         <a href="{% url 'dashboard:task_approve' task.id %}">
+         <button type="button" class="task_detail_completed_btn">Approve</button>
+        </a>
+    </div>
+ 
+
+    <div class="task_completed_deny_container">
+           <form class="form_deny_text" method="post">
+           {% csrf_token %}
+           <button class="btn_deny" type="submit">Deny</button>
+   </div> 
+
+    <div class="task_completed_deny_container2"> 
+           {{form.deny_reason.label_tag}}
+           {{form.deny_reason}}
+ 
+           </form>
+    </div>    
+
+</div>
+
+  {% if task.content_type %}
+     <div id="overlay" class="overlay" style="display: none; text-align: center;"
+     onclick="hideOverlay();">
+    <img style="width:80%;margin-top: 5px; border:3px solid black;" 
+         src="{% url 'dashboard:stream_completed_task_img' task.id %}">
+</div>
+{% endif %}
+
+<script>
+function showOverlay() {
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('thumbnail').style.display = 'none';
+}
+
+function hideOverlay() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('thumbnail').style.display = 'inline';
+}
+</script>
+
+
+
+{% endblock %}

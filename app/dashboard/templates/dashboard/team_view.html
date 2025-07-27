@@ -13,8 +13,14 @@
 <div class="team_member_rows">
 <div class="team_name_container">{{member.user.username}} ({{member.role.name}})</div>
 {% for task in member.task_users.all %}
+{% if not task.completed %}
 <div class="tasks_units_blocks">
 <a class="link_management" href="{% url 'dashboard:task_manage_update' task.id %}">{{task.name}}</a></div>
+{% else %}
+<div class="tasks_units_blocks_completed">
+<a class="link_management" href="{% url 'dashboard:task_manage_update' task.id %}">{{task.name}}</a></div>
+{% endif %}
+
 
 {% endfor %}
 </div>
@@ -40,6 +46,9 @@
 <a href="{% url 'dashboard:team_completed' %}"> 
 <button class="button_tasks_list">Review tasks</button>
 </a>   
+</div>
+<div class="btn-div4">
+   ({{count}}) new tasks 
 </div>
 
 

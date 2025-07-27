@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView, CreateView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team
-from .forms import MessageForm, RecipientForm, RecipientDelete
+from .models import Messages, UserProfile, Task, Team, CompletedTasks
+from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
@@ -197,7 +197,44 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     success_url = reverse_lazy('dashboard:team')
+
+class TaskSubmit(LoginRequiredMixin, View):
+    template = 'dashboard/task_submit.html'
+    success_url = reverse_lazy('dashboard:tasks_list')
+
+    def get(self, request, pk):
+       
+        form = SubmitTask()
+        context= {'form': form}
+        return render(request, self.template, context)
+    
+
+    def post(self, request, pk):
+        form = SubmitTask(request.POST, request.FILES or None)
         
+        if not form.is_valid():
+            ctx = {'form': form}
+            return render(request, self.template, ctx)
+        
+        task = Task.objects.get(id = pk)
+        user_profile = self.request.user.userprofile
+        note = form.cleaned_data['completion_note']
+     
+        picture_file = form.cleaned_data['picture']
+
+        if picture_file:
+            task.completion_note = note
+            task.picture = picture_file.read()  
+            task.content_type = picture_file.content_type
+            task.completed = True
+            task.submitted_by = user_profile
+
+        task.save()
+        
+       
+       
+        return redirect(self.success_url)
+
 ######### Manage #################
 
 class TeamView(LoginRequiredMixin, View):
@@ -207,8 +244,11 @@ class TeamView(LoginRequiredMixin, View):
         profile = UserProfile.objects.get(id=self.request.user.id)
         team = profile.team.name
         team_member = UserProfile.objects.filter(team__name=team)
+        team = Team.objects.get(team_lead = self.request.user.userprofile)
+        team_name = team.name
+        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name).count()    
         user = self.request.user
-        context = {'user':user, 'team': team_member}
+        context = {'user':user, 'team': team_member , 'count':team_tasks}
         return render(request, self.template_name, context)
 
 class TeamUpdate(OwnerUpdateView):
@@ -225,12 +265,74 @@ class TeamCompletedTask(LoginRequiredMixin, ListView):
     def get_queryset(self):
         team = Team.objects.get(team_lead = self.request.user.userprofile)
         team_name = team.name
-        team_tasks = Task.objects.filter(completed=True, users__team__name = team_name)      
+        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name)      
         return team_tasks
+    
+class TaskCompletedDetail(LoginRequiredMixin, View):
+    template_name = 'dashboard/task_completed_detail.html'
+    context_object_name = 'task'
+    success_url =  'dashboard:team'
+    
+    def get(self, request, pk):
+        form = DenyCompletedTask()
+     
+        task = Task.objects.get(id = pk)
+        ctx = {'form': form, 'task': task}   
+        return render(request, self.template_name, ctx)
+    
+    def post(self, request, pk):
+        form = DenyCompletedTask(request.POST)
 
+        if not form.is_valid():
+            ctx = {'form': form}
+            return render(request, self.template_name, ctx)
+        
+      
+        task = Task.objects.get(id = pk)
+        task.denied = True
+        task.deny_reason = form.cleaned_data['deny_reason']
+        task.save()
+        return redirect(self.success_url)
+        
+
+       
+    
+class TeamCompletedApprove(LoginRequiredMixin, View):
+
+    def get(self, request, pk):
+
+        user_profile = self.request.user.userprofile
+
+        if user_profile == user_profile.team.team_lead:
+            task = Task.objects.get(id=pk)
+            
+            completed_task = CompletedTasks(id = task.id, 
+                                            submitted_by = task.submitted_by,
+                                            description = task.description,
+                                            name = task.name,
+                                            completed = True,
+                                            urgent = task.urgent,
+                                            due_date = task.due_date,
+                                            creation_date = task.creation_date,
+                                            content_type = task.content_type,
+                                            picture = task.picture,
+                                            approved_by = user_profile,
+                                            completion_note = task.completion_note)
+            completed_task.save()
+            completed_task.users.set(task.users.all())
+            task.delete()
+            return redirect(reverse('dashboard:team'))
 
 def stream_file(request, pk):
     pic = get_object_or_404(Messages, id=pk)
+    response = HttpResponse()
+    response['Content-Type'] = pic.content_type
+    response['Content-Length'] = len(pic.picture)
+    response.write(pic.picture)
+    return response
+
+def stream_completed_task_img(request, pk):
+    pic = get_object_or_404(Task, id=pk)
     response = HttpResponse()
     response['Content-Type'] = pic.content_type
     response['Content-Length'] = len(pic.picture)

@@ -1,6 +1,6 @@
  {% include 'dashboard/base.html' %}
  {% block content %}
-
+<div class="task_detail_flex">   
  {% for tasks in task %}
  <div class="data_container">
  <div class ="title_task_view">{{tasks.name}}</div>
@@ -20,11 +20,19 @@
   <p class="general_text"> {{ tasks.description}} </p>
   
  </div>
- {% endfor %}
+
 
  <div class="send_msg_back">
    <a href="{% url 'dashboard:tasks_list' %}"><button class="del_btn2" type="button">Back</button></a>
 
  </div>
+ </div>
 
+
+ <div class="task_detail_right_panel">
+  <a href="{% url 'dashboard:task_submit' tasks.id %}">
+     <button type="button" class="task_detail_completed_btn">Mark as completed</button>
+     </a>
+ {% endfor %}
+ </div>
 {% endblock %}

@@ -67,6 +67,7 @@ class Messages(models.Model):
 
 
 class Task(models.Model):
+       
        users = models.ManyToManyField(UserProfile, related_name='task_users')
        description = models.TextField()
        name = models.CharField(max_length=50)
@@ -75,11 +76,22 @@ class Task(models.Model):
        completed = models.BooleanField(default=False)
        urgent = models.BooleanField(default=False)
 
+       picture = models.BinaryField(null=True, blank=True, editable=True)
+       content_type = models.CharField(max_length=50, null=True, blank=True)
+       completion_note = models.TextField(null=True)
+       submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+       
+       denied = models.BooleanField(default=False)
+       deny_reason = models.TextField(null=True, blank=True)
+       
        def __str__(self):
            return self.name
        
 
 class CompletedTasks(models.Model):
+    approved_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='aproved_by', 
+                                   null=True)
+    submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null = True)
     users = models.ManyToManyField(UserProfile, related_name='task_completed_users')
     description = models.TextField()
     name = models.CharField(max_length=50)
@@ -87,16 +99,17 @@ class CompletedTasks(models.Model):
     urgent = models.BooleanField(default=False)
     due_date = models.DateTimeField()
     creation_date = models.DateField()
-
+    content_type = models.CharField(max_length=50, null=True, blank=True)
+    
     picture = models.BinaryField(null=True, blank=True, editable=True)
     completion_note = models.TextField(null=True)
-
+ 
 
 
 class Team(models.Model):
     team_lead =models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
                                  related_name='team_lead', null=True)
-    pinned_msg = models.TextField(null=True , default='Sample msg')
+    pinned_msg = models.TextField(null=True , default='---')
     name = models.CharField(max_length=40, blank=True )
     description = models.TextField(null=True)
     def __str__(self):
