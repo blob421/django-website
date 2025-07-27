@@ -31,7 +31,7 @@ urlpatterns = [
     ####### MANAGE ###########
     path('team/', views.TeamView.as_view(), name = 'team'),
     path('tasks/completed/<int:pk>/', views.TaskCompletedDetail.as_view(), name='task_completed_detail'),
-    path('create-task, views', views.TaskManageCreate.as_view(), name = 'task_manage_create'),
+    path('tasks/create/', views.TaskManageCreate.as_view(), name = 'task_manage_create'),
     path('tasks/update/<int:pk>', views.TaskUpdate.as_view(), name = 'task_manage_update'),
     path('tasks/completed/approve/<int:pk>', views.TeamCompletedApprove.as_view(), 
          name = 'task_approve'),

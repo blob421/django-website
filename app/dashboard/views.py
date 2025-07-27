@@ -221,14 +221,15 @@ class TaskSubmit(LoginRequiredMixin, View):
         note = form.cleaned_data['completion_note']
      
         picture_file = form.cleaned_data['picture']
-
+         
         if picture_file:
-            task.completion_note = note
+            
             task.picture = picture_file.read()  
             task.content_type = picture_file.content_type
-            task.completed = True
-            task.submitted_by = user_profile
 
+        task.completion_note = note
+        task.completed = True
+        task.submitted_by = user_profile
         task.save()
         
        
@@ -289,6 +290,7 @@ class TaskCompletedDetail(LoginRequiredMixin, View):
         
       
         task = Task.objects.get(id = pk)
+        task.completed = False
         task.denied = True
         task.deny_reason = form.cleaned_data['deny_reason']
         task.save()

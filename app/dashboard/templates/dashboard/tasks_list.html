@@ -10,6 +10,7 @@
  <div class='task_block_container1'> 
 <div class="task_title1"><p>Incomplete</p></div>
  {% for task in tasks %}
+ {% if not task.denied %}
 {% if task.due_date > time %}
  {% if not task.completed %}
  {% if not task.urgent %}
@@ -26,7 +27,7 @@
      <p class="task_due_date">Due date: {{task.due_date}}  </p>
  </div>
 </a>
-
+{% endif %}
 {% endif %}
 {% endif %}
 {% endif %}
@@ -38,6 +39,7 @@
 <div class="task_block_container3">
 <div class="task_title3"><p>Past due</p></div>
  {% for task in tasks %}
+ {% if not task.denied %}
  {% if task.due_date < time %}
  {% if not task.completed %}
  <a href="{% url 'dashboard:task_detail' task.id %}">
@@ -46,6 +48,7 @@
      <p class="task_due_date">Due date: {{task.due_date}}  </p>
  </div>
  </a>
+ {% endif %}
  {% endif %}
  {% endif %}
 {% endfor %}
@@ -66,8 +69,11 @@
      <p class="task_due_date">Due date: {{task.due_date}}  </p>
  </div>
 </a>
+{% endif %}
+{% endif %}
 
-{% else %}
+{% if not task.completed %}
+{% if task.denied %}
 <a href="{% url 'dashboard:task_detail' task.id %}">
  <div class="task_blocks2_denied">
       <p class="task_title">{{task.name}} </p>
@@ -76,10 +82,9 @@
  </div>
 </a>
 
-
+{% endif %}
 {% endif %}
 
-{% endif %}
 {% endfor %}
 
 

@@ -889,6 +889,14 @@ form button{
    background-color: rgb(213, 248, 224);
    padding-left: 2px;
 }
+.tasks_units_blocks_denied{
+
+       border: 2px rgb(45, 45, 45) solid;
+   width: 20%;
+   flex-shrink: 0;
+   background-color: rgb(240, 155, 151);
+   padding-left: 2px;
+}
 .tasks_units_blocks:hover{
     background-color: rgb(239, 239, 239);
 }
