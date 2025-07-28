@@ -5,4 +5,5 @@ This is my django website , it is still in development and will eventually evolv
 
 ![Alt text](https://i.imgur.com/MOcQVCI.png)
 ![Alt text](https://i.imgur.com/LAl9hNV.png)
+![Alt text](https://i.imgur.com/eWHxISp.png)
 ![Alt text](https://i.imgur.com/a4xkYFp.png)
