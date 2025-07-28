@@ -3,13 +3,16 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView, CreateView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, CompletedTasks
-from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
+from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages
+from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask, ChatForm
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .owner import OwnerUpdateView, OwnerCreateView
+from django.contrib.humanize.templatetags.humanize import naturaltime
+import datetime
+
 
 # Dispatches by role after login
 
@@ -324,6 +327,49 @@ class TeamCompletedApprove(LoginRequiredMixin, View):
             completed_task.users.set(task.users.all())
             task.delete()
             return redirect(reverse('dashboard:team'))
+
+
+
+############# CHAT #################
+
+class ChatView(LoginRequiredMixin, View):
+    template = 'dashboard/chat_view.html'
+    def get(self, request):
+        form = ChatForm()
+        ctx = {'form': form}
+        return render(request, self.template, ctx)
+    
+    def post(self, request):
+        form = ChatForm(request.POST)
+        if not form.is_valid():
+             ctx = {'form': form}
+             return render(request, self.template, ctx)
+        submit = form.save(commit=False)
+        profile = UserProfile.objects.get(id=request.user.id)
+        team = profile.team
+        submit.team = team
+        submit.user = profile
+        submit.save()
+        return redirect(reverse('dashboard:chat_view'))
+
+
+def ChatUpdate(request):
+
+    data = []
+    profile = UserProfile.objects.get(id=request.user.id)
+
+    team = profile.team
+    messages = ChatMessages.objects.filter(team= team).order_by('-created_at')[:10]
+    for message in messages:
+        text = message.message
+        user = message.user.user.username
+        datetime_obj = datetime.datetime.combine(message.created_at, datetime.time.min)
+        time = naturaltime(message.created_at)
+        timed_message = {'user':user, 'text':text,'time': time}
+        data.append(timed_message)
+    return JsonResponse(data, safe=False)
+
+
 
 def stream_file(request, pk):
     pic = get_object_or_404(Messages, id=pk)

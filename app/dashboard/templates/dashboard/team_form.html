@@ -4,9 +4,13 @@
 <div class="visual_frame_update"></div>
   <form method="post" class="message_update">
       {% csrf_token %}
-  
- <p class="forms"> {{ form.as_p }}</p>
+  <p>{{form.pinned_msg.label_tag}}</p>
+ <p class="form_update_team"> {{ form.pinned_msg }}</p>
   <input type="submit" name="send" value="send">
-     <a href="javascript:history.back()"><button class="del-btn" type="button">Back</button></a>
+
  </form>
+     <div class="send_msg_back">
+   <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
   {% endblock %}

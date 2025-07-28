@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
-
+admin.site.register(models.ChatMessages)
 
 user_model = get_user_model()
 

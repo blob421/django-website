@@ -1,0 +1,68 @@
+ {% include 'dashboard/base.html' %}
+
+
+{% block content %}
+ 
+<div class="chat_frame"> 
+
+   <div class="chat_container">
+    <div class="chat" id="chat"> </div>
+   </div>
+
+<div class="chat_form_div">
+    <div>
+   <form class="chat_form_msg" method="post">
+    {% csrf_token %}
+    {{form.message}}
+    </div>
+
+
+    <button class="send_button_chat "type="submit">Send</button>
+   
+
+
+   </form>
+
+  
+</div>
+{% endblock %}
+
+
+<script>
+
+
+async function update_messages() {
+
+    try { 
+    const response = await fetch("{% url 'dashboard:chat_update' %}")
+    const data = await response.json()
+    console.log(data);
+
+    const chatContainer = document.getElementById('chat');
+    chatContainer.innerHTML = ''; // clear previous messages
+
+    for (var x = 0; x < data.length; x++ ){
+
+            const row = data[x]
+               chatContainer.innerHTML += '<div class="chat_bubble_container">' + 
+                '<div class="chat_user">' +row.user +'</div>' + 
+                '<div class="chat_bubbles">' +row.text+ ' '+
+                 '</div>'+'<div class="chat_bubble_time">'+'('+row.time+')'+ '</div>' +  
+                  '</div>';
+        }
+       setTimeout(update_messages, 10000);
+    }
+
+
+    catch(error){
+        console.log(error);
+    }
+
+    
+}
+document.addEventListener("DOMContentLoaded", function() {
+    update_messages(); // or whichever function is trying to access chatcontent
+});
+
+
+</script>

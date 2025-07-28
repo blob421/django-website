@@ -40,6 +40,8 @@ urlpatterns = [
     path('team/update/<int:pk>', views.TeamUpdate.as_view(), name='team_update'),
     path('team/completed/', views.TeamCompletedTask.as_view(), name='team_completed'),
 
-
+    ######CHAT##########
+    path('chat', views.ChatView.as_view(), name='chat_view'),
+    path('chat/update', views.ChatUpdate, name='chat_update'),
 
 ] 

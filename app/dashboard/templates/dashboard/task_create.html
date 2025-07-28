@@ -23,8 +23,7 @@
     <div class="due_date_task_form">{{form.due_date}}</div>
           <div> {{form.urgent.label_tag}}</div>
        <div> {{form.urgent}}</div>
-         <div> {{form.completed.label_tag}}</div>
-    <div> {{form.completed}}</div>
+   
 
 </div>
 
@@ -36,7 +35,7 @@
 
     <div class="task_form_btn_container">
         <input type="submit" name="send" value="Submit" class="btn-submit-task-manage">
-           <a href="javascript:history.back()"><button class="del-btn" type="button">Back</button></a>
+           <a href="{% url 'dashboard:team' %}"><button class="del-btn" type="button">Back</button></a>
    </div>
 </div>
 

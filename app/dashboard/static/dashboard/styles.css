@@ -70,11 +70,7 @@ form textarea{
   
 
 }
-.forms{
-   
-    height:100%;
 
-}
 
 
 /******************Messages*******************/
@@ -278,8 +274,8 @@ form textarea{
   left: 50%;
   transform: translateX(-50%);
 }
-.description_task_form textarea:focus,
-.text_field textarea:focus,
+
+
 .message_update textarea:focus,
 input:focus,
 select:focus {
@@ -321,7 +317,7 @@ form button{
   
 }
 .add_form_container{
- /* border: 2px solid orangered;*/
+  border: 2px solid orangered;
   position: absolute;
   left:50%;
   top:50%;
@@ -332,14 +328,15 @@ form button{
 }
 /******************* View a message **********************/
 .visual_frame_update{
-    border: 1px rgba(84, 72, 55, 0.449) solid;
+    border: 2px solid black;
     height: 86%;
-    width: 70%;
+    width: 65%;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgb(211, 221, 227);
+       background-color: rgb(174, 196, 215);
+
 }
 .visual_frame{
     border: 1.5px rgba(84, 72, 55, 0.68) solid;
@@ -422,15 +419,15 @@ form button{
 }
 
 .center_container{
-    border: rgb(183, 183, 183) 1px solid;
-    font-size: smaller;
+ border: rgb(99, 99, 99) 1.5px solid;
+     font-size: smaller;
     left: 50%;
     position: absolute;
     bottom: 0%;
     height: 100%;
     transform: translate(-50%);
     width: 70vw;
-    background-color: rgb(188, 202, 212);
+    background-color: rgb(188, 204, 215);
   
    
 }
@@ -614,35 +611,40 @@ form button{
 
 .task_block_container1{
     overflow: auto;
-    border: 2.5px grey solid;
-    height: 77%;
+ border: 2.5px rgb(146, 146, 146) solid;
+     height: 77%;
     width: 25%;
     margin-top: 5%;
     text-align: top;
-      background-color: rgb(211, 211, 211);
+      background-color: rgb(232, 229, 229);
       font-family: 'Times New Roman', Times, serif;
       font-weight:lighter;
        font-size: 15px;
 
 }   
-.task_blocks2{
-     
-  
-       background-color: rgb(178, 178, 178);
-         border: 2px rgb(155, 152, 152) solid;
-}
+
 .task_blocks2_denied{
-         background-color: rgb(220, 110, 110);
+         background-color: rgb(230, 156, 156);
          border: 2px rgb(155, 152, 152) solid;
 
+}
+.task_title2_base{
+      position: sticky;
+  top: 0;
+  z-index: 100; 
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+   background-color: rgb(174, 196, 215);
+  
 }
 .task_block_container2{
       overflow: auto;
     height: 77%;
     width: 25%;
     margin-top: 5%;
-    border: 2.5px grey solid;
-      background-color: rgb(211, 211, 211);
+    border: 2.5px rgb(146, 146, 146) solid;
+      background-color: rgb(232, 229, 229);
        font-family: 'Times New Roman', Times, serif;
         font-size: 15px;
 }
@@ -667,11 +669,11 @@ form button{
 .task_block_container3{
     z-index: 50;
     height: 77%;
-  background-color: rgb(211, 211, 211);
+  background-color: rgb(232, 229, 229);
      width: 25%;
     margin-top: 5%;
     overflow: auto;
-    border: 2.5px grey solid;
+     border: 2.5px rgb(146, 146, 146) solid;
      font-family: 'Times New Roman', Times, serif;
      font-size: 15px;
 }
@@ -684,7 +686,7 @@ form button{
 .task_title3{
     position: sticky;
   top: 0;
-  background-color: rgb(155, 139, 117); 
+   background-color: rgb(174, 196, 215);
   z-index: 100; 
   padding: 10px;
   border-bottom: 1px solid #ccc;
@@ -695,22 +697,11 @@ form button{
 .task_title1{
       position: sticky;
   top: 0;
-  background-color: rgb(155, 139, 117); 
+  background-color: rgb(174, 196, 215);
   z-index: 100; 
   padding: 10px;
   border-bottom: 1px solid #ccc;
   text-align: center;
-}
-
-.task_title2{
-      position: sticky;
-  top: 0;
-  background-color: rgb(155, 139, 117); 
-  z-index: 100; 
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-  text-align: center;
-  
 }
 
 .flex_container_task_view{
@@ -719,16 +710,18 @@ form button{
     padding-top: 10px;
     top: 15%;
     background-color: white;
+     padding: 2%;
 }
 .title_task_view{
 
      border: 2px rgb(85, 85, 85) solid;
      position: relative;
     background-color: white;
+    padding: 2%;
 }
 
 .task_detail_right_panel{
-     border: 2px red solid;
+     border: 2px rgb(140, 140, 140) solid;
      height: 82vh;
     width: 17vw;
     top:50%;
@@ -736,9 +729,18 @@ form button{
     position: absolute;
     right: 10%;
     margin: 2px;
-    background-color: burlywood;
+    background-color: rgb(174, 196, 215);
+    padding: 2px;
 }
-
+.task_detail_completed_btn2{
+ width: 90%;
+ height: 10%;
+    left: 50%;
+    top: 0%;
+    transform: translateX(-50%);
+    position: relative;
+    margin-top:10%;
+}
 .task_detail_completed_btn{
  width: 90%;
  height: 90%;
@@ -749,17 +751,17 @@ form button{
 }
 .task_completed_deny_container{
      margin-top: 10%;
-    border: 2px purple solid;
+  /*  border: 2px purple solid;*/
     height: 10%;
 }
 .task_completed_deny_container2 textarea{
-  
-  width: 97%;
+  border: 2px solid grey;
+  width: 95%;
   margin-top: 4%;
 }
 .task_completed_deny_container2{
   text-align: center;
-
+  
   margin-top: 7%;
 }
 .btn_deny{
@@ -773,11 +775,11 @@ form button{
 }
 .task_completed_btn_container{
     margin-top: 10%;
-    border: 2px green solid;
+   /* border: 2px green solid;*/
     height: 10%;
 }
 .data_container{
-   /* border: 2px red solid;*/
+     border: 2px rgb(140, 140, 140) solid;
     height: 82vh;
     width: 17vw;
     top:50%;
@@ -785,7 +787,8 @@ form button{
     position: absolute;
     left: 10%;
     margin: 2px;
-    background-color: burlywood;
+    background-color: rgb(174, 196, 215);
+    padding: 2px;
 
 }
 
@@ -793,459 +796,14 @@ form button{
    border: 2px rgb(85, 85, 85) solid;
      position: relative;
     background-color: white;
-   padding-top: 10px;
+     margin-top: 1%;
+    padding: 2%;
+
 
 }
 .title_data{
     padding-top: 10px;
+    margin-left: 1%;
 }
 
 
-/*************TEAMS********************/
-.border_container{
-        border: solid black 2px;
-    height: 79.3vh;
-    display: flex;
-    position: fixed;
-    bottom: 0%;
-    left:49.8%;
-    transform: translateX(-50%);
-    width: 90.1vw;
-    background-color: red;
-    border: 2px black solid;
- 
-}
-
-.team_container1{
-
-   
-    height: 79vh;
-    display: flex;
-    position: fixed;
-    bottom: 0%;
-    left:50%;
-    transform: translateX(-50%);
-    width: 90vw;
-   
-}
-.team_tasks{
-  width: 75%;
- /* border: blueviolet 2px solid;*/
- 
-  overflow-y: scroll;  
-  overflow-x: scroll;
- 
- 
-     background-color: rgb(239, 241, 241);
-   
-}
-
-.team_management{
-   
-   width:25%;
- /* border: rgb(55, 226, 43) 2px solid;*/
-  height: 100%;
-  background-color: rgb(141, 155, 164);
-  border: 2px rgb(36, 36, 36) solid;
-  
- 
-}
-.team_member_rows{
-  
-   
-    height: 17%;
-    display: flex; 
-    gap: 2px;
-    margin-top: 2px;
-    
-    
-    
-}
-.team_name_container{
-    border: solid rgb(59, 59, 59) 2.5px;
-    width: 23%;
-    flex-shrink: 0;
-    position: sticky;
-  left: 0;
-  z-index: 100; 
-  background-color: rgb(196, 196, 196);
- 
-  padding-left: 2px;
-}
-
-.tasks_units_blocks{
-   border: 2px rgb(45, 45, 45) solid;
-   width: 20%;
-   flex-shrink: 0;
-   background-color: azure;
-   padding-left: 2px;
- 
-}
-.tasks_units_blocks_completed{
-
-      border: 2px rgb(45, 45, 45) solid;
-   width: 20%;
-   flex-shrink: 0;
-   background-color: rgb(213, 248, 224);
-   padding-left: 2px;
-}
-.tasks_units_blocks_denied{
-
-       border: 2px rgb(45, 45, 45) solid;
-   width: 20%;
-   flex-shrink: 0;
-   background-color: rgb(240, 155, 151);
-   padding-left: 2px;
-}
-.tasks_units_blocks:hover{
-    background-color: rgb(239, 239, 239);
-}
-.team_title{
-    position: fixed;
-    left:5%;
-    top: 0%;
-}
-
-.team_second_title{
-
-    position: fixed;
-    top: 14%;
-    left: 5%;
-}
-
-.link_management{
-  /*  border: blue 2px solid;*/
-    display: block;
-    height: 100%;
-}
-
-.button_tasks_list {
-
-    height: 7vh;
-    width: 18vw;
-    border: grey solid 2px;
-     left: 50%;
-   
- 
-}
-.button_tasks_list:hover{
-    background-color: rgb(175, 235, 219);
-}
-
-.btn-div{
-
-   /* border: solid 2px rgb(145, 145, 145);*/
-     display: flex;
-  justify-content: center;  
-  align-items: center;   
-  margin-top: 12%;
-}
-.btn-div2{
-      display: flex;
-  justify-content: center;   
-  align-items: center;   
- margin-top: 5%;
-  padding: 5%;
-
-
-}
-.btn-div3{
-      display: flex;
-  justify-content: center;   
-  align-items: center;   
-  margin-top: 5%;
-  padding: 5%;
-
-
-}
-.btn-div4{
-         display: flex;
-  justify-content: center;   
-  color: aquamarine;
-
-
-
-}
-/*********Management completed tasks********/
-.manage_completed_tasks{
-    border: 2px red solid;
-    width: 80%;
-    height: 90%;
-    left: 50%;
-    top:50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    overflow: auto;
-}
-
-.task_block_container_manage{
-    overflow-x: auto;
-
-}
-#thumbnail2{ 
-    max-width: 100%;
-    position: fixed;
-    bottom: 2%;
-   
-}
-.left_bar_team_members_container{
-    border: solid 2px black;
-    height: 40%;
-    overflow: auto;
-}
-
-.general_medium_container_management{
-         border: 2px solid rgb(156, 156, 156);
-    height: 36%;
-    overflow: auto;
-    text-justify: auto;
-    white-space: pre-wrap;
-    text-align:justify top;
-    transform-origin: top;
-    background-color: rgb(230, 231, 233);
-    font-family: 'Times New Roman', Times, serif;
-}
-.second_text_container_management{
-    border: 2px solid rgb(152, 44, 44);
-    height: 41vh;
-    
-    position: relative;
-   
-    
-    text-justify: auto;
-    white-space: pre-wrap;
-    text-align:justify top;
-  
-    background-color: rgb(230, 231, 233);
-    font-family: 'Times New Roman', Times, serif;
-
-}
-.text_frames_container_management{
-   left: 50%;
-   top: 50%;
-   height: 82vh;
-       width: 40vw;
-    transform: translate(-50%,-50%);
-    position: absolute;
-    border: greenyellow 2px solid;
-}
-.title_completion_note{
-    height: 5%;
-    border: 2px rgb(66, 66, 66) solid;
-    background-color: rgb(192, 152, 116);
-} 
-.title_task_description_management{
-     height: 5%;
-     border: 2px rgb(66, 66, 66) solid;
-     background-color: rgb(192, 152, 116);
-}
-.general_text_management{
-    top: 3%;
-    position: fixed;
-    margin-right: 1%;            
-    overflow-wrap: break-word;    
-    overflow: hidden;   
-}
-.general_text_management2{
-    position: absolute;
-    border: 2px solid green;
-    top: 0%;
-    overflow-wrap: break-word;    
-    overflow: hidden;   
-
-
-
-
-
-
-}
-/*************Task Form*****************/
-.description_task_form{
-    width: 100%;
-    margin-top: 1%;
- 
-}
-.form_margin{
-    margin-top: 1%;
-}
-.form_container{
-    
-    height: 90vh;
-    width: 50vw;
-       position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    padding-bottom:1% ;
-  
-    
-}
-.task_form_select{
-    height: 100%;
-    width: 60%;
-  
-}
-.task_form_select select{
-    width: 100%;
-    height: 100%;
-  
-}
-
-.flex_form_container{
-    display: flex;
-   /* border: 2px red solid;*/
-    gap: 3%;
-    width: 100%;
-    
-}
-.bot_flex_form_container{
-    margin-top: 1.2%;
-    display: flex;
-    /*border: green 2px solid;*/
-   
-   height: 20%;
-}
-.task_form_btn_container{
-/*border: 2px blue solid;*/
-
-  margin-left: 1.2%;
-  width: 35%;
-
-
-
-}
-.btn-submit-task-manage{
-  height: 45%;
-  width: 100%;
-    
-
-}
-.del-btn{
-    margin-top: 5%;
-    height: 45%;
-
-
-    
-   
-}
-
-/******************INBOX******************/
-.bubble_wrapper_inbox{
- left: 50%;
-    position: absolute;
-    transform: translateX(-50%);
-
-  width: 80%;
-  
-
-}
-
-
-.msg_date{
-    right: 0%;
-    position: absolute;
-    
-
-}
-
-
-.msg_button_inbox:hover{
-    border: rgb(143, 162, 217) 2px solid;
-    transition: all 0.4s ease-in-out;
-    padding: 1.5px;
-   
-
-}
-
-.msg_button_inbox{
- display: flex;
-    /* Center horizontally */
-    align-items: center;          /* Center vertically */
-    
-    overflow: hidden;             /* Prevent overflow */
-    border: solid rgb(136, 136, 136) 2px;
-    width: 100%;
-    background-color: rgb(240, 239, 239);
-    border-radius: 35px;
-    height: 14vh;
-    align-items: center;
-    overflow: scroll;            /* Enables scrolling */
-    scrollbar-width: none;       /* Firefox */
-    -ms-overflow-style: none;
-
-}
-.text_container_inbox{
-
-     background-color: rgb(230, 231, 233);
-    height: 77%;
-    width: 80%;
-    left: 50%;
-    position: absolute;
-    overflow-y: scroll;
-    
-    transform: translateX(-50%);
-    bottom:1%;
-    border: 1.5px rgb(170, 170, 170) solid;
-    border-radius: 3px;
-}
-
-.bubble_link_inbox:hover{
-    color: rgb(19, 19, 19);
-}
-.bubble_link_inbox{
-      display: block;
-   height: 100%;
-   padding-left:15px;
-   padding-right: 15px;
-   overflow: hidden;
-  
-}
-.bubblex_radius_inbox{
-    border: 1.7px solid rgb(136, 136, 136);
-    width: 5%;
-    border-radius: 10px;
-    height: 4vh;
-    display: flex;
-    position: fixed;
-    justify-content: center;
-    align-items: center;
-  
-    background-color: rgb(235, 235, 235);
-    
-    right: -10%;
-}
-.bubblex_radius_inbox:hover{
-    background-color: rgb(254, 222, 222);
-}
-
-.delete_bubblex_inbox{
-  font-weight: bold;
-  color: rgb(221, 162, 162);
-  font-family:'Courier New', Courier, monospace
-  
-}
-
-.delete_bubblex_inbox:visited{
-     color: rgb(221, 162, 162);
-}
-
-.msg_content_inbox{
-    display: flex;
-    text-align: left;
-  /* border: 2px solid green;*/
-   display: block;
-   height: 100%;
-   align-content: center;
-
-}
-.text_div_bubble_inbox{
- width: 70%;
- height:100% ;
- justify-content: center;
- 
-}
-.msg_button_inbox:hover{
-    background-color: rgb(220, 230, 236);
-   
-}

@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Messages, UserProfile, Task, Team, CompletedTasks
+from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from itertools import chain
@@ -133,5 +133,8 @@ class DenyCompletedTask(ModelForm):
 
 
 
-   
+class ChatForm(ModelForm):
+     class Meta:
+          model = ChatMessages
+          fields = ['message']
 

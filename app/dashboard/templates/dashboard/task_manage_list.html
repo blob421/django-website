@@ -1,9 +1,10 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
- <a href="javascript:history.back()"><button class="del-btn" type="button">Back</button></a>
+      <div class="send_msg_back">
+   <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
 
-
+ </div>
 <div class="manage_completed_tasks">  
     
 
