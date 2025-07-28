@@ -1,0 +1,58 @@
+
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+ 
+
+  <div class="center_container">
+    
+       {% if user.is_authenticated %}
+       <div class="title_container">  <h1 class="home_head">Welcome {{user.first_name}}</h1></div>
+       {% endif %}
+
+       <div class="btn-container-msg">
+     <div class="messages_send_msg_btn"><a href="{% url 'dashboard:messages_create' %}"><button class="send_a_msg_btn">Send a message</button></a></div>
+      <div class="messages_view_msg_btn"><a href="{% url 'dashboard:inbox' %}"><button class="view_a_msg_btn">See inbox</button></a></div>
+      </div>
+      
+      <div class="text_container">
+   
+      <h2 class="home_head">Messages</h2>
+      
+      <div class="bubble_wrapper"> 
+    <div class="bubbles_div">
+      {% if reports %}
+      {% for report in reports %}
+  
+
+      
+      <div class="msg_button">
+   
+      <a href="{% url 'dashboard:reportview' report.id %}" class="bubble_link"> 
+      <div>{{report.user}}: {{report.title}}</div> </a>
+      <div class="bubblex_radius">
+        <a href="{% url 'dashboard:report_delete' report.id %}" class="delete_bubblex">></a>
+
+      </div>
+    
+       </div>
+      
+      {% endfor %}
+      {% else %}
+      <p class="no_messages"> No messages for the moment</p>
+      {% endif %}
+       </div>
+      </div>
+      </div>
+   </div>
+ 
+      <div class="send_msg_back">
+   <a href="{% url 'dashboard:home' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
+ {% endblock %}
+
+
+
+
+

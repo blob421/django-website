@@ -1,0 +1,30 @@
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+      <div class="send_msg_back">
+   <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
+<div class="manage_completed_tasks">  
+    
+
+ <div class="task_block_container_manage">
+ <div class="task_title2"><p>Completed</p></div>
+
+{% for task in tasks %}
+{% if task.completed %}
+<a href="{% url 'dashboard:task_completed_detail' task.id %}">
+ <div class="task_blocks2">
+      <p class="task_title">{{task.name}} </p>
+     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+ </div>
+</a>
+
+{% endif %}
+{% endfor %}
+
+
+ </div>
+</div>
+ {% endblock %}
+

@@ -12,7 +12,7 @@ from django.http import HttpResponse, JsonResponse
 from .owner import OwnerUpdateView, OwnerCreateView
 from django.contrib.humanize.templatetags.humanize import naturaltime
 import datetime
-
+from django import forms
 
 # Dispatches by role after login
 
@@ -33,7 +33,7 @@ class BillboardView(LoginRequiredMixin, View):
 
 class HomeView(LoginRequiredMixin, View):
     def get(self, request):
-        template_name = 'dashboard/messages_view.html'
+        template_name = 'dashboard/messages/messages_view.html'
         user_id = self.request.user.id
         reports = Messages.objects.filter(recipient=user_id).order_by('-timestamp')[:9]
         context = {'user': self.request.user, 'reports': reports}
@@ -42,14 +42,14 @@ class HomeView(LoginRequiredMixin, View):
 
 ######## Messages #################################
 class InboxView(LoginRequiredMixin, ListView):
-    template_name = "dashboard/inbox.html"
+    template_name = "dashboard//messages/inbox.html"
     context_object_name = "messages"
 
     def get_queryset(self):
         return Messages.objects.filter(recipient = self.request.user).order_by('-timestamp')
     
 class MessageDetail(LoginRequiredMixin, DetailView):
-    template_name = 'dashboard/message_detail.html'
+    template_name = 'dashboard/messages/message_detail.html'
     context_object_name = 'report'
 
     def get_object(self):
@@ -61,7 +61,7 @@ class MessageDetail(LoginRequiredMixin, DetailView):
 # Create a message view dashboard, shows history too
 class MessageView(LoginRequiredMixin, View):
 
-    template = 'dashboard/messages.html'
+    template = 'dashboard/messages/messages.html'
     def get(self, request):
         pk = self.request.user.id
         data = Messages.objects.filter(user_id=pk)
@@ -83,17 +83,20 @@ class MessageView(LoginRequiredMixin, View):
 
 class MessageUpdate(LoginRequiredMixin, UpdateView):
     model = Messages
+    template_name = 'dashboard/messages/messages_update.html'
+
     fields = ['recipient','title', 'content']
     success_url = reverse_lazy('dashboard:reports')
 
 class MessageDelete(DeleteView, LoginRequiredMixin):
+    template_name = 'dashboard/messages/messages_confirm_delete.html'
     model = Messages
     success_url = reverse_lazy('dashboard:home')
     
 ### RECIPIENTS ##############################
 
 class AddRecipient(LoginRequiredMixin, View):
-    template = 'dashboard/add_recipient.html'
+    template = 'dashboard/messages/recipient_add.html'
     def get(self, request):
 
         form = RecipientForm(sender_id=self.request.user.id)
@@ -120,7 +123,7 @@ class AddRecipient(LoginRequiredMixin, View):
     
 
 class DeleteRecipient(LoginRequiredMixin, View):
-    template_name = 'dashboard/recipient_delete.html'
+    template_name = 'dashboard/messages/recipient_delete.html'
     
     def get(self, request):
         form = RecipientDelete(sender_id=self.request.user.id)
@@ -151,15 +154,19 @@ class Logout(LogoutView):
 
 ################### TASKS #######################
 class TaskManageCreate(OwnerCreateView):
-    template_name = 'dashboard/task_create.html'
+    template_name = 'dashboard/management/task_create.html'
     success_url = reverse_lazy('dashboard:team')
     model = Task
     fields = ['name','description','due_date','users','urgent']
-    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        return form
+
 
 class TasksList(LoginRequiredMixin, View):
 
-    template_name = 'dashboard/tasks_list.html'
+    template_name = 'dashboard/tasks/tasks_list.html'
 
     def get(self, request):   
       
@@ -176,7 +183,7 @@ class TaskForm(LoginRequiredMixin, CreateView):
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
-    template_name = 'dashboard/task_detail.html'
+    template_name = 'dashboard/tasks/task_detail.html'
     context_object_name = 'task'
     
     def get_object(self):
@@ -185,6 +192,8 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
+    template_name = 'dashboard/management/task_update.html'
+
     fields = ['name', 'description', 'urgent', 'due_date', 'users', 'completed']
     success_url = reverse_lazy('dashboard:team')
 
@@ -193,6 +202,7 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
         profile = UserProfile.objects.get(id=self.request.user.id)
         team = profile.team.name
         team_users = UserProfile.objects.filter(team__name=team)  
+        form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
         form.fields['users'].queryset = team_users
         return form
     
@@ -202,7 +212,7 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('dashboard:team')
 
 class TaskSubmit(LoginRequiredMixin, View):
-    template = 'dashboard/task_submit.html'
+    template = 'dashboard/tasks/task_submit.html'
     success_url = reverse_lazy('dashboard:tasks_list')
 
     def get(self, request, pk):
@@ -239,10 +249,10 @@ class TaskSubmit(LoginRequiredMixin, View):
        
         return redirect(self.success_url)
 
-######### Manage #################
+######### Management #################
 
 class TeamView(LoginRequiredMixin, View):
-    template_name='dashboard/team_view.html'
+    template_name='dashboard/Management/team_view.html'
     def get(self, request):
 
         profile = UserProfile.objects.get(id=self.request.user.id)
@@ -256,6 +266,7 @@ class TeamView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 class TeamUpdate(OwnerUpdateView):
+     template_name = 'dashboard/management/team_update.html'
      model = Team
      fields = ['pinned_msg']
      success_url = reverse_lazy('dashboard:team')
@@ -263,7 +274,7 @@ class TeamUpdate(OwnerUpdateView):
     
 class TeamCompletedTask(LoginRequiredMixin, ListView):
     model = Task
-    template_name = 'dashboard/task_manage_list.html'
+    template_name = 'dashboard/management/task_list.html'
     context_object_name = 'tasks'
 
     def get_queryset(self):
@@ -273,7 +284,7 @@ class TeamCompletedTask(LoginRequiredMixin, ListView):
         return team_tasks
     
 class TaskCompletedDetail(LoginRequiredMixin, View):
-    template_name = 'dashboard/task_completed_detail.html'
+    template_name = 'dashboard/management/task_detail.html'
     context_object_name = 'task'
     success_url =  'dashboard:team'
     
@@ -300,8 +311,7 @@ class TaskCompletedDetail(LoginRequiredMixin, View):
         return redirect(self.success_url)
         
 
-       
-    
+
 class TeamCompletedApprove(LoginRequiredMixin, View):
 
     def get(self, request, pk):
@@ -363,7 +373,6 @@ def ChatUpdate(request):
     for message in messages:
         text = message.message
         user = message.user.user.username
-        datetime_obj = datetime.datetime.combine(message.created_at, datetime.time.min)
         time = naturaltime(message.created_at)
         timed_message = {'user':user, 'text':text,'time': time}
         data.append(timed_message)

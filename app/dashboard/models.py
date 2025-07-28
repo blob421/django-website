@@ -30,21 +30,31 @@ class UserProfile(models.Model):
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     notes = models.TextField(blank=True)
     recipients = models.ManyToManyField(settings.AUTH_USER_MODEL,
-                                         blank = True, related_name='many_relation', default='----' )
+                                      blank = True, related_name='many_relation', default='----' )
     team = models.ForeignKey('Team', on_delete=models.CASCADE, null=True)
 
     class Meta:
 
         verbose_name_plural = "Add a user" 
 
-       
-
     def __str__(self):
         return self.user.username
     
 
 
-### FORMS ###
+class Team(models.Model):
+    team_lead =models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
+                                 related_name='team_lead', null=True)
+    pinned_msg = models.TextField(null=True , default='---')
+    name = models.CharField(max_length=40, blank=True )
+    description = models.TextField(null=True)
+    def __str__(self):
+        return self.name
+
+
+
+
+##### Objects #####
 class Messages(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender', 
@@ -64,6 +74,14 @@ class Messages(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class ChatMessages(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Task(models.Model):
@@ -106,21 +124,8 @@ class CompletedTasks(models.Model):
  
 
 
-class Team(models.Model):
-    team_lead =models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
-                                 related_name='team_lead', null=True)
-    pinned_msg = models.TextField(null=True , default='---')
-    name = models.CharField(max_length=40, blank=True )
-    description = models.TextField(null=True)
-    def __str__(self):
-        return self.name
 
 
-class ChatMessages(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    message = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
 
 

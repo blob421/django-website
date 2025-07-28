@@ -1,0 +1,378 @@
+
+/*************TEAMS********************/
+.form_update_team label{
+    padding: 1%
+}
+.border_container{
+        border: solid black 2px;
+    height: 79.3vh;
+    display: flex;
+    position: fixed;
+    bottom: 0%;
+    left:49.8%;
+    transform: translateX(-50%);
+    width: 90.1vw;
+    background-color: red;
+    border: 2px black solid;
+ 
+}
+
+.team_container1{
+
+   
+    height: 79vh;
+    display: flex;
+    position: fixed;
+    bottom: 0%;
+    left:50%;
+    transform: translateX(-50%);
+    width: 90vw;
+   
+}
+.team_tasks{
+  width: 75%;
+ /* border: blueviolet 2px solid;*/
+ 
+  overflow-y: scroll;  
+  overflow-x: scroll;
+ 
+ 
+     background-color: rgb(239, 241, 241);
+   
+}
+
+.team_management{
+   
+   width:25%;
+ /* border: rgb(55, 226, 43) 2px solid;*/
+  height: 100%;
+  background-color: rgb(141, 155, 164);
+  border: 2px rgb(36, 36, 36) solid;
+  
+ 
+}
+.team_member_rows{
+  
+   
+    height: 17%;
+    display: flex; 
+    gap: 2px;
+    margin-top: 2px;
+    
+    
+    
+}
+.team_name_container{
+    border: solid rgb(59, 59, 59) 2.5px;
+    width: 23%;
+    flex-shrink: 0;
+    position: sticky;
+  left: 0;
+  z-index: 100; 
+  background-color: rgb(196, 196, 196);
+ 
+  padding-left: 2px;
+}
+
+.tasks_units_blocks{
+   border: 2px rgb(45, 45, 45) solid;
+   width: 20%;
+   flex-shrink: 0;
+   background-color: azure;
+   padding-left: 2px;
+ 
+}
+.tasks_units_blocks_completed:hover{
+ background-color: rgb(199, 234, 199);
+}
+.tasks_units_blocks_completed{
+
+      border: 2px rgb(45, 45, 45) solid;
+   width: 20%;
+   flex-shrink: 0;
+   background-color: rgb(215, 243, 215);
+   padding-left: 2px;
+}
+.tasks_units_blocks_denied:hover{
+
+    background-color: rgb(226, 195, 147);
+}
+.tasks_units_blocks_denied{
+
+       border: 2px rgb(45, 45, 45) solid;
+   width: 20%;
+   flex-shrink: 0;
+    background-color: rgb(241, 206, 153);
+
+   padding-left: 2px;
+}
+.tasks_units_blocks:hover{
+    background-color: rgb(227, 227, 227);
+}
+.team_title{
+    position: fixed;
+    left:5%;
+    top: 0%;
+}
+
+.team_second_title{
+
+    position: fixed;
+    top: 14%;
+    left: 5%;
+}
+
+.link_management{
+  /*  border: blue 2px solid;*/
+    display: block;
+    height: 100%;
+}
+
+.button_tasks_list {
+
+    height: 7vh;
+    width: 18vw;
+    border: grey solid 2px;
+     left: 50%;
+   
+ 
+}
+.button_tasks_list:hover{
+    background-color: rgb(175, 235, 219);
+}
+
+.btn-div{
+
+   /* border: solid 2px rgb(145, 145, 145);*/
+     display: flex;
+  justify-content: center;  
+  align-items: center;   
+  margin-top: 12%;
+}
+.btn-div2{
+      display: flex;
+  justify-content: center;   
+  align-items: center;   
+ margin-top: 5%;
+  padding: 5%;
+
+
+}
+.btn-div3{
+      display: flex;
+  justify-content: center;   
+  align-items: center;   
+  margin-top: 5%;
+  padding: 5%;
+
+
+}
+.btn-div4{
+         display: flex;
+  justify-content: center;   
+  color: aquamarine;
+
+
+
+}
+/*********Management completed tasks********/
+.task_blocks2{
+     
+  
+       background-color: rgb(255, 255, 255);
+         border: 2px rgb(155, 152, 152) solid;
+}
+.task_title2{
+      position: sticky;
+  top: 0;
+  z-index: 100; 
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+  background-color: rgb(141, 155, 164);
+  
+}
+
+.manage_completed_tasks{
+    border: 2px rgb(127, 127, 127) solid;
+    width: 70%;
+    height: 90%;
+    left: 50%;
+    margin-top: 2%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    overflow: auto;
+     background-color: rgb(239, 241, 241);
+}
+
+.task_block_container_manage{
+    overflow-x: auto;
+    
+
+}
+#thumbnail2{ 
+    max-width: 100%;
+    position: fixed;
+    bottom: 2%;
+   
+}
+.left_bar_team_members_container{
+ /*  border: solid 1px black;*/
+    height: 40%;
+    width: 99%;
+    overflow: auto;
+}
+
+.general_medium_container_management{
+         border: 2px solid rgb(156, 156, 156);
+    height: 36%;
+    overflow: auto;
+    text-justify: auto;
+    white-space: pre-wrap;
+    text-align:justify top;
+    transform-origin: top;
+     background-color: rgb(245, 245, 245);
+    font-family: 'Times New Roman', Times, serif;
+}
+.second_text_container_management{
+    border: 2px solid rgb(110, 110, 110);
+    height: 41vh;
+    
+    position: relative;
+   
+    
+    text-justify: auto;
+    white-space: pre-wrap;
+    text-align:justify top;
+  
+    background-color: rgb(245, 245, 245);
+    font-family: 'Times New Roman', Times, serif;
+
+}
+.text_frames_container_management{
+   left: 50%;
+   top: 50%;
+   height: 82vh;
+       width: 40vw;
+    transform: translate(-50%,-50%);
+    position: absolute;
+   /* border: greenyellow 2px solid;*/
+}
+.title_completion_note{
+    height: 5%;
+    border: 2px rgb(66, 66, 66) solid;
+    background-color: rgb(192, 152, 116);
+    text-align: center;
+} 
+.title_task_description_management{
+     height: 5%;
+     border: 2px rgb(66, 66, 66) solid;
+     background-color: rgb(192, 152, 116);
+     text-align: center;
+}
+.general_text_management{
+    top: 3%;
+    position: fixed;
+    margin-right: 1%;            
+    overflow-wrap: break-word;    
+    overflow: hidden;   
+}
+.general_text_management2{
+    position: absolute;
+   /* border: 2px solid green;*/
+    top: 0%;
+    overflow-wrap: break-word;    
+    overflow: hidden;   
+
+}
+/*************Task Form*****************/
+.description_task_form{
+    width: 100%;
+    margin-top: 1%;
+ 
+}
+.form_frame{
+    background-color: aqua;
+    width: 80vw;
+}
+.form_margin{
+    margin-top: 1%;
+    
+}
+.form_container{
+    
+    height: 90vh;
+    width: 50vw;
+       position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+  
+    background-color: rgb(174, 196, 215);
+    padding-left: 3%;
+    padding-right: 1%;
+    padding-top:1%;
+    padding-bottom: 2%;
+    border: 2px solid black;
+   
+    
+}
+.task_form_select{
+    height: 100%;
+    width: 60%;
+  
+}
+.task_form_select select{
+    width: 100%;
+    height: 100%;
+  
+}
+
+.flex_form_container_update{
+    display: flex;
+   /* border: 2px red solid;*/
+    gap: 2%;
+    width: 100%;
+    padding: 0.5%;
+    
+}
+.flex_form_container{
+    display: flex;
+   /* border: 2px red solid;*/
+    gap: 7%;
+    width: 100%;
+    padding: 0.5%;
+    
+}
+.bot_flex_form_container{
+    margin-top: 1.2%;
+    display: flex;
+    /*border: green 2px solid;*/
+   
+   height: 20%;
+}
+.task_form_btn_container{
+/*border: 2px blue solid;*/
+
+  margin-left: 1.2%;
+  width: 35%;
+
+
+
+}
+.btn-submit-task-manage{
+  height: 45%;
+  width: 100%;
+    
+
+}
+.del-btn{
+    margin-top: 5%;
+    height: 45%;
+
+
+    
+   
+}

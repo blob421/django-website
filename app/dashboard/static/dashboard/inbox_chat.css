@@ -1,0 +1,227 @@
+
+/******************INBOX******************/
+.inbox_title{
+    text-align: center;
+}
+.home_head_inbox{
+    text-align: center;
+    padding-top: 4vh;
+    color: rgb(38, 38, 38);
+    padding-bottom: 1%;
+}
+
+.title_container_inbox{
+    top: 0%;
+    background-color: rgb(155, 139, 117);
+    position: absolute;
+    left: 50%;
+    text-align: center;
+    transform: translateX(-50%);
+    width: 100%;
+     padding-top: 4vh;
+     border: 1px grey solid;
+}
+.bubble_wrapper_inbox{
+ left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+   
+  width: 80%;
+  
+}
+
+.msg_date{
+    right: 0%;
+    position: absolute;
+    
+}
+
+.msg_button_inbox:hover{
+    border: rgb(143, 162, 217) 2px solid;
+    transition: all 0.4s ease-in-out;
+    padding: 1.5px;
+   
+}
+
+.msg_button_inbox{
+ display: flex;
+    /* Center horizontally */
+    align-items: center;          /* Center vertically */
+    
+    overflow: hidden;             /* Prevent overflow */
+    border: solid rgb(136, 136, 136) 2px;
+    width: 100%;
+    background-color: rgb(240, 239, 239);
+    border-radius: 35px;
+    height: 14vh;
+    align-items: center;
+    overflow: scroll;            /* Enables scrolling */
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;
+    margin-top: 2%;
+
+}
+.text_container_inbox{
+
+     background-color: rgb(230, 231, 233);
+    height: 77%;
+    width: 80%;
+    left: 50%;
+    position: absolute;
+    overflow-y: scroll;
+    
+    transform: translateX(-50%);
+    bottom:1%;
+    border: 1.5px rgb(170, 170, 170) solid;
+    border-radius: 3px;
+}
+
+.bubble_link_inbox:hover{
+    color: rgb(19, 19, 19);
+}
+.bubble_link_inbox{
+      display: block;
+   height: 100%;
+   padding-left:15px;
+   padding-right: 15px;
+   overflow: hidden;
+  
+}
+.bubblex_radius_inbox{
+    border: 1.7px solid rgb(136, 136, 136);
+    width: 5%;
+    border-radius: 10px;
+    height: 4vh;
+    display: flex;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+  
+    background-color: rgb(235, 235, 235);
+    
+    right: -10%;
+}
+.bubblex_radius_inbox:hover{
+    background-color: rgb(254, 222, 222);
+}
+
+.delete_bubblex_inbox{
+  font-weight: bold;
+  color: rgb(221, 162, 162);
+  font-family:'Courier New', Courier, monospace
+  
+}
+
+.delete_bubblex_inbox:visited{
+     color: rgb(221, 162, 162);
+}
+
+.msg_content_inbox{
+    display: flex;
+    text-align: left;
+  /* border: 2px solid green;*/
+   display: block;
+   height: 100%;
+   align-content: center;
+   
+
+}
+.text_div_bubble_inbox{
+ width: 70%;
+ height:100% ;
+ justify-content: center;
+ 
+ 
+}
+.msg_button_inbox:hover{
+    background-color: rgb(220, 230, 236);
+   
+}
+
+/**********CHAT**********/
+.chat_frame{
+    width: 60vw;
+    height: 90vh;
+    position: absolute;
+    left: 50%;
+    bottom: 1%;
+    transform: translateX(-50%);
+   border: 4px solid rgb(202, 202, 202);
+    border-radius: 10.5px;
+    background-color: rgb(242, 243, 245);
+}
+.chat_container{
+    height: 87%;
+       border: rgba(163, 163, 163, 0) 2px solid;
+ 
+    overflow-y:scroll;
+
+}
+.chat_bubble_time{
+  
+   padding-left: 2%;
+     font-size: smaller;
+  
+  /* border: red solid 2px;*/
+
+}
+
+.chat_bubbles{
+   border: 1.5px rgb(202, 202, 202) solid;
+  width: 65%;
+  border-radius: 12px;
+  padding:2px;
+  background-color: aliceblue;
+ padding:1%;
+ 
+}
+.chat_user{
+    padding-left: 2%;
+    font-size: 15px;
+    width: 8%;
+    padding-right: 7%;
+
+}
+@media (max-width:1024px){
+
+.chat_user{
+    font-size: 12px;
+}
+}
+.chat_bubble_container{
+ /* border: green 2px solid;*/
+   background-color: rgb(219, 236, 248);
+   display: flex;
+   margin-top:4%;
+   align-items: center;
+   text-align: left; 
+}
+.chat_form_div{
+    position: fixed;
+ /*border: 2px blue solid;*/
+ bottom: 2%;
+height: 10%;
+ width: 60vw;
+display: flex;
+  
+}
+
+.chat_form_msg input {
+  /*border: 2px violet solid;*/
+   width: 50%;
+   height: 40%;
+   bottom: 0%;
+   left: 50%;
+   transform: translateX(-65%);
+   position: absolute;
+   border-radius: 6px;
+    
+}
+.send_button_chat{
+    right: 17%;
+    bottom: 2%;
+   border-radius: 6px;
+    position: absolute;
+    width: 13%;
+     font-size: clamp(0.7em, 2vw, 0.9em);
+}

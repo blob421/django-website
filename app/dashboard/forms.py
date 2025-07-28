@@ -110,7 +110,7 @@ class TaskCreate(ModelForm):
      class Meta:
         model = Task
         fields = ['name','description','users','urgent']
-
+        
      def __init__(self, *args, **kwargs):
           team = kwargs.pop('team', None)
           super().__init__(*args, **kwargs)
