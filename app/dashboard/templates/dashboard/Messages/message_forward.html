@@ -1,0 +1,17 @@
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+<div class="visual_frame_forward">
+  <form method="post" class="message_update">
+      {% csrf_token %}
+  {{form.recipient.label_tag}}
+ {{ form.recipient }}
+  <input type="submit" name="send" value="Forward" class="button_forward"> 
+ </form>
+
+</div>
+  <div class="send_msg_back">
+   <a href="{% url 'dashboard:inbox' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
+  {% endblock %}

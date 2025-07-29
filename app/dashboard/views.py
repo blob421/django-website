@@ -4,7 +4,8 @@ from django.views.generic import View, UpdateView, DetailView, DeleteView, ListV
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages, MessagesCopy
-from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask, ChatForm
+from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
+from .forms import ForwardMessages, ChatForm
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
@@ -91,8 +92,10 @@ class MessageView(LoginRequiredMixin, View):
             return render(request, self.template, context)
         report = form.save(commit=False)
 
+        recipient = form.cleaned_data['recipient']
         report.user_id = request.user.id
         report.save()
+        report.recipient.set(recipient.all())
 
         ##Making a copy for inbox
         id = report.id
@@ -104,10 +107,11 @@ class MessageView(LoginRequiredMixin, View):
         task = report.task
         picture = report.picture
         content_type = report.content_type
-        copy = MessagesCopy(id=id, user=user,recipient=recipient, title=title, 
+        copy = MessagesCopy(id=id, user=user, title=title, 
                             content=content,timestamp=timestamp, task=task, picture=picture,
                             content_type=content_type)
         copy.save()
+        copy.recipient.set(recipient.all())
         return redirect('dashboard:messages_create')  
     
 
@@ -146,6 +150,29 @@ class MessageDelete(DeleteView, LoginRequiredMixin):
     model = Messages
     success_url = reverse_lazy('dashboard:home')
     
+class MessageForward(LoginRequiredMixin, View):
+    template_name = 'dashboard/messages/message_forward.html'
+    def get(self, request, pk):
+        form = ForwardMessages()
+        ctx = {'form': form}
+        return render(request, self.template_name, ctx)
+    
+    def post(self, request, pk):
+        form = ForwardMessages(request.POST)
+        if not form.is_valid():
+             ctx = {'form': form}
+             return render(request, self.template_name, ctx)
+        
+        recipients = form.cleaned_data['recipient']
+        message = Messages.objects.get(id = pk)
+        forwarded_msg = Messages(user=message.user, title=message.title,
+                  content=message.content, task= message.task, forwarded=True, 
+                  forwarded_by=self.request.user.userprofile,
+                  picture=message.picture, content_type=message.content_type)
+        forwarded_msg.save()
+        forwarded_msg.recipient.set(recipients.all())
+        return redirect(reverse('dashboard:messages_create'))
+    
 ### RECIPIENTS ##############################
 
 class AddRecipient(LoginRequiredMixin, View):
@@ -159,7 +186,8 @@ class AddRecipient(LoginRequiredMixin, View):
     
     def post(self, request):
         user_profile = UserProfile.objects.get(user=self.request.user)
-        form = RecipientForm(request.POST, sender_id=self.request.user.id, instance = user_profile)
+        form = RecipientForm(request.POST, sender_id=self.request.user.id, 
+                             instance = user_profile)
         if not form.is_valid():
           
             context = {'form': form}

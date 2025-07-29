@@ -55,9 +55,90 @@ a:visited{
 .text_field textarea{
     height: 49vh;
 }
+
+.reports_div_top_section{
+    
+   /* border: 2px blue solid;*/
+    height: 7%;
+    
+    padding-top: 5%;
+    width: 100%;
+   
+    
+}
+.link_divs_send_msg{
+    margin-left: 4%;
+}
+.title_bar_send_msg input{
+    width: 100%;
+    margin-left: 1%;
+}
+.title_bar_send_msg{
+    width:35%;
+}
+.add_rec_title_div{
+    display: flex;
+   /*border: 2px red solid;*/
+}
+.reports_div select{
+ height: 82%;
+ margin-top: 3%;
+ width: 90%;
+
+   
+}
+.filefield_send_msg input{
+    width: 140%;
+    margin-top: 2%;
+}
+.bottom_send_msg{
+   width: 100%;
+    display: flex;
+}
+.send_msg_title{
+    width: 100%;
+}
+
+
+.send_msg_textarea textarea{
+  
+    width: 98%;
+    height: 80.5%;
+     margin-top: 1%;
+}
+.bottom_right_send_msg{
+  /*  border: solid brown 2px;*/
+    width:23%;
+     padding-left: 2%;
+}
+.bottom_left_send_msg{
+/*border: 2px green solid;*/
+    width: 75%;
+
+}
+.bottom_inputs_send_msg{
+    display: flex;
+   /* border: 2px orange solid;*/
+}
+.send_msg_btn_create{
+    background-color: rgb(77, 128, 238);
+    border-radius: 4px;
+    width: 25%;
+    padding: 1%;
+    border: 2px rgb(76, 76, 76) solid;
+ margin-left: 17%;
+    color: white;
+}
+.send_msg_textarea{
+    padding-top: 1%;
+    height: 80%;
+ 
+/*border: 2px solid green;*/
+    display: flex;
+}
 .reports_div{
     padding-top: 1em;
-   /* border: 2px red solid;*/
+  /* border: 2px red solid;*/
     width: 82%; 
 }
 .text_field label{
@@ -137,17 +218,8 @@ form textarea{
     margin-left: 1px;
     
  }
-.view_a_msg_btn,
-.send_a_msg_btn{
-    width:100%;
-   
-  
-}
-.messages_send_msg_btn,
-.messages_view_msg_btn{
-     width: 100%;    
-    
-}
+
+
 @media (max-width:1024px){
 .view_a_msg_btn,
 .send_a_msg_btn{
@@ -220,9 +292,13 @@ form textarea{
 
 
 .add_recipient{
+    
     font-size:smaller;
     text-decoration: none;
     color: rgb(63, 101, 236) !important;
+    position: ab;
+    position: relative;
+   
     
 }
 .btn-add-recipient{
@@ -341,9 +417,64 @@ form button{
     
 }
 /******************* View a message **********************/
+.top_send_msg_update{
+  /*  border: 2px solid red;*/
+    width:100%;
+    height: 5%;
+      padding-left: 3.5%;
+    padding-top: 5%;
+}
+.send_update_recipients{
+   /* border: orangered solid 2px;*/
+    width: 20%;
+  
+}
+.send_update_text_area{
+   /* border: 2px solid green;*/
+     width: 80%;
+     padding-left: 3%;
+}
+.send_update_recipients select{
+    height: 92%;
+}
+.send_update_text_area textarea{
 
+    width:95%;
+    height: 90%;
+    margin-left: 1%;
+}
+.send_msg_update_recipient{
+    margin-top: 1%;
+    height: 75% ;
+   
+}
+.send_msg_update_content_tag{
+    margin-left: 1%;
+}
+
+.send_msg_update_submit{
+    background-color: royalblue;
+    margin-left: 3.5%;
+    width: 15%;
+    padding: 0.5%;
+    color: white;
+    border: rgb(70, 70, 70) 2.5px solid;
+    border-radius: 4px;
+}
+
+.top_send_msg_update input{
+    width: 60%;
+
+}
+.bottom_send_msg_update{
+  /*  border: 2px blue solid;*/
+    height: 75%;
+    display: flex;
+    padding-top: 1%;
+     margin-right: 3%;
+}
 .visual_frame_update{
-    border: 2px solid black;
+    border: 2.5px solid black;
     height: 86%;
     width: 65%;
     position: absolute;
@@ -352,6 +483,34 @@ form button{
     transform: translate(-50%, -50%);
        background-color: rgb(174, 196, 215);
 
+}
+.visual_frame_forward{
+ border: 2.5px solid black;
+    height: 86%;
+    width: 30%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+       background-color: rgb(174, 196, 215);
+
+}
+.message_update{
+    height: 70%;
+    width: 90%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -57%);
+}
+.message_update select{
+    height: 100%;
+    width: 100%;
+    margin-top: 2%;
+
+}
+.button_forward{
+    margin-top: 1%;
 }
 .visual_frame{
     border: 1.5px rgba(84, 72, 55, 0.68) solid;

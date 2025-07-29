@@ -146,16 +146,39 @@
     background-color: rgb(220, 230, 236);
    
 }
+.send_a_msg_btn{
+     padding: 10px;
+     width: 100%;
+}
+.view_a_msg_btn{
+    border: 1px solid black;
+   margin-top: 10%;
+    background-color: rgb(116, 116, 130);
+    color: white;
+    border-radius: 4px;
+    padding: 10px;
+   
+   
+ 
+}
+#myForm button{
+   padding: 13px; 
+    
+}
 .btn-container-msg{
      position: relative;
+     top: 50%;
+     transform: translateY(-50%);
+   
+     
      
 }
 .tickbox{
    width: 2.5%;
    height: 3vh;
    position: fixed;
-   border: 1px solid black;
-   border-radius: 6px;
+   border: 1.8px solid rgb(98, 96, 96);
+   border-radius: 5px;
    user-select: none;
   
 
@@ -210,8 +233,8 @@
 
 .chat_bubbles{
    border: 1.5px rgb(186, 183, 183) solid;
-  width: 65%;
-  border-radius: 12px;
+  width: 60%;
+  border-radius: 19px;
   padding:2px;
   background-color: rgb(251, 253, 255);
  padding:1%;
@@ -251,7 +274,7 @@ display: flex;
 .chat_form_msg input {
   /*border: 2px violet solid;*/
    width: 50%;
-   height: 40%;
+   height: 45%;
    bottom: 0%;
    left: 50%;
    transform: translateX(-65%);
@@ -264,7 +287,7 @@ display: flex;
     bottom: 2%;
    border-radius: 6px;
     position: absolute;
-    width: 13%;
+    width: 11%;
      font-size: clamp(0.7em, 2vw, 0.9em);
 }
 

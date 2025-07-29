@@ -329,7 +329,9 @@
     height: 100%;
   
 }
-
+.task_create_title_tag{
+    display: flex;
+}
 .flex_form_container_update{
     display: flex;
    /* border: 2px red solid;*/

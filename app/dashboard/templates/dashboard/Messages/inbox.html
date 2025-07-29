@@ -13,16 +13,18 @@
        <div class="btn-container-msg">
      <div class="messages_send_msg_btn">
       <a href="{% url 'dashboard:messages_create' %}">
-        <button class="view_a_msg_btn">Send a message</button></a></div>
-      </div>
-
- <div class="btn-container-msg">
-            <form id="myForm" method="post">
+        <button class="send_a_msg_btn">Send a message</button></a></div>
+       <form id="myForm" method="post">
                {% csrf_token %}
         <!-- Hidden inputs will be added here -->
-        <button type="submit" class="view_a_msg_btn">Delete selected messages</button>
+        <button type="submit" class="view_a_msg_btn">Delete selected</button>
       </form>
- </div>
+
+      </div>
+
+
+     
+
 
 
       <div class="text_container_inbox">
@@ -43,11 +45,17 @@
     <div class="text_div_bubble_inbox">
         
       <a href="{% url 'dashboard:reportview' message.id %}" class="bubble_link_inbox"> 
+      {% if not message.forwarded %}
       <div class="msg_content_inbox"><strong>{{message.user}}: </strong>{{message.title}} </div> </a>
        </div>
+       {% else %}
+        <div class="msg_content_inbox"><strong>{{message.forwarded_by}}: </strong>
+          {{message.title}}<em> (forwarded from {{message.user}}) </em> </div> </a>
+       </div>
+       {% endif %}
       <p class="msg_date">{{message.timestamp}}</p>
       <div class="bubblex_radius_inbox">
-        <a href="{% url 'dashboard:report_delete' message.id %}" class="delete_bubblex_inbox">></a>
+        <a href="{% url 'dashboard:message_forward' message.id %}" class="delete_bubblex_inbox">></a>
 
       </div>
             <div class="tickbox" onclick="fillbox('{{message.id}}');selectBox(this)" id="{{message.id}}"></div>
@@ -87,7 +95,7 @@ function fillbox(n) {
   }
 
   else {
-   box.style.backgroundColor = 'lightgrey';
+   box.style.backgroundColor = '#B5D4F4'
    box.setAttribute('is_selected', 'true');
   }
 }

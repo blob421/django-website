@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('messages/', views.HomeView.as_view(), name='messages'),
     path('messages/create/', views.MessageView.as_view(), name = 'messages_create'),
+    path('messages/forward/<int:pk>', views.MessageForward.as_view(), name='message_forward'),
     path('report_detail/<int:id>/', views.MessageDetail.as_view(), name='reportview'),
     path('messages/inbox', views.InboxView.as_view(), name = 'inbox'),
     path('delete_report/<int:pk>', views.MessageDelete.as_view(), name = 'report_delete'),

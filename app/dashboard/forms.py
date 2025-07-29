@@ -62,8 +62,12 @@ class MessageForm(ModelForm):
 
           return instance
 
+class ForwardMessages(ModelForm):
+     class Meta:
+          model = Messages
+          fields = ['recipient']
 
-
+          
 class RecipientForm(ModelForm):
      class Meta:
           model = UserProfile

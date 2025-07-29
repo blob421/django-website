@@ -59,17 +59,17 @@ class Messages(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender', 
                                                        on_delete=models.CASCADE)
-    recipient = models.ForeignKey(UserProfile,
+    recipient = models.ManyToManyField(UserProfile,
                related_name='receiver', 
-               on_delete=models.PROTECT,
                null=True, blank=True, default='')
     
     title = models.CharField(max_length=60)
     content = models.TextField(null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
-    
-    fowarded = models.BooleanField()
+    forwarded = models.BooleanField(default=False)
+    forwarded_by = models.ForeignKey(UserProfile, null=True, on_delete=models.CASCADE)
+
     picture = models.BinaryField(null=True, blank=True, editable=True)
     content_type = models.CharField(max_length=50, null=True, blank=True)
 
@@ -81,16 +81,16 @@ class Messages(models.Model):
 class MessagesCopy(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender_copy', 
                                                     on_delete=models.CASCADE)
-    recipient = models.ForeignKey(UserProfile,
+    recipient = models.ManyToManyField(UserProfile,
             related_name='receiver_copy', 
-            on_delete=models.PROTECT,
             null=True, blank=True, default='')
     
     title = models.CharField(max_length=60)
     content = models.TextField(null=False)
     timestamp = models.DateTimeField()
     task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
-    fowarded = models.BooleanField()
+    forwarded = models.BooleanField(default=False)
+    forwarded_by = models.ForeignKey(UserProfile, null=True, on_delete=models.CASCADE)
     picture = models.BinaryField(null=True, blank=True, editable=True)
     content_type = models.CharField(max_length=50, null=True, blank=True)
 

@@ -1,16 +1,39 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-<div class="visual_frame_update"></div>
-  <form method="post" class="message_update">
+<div class="visual_frame_update">
+
+<div class="top_send_msg_update">  
+  <form method="post">
       {% csrf_token %}
-  
- <p class="forms"> {{ form.as_p }}</p>
-  <input type="submit" name="send" value="send">
+     <div class="title_container_send_msg_update">
+      {{form.title.label_tag}}
+{{form.title}}   
+               </div>   
+ </div>
+
+<div class="bottom_send_msg_update">
+ 
+ <div class="send_update_text_area"> 
+       <div class="send_msg_update_content_tag">{{form.content.label_tag}} </div> 
+       {{form.content}} </div>
+
+  <div class="send_update_recipients">  
+   {{form.recipient.label_tag}}   
+ <div class="send_msg_update_recipient"> {{ form.recipient }}</div>     </div> 
+</div>
+
+
+  <input type="submit" name="send" value="send" class="send_msg_update_submit">
  </form>
 
-  <div class="send_msg_back">
-   <a href="{% url 'dashboard:messages' %}"><button class="del_btn2" type="button">Back</button></a>
+</div>
 
+
+
+
+  <div class="send_msg_back">
+   <a href="{% url 'dashboard:messages' %}">
+    <button class="del_btn2" type="button">Back</button></a>
  </div>
   {% endblock %}
