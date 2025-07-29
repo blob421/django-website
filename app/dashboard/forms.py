@@ -125,8 +125,9 @@ class TaskCreate(ModelForm):
              self.fields['users'].queryset = team
 
 class SubmitTask(forms.Form):
-          picture = forms.FileField(required=False, label="File to upload <= 2MB")
           completion_note = forms.CharField(widget=forms.Textarea)
+          picture = forms.FileField(required=False)
+          
 
         
 

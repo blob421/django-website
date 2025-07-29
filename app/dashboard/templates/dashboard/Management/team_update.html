@@ -1,12 +1,12 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-<div class="visual_frame_update"></div>
-  <form method="post" class="message_update">
+<div class="visual_frame_update_pin_msg"></div>
+  <form method="post" class="message_update_pin_msg">
       {% csrf_token %}
   <p>{{form.pinned_msg.label_tag}}</p>
  <p class="form_update_team"> {{ form.pinned_msg }}</p>
-  <input type="submit" name="send" value="send">
+  <input type="submit" name="send" value="send" class="update_team_submit">
 
  </form>
      <div class="send_msg_back">

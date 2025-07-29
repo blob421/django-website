@@ -60,8 +60,8 @@ a:visited{
     
    /* border: 2px blue solid;*/
     height: 7%;
-    
-    padding-top: 5%;
+    margin-left: 1%;
+    padding-top: 4%;
     width: 100%;
    
     
@@ -71,17 +71,19 @@ a:visited{
 }
 .title_bar_send_msg input{
     width: 100%;
-    margin-left: 1%;
+    margin-left: 2%;
+    
 }
 .title_bar_send_msg{
     width:35%;
+    
 }
 .add_rec_title_div{
     display: flex;
    /*border: 2px red solid;*/
 }
 .reports_div select{
- height: 82%;
+ height: 80%;
  margin-top: 3%;
  width: 90%;
 
@@ -97,14 +99,17 @@ a:visited{
 }
 .send_msg_title{
     width: 100%;
+    
 }
 
 
 .send_msg_textarea textarea{
   
     width: 98%;
-    height: 80.5%;
+    height: 78%;
      margin-top: 1%;
+     margin-bottom: 2%;
+    
 }
 .bottom_right_send_msg{
   /*  border: solid brown 2px;*/
@@ -114,10 +119,12 @@ a:visited{
 .bottom_left_send_msg{
 /*border: 2px green solid;*/
     width: 75%;
+    margin-left: 1%;
 
 }
 .bottom_inputs_send_msg{
     display: flex;
+   
    /* border: 2px orange solid;*/
 }
 .send_msg_btn_create{
@@ -227,6 +234,7 @@ form textarea{
 }
 
 }
+
 .message_update{
     padding-top: 3%;
     width: 60%;
@@ -422,29 +430,32 @@ form button{
     width:100%;
     height: 5%;
       padding-left: 3.5%;
-    padding-top: 5%;
+    padding-top: 4%;
 }
 .send_update_recipients{
    /* border: orangered solid 2px;*/
     width: 20%;
+    margin-top: 1%;
   
 }
 .send_update_text_area{
    /* border: 2px solid green;*/
      width: 80%;
      padding-left: 3%;
+     padding-top: 0.5%;
+   
 }
 .send_update_recipients select{
     height: 92%;
 }
 .send_update_text_area textarea{
-
+     margin-top: 1%;
     width:95%;
     height: 90%;
     margin-left: 1%;
 }
 .send_msg_update_recipient{
-    margin-top: 1%;
+    margin-top: 2%;
     height: 75% ;
    
 }
@@ -460,6 +471,7 @@ form button{
     color: white;
     border: rgb(70, 70, 70) 2.5px solid;
     border-radius: 4px;
+    margin-top: 1%;
 }
 
 .top_send_msg_update input{
@@ -473,10 +485,35 @@ form button{
     padding-top: 1%;
      margin-right: 3%;
 }
+.visual_frame_update_pin_msg{
+ border: 2.5px solid black;
+    height: 86%;
+    width: 65%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -47%);
+       background-color: rgb(174, 196, 215);
+
+}
 .visual_frame_update{
     border: 2.5px solid black;
     height: 86%;
     width: 65%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -47%);
+       background-color: rgb(174, 196, 215);
+
+}
+.message_update_submit{
+    margin-top: 6%;
+}
+.visual_frame_update_submit{
+    border: 2.5px solid black;
+    height: 83%;
+    width: 55%;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -486,12 +523,12 @@ form button{
 }
 .visual_frame_forward{
  border: 2.5px solid black;
-    height: 86%;
-    width: 30%;
+    height: 84%;
+    width: 34%;
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -48%);
        background-color: rgb(174, 196, 215);
 
 }
@@ -514,8 +551,8 @@ form button{
 }
 .visual_frame{
     border: 1.5px rgba(84, 72, 55, 0.68) solid;
-    height: 83%;
-    width: 65%;
+    height: 80%;
+    width: 64%;
     position: absolute;
     left: 50%;
     bottom: 1%;
@@ -524,8 +561,8 @@ form button{
 }
 .visual_frame_msg_detail{
     border: 2px rgba(0, 0, 0, 0.68) solid;
-    height: 83%;
-    width: 70%;
+    height: 83.5%;
+    width: 66%;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -534,22 +571,26 @@ form button{
      
 
 }
-
+.from_who_title_msg_detail{
+    margin-left: 2%;
+    top: 3%;
+    position: fixed;
+}
 .billboard_head{
     text-align: center;
-    margin-top: 3.3%;
+    margin-top: 4%;
     font-size: 30px;
     color: #343333;
     
 }
 .general_text_container2{
     border: 2px solid rgb(156, 156, 156);
-    width: 64vw;
+    width: 60vw;
     position: absolute;
     left: 50%;
     bottom: 2.4%;
     transform: translate(-50%);
-    height: 80vh;
+    height: 74vh;
     overflow-y: scroll;
    
     text-justify: auto;
@@ -564,7 +605,7 @@ form button{
 }
 .general_text_container{
     border: 2px solid rgb(156, 156, 156);
-    width: 69vw;
+    width: 64vw;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -587,10 +628,13 @@ form button{
     position: fixed;
     margin-right: 1%;
     margin-left: 1%;
-              
+            
   overflow-wrap: break-word;    
-
+  text-align: left right;
+  
+  
   overflow: hidden;   
+  font-size: 15px;
     
 }
 .general_medium_container{
@@ -600,13 +644,12 @@ form button{
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%,-50%);
-    height: 80vh;
+    transform: translate(-50%,-47.5%);
+    height: 85.5vh;
     overflow: auto;
-    text-justify: auto;
+   
     white-space: pre-wrap;
-    text-align:justify top;
-    transform-origin: top;
+    
     background-color: rgb(230, 231, 233);
     font-family: 'Times New Roman', Times, serif;
    
@@ -938,8 +981,8 @@ form button{
 }
 
 .task_detail_right_panel{
-     border: 2px rgb(140, 140, 140) solid;
-     height: 82vh;
+     border: 2px rgb(0, 0, 0) solid;
+     height: 85vh;
     width: 17vw;
     top:50%;
     transform: translateY(-50%);
@@ -948,6 +991,7 @@ form button{
     margin: 2px;
     background-color: rgb(174, 196, 215);
     padding: 2px;
+    margin-top: 1%;
 }
 .task_detail_completed_btn2{
  width: 90%;
@@ -990,14 +1034,44 @@ form button{
   
     transform: translateX(-50%);
 }
+.task_submit_form textarea{
+    margin-top: 2%;
+    width: 99%;
+}
+.message_update input{
+     padding: 1%;
+}
+.task_submit_button{
+    background-color: royalblue;
+    width: 15%;
+    border-radius: 4px;
+    position: fixed;
+    right: 0%;
+    
+    
+    color: white;
+}
+.task_submit_picture_input{
+     width: 85%;
+    
+     overflow-x: auto;
+   
+}
+.task_submit_inputs_container{
+    display: flex;
+   /* border: 2px solid black;*/
+    margin-top: 2%;
+    width: 90%;
+}
 .task_completed_btn_container{
     margin-top: 10%;
    /* border: 2px green solid;*/
     height: 10%;
+
 }
-.data_container{
-     border: 2px rgb(140, 140, 140) solid;
-    height: 82vh;
+.task_detail_left_panel{
+     border: 2px rgb(0, 0, 0) solid;
+    height: 85vh;
     width: 17vw;
     top:50%;
     transform: translateY(-50%);
@@ -1006,6 +1080,7 @@ form button{
     margin: 2px;
     background-color: rgb(174, 196, 215);
     padding: 2px;
+    margin-top: 1%;
 
 }
 
@@ -1022,5 +1097,10 @@ form button{
     padding-top: 10px;
     margin-left: 1%;
 }
-
+.task_submit_form{
+    width: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 

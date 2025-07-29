@@ -1,13 +1,20 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-<div class="visual_frame_update"></div>
-  <form method="post" class="message_update" enctype="multipart/form-data">
+<div class="visual_frame_update_submit"></div>
+  <form method="post" class="message_update_submit" enctype="multipart/form-data">
       {% csrf_token %}
   
- <p class="forms"> {{ form.as_p }}</p>
+ <div class="task_submit_form"> 
+  <div>{{form.completion_note.label_tag}}   </div>
+  {{ form.completion_note }}
 
-  <input type="submit" name="send" value="send">
+  <div class="task_submit_inputs_container">
+ <div class="task_submit_picture_input"> {{form.picture}}</div>
+
+  <input type="submit" name="send" value="send" class="task_submit_button"></div>
      <a href="javascript:history.back()"><button class="del-btn" type="button">Back</button></a>
  </form>
+ 
+ </div>
   {% endblock %}

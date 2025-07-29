@@ -12,10 +12,8 @@ user_model = get_user_model()
 from django.http import HttpResponse, JsonResponse
 from .owner import OwnerUpdateView, OwnerCreateView
 from django.contrib.humanize.templatetags.humanize import naturaltime
-import datetime
 from django import forms
-from django.forms.models import model_to_dict
-
+from django.db.models import Q
 # Dispatches by role after login
 
 def role_dispatch(request):
@@ -120,9 +118,23 @@ class MessageView(LoginRequiredMixin, View):
 class MessageUpdate(LoginRequiredMixin, UpdateView):
     model = MessagesCopy
     template_name = 'dashboard/messages/messages_update.html'
-
+    
     fields = ['recipient','title', 'content']
     success_url = reverse_lazy('dashboard:messages_create')
+    
+    def get_form(self, form_class=None):
+               
+            form = super().get_form(form_class)
+            sender_id = self.request.user.id
+            profile = UserProfile.objects.get(user=sender_id)
+            combined_qs = UserProfile.objects.filter(
+            Q(team=profile.team) | Q(user__in=profile.recipients.all())
+            ).distinct()
+            allowed = combined_qs.exclude(id=sender_id)
+            form.fields['recipient'].queryset = allowed
+            return form
+
+
     def form_valid(self, form):
       
         response = super().form_valid(form)
@@ -139,11 +151,14 @@ class MessageUpdate(LoginRequiredMixin, UpdateView):
         picture = report.picture
         content_type = report.content_type
     
-        Updated_messsage = Messages(id=id, user=user,recipient=recipient, title=title, 
+        Updated_messsage = Messages(id=id, user=user, title=title, 
                             content=content,timestamp=timestamp, task=task, picture=picture,
                             content_type=content_type)
         Updated_messsage.save()
+        Updated_messsage.recipient.set(recipient.all())
         return response
+
+
 
 class MessageDelete(DeleteView, LoginRequiredMixin):
     template_name = 'dashboard/messages/messages_confirm_delete.html'

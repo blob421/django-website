@@ -197,9 +197,9 @@
     left: 50%;
     bottom: 1%;
     transform: translateX(-50%);
-   border: 4px solid rgb(100, 100, 100);
+   border: 3px solid rgb(100, 100, 100);
     border-radius: 10.5px;
-    background-color: rgb(118, 135, 171);
+    background-color: rgb(140, 183, 217);
     padding-top: 3%;
 }
 .chat_bg{
@@ -211,7 +211,7 @@
     transform: translateX(-50%);
    
   
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(245, 244, 244);
     padding-top: 3%;
     z-index: -1;
 }
@@ -232,12 +232,13 @@
 }
 
 .chat_bubbles{
-   border: 1.5px rgb(186, 183, 183) solid;
+   border: 1.5px rgb(206, 206, 206) solid;
   width: 60%;
   border-radius: 19px;
   padding:2px;
-  background-color: rgb(251, 253, 255);
+  background-color: rgba(251, 253, 255, 0.831);
  padding:1%;
+ font-family: 'Times New Roman', Times, serif;
  
 }
 .chat_user{
@@ -255,11 +256,13 @@
 }
 .chat_bubble_container{
  /* border: green 2px solid;*/
-   background-color: rgb(219, 236, 248);
+   background-color: rgba(213, 224, 234, 0.717);
    display: flex;
    margin-top:4%;
+
    align-items: center;
    text-align: left; 
+  
 }
 .chat_form_div{
     position: fixed;

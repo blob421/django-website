@@ -1,8 +1,28 @@
 
 /*************TEAMS********************/
+
+.message_update_pin_msg{
+ margin-top: 8%;
+ margin-left: 1%;
+    width: 60%;
+    left: 50%;
+    position:relative;
+    transform: translateX(-50%);
+    height: 100%;
+
+}
+.update_team_submit{
+    background-color: rgb(0, 128, 255);
+    width: 20%;
+    padding: 1%;
+    border-radius: 4px;
+    color: white;
+    margin-top: 1%;
+}
 .form_update_team label{
     padding: 1%
 }
+
 .border_container{
         border: solid black 2px;
     height: 79.3vh;
@@ -209,7 +229,7 @@
 .task_block_container_manage{
     overflow-x: auto;
     
-
+   
 }
 #thumbnail2{ 
     max-width: 100%;
@@ -222,6 +242,7 @@
     height: 40%;
     width: 99%;
     overflow: auto;
+ 
 }
 
 .general_medium_container_management{
@@ -234,10 +255,11 @@
     transform-origin: top;
      background-color: rgb(245, 245, 245);
     font-family: 'Times New Roman', Times, serif;
+    
 }
 .second_text_container_management{
     border: 2px solid rgb(110, 110, 110);
-    height: 41vh;
+    height: 46vh;
     
     position: relative;
    
