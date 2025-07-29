@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView, CreateView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages
+from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages, MessagesCopy
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask, ChatForm
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -13,6 +13,7 @@ from .owner import OwnerUpdateView, OwnerCreateView
 from django.contrib.humanize.templatetags.humanize import naturaltime
 import datetime
 from django import forms
+from django.forms.models import model_to_dict
 
 # Dispatches by role after login
 
@@ -67,7 +68,7 @@ class MessageDetail(LoginRequiredMixin, DetailView):
     def get_object(self):
        report_id = self.kwargs['id']
     
-       return Messages.objects.get(id=report_id, recipient=self.request.user)
+       return Messages.objects.get(id=report_id, recipient=self.request.user.userprofile)
     
 
 # Create a message view dashboard, shows history too
@@ -76,7 +77,7 @@ class MessageView(LoginRequiredMixin, View):
     template = 'dashboard/messages/messages.html'
     def get(self, request):
         pk = self.request.user.id
-        data = Messages.objects.filter(user_id=pk)
+        data = MessagesCopy.objects.filter(user_id=pk)
         form = MessageForm(sender_id = self.request.user.id)
         context = {'data': data, 'form': form}
         return render(request, self.template, context)
@@ -84,21 +85,61 @@ class MessageView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
+
         if not form.is_valid():
             context = {'form': form}
             return render(request, self.template, context)
         report = form.save(commit=False)
+
         report.user_id = request.user.id
         report.save()
-        return redirect('dashboard:messages')  
+
+        ##Making a copy for inbox
+        id = report.id
+        user = report.user
+        recipient = report.recipient
+        title = report.title
+        content = report.content
+        timestamp = report.timestamp
+        task = report.task
+        picture = report.picture
+        content_type = report.content_type
+        copy = MessagesCopy(id=id, user=user,recipient=recipient, title=title, 
+                            content=content,timestamp=timestamp, task=task, picture=picture,
+                            content_type=content_type)
+        copy.save()
+        return redirect('dashboard:messages_create')  
+    
+
     
 
 class MessageUpdate(LoginRequiredMixin, UpdateView):
-    model = Messages
+    model = MessagesCopy
     template_name = 'dashboard/messages/messages_update.html'
 
     fields = ['recipient','title', 'content']
-    success_url = reverse_lazy('dashboard:reports')
+    success_url = reverse_lazy('dashboard:messages_create')
+    def form_valid(self, form):
+      
+        response = super().form_valid(form)
+
+        # Create a copy of the updated instance
+        report = self.object
+        id = report.id
+        user = report.user
+        recipient = report.recipient
+        title = report.title
+        content = report.content
+        timestamp = report.timestamp
+        task = report.task
+        picture = report.picture
+        content_type = report.content_type
+    
+        Updated_messsage = Messages(id=id, user=user,recipient=recipient, title=title, 
+                            content=content,timestamp=timestamp, task=task, picture=picture,
+                            content_type=content_type)
+        Updated_messsage.save()
+        return response
 
 class MessageDelete(DeleteView, LoginRequiredMixin):
     template_name = 'dashboard/messages/messages_confirm_delete.html'
@@ -131,7 +172,7 @@ class AddRecipient(LoginRequiredMixin, View):
         combined_receivers = previous_receivers | new_receivers
         add.save()
         add.recipients.set(combined_receivers)
-        return redirect('dashboard:messages')  
+        return redirect('dashboard:messages_create')  
     
 
 class DeleteRecipient(LoginRequiredMixin, View):
@@ -157,7 +198,7 @@ class DeleteRecipient(LoginRequiredMixin, View):
         new = previous.exclude(id__in=added.values_list('id', flat=True))
         remove.save()
         remove.recipients.set(new)
-        return redirect('dashboard:reports')
+        return redirect('dashboard:messages_create')
 
 
 class Logout(LogoutView):

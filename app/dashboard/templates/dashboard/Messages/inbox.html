@@ -7,7 +7,7 @@
   <div class="center_container">
     
        {% if user.is_authenticated %}
-       <div class="title_container_inbox">  <h1 class="home_head_inbox">Inbox</h1></div>
+       <div class="title_container_inbox">  <h1 class="home_head">Inbox</h1></div>
        {% endif %}
 
        <div class="btn-container-msg">
@@ -27,7 +27,9 @@
 
       <div class="text_container_inbox">
         
-     
+     {% if not messages %}
+     <p class="no_messages"> No messages for the moment</p>
+     {% endif %}
       
       <div class="bubble_wrapper_inbox"> 
     <div class="bubbles_div_inbox">
@@ -48,12 +50,12 @@
         <a href="{% url 'dashboard:report_delete' message.id %}" class="delete_bubblex_inbox">></a>
 
       </div>
-            <div class="tickbox" onclick="fillbox({{message.id}});selectBox(this)" id="{{message.id}}"></div>
+            <div class="tickbox" onclick="fillbox('{{message.id}}');selectBox(this)" id="{{message.id}}"></div>
        </div>
       
       {% endfor %}
-      {% else %}
-      <p class="no_messages"> No messages for the moment</p>
+   
+      
       {% endif %}
        </div>
       </div>
