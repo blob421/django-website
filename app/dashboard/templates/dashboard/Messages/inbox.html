@@ -48,7 +48,7 @@
         <a href="{% url 'dashboard:report_delete' message.id %}" class="delete_bubblex_inbox">></a>
 
       </div>
-            <div class="tickbox" onclick="fillbox({{forloop.counter}});selectBox(this)" id="box{{forloop.counter}}"></div>
+            <div class="tickbox" onclick="fillbox({{message.id}});selectBox(this)" id="{{message.id}}"></div>
        </div>
       
       {% endfor %}
@@ -75,7 +75,7 @@
 
 function fillbox(n) {
  
-  const box = document.getElementById('box'+ n);
+  const box = document.getElementById(n);
   const selected = box.getAttribute('is_selected') === 'true';
 
   if (selected){

@@ -51,16 +51,12 @@ class InboxView(LoginRequiredMixin, View):
     
     def post(self, request):
         tick_list = request.POST.getlist('selected_boxes')
-        del_list = []
-        msgs = Messages.objects.filter(recipient = self.request.user.userprofile).order_by('-timestamp')
-        for box in tick_list:
-            msg_id = box[3:]
+       
+        for id in tick_list:
 
-            msg = msgs[int(msg_id) -1]
-            del_list.append(msg)
+            msg = Messages.objects.filter(recipient = self.request.user.userprofile, id = int(id))
+            msg.delete()
 
-        for query in del_list:
-            query.delete()
         return redirect(reverse('dashboard:inbox'))
 
 
