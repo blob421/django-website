@@ -22,11 +22,13 @@
      border: 1px grey solid;
 }
 .bubble_wrapper_inbox{
- left: 50%;
+ left: 1%;
     position: absolute;
-    transform: translateX(-50%);
-   
-  width: 80%;
+  
+  /*border: 2px solid black;*/
+  width: 90%;
+  margin-top: 5%;
+  
   
 }
 
@@ -50,15 +52,18 @@
     
     overflow: hidden;             /* Prevent overflow */
     border: solid rgb(136, 136, 136) 2px;
-    width: 100%;
+    width: 90%;
+    position: relative;
+   
     background-color: rgb(240, 239, 239);
     border-radius: 35px;
     height: 14vh;
-    align-items: center;
+   
     overflow: scroll;            /* Enables scrolling */
     scrollbar-width: none;       /* Firefox */
     -ms-overflow-style: none;
     margin-top: 2%;
+    margin-left: 8%;
 
 }
 .text_container_inbox{
@@ -99,7 +104,7 @@
   
     background-color: rgb(235, 235, 235);
     
-    right: -10%;
+    right: 2%;
 }
 .bubblex_radius_inbox:hover{
     background-color: rgb(254, 222, 222);
@@ -130,6 +135,7 @@
  width: 70%;
  height:100% ;
  justify-content: center;
+
  
  
 }
@@ -137,7 +143,26 @@
     background-color: rgb(220, 230, 236);
    
 }
+.btn-container-msg{
+     position: relative;
+     
+}
+.tickbox{
+   width: 2.5%;
+   height: 3vh;
+   position: fixed;
+   border: 1px solid black;
+   border-radius: 6px;
+   user-select: none;
+  
 
+ align-items: center;
+ display: flex;
+ left: 3%;
+  
+
+
+}
 /**********CHAT**********/
 .chat_frame{
     width: 60vw;
@@ -225,3 +250,4 @@ display: flex;
     width: 13%;
      font-size: clamp(0.7em, 2vw, 0.9em);
 }
+

@@ -14,8 +14,16 @@
      <div class="messages_send_msg_btn">
       <a href="{% url 'dashboard:messages_create' %}">
         <button class="view_a_msg_btn">Send a message</button></a></div>
-    
       </div>
+
+ <div class="btn-container-msg">
+            <form id="myForm" method="post">
+               {% csrf_token %}
+        <!-- Hidden inputs will be added here -->
+        <button type="submit" class="view_a_msg_btn">Delete selected messages</button>
+      </form>
+ </div>
+
 
       <div class="text_container_inbox">
         
@@ -40,7 +48,7 @@
         <a href="{% url 'dashboard:report_delete' message.id %}" class="delete_bubblex_inbox">></a>
 
       </div>
-    
+            <div class="tickbox" onclick="fillbox({{forloop.counter}});selectBox(this)" id="box{{forloop.counter}}"></div>
        </div>
       
       {% endfor %}
@@ -62,5 +70,53 @@
 
 
 
+<script>
 
+
+function fillbox(n) {
+ 
+  const box = document.getElementById('box'+ n);
+  const selected = box.getAttribute('is_selected') === 'true';
+
+  if (selected){
+    box.style.backgroundColor='transparent';
+    box.setAttribute('is_selected', 'false');
+    
+  }
+
+  else {
+   box.style.backgroundColor = 'lightgrey';
+   box.setAttribute('is_selected', 'true');
+  }
+}
+
+
+function selectBox(element) {
+  const form = document.getElementById('myForm');
+  const boxId = element.id;
+
+  // Toggle selection style
+  element.classList.toggle('selected');
+
+  // Check if already selected
+  const existingInput = document.getElementById('input_' + boxId);
+
+  if (element.classList.contains('selected')) {
+    // Add hidden input to form
+    if (!existingInput) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'selected_boxes';  // Pass as array
+      input.value = boxId;
+      input.id = 'input_' + boxId;
+      form.appendChild(input);
+    }
+  } else {
+    // Remove hidden input if deselected
+    if (existingInput) {
+      form.removeChild(existingInput);
+    }
+  }
+}
+</script>
 

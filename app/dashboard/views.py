@@ -41,13 +41,29 @@ class HomeView(LoginRequiredMixin, View):
         return response
 
 ######## Messages #################################
-class InboxView(LoginRequiredMixin, ListView):
-    template_name = "dashboard//messages/inbox.html"
-    context_object_name = "messages"
+class InboxView(LoginRequiredMixin, View):
+    template_name = "dashboard/messages/inbox.html"
 
-    def get_queryset(self):
-        return Messages.objects.filter(recipient = self.request.user).order_by('-timestamp')
+    def get(self, request):
+       msg = Messages.objects.filter(recipient = self.request.user.userprofile).order_by('-timestamp')
+       ctx = {"messages": msg}
+       return render(request, self.template_name, ctx)
     
+    def post(self, request):
+        tick_list = request.POST.getlist('selected_boxes')
+        del_list = []
+        msgs = Messages.objects.filter(recipient = self.request.user.userprofile).order_by('-timestamp')
+        for box in tick_list:
+            msg_id = box[3:]
+
+            msg = msgs[int(msg_id) -1]
+            del_list.append(msg)
+
+        for query in del_list:
+            query.delete()
+        return redirect(reverse('dashboard:inbox'))
+
+
 class MessageDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/messages/message_detail.html'
     context_object_name = 'report'
@@ -78,7 +94,7 @@ class MessageView(LoginRequiredMixin, View):
         report = form.save(commit=False)
         report.user_id = request.user.id
         report.save()
-        return redirect('dashboard:reports')  
+        return redirect('dashboard:messages')  
     
 
 class MessageUpdate(LoginRequiredMixin, UpdateView):
