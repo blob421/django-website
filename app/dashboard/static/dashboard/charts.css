@@ -1,0 +1,75 @@
+
+.create_chart_div{
+    border: 2px orange solid;
+    height: 10vh;
+    display: flex;
+}
+.charts_title{
+    border: 2px black solid;
+    font-size: x-large;
+     width: 10%;
+}
+.chart_create_new_chart{
+    border: 2px solid blue;
+    width: 75%;
+}
+.chart_create_chart_title{
+    border: 2px solid burlywood;
+}
+.charts_container{
+
+    border: 2px solid green;
+    height: 85vh;
+    width: 98vw;
+    display: flex;
+    bottom: 0%;
+    overflow: auto;
+}
+
+.chart_left_pane{
+    border: 2px solid violet;
+    width: 15%;
+}
+.chart_left_title{
+    border: 2px solid black;
+    height: 4%;
+}
+.chart_section_left{
+    border: 2px solid green;
+    margin-top: 10%;
+    height: 30%;
+}
+.left_pane_add_task{
+    border: 2px solid purple;
+    height: 15%;
+}
+.chart_left_task_row{
+
+    border: 2px solid orange;
+    
+}
+.chart_right_pane{
+    border: 2px solid purple;
+    width: 85%;
+    display: flex;
+}
+
+.right_row_description{
+
+    border: 2px solid blue;
+    width: 5%;
+}
+.right_row_description_top_row{
+    border: 2px black solid;
+    height: 4%;
+       text-align: center;
+}
+.chart_col_right_top_row{
+    border: 2px solid black;
+    height: 4%;
+    text-align: center;
+}
+.chart_col_right{
+    border: 2px solid orangered;
+    width: 5%;
+}

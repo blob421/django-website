@@ -117,9 +117,11 @@ class Task(models.Model):
 
        picture = models.BinaryField(null=True, blank=True, editable=True)
        content_type = models.CharField(max_length=50, null=True, blank=True)
-       completion_note = models.TextField(null=True)
-       submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
-       
+       completion_note = models.TextField(null=True , blank=True)
+       submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
+       section = models.ForeignKey('ChartSection', on_delete=models.CASCADE, null=True)
+       chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)
+      # chart = models.ForeignKey('Chart', on_delete=models.CASCADE)
        denied = models.BooleanField(default=False)
        deny_reason = models.TextField(null=True, blank=True)
        
@@ -143,7 +145,20 @@ class CompletedTasks(models.Model):
     picture = models.BinaryField(null=True, blank=True, editable=True)
     completion_note = models.TextField(null=True)
  
+class ChartSection(models.Model):
+    name = models.CharField(max_length=30, null=True)
+    def __str__(self):
+        return self.name
 
+class Chart(models.Model):
+    title = models.CharField(max_length=40)
+    sections = models.ManyToManyField(ChartSection)
+    tasks = models.ManyToManyField(Task, null=True, blank = True, related_name="chart_tasks")
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    teams = models.ManyToManyField(Team)
+    def __str__(self):
+        return self.title
 
 
 

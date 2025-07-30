@@ -3,7 +3,8 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView, CreateView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages, MessagesCopy
+from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages
+from .models import MessagesCopy, Chart
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages, ChatForm
 from django.utils import timezone
@@ -473,6 +474,46 @@ class ChatView(LoginRequiredMixin, View):
         return redirect(reverse('dashboard:chat_view'))
 
 
+######## PROJECTS ###############
+class ChartCreate(LoginRequiredMixin, CreateView):
+    template_name = 'dashboard/projects/chart_create.html'
+    model = Chart
+    fields = ['title', 'tasks', 'start_date', 'end_date', 'teams', 'sections']
+    success_url = reverse_lazy('dashboard:projects')
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['start_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        form.fields['end_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        return form
+
+
+class ProjectsView(LoginRequiredMixin, View):
+    template_name = 'dashboard/projects/projects_view.html'
+    def get(self,request):
+        
+        charts = Chart.objects.all()
+      
+
+        ctx = {'charts': charts}
+    
+        return render(request, self.template_name, ctx)
+    
+class ChartDetail(LoginRequiredMixin, DetailView):
+    template_name = 'dashboard/projects/projects_view.html'
+    def get(self,request, pk):
+        chart = Chart.objects.get(id = pk)
+        time_delta = chart.end_date - chart.start_date
+        number_of_weeks = time_delta.days / 7
+     
+        total_week_col = range(int(number_of_weeks))
+
+        tasks = Task.objects.filter(chart=chart)
+        charts = Chart.objects.all()
+      
+        ctx = {'charts': charts, 'chart':chart, 'tasks': tasks , 'weeks':total_week_col}
+
+        return render(request, self.template_name, ctx)
+    
 def ChatUpdate(request):
 
     data = []

@@ -1,0 +1,84 @@
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+
+{% if not charts %}
+<p> No chart yet , create one ? </p>
+{% endif %}
+
+<div class="create_chart_div">
+     <div class="charts_title">Charts</div> 
+     <div class="chart_create_new_chart"> 
+             <div class="chart_create_chart_title">Make a new chart
+                   <a href="{% url 'dashboard:chart_create' %}"><button>+</button> </a>
+
+             </div>
+             <div class="chart_create_buttons">
+                    {% for chart in charts %}
+                    <a href="{% url 'dashboard:chart_detail' chart.id %}">
+                     <button> Chart {{chart.id}}</button></a>
+                    {% endfor %}
+             </div>
+     </div>
+</div>
+
+ <div class="charts_container">
+
+     <div class="chart_left_pane"> 
+            <div class="chart_left_title">
+             Topic / Tasks
+            </div>
+            {% for section in chart.sections.all %}
+              
+           
+            <div class="chart_section_left">
+              {% for task in chart.task_set.all %}
+                   {% if task.section == section %}
+                
+                   <div class="chart_left_task_row">{{task.name}} </div>
+                   {% endif %}
+                  {% endfor %}
+
+                   <a href="{% url 'dashboard:task_manage_create' %}">
+                             
+                      <div class="left_pane_add_task"> Add +
+
+                      </div> </a>
+
+
+            </div>
+             
+
+
+       
+            
+            {% endfor %}
+
+     </div>
+     <div class="chart_right_pane">
+        
+            
+            <div class="right_row_description">
+
+                   <div class="right_row_description_top_row"> 
+                     Week
+                   </div>
+
+                   <div class="chart_section_left"> 
+
+                   </div>
+            </div>
+         
+            {% for week in weeks %}
+            <div class="chart_col_right">
+                   <div class="chart_col_right_top_row"> 
+                   {{forloop.counter}} 
+                   </div>
+
+            </div>
+            {% endfor %}
+     </div>
+ 
+ </div>
+
+  {% endblock %}

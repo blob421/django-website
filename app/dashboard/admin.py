@@ -5,9 +5,9 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
 admin.site.register(models.ChatMessages)
-
+admin.site.register(models.Chart)
 user_model = get_user_model()
-
+admin.site.register(models.ChartSection)
 admin.site.register(models.Task)
 
 admin.site.register(models.Team)
