@@ -1,7 +1,7 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-
+ {% if user.userprofile == user.userprofile.team.team_lead %}
 <form method="post" class="task_form">
 
 <div class="form_container">
@@ -9,7 +9,7 @@
 
 <div> 
    <div class="forms"> {{ form.name.label_tag }}</div>
-   <div class="form_margin">{{form.name}}</div>
+   <div class="form_margin" placeholder="text">{{form.name}}</div>
 </div>
 
 <div>  
@@ -43,5 +43,5 @@
 </div>
  
  </form>
-
+{% endif %}
   {% endblock %}

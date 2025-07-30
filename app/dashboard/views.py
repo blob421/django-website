@@ -45,7 +45,16 @@ class InboxView(LoginRequiredMixin, View):
     template_name = "dashboard/messages/inbox.html"
 
     def get(self, request):
-       msg = Messages.objects.filter(recipient = self.request.user.userprofile).order_by('-timestamp')
+       search = request.GET.get('search', None)
+       if search :
+           query = Q(recipient=self.request.user.userprofile)
+           query.add(Q(title__contains = search), Q.AND)
+           query.add(Q(user__username__contains = search), Q.OR)
+           msg = Messages.objects.filter(query)
+           
+       else:
+            msg = Messages.objects.filter(recipient = self.request.user.userprofile).order_by('-timestamp')
+         
        ctx = {"messages": msg}
        return render(request, self.template_name, ctx)
     
@@ -250,6 +259,7 @@ class Logout(LogoutView):
 
 ################### TASKS #######################
 class TaskManageCreate(OwnerCreateView):
+    
     template_name = 'dashboard/management/task_create.html'
     success_url = reverse_lazy('dashboard:team')
     model = Task
@@ -272,7 +282,8 @@ class TasksList(LoginRequiredMixin, View):
         context = {'tasks': tasks, 'time': time}
         return render(request, self.template_name, context)
 
-class TaskForm(LoginRequiredMixin, CreateView):
+class TaskForm(OwnerUpdateView):
+     
      model = Task
      fields = ['name', 'description', 'urgent', 'due_date', 'users']
      success_url = reverse_lazy('dashboard:tasks_list')
@@ -310,9 +321,12 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
 class TaskSubmit(LoginRequiredMixin, View):
     template = 'dashboard/tasks/task_submit.html'
     success_url = reverse_lazy('dashboard:tasks_list')
-
+        
     def get(self, request, pk):
-       
+        task = get_object_or_404(
+        Task,
+        Q(id=pk) & Q(users__in=[self.request.user.userprofile])
+)
         form = SubmitTask()
         context= {'form': form}
         return render(request, self.template, context)

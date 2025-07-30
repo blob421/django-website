@@ -3,6 +3,38 @@
 .inbox_title{
     text-align: center;
 }
+.search_bar_inbox input{
+  position: fixed;
+ 
+   width: 72%;
+  
+
+   
+}
+.search_bar_input{
+    height: 79%;
+}
+.form_seach_container{
+   
+      position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    top: 7%;
+    height: 7%;
+    width: 60%;
+}
+.search_inbox_btn{
+width: 25%;
+position: fixed;
+right: 0%;
+border-radius: 2px;
+background-color: rgb(116, 116, 130);
+border: 1px solid black;
+height: 100%;
+
+}
+
 .home_head_inbox{
     text-align: center;
     padding-top: 4vh;
@@ -27,7 +59,7 @@
   
   /*border: 2px solid black;*/
   width: 90%;
-  margin-top: 5%;
+  margin-top: 11.5%;
   
   
 }
@@ -146,9 +178,14 @@
     background-color: rgb(220, 230, 236);
    
 }
+.send_a_msg_btn:hover{
+    background-color: rgb(225, 225, 225);
+}
 .send_a_msg_btn{
-     padding: 10px;
+   padding-top: 10px;
+   padding-bottom: 10px;
      width: 100%;
+       border: 1px solid black;
 }
 .view_a_msg_btn{
     border: 1px solid black;
@@ -156,13 +193,18 @@
     background-color: rgb(116, 116, 130);
     color: white;
     border-radius: 4px;
-    padding: 10px;
+   padding-top: 10px;
+   padding-bottom: 10px;
+
    
    
  
 }
 #myForm button{
-   padding: 13px; 
+   padding-top: 13px; 
+   padding-bottom: 13px;
+
+
     
 }
 .btn-container-msg{
@@ -249,10 +291,14 @@
 
 }
 @media (max-width:1024px){
+.search_inbox_btn{
+    font-size: 10px;
+}
 
 .chat_user{
     font-size: 12px;
 }
+
 }
 .chat_bubble_container{
  /* border: green 2px solid;*/
