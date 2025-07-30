@@ -47,9 +47,9 @@ class InboxView(LoginRequiredMixin, View):
     def get(self, request):
        search = request.GET.get('search', None)
        if search :
-           query = Q(recipient=self.request.user.userprofile)
-           query.add(Q(title__contains = search), Q.AND)
-           query.add(Q(user__username__contains = search), Q.OR)
+           query = Q(recipient=self.request.user.userprofile) & (
+           Q(title__contains=search) | Q(user__username__contains=search)
+        )
            msg = Messages.objects.filter(query)
            
        else:
