@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.fields import ArrayField
 
 ### USERS ###
 
@@ -106,26 +107,33 @@ class ChatMessages(models.Model):
 
 
 class Task(models.Model):
-       
-       users = models.ManyToManyField(UserProfile, related_name='task_users')
-       description = models.TextField()
-       name = models.CharField(max_length=50)
-       creation_date = models.DateField(auto_now_add=True)
-       due_date = models.DateTimeField()
-       completed = models.BooleanField(default=False)
-       urgent = models.BooleanField(default=False)
+        
+        users = models.ManyToManyField(UserProfile, related_name='task_users')
+        description = models.TextField()
+        name = models.CharField(max_length=50)
+        creation_date = models.DateField(auto_now_add=True)
+        starting_date = models.DateTimeField()
+        due_date = models.DateTimeField()
+        completed = models.BooleanField(default=False)
+        urgent = models.BooleanField(default=False)
 
-       picture = models.BinaryField(null=True, blank=True, editable=True)
-       content_type = models.CharField(max_length=50, null=True, blank=True)
-       completion_note = models.TextField(null=True , blank=True)
-       submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
-       section = models.ForeignKey('ChartSection', on_delete=models.CASCADE, null=True)
-       chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)
-      # chart = models.ForeignKey('Chart', on_delete=models.CASCADE)
-       denied = models.BooleanField(default=False)
-       deny_reason = models.TextField(null=True, blank=True)
-       
-       def __str__(self):
+        picture = models.BinaryField(null=True, blank=True, editable=True)
+        content_type = models.CharField(max_length=50, null=True, blank=True)
+        completion_note = models.TextField(null=True , blank=True)
+        submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
+        section = models.ForeignKey('ChartSection', on_delete=models.CASCADE, null=True)
+        chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)
+        # chart = models.ForeignKey('Chart', on_delete=models.CASCADE)
+        denied = models.BooleanField(default=False)
+        deny_reason = models.TextField(null=True, blank=True)
+
+        @property
+        def week(self):
+            if self.starting_date and self.due_date:
+                delta = self.due_date - self.starting_date
+                return int(round(delta.days / 7, 0))
+            return 0
+        def __str__(self):
            return self.name
        
 
@@ -160,6 +168,10 @@ class Chart(models.Model):
     def __str__(self):
         return self.title
 
+class ChartData(models.Model):
+     chart = models.ForeignKey(Chart, on_delete=models.CASCADE)
+     task_id = models.IntegerField()
+     columns = ArrayField(models.IntegerField(), null=True)
 
 
 

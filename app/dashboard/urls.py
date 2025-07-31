@@ -44,6 +44,11 @@ urlpatterns = [
     path('projects', views.ProjectsView.as_view(), name='projects'),
     path('projects/chart/<int:pk>', views.ChartDetail.as_view(), name='chart_detail'),
     path('projects/chart/create', views.ChartCreate.as_view(), name = "chart_create" ),
+    path('projects/chart/load/<int:pk>', views.LoadChart, name="load_chart"),
+    path('projects/chart/create/add_section', views.AddSection.as_view(), name="add_section"),
+    path('projects/chart/<int:pk>/create/task', views.ChartTaskCreate.as_view(),
+          name='create_task_chart'),
+    #path('projects/chart/save/<int:pk>', views.SaveChart, name='chart_save'),
     ######CHAT##########
     path('chat', views.ChatView.as_view(), name='chat_view'),
     path('chat/update', views.ChatUpdate, name='chat_update'),

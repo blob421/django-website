@@ -143,3 +143,12 @@ class ChatForm(ModelForm):
           model = ChatMessages
           fields = ['message']
 
+class AddTaskChart(ModelForm):
+     class Meta:
+          model= Task
+          fields= ['name', 'description', 'users', 'starting_date', 'due_date', 'section']
+
+     def __init__(self, *args, **kwargs):
+                  super().__init__(*args, **kwargs)
+                  self.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+                  self.fields['starting_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})

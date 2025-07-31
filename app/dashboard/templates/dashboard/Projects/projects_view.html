@@ -10,8 +10,9 @@
      <div class="charts_title">Charts</div> 
      <div class="chart_create_new_chart"> 
              <div class="chart_create_chart_title">Make a new chart
-                   <a href="{% url 'dashboard:chart_create' %}"><button>+</button> </a>
-
+                   <a href="{% url 'dashboard:chart_create' %}"><button class="plus_sign_button">
+                    +</button> </a>
+                    <button onclick="SaveChart('{{chart.id}}')">Save</button>
              </div>
              <div class="chart_create_buttons">
                     {% for chart in charts %}
@@ -21,64 +22,219 @@
              </div>
      </div>
 </div>
-
+ 
  <div class="charts_container">
+
+     <div class="left_left_pane">
+
+            {% for section in chart.sections.all %}
+            <div class="chart_section_left_label_container" id="target">
+            <div class="chart_section_left_description_text">{{section.name}}  </div>
+            </div>
+            {% endfor %}
+           
+
+     </div>
+
 
      <div class="chart_left_pane"> 
             <div class="chart_left_title">
              Topic / Tasks
             </div>
             {% for section in chart.sections.all %}
-              
            
-            <div class="chart_section_left">
-              {% for task in chart.task_set.all %}
+           
+            <div class="chart_section_left" id="section_left">
+                   {% for task in chart.task_set.all %}
                    {% if task.section == section %}
-                
-                   <div class="chart_left_task_row">{{task.name}} </div>
+                      
+                   <div class="chart_left_task_row" id="left_row">{{task.name}} </div>
+    
                    {% endif %}
-                  {% endfor %}
+                    {% endfor %}
 
-                   <a href="{% url 'dashboard:task_manage_create' %}">
+                   <a href="{% url 'dashboard:create_task_chart' chart.id %}">
                              
                       <div class="left_pane_add_task"> Add +
 
                       </div> </a>
-
+                      
 
             </div>
-             
+                   {% endfor %}
 
 
-       
-            
-            {% endfor %}
 
+                    {% if chart %}
+                    {% if not chart.task_set.all %}
+                    <a href="{% url 'dashboard:create_task_chart' chart.id %}">
+                                      
+                                <div class="left_pane_add_task"> Add +
+
+                                </div> </a>
+                    {% endif %}
+                      {% endif %}
+
+           
      </div>
      <div class="chart_right_pane">
         
             
             <div class="right_row_description">
-
+               
                    <div class="right_row_description_top_row"> 
                      Week
                    </div>
 
-                   <div class="chart_section_left"> 
-
+                    {% for section in chart.sections.all %}
+                   <div class="chart_section_right" id="source">
+                           {% for task in chart.task_set.all %}
+                           {% if task.section == section %}
+                           <div class="chart_right_task_row">1
+                           </div>
+                            {% endif %}
+                           {% endfor %}  
+                             <div class="chart_right_task_row">0 </div>
                    </div>
+                    {% endfor %}
             </div>
          
             {% for week in weeks %}
+            {% with week_index=forloop.counter %}
             <div class="chart_col_right">
                    <div class="chart_col_right_top_row"> 
                    {{forloop.counter}} 
                    </div>
 
+                    {% for section in chart.sections.all %}
+                   <div class="chart_section_right"> 
+             
+                           {% for task in chart.task_set.all %}
+                           {% if task.section == section %}
+                           
+                           <div class="chart_right_task_row"
+                            id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
+                            onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
+                           </div>
+                           
+                            {% endif %}
+                           {% endfor %}  
+                             <div class="chart_right_task_row">0 </div>
+                   </div>
+                    {% endfor %}
+
+            {% endwith %}
             </div>
             {% endfor %}
      </div>
  
  </div>
+<script>
+// Left titles resizing
+const source = document.getElementById("source");
+const target = document.getElementById("target");
+const source2 = document.getElementById("left_row");
+const target2 = document.getElementById("right_rows");
 
+target.style.height = source.offsetHeight + "px";
+
+
+// Filling the chart
+let chart_data = {};
+
+function Filltask(n, cn) {
+
+    const div = document.getElementById('right_rows'+ n + cn)
+
+    let weeks = parseInt(div.getAttribute("value"));
+    const currentColor = window.getComputedStyle(div).backgroundColor;
+
+    if (weeks > 0 && currentColor !== 'rgb(173, 216, 230)') {
+        div.style.backgroundColor = 'lightblue';
+        weeks--;
+        setRemainingClicks(n, weeks);
+
+        if (!chart_data[n]) {
+            chart_data[n] = []; 
+    }
+
+        chart_data[n].push(cn)
+        console.log("Remaining clicks:", weeks);
+        console.log(chart_data)
+      } else {
+        console.log("No more clicks allowed for this task.");
+      }
+    }
+
+
+function setRemainingClicks(taskId, newValue) {
+    const divs = document.querySelectorAll(`[id^="right_rows${taskId}"]`);
+
+    divs.forEach(div => {
+      div.setAttribute("value", newValue);
+      //console.log(`Updated div: ${div.id}, Remaining clicks: ${newValue}`);
+    });
+  }
+
+
+function SaveChart(n) {
+    fetch(`http://127.0.0.1:8000/dashboard/projects/chart/${n}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')  // If CSRF protection is enabled
+    },
+    body: JSON.stringify({ data: chart_data })
+  });
+}
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Check if this cookie string begins with the name we want
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+document.addEventListener('DOMContentLoaded', LoadChart());
+
+async function LoadChart() {
+  let chart_number = "{{ chart.id }}";
+
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/dashboard/projects/chart/load/${chart_number}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data_string = await response.json();
+    const data = JSON.parse(data_string)
+    //{"15": [4, 5, 6, 7], "26": [4, 5, 6, 3, 2]}
+
+    for (const [key, value] of Object.entries(data)) {
+       value.forEach(cn =>{ 
+        Filltask(key, cn);
+    });
+ 
+}
+
+  } catch (error) {
+    console.error('Error fetching chart data:', error);
+  }
+  
+     }
+    
+
+ 
+
+</script>
   {% endblock %}

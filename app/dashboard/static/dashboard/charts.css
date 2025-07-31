@@ -1,75 +1,159 @@
-
+.add_no_tasks{
+  position: relative;
+  top: 5%;
+}
 .create_chart_div{
     border: 2px orange solid;
     height: 10vh;
     display: flex;
+      background-color: rgb(192, 192, 192);
+      
+}
+.plus_sign_button{
+  background-color: rgb(178, 213, 231);
+  border: 1px solid grey;
+  font-size: medium;
+
+}
+.plus_sign_button:hover{
+  background-color: rgb(143, 179, 196);
+ 
 }
 .charts_title{
     border: 2px black solid;
     font-size: x-large;
      width: 10%;
+       background-color: rgb(156, 156, 156);
+       
+       text-align: justify;
+      }
+
+.chart_create_buttons{
+    margin-left: 0.5%;
 }
 .chart_create_new_chart{
-    border: 2px solid blue;
+   /* border: 2px solid blue;*/
     width: 75%;
 }
 .chart_create_chart_title{
     border: 2px solid burlywood;
+      background-color: rgb(156, 155, 155);
+      width: 100%;
+      padding-left: 0.6%;
 }
 .charts_container{
 
-    border: 2px solid green;
+    border: 3px solid rgb(32, 32, 32);
     height: 85vh;
     width: 98vw;
     display: flex;
     bottom: 0%;
     overflow: auto;
+    background-color: aliceblue;
 }
 
+.left_left_pane{
+    width: 3%;
+    /*border: 1px solid rgb(61, 61, 61);*/
+}
 .chart_left_pane{
-    border: 2px solid violet;
-    width: 15%;
+  /*  border: 2px solid violet;*/
+    width: 20%;
+    height: 95vh;
 }
 .chart_left_title{
     border: 2px solid black;
     height: 4%;
+      background-color: rgb(192, 192, 192);
+}
+.chart_section_left_description_text{
+     writing-mode: vertical-rl; /* or vertical-lr */
+ 
+    top: 50%;
+    left: 50%;
+    white-space: nowrap;
+    position: relative;
+    transform: translate(-50%,-50%);
+  
+    
+
 }
 .chart_section_left{
-    border: 2px solid green;
+  /*  border: 2px solid green;*/
     margin-top: 10%;
-    height: 30%;
-}
-.left_pane_add_task{
-    border: 2px solid purple;
-    height: 15%;
-}
-.chart_left_task_row{
-
-    border: 2px solid orange;
+   
     
 }
+.chart_section_right{
+  /*  border: 2px solid green;*/
+    margin-top: 50%;
+  
+    
+}
+.chart_section_left_label_container{
+  /*   border: 2px solid rgb(49, 49, 49);*/
+    margin-top: 60%;
+    
+  height: 80%;
+   
+   
+}
+.left_pane_add_task{
+    border: 2px solid rgb(52, 52, 52);
+     font-size: small;
+     background-color: rgb(209, 228, 244);
+      height: 2em;
+     padding-bottom: 0.4em;
+}
+
+
+.chart_left_task_row{
+   
+    border: 2px solid rgb(59, 59, 59);
+    height: 2em;
+    font-size: small;
+      background-color: rgb(224, 224, 224);
+      padding-bottom: 0.4em;
+     
+}
+
+.chart_right_task_row{
+    color: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(63, 63, 63);
+    height: 2.005em;
+    font-size: small;
+    padding-bottom: 0.4em;
+    
+}
+
 .chart_right_pane{
-    border: 2px solid purple;
-    width: 85%;
+  /* border: 2px solid purple;*/
+    width: 78%;
     display: flex;
+    height: 95vh;
 }
 
 .right_row_description{
-
-    border: 2px solid blue;
+  
+   /* border: 2px solid blue;*/
     width: 5%;
+   
 }
 .right_row_description_top_row{
     border: 2px black solid;
     height: 4%;
        text-align: center;
+         background-color: rgb(192, 192, 192);
 }
 .chart_col_right_top_row{
     border: 2px solid black;
     height: 4%;
     text-align: center;
+    background-color: rgb(192, 192, 192);
+    
 }
+
 .chart_col_right{
-    border: 2px solid orangered;
+  /*  border: 2px solid rgb(71, 71, 71);*/
     width: 5%;
 }

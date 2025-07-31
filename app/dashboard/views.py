@@ -4,9 +4,9 @@ from django.views.generic import View, UpdateView, DetailView, DeleteView, ListV
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages
-from .models import MessagesCopy, Chart
+from .models import MessagesCopy, Chart, ChartData, ChartSection
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
-from .forms import ForwardMessages, ChatForm
+from .forms import ForwardMessages, ChatForm, AddTaskChart
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
@@ -15,6 +15,7 @@ from .owner import OwnerUpdateView, OwnerCreateView
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django import forms
 from django.db.models import Q
+import json
 # Dispatches by role after login
 
 def role_dispatch(request):
@@ -487,12 +488,34 @@ class ChartCreate(LoginRequiredMixin, CreateView):
         return form
 
 
+class ChartTaskCreate(LoginRequiredMixin, View):
+    template_name = 'dashboard/projects/chart_task_create.html'
+    def get(self, request, pk):
+        form = AddTaskChart()
+        ctx = {'form':form}
+        return render(request, self.template_name, ctx)
+    
+    def post(self, request, pk):
+        form = AddTaskChart(request.POST)
+        if not form.is_valid():
+            ctx = {'form':form}
+            return render(request, self.template_name, ctx)
+        
+        chart = Chart.objects.get(id = pk)
+        saved_form = form.save(commit=False)
+        saved_form.chart = chart
+        saved_form.save()
+        return redirect(reverse('dashboard:chart_detail', args=[pk]))
+        
+    
+
+
 class ProjectsView(LoginRequiredMixin, View):
     template_name = 'dashboard/projects/projects_view.html'
     def get(self,request):
         
         charts = Chart.objects.all()
-      
+        
 
         ctx = {'charts': charts}
     
@@ -506,14 +529,47 @@ class ChartDetail(LoginRequiredMixin, DetailView):
         number_of_weeks = time_delta.days / 7
      
         total_week_col = range(int(number_of_weeks))
-
-        tasks = Task.objects.filter(chart=chart)
-        charts = Chart.objects.all()
+     
+       # tasks = Task.objects.filter(chart=chart)
       
-        ctx = {'charts': charts, 'chart':chart, 'tasks': tasks , 'weeks':total_week_col}
-
+        charts = Chart.objects.all()
+        ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col}
         return render(request, self.template_name, ctx)
     
+
+    def post(self,request, pk):
+
+        json_data = json.loads(request.body)
+        print(json_data['data'])
+        all_data = json_data['data']
+        chart = Chart.objects.get(id=pk)
+        
+        for key, value in all_data.items():
+            
+            chart_data = ChartData(id = key, task_id=key, columns = value, chart=chart)
+            chart_data.save()
+        return redirect(reverse('dashboard:projects'))
+    
+
+class AddSection(OwnerCreateView):
+    model = ChartSection
+    template_name = 'dashboard/projects/chartsection_form.html'
+    fields = ['name']
+    success_url = reverse_lazy('dashboard:chart_create')
+
+
+def LoadChart(request, pk):
+        if request.method == 'GET':
+            chart_data = ChartData.objects.filter(chart_id = pk)
+            data = {}
+            for row in chart_data:   
+                data[row.task_id] = row.columns
+            
+            json_data = json.dumps(data)
+            return JsonResponse(json_data, safe=False)
+
+
+
 def ChatUpdate(request):
 
     data = []
@@ -538,6 +594,7 @@ def stream_file(request, pk):
     response['Content-Length'] = len(pic.picture)
     response.write(pic.picture)
     return response
+
 
 def stream_completed_task_img(request, pk):
     pic = get_object_or_404(Task, id=pk)
