@@ -7,22 +7,54 @@
 {% endif %}
 
 <div class="create_chart_div">
-     <div class="charts_title">Charts</div> 
+     <div class="charts_title"><div class="charts_title_text">Charts </div></div> 
      <div class="chart_create_new_chart"> 
-             <div class="chart_create_chart_title">Make a new chart
+             <div class="chart_create_chart_title">New chart
                    <a href="{% url 'dashboard:chart_create' %}"><button class="plus_sign_button">
                     +</button> </a>
-                    <button onclick="SaveChart('{{chart.id}}')">Save</button>
+                    {% if chart.id %}
+                    <div class="save_modify_chart_btn_div">  
+                         <button onclick="SaveChart('{{chart.id}}')">Save</button> 
+                         <a href="{% url 'dashboard:chart_update' chart.id %}">
+                         <button class="chart_modify_button">Modify</button></div></a>
+                    {% endif %}
              </div>
              <div class="chart_create_buttons">
                     {% for chart in charts %}
+                    {% if forloop.counter < 7 %}
                     <a href="{% url 'dashboard:chart_detail' chart.id %}">
-                     <button> Chart {{chart.id}}</button></a>
+                     <button> Chart {{forloop.counter}}</button></a>
+                    {% if forloop.counter > 5 %}
+                    <div> 
+                          <div> 
+                         <button onclick="ShowDropdown()">...</button>
+                         </div>
+                         <div id="dropdown_charts"> 
+                       
+                                        
+                     {% endif %}
+                    {% endif %}
                     {% endfor %}
+                    {% for chart in charts %}
+                    {% if forloop.counter > 6 %}
+                       <a class="dropdown_links_charts" href="{% url 'dashboard:chart_detail' chart.id %}">
+                            <button class="chart_dropdown_btn">Chart {{forloop.counter}}</button></a>
+                      {% endif %}
+                    {% endfor %}
+                    </div>
+                   </div>
              </div>
      </div>
 </div>
- 
+     <div class="chart_dates"> 
+             {% for month in chart.months %}
+             <div class="one_date_container"> 
+      
+            {{month}} 
+             </div>
+             {% endfor %}
+      
+     </div>
  <div class="charts_container">
 
      <div class="left_left_pane">
@@ -98,10 +130,12 @@
                    </div>
                     {% endfor %}
             </div>
-         
+            
             {% for week in weeks %}
             {% with week_index=forloop.counter %}
+             
             <div class="chart_col_right">
+                 
                    <div class="chart_col_right_top_row"> 
                    {{forloop.counter}} 
                    </div>
@@ -110,6 +144,7 @@
                    <div class="chart_section_right"> 
              
                            {% for task in chart.task_set.all %}
+                         
                            {% if task.section == section %}
                            
                            <div class="chart_right_task_row"
@@ -133,8 +168,7 @@
 // Left titles resizing
 const source = document.getElementById("source");
 const target = document.getElementById("target");
-const source2 = document.getElementById("left_row");
-const target2 = document.getElementById("right_rows");
+
 
 target.style.height = source.offsetHeight + "px";
 
@@ -159,9 +193,22 @@ function Filltask(n, cn) {
     }
 
         chart_data[n].push(cn)
-        console.log("Remaining clicks:", weeks);
-        console.log(chart_data)
-      } else {
+       // console.log("Remaining clicks:", weeks);
+      //  console.log(chart_data)
+      }
+      
+      else if (weeks >= 0 && currentColor === 'rgb(173, 216, 230)'){
+      div.style.backgroundColor = 'transparent';
+      weeks ++;
+      setRemainingClicks(n, weeks);
+       chart_data[n] = chart_data[n].filter(item => item !== Number(cn));
+       console.log("Type of cn:", typeof cn, "Value:", cn);
+
+    }
+      
+      
+      
+      else {
         console.log("No more clicks allowed for this task.");
       }
     }
@@ -224,6 +271,7 @@ async function LoadChart() {
        value.forEach(cn =>{ 
         Filltask(key, cn);
     });
+    
  
 }
 
@@ -234,6 +282,18 @@ async function LoadChart() {
      }
     
 
+  function ShowDropdown(){
+    const element = document.getElementById('dropdown_charts');
+    if (element.style.display == 'none'){
+      element.style.display = 'flex'
+    }
+
+    else{
+           element.style.display = 'none';
+    }
+   
+
+  }
  
 
 </script>

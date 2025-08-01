@@ -7,10 +7,18 @@ nav{
     transform: translateX(-50%);
     background-color: rgb(211, 211, 211);
     z-index: 1000;
+  
+    
 }
-
+.nav_container{
+    width: 40vw;
+}
+@media (max-width: 1000px){
+ 
+}
 nav a{
     padding:5px;
+  
 }
 
 nav input{
@@ -296,6 +304,7 @@ form textarea{
     font-size: large;
     padding-left: 0.5vw;;
     padding-top: 1.5vh;
+    
 }
 
 
@@ -304,7 +313,7 @@ form textarea{
     font-size:smaller;
     text-decoration: none;
     color: rgb(63, 101, 236) !important;
-    position: ab;
+   
     position: relative;
    
     

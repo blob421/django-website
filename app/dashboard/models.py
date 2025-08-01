@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
+from dateutil.relativedelta import relativedelta
 
 ### USERS ###
 
@@ -112,7 +113,7 @@ class Task(models.Model):
         description = models.TextField()
         name = models.CharField(max_length=50)
         creation_date = models.DateField(auto_now_add=True)
-        starting_date = models.DateTimeField()
+        starting_date = models.DateTimeField(null=True, blank=True)
         due_date = models.DateTimeField()
         completed = models.BooleanField(default=False)
         urgent = models.BooleanField(default=False)
@@ -123,7 +124,7 @@ class Task(models.Model):
         submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
         section = models.ForeignKey('ChartSection', on_delete=models.CASCADE, null=True)
         chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)
-        # chart = models.ForeignKey('Chart', on_delete=models.CASCADE)
+        
         denied = models.BooleanField(default=False)
         deny_reason = models.TextField(null=True, blank=True)
 
@@ -133,6 +134,7 @@ class Task(models.Model):
                 delta = self.due_date - self.starting_date
                 return int(round(delta.days / 7, 0))
             return 0
+        
         def __str__(self):
            return self.name
        
@@ -161,10 +163,20 @@ class ChartSection(models.Model):
 class Chart(models.Model):
     title = models.CharField(max_length=40)
     sections = models.ManyToManyField(ChartSection)
-    tasks = models.ManyToManyField(Task, null=True, blank = True, related_name="chart_tasks")
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    teams = models.ManyToManyField(Team)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    teams = models.ManyToManyField(Team, null=True, blank=True)
+
+    @property
+    def months(self):
+        if self.start_date and self.end_date:
+            months_array = []
+            current = self.start_date.replace(day=1)
+            while current <= self.end_date:
+                months_array.append(current.strftime("%B"))
+                current += relativedelta(months=1)
+            return months_array
+
     def __str__(self):
         return self.title
 

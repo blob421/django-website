@@ -7,25 +7,30 @@
 <!--['name', 'description', 'urgent', 'due_date', 'users', 'completed']-->
           <form method="post" class="task_form">
 
-<div class="form_container_chart_create">
+<div class="form_container_chart_update">
       {% csrf_token %}
  
-       <div class="title_chart_create_flex"> 
+       <div class="title_chart_update_flex"> 
               <div class="forms"> {{ form.title.label_tag }}</div>
               <div>{{form.title}}</div>
        </div>
 
-        <div class="flex_container_chart_create_top">
+        <div class="flex_container_chart_update_top">
+            
               <div>{{form.start_date.label_tag}}</div>
               <div class="due_date_task_form">{{form.start_date}}</div>
 
+              <div> {{form.end_date.label_tag}}</div>
+              <div> {{form.end_date}}</div>
         </div>
 
 
         <div class="flex_container_chart_create_top2">
-    
-              <div> {{form.end_date.label_tag}}</div>
-              <div> {{form.end_date}}</div>
+              
+         
+               {{form.teams.label_tag}}
+                {{form.teams}}      
+
         </div>
 
 
@@ -41,13 +46,12 @@
                   
                          <input class="plus_sign_button_chart_create" value="+ Add sections"></input></a>
                </div>
+        
+                  
                 
                    
 
       </div>
-
-
-
 
         <div class="chart_create_select_div">
 
@@ -57,25 +61,28 @@
 
          <div>
 
-
-         <input type="submit" name="send" value="Submit" 
+                    <input type="submit" name="send" value="Submit" 
                           class="btn-submit-task-manage">
-
+         
+  
 
          </div>
               
                   
   </form>  
-
+    
 </div>
- 
 
+
+                <a href="{% url 'dashboard:chart_delete' chart.id %}">
+                    <button class="chart_update_delete_btn">Delete chart</button> </a>
+        
  <div class="send_msg_back">
    <button onclick="history.back()" class="del_btn2" type="button">Back</button></a>
 
  </div>
  
-  
+
 
 
   {% endblock %}

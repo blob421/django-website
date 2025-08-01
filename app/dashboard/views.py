@@ -479,7 +479,7 @@ class ChatView(LoginRequiredMixin, View):
 class ChartCreate(LoginRequiredMixin, CreateView):
     template_name = 'dashboard/projects/chart_create.html'
     model = Chart
-    fields = ['title', 'tasks', 'start_date', 'end_date', 'teams', 'sections']
+    fields = ['title', 'start_date', 'end_date', 'teams', 'sections']
     success_url = reverse_lazy('dashboard:projects')
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -525,15 +525,25 @@ class ChartDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/projects/projects_view.html'
     def get(self,request, pk):
         chart = Chart.objects.get(id = pk)
+        day = chart.start_date.day
+        if day <= 7:
+            grey =  1
+        elif day <= 14:
+            grey= 2
+        elif day <= 21:
+            grey= 3
+        else:
+            grey= 4
+
         time_delta = chart.end_date - chart.start_date
         number_of_weeks = time_delta.days / 7
      
-        total_week_col = range(int(number_of_weeks))
+        total_week_col = range(int(number_of_weeks) + 7)
      
        # tasks = Task.objects.filter(chart=chart)
       
         charts = Chart.objects.all()
-        ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col}
+        ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 'grey':range(grey)}
         return render(request, self.template_name, ctx)
     
 
@@ -550,6 +560,19 @@ class ChartDetail(LoginRequiredMixin, DetailView):
             chart_data.save()
         return redirect(reverse('dashboard:projects'))
     
+
+
+class ChartUpdate(LoginRequiredMixin, UpdateView):
+    model = Chart
+    template_name = 'dashboard/projects/chart_form.html'
+    fields= ['title', 'sections', 'start_date', 'end_date', 'teams']
+    success_url= reverse_lazy('dashboard:projects')
+
+class ChartDelete(LoginRequiredMixin, DeleteView):
+    template_name = 'dashboard/projects/chart_confirm_delete.html'
+    model = Chart
+    success_url= reverse_lazy('dashboard:projects')
+
 
 class AddSection(OwnerCreateView):
     model = ChartSection

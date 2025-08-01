@@ -18,8 +18,8 @@
 </head>
 
 <body>
-
-<nav>
+<div class="nav_container"> 
+<nav class="nav_top">
   
   <a href="{% url 'dashboard:home' %}">Home</a>
   <a href="{% url 'dashboard:messages' %}">Messages</a>
@@ -36,7 +36,7 @@
   </form>
 
 </nav>
-
+</div>
  {% block content %}{% endblock %}
 
 </body> 

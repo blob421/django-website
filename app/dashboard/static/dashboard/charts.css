@@ -6,7 +6,9 @@
     border: 2px orange solid;
     height: 10vh;
     display: flex;
+    width: 98.1vw;
       background-color: rgb(192, 192, 192);
+      
       
 }
 .plus_sign_button{
@@ -14,26 +16,40 @@
   border: 1px solid grey;
   font-size: medium;
 
+
 }
 .plus_sign_button:hover{
   background-color: rgb(143, 179, 196);
  
 }
+
+.charts_title_text{
+  transform: translateY(-50%);
+  top: 50%;
+ left: 16%;
+ width: 60%;
+ position: relative;
+/*border: 2px solid black;*/
+ font-size: 2.2vw;
+ 
+}
 .charts_title{
-    border: 2px black solid;
+ /*   border: 2px black solid;*/
     font-size: x-large;
      width: 10%;
        background-color: rgb(156, 156, 156);
+       border: 2px solid burlywood;
        
-       text-align: justify;
       }
 
 .chart_create_buttons{
     margin-left: 0.5%;
+    display: flex;
+    gap: 0.5%;
 }
 .chart_create_new_chart{
    /* border: 2px solid blue;*/
-    width: 75%;
+    width: 75vw;
 }
 .chart_create_chart_title{
     border: 2px solid burlywood;
@@ -41,9 +57,23 @@
       width: 100%;
       padding-left: 0.6%;
 }
+.chart_dates{
+ display: flex;
+ padding-left: 25.75vw;
+ border: 3px solid rgb(32, 32, 32);
+ border-bottom: rgba(0, 0, 0, 0);
+ background-color:aliceblue;
+}
+.one_date_container{
+  width: 14.75vw;
+  border: 1px solid rgb(105, 105, 105);
+  border-bottom: rgba(245, 245, 220, 0);
+  text-align: center;
+}
 .charts_container{
 
     border: 3px solid rgb(32, 32, 32);
+    border-top: rgba(0, 0, 0, 0);
     height: 85vh;
     width: 98vw;
     display: flex;
@@ -144,6 +174,13 @@
     height: 4%;
        text-align: center;
          background-color: rgb(192, 192, 192);
+         font-size: 1.35vw;
+ 
+         justify-content: center;
+         display: flex;
+         align-items: center;
+         
+         
 }
 .chart_col_right_top_row{
     border: 2px solid black;
@@ -156,4 +193,219 @@
 .chart_col_right{
   /*  border: 2px solid rgb(71, 71, 71);*/
     width: 5%;
+    background-color: grey;
+}
+#dropdown_charts{
+  margin-top: 5%;
+  width: 12vw;
+  display:flex;
+  flex-direction: column;
+   background-color: aliceblue;
+ 
+  display: none;
+      
+}
+.dropdown_links_charts{
+  position: relative;
+
+}
+.chart_dropdown_btn{
+  width: 100%;
+  border: 1px solid rgb(0, 0, 0);
+  padding: 3%;
+  background-color: rgb(244, 238, 238);
+}
+.chart_dropdown_btn:hover{
+  background-color:rgb(234, 234, 232) ;
+}
+/***************FORMS****************/
+.form_container_chart_create{
+  border: 3px solid rgb(33, 33, 33);
+     height: 70vh;
+    width: 30vw;
+       position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+   
+  
+    background-color: rgb(174, 196, 215);
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top:5%;
+    padding-bottom: 2%;
+    
+}
+.form_container_chart_update{
+   border: 3px solid rgb(33, 33, 33);
+     height: 85vh;
+    width: 45vw;
+       position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -49%);
+   
+  
+    background-color: rgb(174, 196, 215);
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top:2%;
+    padding-bottom: 2%;
+}
+.flex_container_chart_create_top2{
+/*  border: 2px solid red;*/
+  display: flex;
+  padding-top: 5%;
+  gap: 4.5%;
+}
+.flex_container_chart_update_top{
+  /*border: 2px solid red;*/
+  display: flex;
+  padding-top: 4%;
+  gap: 0.5%;
+
+}
+.flex_container_chart_create_top{
+/*  border: 2px solid red;*/
+  padding-top: 5%;
+  gap: 3%;
+}
+
+.bot_flex_container_chart_create{
+ display: flex;
+ /*border: 2px solid purple;*/
+  padding-top: 5%;
+  padding-bottom: 5%;
+  gap: 5%;
+
+}
+.title_chart_update_flex{
+    display: flex;
+ /* border: 2px solid orange;*/
+  
+   gap: 5%;
+   padding-bottom: 2%;
+   width: 110%;
+}
+.title_chart_create_flex{
+  display: flex;
+  /*border: 2px solid orange;*/
+  
+   gap: 5%;
+   padding-bottom: 5%;
+   width: 110%;
+}
+
+.title_chart_create_flex label{
+ position: relative;
+ bottom: -20%;
+ 
+}
+
+.plus_sign_button_chart_create{
+ width: 60%;
+ cursor: pointer;
+ 
+}
+
+.plus_sign_button_chart_create:hover{
+ background-color: rgb(158, 236, 236);
+ user-select: none;
+}
+.chart_create_select_div{
+ /* border: 2px solid black;*/
+  padding-bottom: 1%;
+  height: 30%;
+}
+.chart_create_select_div select{
+  width: 100%;
+  height: 20vh;
+}
+
+
+
+/********FORM 2********/
+.single_title_form{
+
+  position: absolute; 
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  border: 2px solid black;
+  padding: 2%;
+   background-color: rgb(174, 196, 215);
+}
+
+.button_submit_new_section_form{
+
+  width: 50%;
+  margin-top: 5%;
+  padding:2%;
+  margin-left: 1%;
+}
+
+
+/*********Form 3**********/
+.flex_form_container_chart_task{
+    display: flex;
+   /* border: 2px red solid;*/
+    gap: 2%;
+    width: 100%;
+    padding: 0.5%;
+    
+}
+
+.create_task_chart_name_div{
+  display: flex;
+  margin-top: 3%;
+}
+
+.form_container_create_task_chart{
+  height: 92vh;
+    width: 50vw;
+       position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+  
+    background-color: rgb(174, 196, 215);
+    padding-left: 3%;
+    padding-right: 1%;
+    padding-top:1%;
+    padding-bottom: 2%;
+    border: 2px solid black;
+
+}
+
+.create_task_chart_name_label{
+  margin-top: 1%;
+  margin-right: 1%;
+}
+
+.chart_modify_button{
+  position: relative;
+  right: 0%;
+}
+
+.save_modify_chart_btn_div{
+  position: absolute;
+  right: 2%;
+  top: 2.6%;
+}
+
+.chart_update_delete_btn{
+  position: fixed;
+  bottom: 6%;
+  left: 50%;
+  position:absolute;
+  transform: translateX(-50%);
+  width: 45%;
+
+
+}
+.button_chart_confirm_delete{
+  width: 100%;
+  padding: 8px;
+  border: 1px solid black;
 }
