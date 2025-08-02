@@ -190,7 +190,7 @@ target.style.height = source.offsetHeight + "px";
 let chart_data = {};
 
 function Filltask(n, cn) {
-
+    console.log(n)
     const div = document.getElementById('right_rows'+ n + cn)
 
     let weeks = parseInt(div.getAttribute("value"));
@@ -205,7 +205,7 @@ function Filltask(n, cn) {
             chart_data[n] = []; 
     }
 
-        chart_data[n].push(cn)
+        chart_data[n].push(Number(cn))
        // console.log("Remaining clicks:", weeks);
       //  console.log(chart_data)
       }

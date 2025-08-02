@@ -317,10 +317,22 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
         return form
     
     
-class TaskDelete(LoginRequiredMixin, DeleteView):
+class TaskDelete(LoginRequiredMixin, View):
     model = Task
+    template_name ='dashboard/management/task_confirm_delete.html'
     success_url = reverse_lazy('dashboard:team')
 
+    def get(self, request, pk):
+        return render(request, self.template_name)
+
+    def post(self,request, pk):
+        task = Task.objects.get(id = pk)
+        chart = ChartData.objects.get(id=pk)
+        task.delete()
+        chart.delete()
+        return redirect(reverse('dashboard:team'))
+        
+    
 class TaskSubmit(LoginRequiredMixin, View):
     template = 'dashboard/tasks/task_submit.html'
     success_url = reverse_lazy('dashboard:tasks_list')
@@ -555,6 +567,7 @@ class ChartDetail(LoginRequiredMixin, DetailView):
         for key, value in all_data.items():
             
             chart_data = ChartData(id = key, task_id=key, columns = value, chart=chart)
+            print(chart_data)
             chart_data.save()
         return redirect(reverse('dashboard:projects'))
     

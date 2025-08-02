@@ -123,7 +123,7 @@ class Task(models.Model):
         completion_note = models.TextField(null=True , blank=True)
         submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
         approved_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
-                                    related_name='aproved_by', null=True)
+                                    related_name='aproved_by', null=True, blank=True)
         section = models.ForeignKey('ChartSection', on_delete=models.CASCADE, null=True)
         chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)
         
