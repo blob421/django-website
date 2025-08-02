@@ -455,7 +455,7 @@ form button{
    
 }
 .send_update_recipients select{
-    height: 92%;
+    height: 123%;
 }
 .send_update_text_area textarea{
      margin-top: 1%;
@@ -570,19 +570,20 @@ form button{
 }
 .visual_frame_msg_detail{
     border: 2px rgba(0, 0, 0, 0.68) solid;
-    height: 83.5%;
-    width: 66%;
+    height: 82%;
+    width: 65%;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
      background-color: rgb(127, 158, 184);
+     padding-top: 5%;
      
 
 }
 .from_who_title_msg_detail{
-    margin-left: 2%;
-    top: 3%;
+    margin-left: 3.2%;
+    top: 4.6%;
     position: fixed;
 }
 .billboard_head{

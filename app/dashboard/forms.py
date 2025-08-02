@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages
+from .models import Messages, UserProfile, Task, Team, ChatMessages
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from itertools import chain

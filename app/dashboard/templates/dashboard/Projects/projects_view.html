@@ -9,7 +9,9 @@
 <div class="create_chart_div">
      <div class="charts_title"><div class="charts_title_text">Charts </div></div> 
      <div class="chart_create_new_chart"> 
+    
              <div class="chart_create_chart_title">New chart
+                {% if user.userprofile.role.name == 'dev' %}
                    <a href="{% url 'dashboard:chart_create' %}"><button class="plus_sign_button">
                     +</button> </a>
                     {% if chart.id %}
@@ -18,9 +20,11 @@
                          <a href="{% url 'dashboard:chart_update' chart.id %}">
                          <button class="chart_modify_button">Modify</button></div></a>
                     {% endif %}
+  {% endif %}
              </div>
              <div class="chart_create_buttons">
-                    {% for chart in charts %}
+                    {% for chart in charts %}     
+
                     {% if forloop.counter < 7 %}
                     <a href="{% url 'dashboard:chart_detail' chart.id %}">
                      <button> Chart {{forloop.counter}}</button></a>
@@ -33,6 +37,7 @@
                        
                                         
                      {% endif %}
+                 
                     {% endif %}
                     {% endfor %}
                     {% for chart in charts %}
@@ -40,6 +45,7 @@
                        <a class="dropdown_links_charts" href="{% url 'dashboard:chart_detail' chart.id %}">
                             <button class="chart_dropdown_btn">Chart {{forloop.counter}}</button></a>
                       {% endif %}
+                      
                     {% endfor %}
                     </div>
                    </div>
@@ -122,48 +128,55 @@
                    <div class="chart_section_right" id="source">
                            {% for task in chart.task_set.all %}
                            {% if task.section == section %}
-                           <div class="chart_right_task_row">1
+                           <div class="chart_right_task_row_grey">1
                            </div>
                             {% endif %}
                            {% endfor %}  
-                             <div class="chart_right_task_row">0 </div>
+                             <div class="chart_right_task_row_grey">0 </div>
                    </div>
                     {% endfor %}
             </div>
-            
+        
             {% for week in weeks %}
             {% with week_index=forloop.counter %}
-             
+           
             <div class="chart_col_right">
                  
                    <div class="chart_col_right_top_row"> 
                    {{forloop.counter}} 
                    </div>
-
+                    
                     {% for section in chart.sections.all %}
                    <div class="chart_section_right"> 
              
                            {% for task in chart.task_set.all %}
                          
                            {% if task.section == section %}
-                           
-                           <div class="chart_right_task_row"
+                           {% if user.userprofile.role.name == 'dev' %}
+                           <div class="chart_right_task_row  {% if week_index < grey %}chart_right_task_row_grey{% endif %}"
                             id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
                             onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
                            </div>
-                           
+                           {% else %}
+                             <div class="chart_right_task_row_basic  {% if week_index < grey %}chart_right_task_row_grey{% endif %}"
+                            id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
+                            onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
+                           </div>
+                           {% endif %}
                             {% endif %}
                            {% endfor %}  
-                             <div class="chart_right_task_row">0 </div>
+                             <div class="chart_right_task_row_grey">0 </div>
                    </div>
                     {% endfor %}
-
+                    
+            
             {% endwith %}
             </div>
             {% endfor %}
      </div>
  
  </div>
+
 <script>
 // Left titles resizing
 const source = document.getElementById("source");

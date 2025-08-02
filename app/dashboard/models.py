@@ -122,6 +122,8 @@ class Task(models.Model):
         content_type = models.CharField(max_length=50, null=True, blank=True)
         completion_note = models.TextField(null=True , blank=True)
         submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
+        approved_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
+                                    related_name='aproved_by', null=True)
         section = models.ForeignKey('ChartSection', on_delete=models.CASCADE, null=True)
         chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)
         
@@ -138,22 +140,7 @@ class Task(models.Model):
         def __str__(self):
            return self.name
        
-
-class CompletedTasks(models.Model):
-    approved_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='aproved_by', 
-                                   null=True)
-    submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null = True)
-    users = models.ManyToManyField(UserProfile, related_name='task_completed_users')
-    description = models.TextField()
-    name = models.CharField(max_length=50)
-    completed = models.BooleanField(default=True)
-    urgent = models.BooleanField(default=False)
-    due_date = models.DateTimeField()
-    creation_date = models.DateField()
-    content_type = models.CharField(max_length=50, null=True, blank=True)
-    
-    picture = models.BinaryField(null=True, blank=True, editable=True)
-    completion_note = models.TextField(null=True)
+   
  
 class ChartSection(models.Model):
     name = models.CharField(max_length=30, null=True)
@@ -165,7 +152,7 @@ class Chart(models.Model):
     sections = models.ManyToManyField(ChartSection)
     start_date = models.DateField()
     end_date = models.DateField()
-    teams = models.ManyToManyField(Team, null=True, blank=True)
+    teams = models.ManyToManyField(Team)
 
     @property
     def months(self):

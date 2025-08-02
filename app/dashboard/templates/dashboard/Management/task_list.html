@@ -13,18 +13,17 @@
 
 {% for task in tasks %}
 {% if task.completed %}
+{% if not task.approved_by %}
 <a href="{% url 'dashboard:task_completed_detail' task.id %}">
  <div class="task_blocks2">
-      <p class="task_title">{{task.name}} </p>
+      <p class="task_title">{{task.name}} 
      <p class="task_due_date">Due date: {{task.due_date}}  </p>
  </div>
 </a>
-</div>
+{% endif %}
 {% endif %}
 {% endfor %}
-
-
-
+</div>
 
  {% endblock %}
 

@@ -61,6 +61,7 @@
  <div class="task_title2_base"><p>Completed</p></div>
 
 {% for task in tasks %}
+{% if not task.approved_by %}
  {% if task.completed %}
  {% if not task.denied %}
 <a href="{% url 'dashboard:task_detail' task.id %}">
@@ -84,7 +85,7 @@
 
 {% endif %}
 {% endif %}
-
+{% endif %}
 {% endfor %}
 
 

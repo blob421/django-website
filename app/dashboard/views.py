@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView, CreateView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, CompletedTasks, ChatMessages
+from .models import Messages, UserProfile, Task, Team, ChatMessages
 from .models import MessagesCopy, Chart, ChartData, ChartSection
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages, ChatForm, AddTaskChart
@@ -29,7 +29,7 @@ def role_dispatch(request):
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
     def get(self, request):
-        user = UserProfile.objects.get(id=self.request.user.id)
+        user = UserProfile.objects.get(id=self.request.user.userprofile.id)
         context = {'users':user}
         return render(request, self.template, context)
 
@@ -278,7 +278,8 @@ class TasksList(LoginRequiredMixin, View):
 
     def get(self, request):   
       
-        tasks = Task.objects.filter(users=self.request.user.userprofile)
+        tasks = Task.objects.filter(users=self.request.user.userprofile.id)
+        print(tasks)
         time = timezone.now()
       
         context = {'tasks': tasks, 'time': time}
@@ -372,7 +373,8 @@ class TeamView(LoginRequiredMixin, View):
         team_member = UserProfile.objects.filter(team__name=team)
         team = Team.objects.get(team_lead = self.request.user.userprofile)
         team_name = team.name
-        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name).count()    
+        query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
+        team_tasks = Task.objects.filter(query).count()    
         user = self.request.user
         context = {'user':user, 'team': team_member , 'count':team_tasks}
         return render(request, self.template_name, context)
@@ -433,21 +435,9 @@ class TeamCompletedApprove(LoginRequiredMixin, View):
         if user_profile == user_profile.team.team_lead:
             task = Task.objects.get(id=pk)
             
-            completed_task = CompletedTasks(id = task.id, 
-                                            submitted_by = task.submitted_by,
-                                            description = task.description,
-                                            name = task.name,
-                                            completed = True,
-                                            urgent = task.urgent,
-                                            due_date = task.due_date,
-                                            creation_date = task.creation_date,
-                                            content_type = task.content_type,
-                                            picture = task.picture,
-                                            approved_by = user_profile,
-                                            completion_note = task.completion_note)
-            completed_task.save()
-            completed_task.users.set(task.users.all())
-            task.delete()
+            task.approved_by = self.request.user.userprofile
+                                        
+            task.save()
             return redirect(reverse('dashboard:team'))
 
 
@@ -476,15 +466,15 @@ class ChatView(LoginRequiredMixin, View):
 
 
 ######## PROJECTS ###############
-class ChartCreate(LoginRequiredMixin, CreateView):
+class ChartCreate(OwnerCreateView):
     template_name = 'dashboard/projects/chart_create.html'
     model = Chart
     fields = ['title', 'start_date', 'end_date', 'teams', 'sections']
     success_url = reverse_lazy('dashboard:projects')
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['start_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
-        form.fields['end_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        form.fields['start_date'].widget = forms.DateInput(attrs={'type': 'date'})
+        form.fields['end_date'].widget = forms.DateInput(attrs={'type': 'date'})
         return form
 
 
@@ -505,6 +495,8 @@ class ChartTaskCreate(LoginRequiredMixin, View):
         saved_form = form.save(commit=False)
         saved_form.chart = chart
         saved_form.save()
+        users = form.cleaned_data['users']
+        saved_form.users.set(users.all()) 
         return redirect(reverse('dashboard:chart_detail', args=[pk]))
         
     
@@ -514,8 +506,8 @@ class ProjectsView(LoginRequiredMixin, View):
     template_name = 'dashboard/projects/projects_view.html'
     def get(self,request):
         
-        charts = Chart.objects.all()
-        
+        team = self.request.user.userprofile.team
+        charts = Chart.objects.filter(teams = team ).order_by('id')
 
         ctx = {'charts': charts}
     
@@ -526,6 +518,7 @@ class ChartDetail(LoginRequiredMixin, DetailView):
     def get(self,request, pk):
         chart = Chart.objects.get(id = pk)
         day = chart.start_date.day
+        end = chart.end_date.day
         if day <= 7:
             grey =  1
         elif day <= 14:
@@ -538,12 +531,17 @@ class ChartDetail(LoginRequiredMixin, DetailView):
         time_delta = chart.end_date - chart.start_date
         number_of_weeks = time_delta.days / 7
      
-        total_week_col = range(int(number_of_weeks) + 7)
+        if end >= 30:
+             total_week_col = range(int(round(number_of_weeks + grey /4)))
+        elif end <= 10:
+             total_week_col = range(int(number_of_weeks) + grey + 1)
+        else : 
+             total_week_col = range(int(number_of_weeks) + grey)
      
        # tasks = Task.objects.filter(chart=chart)
-      
-        charts = Chart.objects.all()
-        ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 'grey':range(grey)}
+        team = self.request.user.userprofile.team
+        charts = Chart.objects.filter(teams = team ).order_by('id')
+        ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 'grey':grey}
         return render(request, self.template_name, ctx)
     
 

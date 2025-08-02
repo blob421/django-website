@@ -79,6 +79,7 @@
     display: flex;
     bottom: 0%;
     overflow: auto;
+    overflow-y: auto;
     background-color: aliceblue;
 }
 
@@ -89,12 +90,16 @@
 .chart_left_pane{
   /*  border: 2px solid violet;*/
     width: 20%;
-    height: 95vh;
+    height: 200%;
 }
 .chart_left_title{
     border: 2px solid black;
-    height: 4%;
-      background-color: rgb(192, 192, 192);
+    height: 2%;
+    background-color: rgb(192, 192, 192);
+    z-index: 100;
+    top: 0;
+    position: sticky;
+         
 }
 .chart_section_left_description_text{
      writing-mode: vertical-rl; /* or vertical-lr */
@@ -146,6 +151,18 @@
       padding-bottom: 0.4em;
      
 }
+.chart_right_task_row_grey{
+    color: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(63, 63, 63);
+    height: 2.005em;
+    font-size: small;
+    padding-bottom: 0.4em;
+    background-color: rgb(142, 142, 142);
+    pointer-events: none;
+    opacity: 95%;
+    
+
+}
 
 .chart_right_task_row{
     color: rgba(0, 0, 0, 0);
@@ -153,14 +170,25 @@
     height: 2.005em;
     font-size: small;
     padding-bottom: 0.4em;
+   
     
 }
-
+.chart_right_task_row_basic{
+    color: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(63, 63, 63);
+    height: 2.005em;
+    font-size: small;
+    padding-bottom: 0.4em;
+    pointer-events: none;
+   
+    
+}
 .chart_right_pane{
-  /* border: 2px solid purple;*/
+ /*  border: 2px solid purple;*/
     width: 78%;
     display: flex;
-    height: 95vh;
+    height: 200%;
+  
 }
 
 .right_row_description{
@@ -171,30 +199,41 @@
 }
 .right_row_description_top_row{
     border: 2px black solid;
-    height: 4%;
-       text-align: center;
-         background-color: rgb(192, 192, 192);
-         font-size: 1.35vw;
- 
-         justify-content: center;
-         display: flex;
-         align-items: center;
-         
+    height: 2%;
+    text-align: center;
+    background-color: rgb(192, 192, 192);
+    font-size: 1.35vw;
+
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    top: 0;
+    position: sticky;
+        
          
 }
 .chart_col_right_top_row{
     border: 2px solid black;
-    height: 4%;
+    height: 2%;
     text-align: center;
     background-color: rgb(192, 192, 192);
-    
+    z-index: 100;
+    top: 0;
+    position: sticky;
+         
 }
 
 .chart_col_right{
   /*  border: 2px solid rgb(71, 71, 71);*/
     width: 5%;
-    background-color: grey;
+   
+    background-color: aliceblue;
 }
+.chart_right_task_row:hover{
+  background-color: rgb(223, 254, 254);
+}
+
 #dropdown_charts{
   margin-top: 5%;
   width: 12vw;
@@ -207,6 +246,7 @@
 }
 .dropdown_links_charts{
   position: relative;
+  z-index: 1000;
 
 }
 .chart_dropdown_btn{
@@ -214,6 +254,7 @@
   border: 1px solid rgb(0, 0, 0);
   padding: 3%;
   background-color: rgb(244, 238, 238);
+  
 }
 .chart_dropdown_btn:hover{
   background-color:rgb(234, 234, 232) ;
