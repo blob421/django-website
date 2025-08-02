@@ -591,16 +591,20 @@ class AddSection(OwnerCreateView):
     fields = ['name']
     success_url = reverse_lazy('dashboard:chart_create')
 
-
+def ChartReset(request, pk):
+    chart = ChartData.objects.filter(chart_id=pk).all()
+    chart.delete()
+    return redirect(reverse('dashboard:chart_detail', args=[pk]))
+    
 def LoadChart(request, pk):
-        if request.method == 'GET':
-            chart_data = ChartData.objects.filter(chart_id = pk)
-            data = {}
-            for row in chart_data:   
-                data[row.task_id] = row.columns
-            
-            json_data = json.dumps(data)
-            return JsonResponse(json_data, safe=False)
+    if request.method == 'GET':
+        chart_data = ChartData.objects.filter(chart_id = pk)
+        data = {}
+        for row in chart_data:   
+            data[row.task_id] = row.columns
+        
+        json_data = json.dumps(data)
+        return JsonResponse(json_data, safe=False)
 
 
 

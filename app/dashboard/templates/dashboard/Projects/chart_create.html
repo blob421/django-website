@@ -17,7 +17,7 @@
 
         <div class="flex_container_chart_create_top">
               <div>{{form.start_date.label_tag}}</div>
-              <div class="due_date_task_form">{{form.start_date}}</div>
+              <div >{{form.start_date}}</div>
 
         </div>
 
@@ -28,7 +28,13 @@
               <div> {{form.end_date}}</div>
         </div>
 
-{{form.teams}}
+        <div class="chart_create_select_div">
+                        {{form.teams.label_tag}}
+                        {{form.teams}}
+       </div>
+
+
+
       <div class="bot_flex_container_chart_create">
 
   

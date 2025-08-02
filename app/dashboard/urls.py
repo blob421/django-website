@@ -50,6 +50,7 @@ urlpatterns = [
           name='create_task_chart'),
     path('projects/chart/<int:pk>/update', views.ChartUpdate.as_view(), name='chart_update'),
     path('projects/chart/<int:pk>/delete', views.ChartDelete.as_view(), name ='chart_delete'),
+    path('projects/chart/<int:pk>/reset', views.ChartReset, name='reset_chart'),
     #path('projects/chart/save/<int:pk>', views.SaveChart, name='chart_save'),
     ######CHAT##########
     path('chat', views.ChatView.as_view(), name='chat_view'),
