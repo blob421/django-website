@@ -112,6 +112,10 @@
     z-index: 100;
     top: 0;
     position: sticky;
+    padding-left: 1%;
+    display: flex;
+    align-items: center;
+  
          
 }
 .chart_section_left_description_text{
@@ -152,9 +156,21 @@
      background-color: rgb(209, 228, 244);
       height: 2em;
      padding-bottom: 0.4em;
+     padding-left:0.5%;
 }
-
-
+.del_btn_red{
+  background-color: rgb(219, 87, 87);
+  height: 45%;
+  margin-top: 3%;
+}
+.del_btn_red:hover{
+  background-color: rgb(228, 69, 69);
+  height: 45%;
+}
+.back_btn_chart_task{
+  left: 0%;
+  position: absolute;
+}
 .chart_left_task_row{
    
     border: 2px solid rgb(59, 59, 59);
@@ -162,6 +178,7 @@
     font-size: small;
       background-color: rgb(224, 224, 224);
       padding-bottom: 0.4em;
+      padding-left: 0.5%;
      
 }
 .chart_right_task_row_grey{
@@ -173,16 +190,17 @@
     background-color: rgb(142, 142, 142);
     pointer-events: none;
     opacity: 95%;
-    
+     
 
 }
 
 .chart_right_task_row{
     color: rgba(0, 0, 0, 0);
     border: 2px solid rgb(63, 63, 63);
-    height: 2.005em;
+    height: 2em;
     font-size: small;
     padding-bottom: 0.4em;
+  
    
     
 }
@@ -216,7 +234,7 @@
     text-align: center;
     background-color: rgb(192, 192, 192);
     font-size: 1.35vw;
-
+ 
     justify-content: center;
     display: flex;
     align-items: center;
@@ -327,10 +345,37 @@
 .chart_create_select_div{
   margin-top: 1%;
   margin-bottom: 1%;
+  /*border: 2px solid green;*/
+  height: 10%;
+}
+.add_section_div_chart{
+  display:flex;
+/* border: 2px solid green;*/
+  width: 100%;
+  gap: 14.5%;
+  margin-left: 1%;
+
+  
 }
 .chart_create_select_div select{
   margin-top: 2%;
  
+ 
+}
+.section_red_link{
+  color: rgb(34, 34, 34);
+  padding: 1%;
+  padding-left: 2%;
+}
+.section_red_link:hover{
+ background-color: rgb(254, 157, 157);
+}
+.sections_chart_update{
+  height: 28%;
+  border: 1px solid rgb(67, 67, 67);
+  overflow: auto;
+  background-color: rgb(255, 255, 255);
+  margin-top: 1%;
 }
 .bot_flex_container_chart_create{
  display: flex;
@@ -352,7 +397,7 @@
   display: flex;
   /*border: 2px solid orange;*/
   
-   gap: 12%;
+   gap: 12.5%;
    padding-bottom: 5%;
    
 }
@@ -409,7 +454,8 @@ width: 100%;
   width: 50%;
   margin-top: 5%;
   padding:2%;
-  margin-left: 1%;
+  margin-left: 25%;
+  
 }
 
 
@@ -468,7 +514,8 @@ width: 100%;
   left: 50%;
   position:absolute;
   transform: translateX(-50%);
-  width: 30%;
+  width: 20%;
+  background-color: rgb(231, 136, 136);
 
 
 }
@@ -476,8 +523,13 @@ width: 100%;
   width: 100%;
   padding: 8px;
   border: 1px solid black;
+   background-color: rgb(231, 136, 136);
 }
 .btn-submit-chart_update{
-  width: 100%;
+  width: 59%;
   margin-bottom: 5%;
+  margin-top: 2%;
+    left: 50%;
+  position:absolute;
+  transform: translateX(-50%);
 }

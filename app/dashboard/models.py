@@ -144,12 +144,14 @@ class Task(models.Model):
  
 class ChartSection(models.Model):
     name = models.CharField(max_length=30, null=True)
+    chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)
+
     def __str__(self):
         return self.name
 
 class Chart(models.Model):
     title = models.CharField(max_length=40)
-    sections = models.ManyToManyField(ChartSection)
+    
     start_date = models.DateField()
     end_date = models.DateField()
     teams = models.ManyToManyField(Team)

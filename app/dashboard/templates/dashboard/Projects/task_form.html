@@ -1,6 +1,7 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
+
  <div> 
 <form method="post" class="task_form">
 
@@ -45,7 +46,7 @@
 
     <div class="task_form_btn_container">
         <input type="submit" name="send" value="Submit" class="btn-submit-task-manage">
-          <a><button onclick="history.back()" class="del-btn" type="bu tton">Back</button></a>
+                <a><button onclick="history.back()" class="del_btn_red" type="button">Delete</button></a>
   
 </div>
 
@@ -53,9 +54,10 @@
 </div>
  
  </form>
-</div>
+ </div>
   <div class="send_msg_back">
    <button onclick="history.back()" class="del_btn2" type="button">Back</button></a>
 
  </div>
+
   {% endblock %}

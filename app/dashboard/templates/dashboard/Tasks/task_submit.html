@@ -10,11 +10,21 @@
   {{ form.completion_note }}
 
   <div class="task_submit_inputs_container">
- <div class="task_submit_picture_input"> {{form.picture}}</div>
+ <div class="task_submit_picture_input"> {{form.picture}}
+ {% if form.errors %}
+ <div>{{form.picture.errors }}  </div>
+  {% endif %}
+
+
+ </div>
 
   <input type="submit" name="send" value="send" class="task_submit_button"></div>
-     <a href="javascript:history.back()"><button class="del-btn" type="button">Back</button></a>
+   
  </form>
  
+ </div>
+  <div class="send_msg_back">
+   <a href="{% url 'dashboard:task_detail' task.id %}"><button class="del_btn2" type="button">Back</button></a>
+
  </div>
   {% endblock %}

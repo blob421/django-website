@@ -229,6 +229,7 @@
     position: absolute;
     transform: translate(-50% ,-50%);
     background-color: #ccc;
+    overflow: auto;
 }
 
 #thumbnail2{ 

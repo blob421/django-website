@@ -102,6 +102,7 @@ a:visited{
     margin-top: 2%;
 }
 .bottom_send_msg{
+ 
    width: 100%;
     display: flex;
 }
@@ -143,6 +144,16 @@ a:visited{
     border: 2px rgb(76, 76, 76) solid;
  margin-left: 17%;
     color: white;
+}
+.send_messages_error{
+  
+    height: 5%;
+    font-size: smaller;
+    text-align: top;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 14.5%;
 }
 .send_msg_textarea{
     padding-top: 1%;
@@ -329,9 +340,9 @@ form textarea{
 }
 #thumbnail{
     position: fixed;
-    max-width: 14.5%;
-    top:10%;
-    right: 0%;
+    max-width: 16%;
+    bottom: 4%;
+    right: 0.5%;
 }
 .overlay{
     z-index: 1000;

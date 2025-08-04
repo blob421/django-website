@@ -9,14 +9,22 @@ from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, Deny
 from .forms import ForwardMessages, ChatForm, AddTaskChart
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-user_model = get_user_model()
-from django.http import HttpResponse, JsonResponse
-from .owner import OwnerUpdateView, OwnerCreateView
 from django.contrib.humanize.templatetags.humanize import naturaltime
+
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from .owner import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedView
 from django import forms
 from django.db.models import Q
 import json
-# Dispatches by role after login
+
+##### CONFIG ##################
+
+user_model = get_user_model()
+allowed_roles_forms = ['dev']
+allowed_roles_management = ['dev']
+
+
+##### BASIC ###############
 
 def role_dispatch(request):
     user_profile = request.user.userprofile
@@ -25,13 +33,20 @@ def role_dispatch(request):
     
     return redirect('dashboard:home')
 
-# Home view dashboard
+
+
+class Logout(LogoutView):
+    template_name = 'dashboard/logout.html'
+
+
+########## HOME + BILLBOARD #############
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
     def get(self, request):
         user = UserProfile.objects.get(id=self.request.user.userprofile.id)
         context = {'users':user}
         return render(request, self.template, context)
+
 
 class HomeView(LoginRequiredMixin, View):
     def get(self, request):
@@ -42,29 +57,30 @@ class HomeView(LoginRequiredMixin, View):
         response = render(request, template_name, context)
         return response
 
+
 ######## Messages #################################
+
 class InboxView(LoginRequiredMixin, View):
     template_name = "dashboard/messages/inbox.html"
-
     def get(self, request):
        search = request.GET.get('search', None)
        if search :
            query = Q(recipient=self.request.user.userprofile) & (
-           Q(title__contains=search) | Q(user__username__contains=search)
-        )
+           Q(title__contains=search) | Q(user__username__contains=search))
            msg = Messages.objects.filter(query)
            
        else:
             msg = Messages.objects.filter(recipient = self.request.user.userprofile).order_by('-timestamp')
-         
+       
        ctx = {"messages": msg}
        return render(request, self.template_name, ctx)
-    
+
+
+
     def post(self, request):
         tick_list = request.POST.getlist('selected_boxes')
-       
-        for id in tick_list:
 
+        for id in tick_list:
             msg = Messages.objects.filter(recipient = self.request.user.userprofile, id = int(id))
             msg.delete()
 
@@ -84,7 +100,7 @@ class MessageDetail(LoginRequiredMixin, DetailView):
 # Create a message view dashboard, shows history too
 class MessageView(LoginRequiredMixin, View):
 
-    template = 'dashboard/messages/messages.html'
+    template = 'dashboard/messages/messages_send.html'
     def get(self, request):
         pk = self.request.user.id
         data = MessagesCopy.objects.filter(user_id=pk)
@@ -95,9 +111,11 @@ class MessageView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
-
+ 
         if not form.is_valid():
-            context = {'form': form}
+            pk = self.request.user.id
+            data = MessagesCopy.objects.filter(user_id=pk)
+            context = {'data':data, 'form': form}
             return render(request, self.template, context)
         report = form.save(commit=False)
 
@@ -176,6 +194,8 @@ class MessageDelete(DeleteView, LoginRequiredMixin):
     model = Messages
     success_url = reverse_lazy('dashboard:home')
     
+
+
 class MessageForward(LoginRequiredMixin, View):
     template_name = 'dashboard/messages/message_forward.html'
     def get(self, request, pk):
@@ -199,6 +219,8 @@ class MessageForward(LoginRequiredMixin, View):
         forwarded_msg.recipient.set(recipients.all())
         return redirect(reverse('dashboard:messages_create'))
     
+
+
 ### RECIPIENTS ##############################
 
 class AddRecipient(LoginRequiredMixin, View):
@@ -229,6 +251,7 @@ class AddRecipient(LoginRequiredMixin, View):
         return redirect('dashboard:messages_create')  
     
 
+
 class DeleteRecipient(LoginRequiredMixin, View):
     template_name = 'dashboard/messages/recipient_delete.html'
     
@@ -255,22 +278,24 @@ class DeleteRecipient(LoginRequiredMixin, View):
         return redirect('dashboard:messages_create')
 
 
-class Logout(LogoutView):
-    template_name = 'dashboard/logout.html'
+
 
 
 ################### TASKS #######################
-class TaskManageCreate(OwnerCreateView):
+
+class TaskManageCreate(ProtectedCreate):
     
     template_name = 'dashboard/management/task_create.html'
     success_url = reverse_lazy('dashboard:team')
     model = Task
     fields = ['name','description','due_date','users','urgent']
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
         return form
-
+    
+        
 
 class TasksList(LoginRequiredMixin, View):
 
@@ -285,11 +310,14 @@ class TasksList(LoginRequiredMixin, View):
         context = {'tasks': tasks, 'time': time}
         return render(request, self.template_name, context)
 
-class TaskForm(OwnerUpdateView):
+
+
+class TaskCreate(ProtectedCreate):
      
      model = Task
      fields = ['name', 'description', 'urgent', 'due_date', 'users']
      success_url = reverse_lazy('dashboard:tasks_list')
+
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
@@ -300,7 +328,8 @@ class TaskDetail(LoginRequiredMixin, DetailView):
         report_id = self.kwargs['pk']   
         return Task.objects.filter(id = report_id, users=self.request.user.userprofile)
     
-class TaskUpdate(LoginRequiredMixin, UpdateView):
+
+class TaskUpdate(ProtectedUpdate):
     model = Task
     template_name = 'dashboard/management/task_update.html'
 
@@ -317,7 +346,7 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
         return form
     
     
-class TaskDelete(LoginRequiredMixin, View):
+class TaskDelete(ProtectedDelete):
     model = Task
     template_name ='dashboard/management/task_confirm_delete.html'
     success_url = reverse_lazy('dashboard:team')
@@ -343,7 +372,7 @@ class TaskSubmit(LoginRequiredMixin, View):
         Q(id=pk) & Q(users__in=[self.request.user.userprofile])
 )
         form = SubmitTask()
-        context= {'form': form}
+        context= {'form': form, 'task':task}
         return render(request, self.template, context)
     
 
@@ -357,9 +386,16 @@ class TaskSubmit(LoginRequiredMixin, View):
         task = Task.objects.get(id = pk)
         user_profile = self.request.user.userprofile
         note = form.cleaned_data['completion_note']
-     
         picture_file = form.cleaned_data['picture']
-         
+
+        if picture_file:
+            if len(picture_file) > 2 * 1024 *1024:
+                form.add_error('picture','Pictures must be less than 2 megabytes')
+
+        if form.errors:
+            task = get_object_or_404(Task, Q(id=pk) & Q(users__in=[self.request.user.userprofile]))
+            return render(request, self.template, {'form': form, 'task':task})
+        
         if picture_file:
             
             task.picture = picture_file.read()  
@@ -376,7 +412,7 @@ class TaskSubmit(LoginRequiredMixin, View):
 
 ######### Management #################
 
-class TeamView(LoginRequiredMixin, View):
+class TeamView(ProtectedView):
     template_name='dashboard/Management/team_view.html'
     def get(self, request):
 
@@ -391,44 +427,52 @@ class TeamView(LoginRequiredMixin, View):
         context = {'user':user, 'team': team_member , 'count':team_tasks}
         return render(request, self.template_name, context)
 
-class TeamUpdate(OwnerUpdateView):
+
+
+class TeamUpdate(ProtectedUpdate):
      template_name = 'dashboard/management/team_update.html'
      model = Team
      fields = ['pinned_msg']
      success_url = reverse_lazy('dashboard:team')
      
-    
-class TeamCompletedTask(LoginRequiredMixin, ListView):
+
+
+class TeamCompletedTask(ProtectedView):
     model = Task
     template_name = 'dashboard/management/task_list.html'
-    context_object_name = 'tasks'
+  
 
-    def get_queryset(self):
+    def get(self, request):
         team = Team.objects.get(team_lead = self.request.user.userprofile)
         team_name = team.name
-        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name)      
-        return team_tasks
-    
-class TaskCompletedDetail(LoginRequiredMixin, View):
+        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name) 
+        ctx = {'tasks':team_tasks}     
+        return render(request, self.template_name, ctx)
+
+
+
+class TaskCompletedDetail(ProtectedView):
     template_name = 'dashboard/management/task_detail.html'
     context_object_name = 'task'
     success_url =  'dashboard:team'
     
     def get(self, request, pk):
+      
         form = DenyCompletedTask()
-     
         task = Task.objects.get(id = pk)
         ctx = {'form': form, 'task': task}   
         return render(request, self.template_name, ctx)
+     
     
     def post(self, request, pk):
+
         form = DenyCompletedTask(request.POST)
 
         if not form.is_valid():
             ctx = {'form': form}
             return render(request, self.template_name, ctx)
         
-      
+    
         task = Task.objects.get(id = pk)
         task.completed = False
         task.denied = True
@@ -438,7 +482,7 @@ class TaskCompletedDetail(LoginRequiredMixin, View):
         
 
 
-class TeamCompletedApprove(LoginRequiredMixin, View):
+class TeamCompletedApprove(ProtectedView):
 
     def get(self, request, pk):
 
@@ -478,31 +522,40 @@ class ChatView(LoginRequiredMixin, View):
 
 
 ######## PROJECTS ###############
-class ChartCreate(OwnerCreateView):
+class ChartCreate(ProtectedCreate):
     template_name = 'dashboard/projects/chart_create.html'
     model = Chart
-    fields = ['title', 'start_date', 'end_date', 'teams', 'sections']
+    fields = ['title', 'start_date', 'end_date', 'teams']
     success_url = reverse_lazy('dashboard:projects')
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields['start_date'].widget = forms.DateInput(attrs={'type': 'date'})
         form.fields['end_date'].widget = forms.DateInput(attrs={'type': 'date'})
+        #form.fields['sections'] = ChartSection.objects.filter(chart = self.object)
         return form
 
 
-class ChartTaskCreate(LoginRequiredMixin, View):
+
+class ChartTaskCreate(ProtectedCreate):
     template_name = 'dashboard/projects/chart_task_create.html'
     def get(self, request, pk):
-        form = AddTaskChart()
+        chart = Chart.objects.get(id = pk)
+        form = AddTaskChart(chart=chart)
         ctx = {'form':form}
         return render(request, self.template_name, ctx)
+
+    
     
     def post(self, request, pk):
-        form = AddTaskChart(request.POST)
+        chart = Chart.objects.get(id=pk)
+        form = AddTaskChart(request.POST, chart=chart)
+
         if not form.is_valid():
+            print('notvalid')
             ctx = {'form':form}
             return render(request, self.template_name, ctx)
-        
+    
         chart = Chart.objects.get(id = pk)
         saved_form = form.save(commit=False)
         saved_form.chart = chart
@@ -512,6 +565,24 @@ class ChartTaskCreate(LoginRequiredMixin, View):
         return redirect(reverse('dashboard:chart_detail', args=[pk]))
         
     
+
+class ChartTaskUpdate(ProtectedUpdate):
+    model= Task
+    fields= ['name', 'description', 'users', 'starting_date', 'due_date', 'section']
+    template_name = 'dashboard/projects/task_form.html'
+
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        form.fields['starting_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})  
+        form.fields['section'].queryset = ChartSection.objects.filter(chart = self.object.chart) 
+        return form
+    
+    def get_success_url(self):
+        chart_id = self.object.chart.id
+        return reverse('dashboard:chart_detail', kwargs={'pk': chart_id})
+
 
 
 class ProjectsView(LoginRequiredMixin, View):
@@ -525,6 +596,8 @@ class ProjectsView(LoginRequiredMixin, View):
     
         return render(request, self.template_name, ctx)
     
+
+
 class ChartDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/projects/projects_view.html'
     def get(self,request, pk):
@@ -550,12 +623,14 @@ class ChartDetail(LoginRequiredMixin, DetailView):
         else : 
              total_week_col = range(int(number_of_weeks) + grey)
      
-       # tasks = Task.objects.filter(chart=chart)
+        sections = ChartSection.objects.filter(chart=chart)
         team = self.request.user.userprofile.team
         charts = Chart.objects.filter(teams = team ).order_by('id')
-        ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 'grey':grey}
+        ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 
+               'grey':grey , 'sections':sections}
         return render(request, self.template_name, ctx)
     
+
 
     def post(self,request, pk):
 
@@ -573,29 +648,71 @@ class ChartDetail(LoginRequiredMixin, DetailView):
     
 
 
-class ChartUpdate(LoginRequiredMixin, UpdateView):
+class ChartUpdate(ProtectedUpdate):
     model = Chart
     template_name = 'dashboard/projects/chart_form.html'
-    fields= ['title', 'sections', 'start_date', 'end_date', 'teams']
-    success_url= reverse_lazy('dashboard:projects')
+    fields= ['title', 'start_date', 'end_date', 'teams']
+  
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        chart = self.get_object()
+        context['sections'] = ChartSection.objects.filter(chart=chart)
+        return context
+    
+    def get_success_url(self):
+        chart_id = self.object.id
+        return reverse('dashboard:chart_detail', kwargs={'pk': chart_id})
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['start_date'].widget = forms.DateInput(attrs={'type': 'date'})
+        form.fields['end_date'].widget = forms.DateInput(attrs={'type': 'date'})
+        form.fields['sections'] = ChartSection.objects.filter(chart = self.object)
+        return form
 
-class ChartDelete(LoginRequiredMixin, DeleteView):
+
+
+class ChartDelete(ProtectedDelete):
     template_name = 'dashboard/projects/chart_confirm_delete.html'
     model = Chart
     success_url= reverse_lazy('dashboard:projects')
 
 
-class AddSection(OwnerCreateView):
+
+class AddSection(ProtectedCreate):
     model = ChartSection
     template_name = 'dashboard/projects/chartsection_form.html'
     fields = ['name']
-    success_url = reverse_lazy('dashboard:chart_create')
+    
+
+    def form_valid(self, form):
+        
+        response = super().form_valid(form)
+        pk = self.kwargs.get('pk')  
+        chart = Chart.objects.get(id = pk)
+        form.instance.chart = chart  
+        form.save()
+        return response
+    
+    def get_success_url(self):
+         chart_id = self.kwargs.get('pk')  
+         return reverse('dashboard:chart_detail', kwargs={'pk':chart_id})
+ 
+def SectionDelete(request, pk):
+    section = ChartSection.objects.get(id=pk)
+    chart = section.chart.id
+    section.delete()
+    return redirect(reverse('dashboard:chart_update', args=[chart]))
+    
+    
 
 def ChartReset(request, pk):
     chart = ChartData.objects.filter(chart_id=pk).all()
     chart.delete()
     return redirect(reverse('dashboard:chart_detail', args=[pk]))
     
+
+
 def LoadChart(request, pk):
     if request.method == 'GET':
         chart_data = ChartData.objects.filter(chart_id = pk)

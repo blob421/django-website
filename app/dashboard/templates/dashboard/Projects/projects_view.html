@@ -72,7 +72,7 @@
 
      <div class="left_left_pane">
 
-            {% for section in chart.sections.all %}
+            {% for section in sections %}
             <div class="chart_section_left_label_container" id="target">
             <div class="chart_section_left_description_text">{{section.name}}  </div>
             </div>
@@ -86,24 +86,24 @@
             <div class="chart_left_title">
              Topic / Tasks
             </div>
-            {% for section in chart.sections.all %}
+            {% for section in sections %}
            
            
             <div class="chart_section_left" id="section_left">
                    {% for task in chart.task_set.all %}
                    {% if task.section == section %}
-                      
+                       <a href="{% url 'dashboard:chart_task_update' task.id %}"> 
                    <div class="chart_left_task_row" id="left_row">{{task.name}} </div>
-    
+                       </a>
                    {% endif %}
                     {% endfor %}
 
                    <a href="{% url 'dashboard:create_task_chart' chart.id %}">
                              
-                      <div class="left_pane_add_task"> Add +
+                      <div class="left_pane_add_task"> Add a task +
 
                       </div> </a>
-                      
+                   
 
             </div>
                    {% endfor %}
@@ -111,17 +111,26 @@
 
 
                     {% if chart %}
-                    {% if not chart.task_set.all %}
+                       {% if not sections %}
+                       <a href="{% url 'dashboard:add_section' chart.id %}">
+                             
+                      <div class="left_pane_add_task"> Add a section +
+
+                      </div> </a>
+                      {% endif %}
+                    {% if sections %}
+                    {% if not chart.task_set %}
                     <a href="{% url 'dashboard:create_task_chart' chart.id %}">
                                       
-                                <div class="left_pane_add_task"> Add +
+                                <div class="left_pane_add_task"> Add a task +
 
                                 </div> </a>
+                    {% endif %}     
                     {% endif %}
                       {% endif %}
-
-           
+                  
      </div>
+       
      <div class="chart_right_pane">
         
             
@@ -131,7 +140,7 @@
                      Week
                    </div>
 
-                    {% for section in chart.sections.all %}
+                    {% for section in sections %}
                    <div class="chart_section_right" id="source">
                            {% for task in chart.task_set.all %}
                            {% if task.section == section %}
@@ -153,7 +162,7 @@
                    {{forloop.counter}} 
                    </div>
                     
-                    {% for section in chart.sections.all %}
+                    {% for section in sections %}
                    <div class="chart_section_right"> 
              
                            {% for task in chart.task_set.all %}

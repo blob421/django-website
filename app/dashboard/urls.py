@@ -23,7 +23,7 @@ urlpatterns = [
     ####### TASKS ############
     path('tasks/', views.TasksList.as_view(), name = 'tasks_list'),
     path('tasks/<int:pk>/', views.TaskDetail.as_view(), name='task_detail'),
-    path('tasks/create', views.TaskForm.as_view(), name = 'task_form'),
+    path('tasks/create', views.TaskCreate.as_view(), name = 'task_form'),
     path('tasks/delete/<int:pk>', views.TaskDelete.as_view(), name = 'task_delete'),
     path('tasks/completed/<int:pk>', views.TaskSubmit.as_view(), name='task_submit'),
     ######### PICTURES #########
@@ -45,10 +45,12 @@ urlpatterns = [
     path('projects/chart/<int:pk>', views.ChartDetail.as_view(), name='chart_detail'),
     path('projects/chart/create', views.ChartCreate.as_view(), name = "chart_create" ),
     path('projects/chart/load/<int:pk>', views.LoadChart, name="load_chart"),
-    path('projects/chart/create/add_section', views.AddSection.as_view(), name="add_section"),
+    path('projects/chart/create/add_section/<int:pk>', views.AddSection.as_view(), name="add_section"),
     path('projects/chart/<int:pk>/create/task', views.ChartTaskCreate.as_view(),
           name='create_task_chart'),
+    path('projects/chart/task/<int:pk>/update', views.ChartTaskUpdate.as_view(), name='chart_task_update'),
     path('projects/chart/<int:pk>/update', views.ChartUpdate.as_view(), name='chart_update'),
+    path('projects/chart/sections/delete/<int:pk>', views.SectionDelete, name='sections_update'),
     path('projects/chart/<int:pk>/delete', views.ChartDelete.as_view(), name ='chart_delete'),
     path('projects/chart/<int:pk>/reset', views.ChartReset, name='reset_chart'),
     #path('projects/chart/save/<int:pk>', views.SaveChart, name='chart_save'),

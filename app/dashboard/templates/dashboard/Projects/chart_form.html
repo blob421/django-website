@@ -38,26 +38,27 @@
       <div class="bot_flex_container_chart_create">
 
   
-                  <div>  
-                      <div class="form_margin"> {{form.sections.label_tag}}</div>
-                   
-                  </div>
-                  <div> 
-                         <a href="{% url 'dashboard:add_section' %}">
+
+                  <div class="add_section_div_chart"> 
+                         <div> Sections:</div>
+                         <a href="{% url 'dashboard:add_section' chart.id %}">
                   
                          <input class="plus_sign_button_chart_create" value="+ Add sections"></input></a>
-               </div>
+                 </div>
                 
                    
 
       </div>
+              
+               
+                
+        <div class="sections_chart_update">
 
-
-
-
-        <div class="chart_create_select_div">
-
-                  <div class="description_task_form"> {{form.sections}} </div>
+             {% for section in sections %}
+            <a href="{% url 'dashboard:sections_update' section.id %}"> 
+                  <div class="section_red_link">{{section}}</div>
+             </a>  
+            {% endfor %}
         </div>
 
 
