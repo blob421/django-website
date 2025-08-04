@@ -31,22 +31,22 @@
         <div class="chart_create_select_div">
                         {{form.teams.label_tag}}
                         {{form.teams}}
+                           {% if form.errors %}
+           
+                      <div style="height: 10%;">{{form.end_date.errors}}</div>
+                   
+            
+                     {% endif %}
        </div>
 
+       
+ 
+   
 
-
-      <div class="bot_flex_container_chart_create">
-
-  
-                  <div>  
-                      <div class="form_margin"> {{form.sections.label_tag}}</div>
-                   
-                  </div>
-             
+               
                 
                    
 
-      </div>
 
 
 

@@ -60,23 +60,28 @@
      </div>
 </div>
      <div class="chart_dates"> 
+             {% if not months_list %}
              {% for month in chart.months %}
-             <div class="one_date_container"> 
+             
+             <div class="one_date_container" id="months_cont"> 
       
             {{month}} 
              </div>
              {% endfor %}
+             {% else %}
+              {% for month in months_list %}
+               <div class="one_date_container" id="months_cont"> 
       
+            {{month}} 
+             </div>
+             {% endfor %}
+              {% endif %}
      </div>
  <div class="charts_container">
 
      <div class="left_left_pane">
 
-            {% for section in sections %}
-            <div class="chart_section_left_label_container" id="target">
-            <div class="chart_section_left_description_text">{{section.name}}  </div>
-            </div>
-            {% endfor %}
+         
            
 
      </div>
@@ -88,7 +93,8 @@
             </div>
             {% for section in sections %}
            
-           
+           <div class="name_section_wrapper_chart">
+            <div class="chart_section_left_description_text">{{section.name}}  </div>
             <div class="chart_section_left" id="section_left">
                    {% for task in chart.task_set.all %}
                    {% if task.section == section %}
@@ -105,7 +111,7 @@
                       </div> </a>
                    
 
-            </div>
+            </div></div>
                    {% endfor %}
 
 
@@ -141,7 +147,7 @@
                    </div>
 
                     {% for section in sections %}
-                   <div class="chart_section_right" id="source">
+                   <div class="chart_section_right" id="source{{forloop.counter}}">
                            {% for task in chart.task_set.all %}
                            {% if task.section == section %}
                            <div class="chart_right_task_row_grey">1
@@ -152,13 +158,14 @@
                    </div>
                     {% endfor %}
             </div>
-        
+            {% if week_int < 32 %}
             {% for week in weeks %}
+          
             {% with week_index=forloop.counter %}
            
             <div class="chart_col_right">
                  
-                   <div class="chart_col_right_top_row"> 
+                   <div class="chart_col_right_top_row" id="source_number"> 
                    {{forloop.counter}} 
                    </div>
                     
@@ -189,17 +196,65 @@
             {% endwith %}
             </div>
             {% endfor %}
+            {% endif %}
+            {% if week_int > 32 %}
+            {% for week in weeks %}
+          
+            {% with week_index=forloop.counter %}
+           
+            <div class="chart_col_right_32">
+                 
+                   <div class="chart_col_right_top_row" id="source_number"> 
+                   <div class="invisible_top_numbers"> 0 </div>
+                   </div>
+                    
+                    {% for section in sections %}
+                   <div class="chart_section_right"> 
+             
+                           {% for task in chart.task_set.all %}
+                         
+                           {% if task.section == section %}
+                           {% if user.userprofile.role.name == 'dev' %}
+                           <div class="chart_right_task_row  {% if week_index < grey %}chart_right_task_row_grey{% endif %}"
+                            id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
+                            onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
+                           </div>
+                           {% else %}
+                             <div class="chart_right_task_row_basic  {% if week_index < grey %}chart_right_task_row_grey{% endif %}"
+                            id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
+                            onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
+                           </div>
+                           {% endif %}
+                            {% endif %}
+                           {% endfor %}  
+                             <div class="chart_right_task_row_grey">0 </div>
+                   </div>
+                    {% endfor %}
+                    
+            
+            {% endwith %}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+
+
+
      </div>
  
  </div>
 
 <script>
-// Left titles resizing
-const source = document.getElementById("source");
-const target = document.getElementById("target");
 
+const source = document.getElementById('source_number')
+const targetDivs = document.querySelectorAll('.one_date_container');
+const sourceWidth = window.getComputedStyle(source).width; 
+console.log(sourceWidth)
+const numericWidth = parseFloat(sourceWidth); // convert "100px" to 100
 
-target.style.height = source.offsetHeight + "px";
+targetDivs.forEach(div => {
+  div.style.width = `${(numericWidth + 3.6 ) * 4}px`;
+});
 
 
 // Filling the chart

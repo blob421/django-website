@@ -72,13 +72,14 @@
 }
 .chart_dates{
  display: flex;
- padding-left: 25.75vw;
+ padding-left: 25.9vw;
  border: 3px solid rgb(32, 32, 32);
  border-bottom: rgba(0, 0, 0, 0);
  background-color:aliceblue;
+   flex-wrap: wrap; 
 }
 .one_date_container{
-  width: 14.75vw;
+ 
   border: 1px solid rgb(105, 105, 105);
   border-bottom: rgba(245, 245, 220, 0);
   text-align: center;
@@ -94,6 +95,7 @@
     overflow: auto;
     overflow-y: auto;
     background-color: aliceblue;
+    
 }
 
 .left_left_pane{
@@ -101,9 +103,19 @@
     /*border: 1px solid rgb(61, 61, 61);*/
 }
 .chart_left_pane{
-  /*  border: 2px solid violet;*/
+ /*   border: 2px solid violet;*/
     width: 20%;
-    height: 200%;
+    height: 200vh;
+}
+.chart_right_pane{
+   /*border: 2px solid purple;*/
+    width: 77%;
+    display: flex;
+    height: 200vh;
+    
+  
+  
+    flex-wrap: wrap; 
 }
 .chart_left_title{
     border: 2px solid black;
@@ -116,34 +128,46 @@
     display: flex;
     align-items: center;
   
+  
          
 }
 .chart_section_left_description_text{
      writing-mode: vertical-rl; /* or vertical-lr */
- 
-    top: 50%;
-    left: 50%;
-    white-space: nowrap;
-    position: relative;
-    transform: translate(-50%,-50%);
+    margin-top: 10%;
+    width: 11%;  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   
+  margin-right: -11%;
+  left: -13%;
+  position: relative;
     
 
 }
 .chart_section_left{
-  /*  border: 2px solid green;*/
-    margin-top: 10%;
+  /* border: 2px solid green;*/
+      margin-top: 1.5em;
+    width: 19vw;
+  
    
     
 }
+.name_section_wrapper_chart{
+/*  border: 2px solid orange;*/
+  display: flex;
+
+ 
+
+}
 .chart_section_right{
-  /*  border: 2px solid green;*/
-    margin-top: 50%;
+ /* border: 2px solid green;*/
+    margin-top: 1.5em;
   
     
 }
 .chart_section_left_label_container{
-  /*   border: 2px solid rgb(49, 49, 49);*/
+     border: 2px solid rgb(49, 49, 49);
     margin-top: 60%;
     
   height: 80%;
@@ -184,7 +208,7 @@
 .chart_right_task_row_grey{
     color: rgba(0, 0, 0, 0);
     border: 2px solid rgb(63, 63, 63);
-    height: 2.005em;
+    height: 2em;
     font-size: small;
     padding-bottom: 0.4em;
     background-color: rgb(142, 142, 142);
@@ -207,20 +231,14 @@
 .chart_right_task_row_basic{
     color: rgba(0, 0, 0, 0);
     border: 2px solid rgb(63, 63, 63);
-    height: 2.005em;
+    height: 2em;
     font-size: small;
     padding-bottom: 0.4em;
     pointer-events: none;
    
     
 }
-.chart_right_pane{
- /*  border: 2px solid purple;*/
-    width: 78%;
-    display: flex;
-    height: 200%;
-  
-}
+
 
 .right_row_description{
   
@@ -244,6 +262,9 @@
         
          
 }
+.invisible_top_numbers{
+  color: rgba(240, 248, 255, 0);
+}
 .chart_col_right_top_row{
     border: 2px solid black;
     height: 2%;
@@ -254,10 +275,14 @@
     position: sticky;
          
 }
-
+.chart_col_right_32{
+  width: 13px;
+   
+    background-color: aliceblue;
+}
 .chart_col_right{
   /*  border: 2px solid rgb(71, 71, 71);*/
-    width: 5%;
+    width: 24px;
    
     background-color: aliceblue;
 }
@@ -385,6 +410,7 @@
   gap: 5%;
 
 }
+
 .title_chart_update_flex{
     display: flex;
  /* border: 2px solid orange;*/

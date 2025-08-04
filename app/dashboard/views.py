@@ -16,6 +16,8 @@ from .owner import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedV
 from django import forms
 from django.db.models import Q
 import json
+from django.core.exceptions import ValidationError
+from django.utils.timezone import datetime, timedelta
 
 ##### CONFIG ##################
 
@@ -534,6 +536,17 @@ class ChartCreate(ProtectedCreate):
         form.fields['end_date'].widget = forms.DateInput(attrs={'type': 'date'})
         #form.fields['sections'] = ChartSection.objects.filter(chart = self.object)
         return form
+    
+    def form_valid(self, form):
+        start_date = form.cleaned_data['start_date']
+        end_date = form.cleaned_data['end_date']
+        max_duration = timedelta(days=396)  # 13 months ≈ 13 * 30.42 days
+
+        if end_date - start_date > max_duration:
+            form.add_error('end_date', 'End date must be within 13 months of the start date.')
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
 
 
 
@@ -618,16 +631,29 @@ class ChartDetail(LoginRequiredMixin, DetailView):
      
         if end >= 30:
              total_week_col = range(int(round(number_of_weeks + grey /4)))
+             week_int = int(round(number_of_weeks + grey) /4)
         elif end <= 10:
              total_week_col = range(int(number_of_weeks) + grey + 1)
+             week_int = int(number_of_weeks + grey + 1)
         else : 
              total_week_col = range(int(number_of_weeks) + grey)
-     
+             week_int = int(number_of_weeks + grey)
+
+        if week_int > 32:
+            month_list = []
+            for n in chart.months:
+                month_list.append(n[:3])
+        else :
+            month_list = None
+      
         sections = ChartSection.objects.filter(chart=chart)
         team = self.request.user.userprofile.team
         charts = Chart.objects.filter(teams = team ).order_by('id')
         ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 
-               'grey':grey , 'sections':sections}
+               'grey':grey , 'sections':sections, 'week_int':week_int, 'months_list':month_list}
+       
+   
+
         return render(request, self.template_name, ctx)
     
 
@@ -667,7 +693,7 @@ class ChartUpdate(ProtectedUpdate):
         form = super().get_form(form_class)
         form.fields['start_date'].widget = forms.DateInput(attrs={'type': 'date'})
         form.fields['end_date'].widget = forms.DateInput(attrs={'type': 'date'})
-        form.fields['sections'] = ChartSection.objects.filter(chart = self.object)
+       # form.fields['sections'].queryset = ChartSection.objects.filter(chart = self.object)
         return form
 
 
