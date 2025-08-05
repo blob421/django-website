@@ -8,6 +8,8 @@
      <link rel="stylesheet" href="{% static 'dashboard/management.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/inbox_chat.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/charts.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/schedules.css' %}">
+
 
      <!-- Bootstrap 5 CSS -->
           <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="..." crossorigin="anonymous">
@@ -28,6 +30,8 @@
   {% if user.userprofile == user.userprofile.team.team_lead %}
    
   <a href="{% url 'dashboard:team' %}">Team</a>
+  {% else %}
+  <a href="{% url 'dashboard:schedule_view' %}">Schedule</a>
   {% endif %}
   <a href="{% url 'dashboard:chat_view' %}">Chat</a>
   <form method="post" action='{% url "dashboard:logout" %}'>

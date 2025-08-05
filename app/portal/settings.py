@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [ '*' ]
 INSTALLED_APPS = [
     ##'crispy_bootstrap5',
    ## 'crispy_forms',
+    'django_apscheduler',
     'dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',

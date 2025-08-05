@@ -1,0 +1,61 @@
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+ <div class="extreme_outer_div_schedule">
+<div class="title_container_schedule">
+<div class="schedule_title">Your schedule</div>
+<div class="schedule_time_range"> ( {{schedule.start_date}} - {{schedule.end_date}} )</div>
+<div class="schedule_button_div"> <button class="ammend_button">Request a change</button> </div>
+
+</div>
+<div class="schedule_outer_frame">
+
+
+    <div class="schedule_left_panel">
+
+           {% for schedule in schedules %}
+           <div class="week_button_div">
+                <a href="{% url 'dashboard:schedule_detail' schedule.id %}">
+                <button class="week_button">Week{{forloop.counter}}</button>
+                </a>
+           </div>
+           {% endfor %}
+
+    </div>
+
+
+
+
+    <div class="schedule_right_area">
+
+         
+           {% for week_days, hours in days_hours %}
+           <div class="schedule_day_col">
+
+                  
+                  <div class="week_day_title"> 
+                  {{week_days}}
+                  </div>
+                  <div class="hour_range_div">
+                            <div class="hour_range">
+                                  {{hours}}
+                            </div>
+                    
+
+                  </div>
+                
+
+
+           </div>
+              {% endfor %}
+       
+
+
+    </div>
+
+
+
+
+</div>
+ </div>
+ {% endblock %}

@@ -20,12 +20,13 @@
               <div >{{form.start_date}}</div>
 
         </div>
-
+      
 
         <div class="flex_container_chart_create_top2">
     
               <div> {{form.end_date.label_tag}}</div>
               <div> {{form.end_date}}</div>
+              
         </div>
 
         <div class="chart_create_select_div">
@@ -86,6 +87,11 @@
  </div>
  
 
-
+ {% if form.errors %}
+           
+                          <div style="height: 10%;">{{form.end_date.errors}}</div>
+                   
+            
+                           {% endif %}
 
   {% endblock %}

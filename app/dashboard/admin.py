@@ -9,9 +9,9 @@ admin.site.register(models.Chart)
 user_model = get_user_model()
 admin.site.register(models.ChartSection)
 admin.site.register(models.Task)
-
+admin.site.register(models.Schedule)
 admin.site.register(models.Team)
-
+admin.site.register(models.WeekRange)
     
 class UserProfileInline(admin.StackedInline):  
     model = models.UserProfile

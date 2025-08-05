@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Messages, UserProfile, Task, Team, ChatMessages, ChartSection
+from .models import Messages, UserProfile, Task, Team, ChatMessages, ChartSection, Schedule
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from itertools import chain
@@ -154,3 +154,4 @@ class AddTaskChart(ModelForm):
                   self.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
                   self.fields['starting_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
                   self.fields['section'].queryset = ChartSection.objects.filter(chart = chart)
+

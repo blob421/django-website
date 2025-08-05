@@ -4,7 +4,7 @@ from django.views.generic import View, UpdateView, DetailView, DeleteView, ListV
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages
-from .models import MessagesCopy, Chart, ChartData, ChartSection
+from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, WeekRange
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages, ChatForm, AddTaskChart
 from django.utils import timezone
@@ -16,8 +16,11 @@ from .owner import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedV
 from django import forms
 from django.db.models import Q
 import json
+
 from django.core.exceptions import ValidationError
 from django.utils.timezone import datetime, timedelta
+
+
 
 ##### CONFIG ##################
 
@@ -28,6 +31,7 @@ allowed_roles_management = ['dev']
 
 ##### BASIC ###############
 
+    
 def role_dispatch(request):
     user_profile = request.user.userprofile
     if user_profile and user_profile.role:
@@ -411,6 +415,116 @@ class TaskSubmit(LoginRequiredMixin, View):
        
        
         return redirect(self.success_url)
+    
+######### SCHEDULES ##################
+
+class ScheduleView(LoginRequiredMixin, View):
+    template_name = 'dashboard/schedules/schedule_view.html'
+    def get(self, request):
+        schedules = Schedule.objects.filter(user=self.request.user.userprofile)
+        
+        week_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+        ctx = {'schedules':schedules,'week_days':week_days}
+        return render(request, self.template_name, ctx)
+
+
+
+class ScheduleDetail(LoginRequiredMixin, View):
+    template_name = 'dashboard/schedules/schedule_view.html'
+    def get(self, request, pk):
+        schedule = Schedule.objects.get(id = pk)
+        schedules = Schedule.objects.filter(user=self.request.user.userprofile)
+
+        week_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+        hours = [schedule.monday, schedule.tuesday, schedule.wednesday, schedule.thursday,
+                       schedule.friday, schedule.saturday, schedule.sunday]
+        
+        days_hours = zip(week_days, hours)
+        ctx = {'schedule':schedule, 'schedules':schedules,'week_days':week_days, 
+               'hours': hours , 'days_hours':days_hours}
+        return render(request, self.template_name, ctx)
+
+
+
+class ScheduleManage(ProtectedView):
+    template_name = 'dashboard/management/schedule_manage.html'
+
+    def get(self, request):
+     
+        team_users = UserProfile.objects.filter(team = self.request.user.userprofile.team)
+        
+       
+        weeks = WeekRange.objects.all()[:4]
+        week1=weeks[0]
+        week2=weeks[1]
+        week3=weeks[2]
+        week4=weeks[3]
+
+        query = Q(week_range = week1) | Q(week_range = week2) | Q(week_range = week3) | Q(week_range = week4)
+        schedules = Schedule.objects.filter(user__team = self.request.user.userprofile.team)
+        
+        week_1 = schedules.filter(week_range = week1)
+        week_2 = schedules.filter(week_range = week2)
+        week_3 = schedules.filter(week_range = week3)
+        week_4 = schedules.filter(week_range = week4)
+        week1_user = [schedule.user.id for schedule in week_1]
+        week2_user = [schedule.user.id for schedule in week_2]
+        week3_user = [schedule.user.id for schedule in week_3]
+        week4_user = [schedule.user.id for schedule in week_4]
+     
+
+
+        week_2 = schedules.filter(week_range = week2)
+        week_3 = schedules.filter(week_range = week3)
+        week_4 = schedules.filter(week_range = week4)
+        last_month_schedules  = schedules.filter(query)
+
+        week_array = []
+        for week in weeks:
+              start_day = week.starting_day
+              end_day = week.end_day
+              start_month = start_day.strftime("%B")[:3]
+              end_month = end_day.strftime("%B")[:3]
+              week_range = f'{start_day.day} {start_month}- {end_day.day} {end_month}' 
+              week_array.append(week_range)
+
+      
+        ctx= {'users':team_users, 'weeks':week_array, 
+              'week_objects':weeks, 'week1_user': week1_user, 
+              'week2_user': week2_user, 'week3_user': week3_user, 
+              'week4_user': week4_user, 'schedules':last_month_schedules, 'w1_sched': week1}
+        
+        return render(request, self.template_name, ctx)
+
+class ScheduleUpdate(ProtectedUpdate):
+    template_name = 'dashboard/management/schedule_update.html'
+    model = Schedule
+    success_url = reverse_lazy('dashboard:schedule_manage')
+    fields = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+    
+    def get_object(self, queryset = None):
+        user = int(self.kwargs.get('user'))
+        week = int(self.kwargs.get('week'))
+        user_profile = UserProfile.objects.get(id = user)
+        weeks = WeekRange.objects.all()[:4]
+        
+        query = Q(user = user_profile) & Q(week_range = weeks[week -1])
+    
+    
+        return Schedule.objects.get(query)
+
+
+
+        
+        
+
+
+class ScheduleCreate(ProtectedCreate):
+    template_name = 'dashboard/management/schedule_create.html'
+    model = Schedule
+    fields= ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday','sunday']
+    success_url = reverse_lazy('dashboard:schedule_manage')
+
 
 ######### Management #################
 
@@ -695,6 +809,17 @@ class ChartUpdate(ProtectedUpdate):
         form.fields['end_date'].widget = forms.DateInput(attrs={'type': 'date'})
        # form.fields['sections'].queryset = ChartSection.objects.filter(chart = self.object)
         return form
+
+    def form_valid(self, form):
+        start_date = form.cleaned_data['start_date']
+        end_date = form.cleaned_data['end_date']
+        max_duration = timedelta(days=396)  # 13 months ≈ 13 * 30.42 days
+
+        if end_date - start_date > max_duration:
+            form.add_error('end_date', 'End date must be within 13 months of the start date.')
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
 
 
 

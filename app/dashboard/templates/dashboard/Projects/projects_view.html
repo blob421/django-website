@@ -16,6 +16,7 @@
                     +</button> </a>
                     {% if chart.id %}
                     <div class="save_modify_chart_btn_div">  
+                       <button onclick="toggleGrid()"> Grid</button>
                          <button onclick="SaveChart('{{chart.id}}')">Save</button> 
                          <a href="{% url 'dashboard:chart_update' chart.id %}">
                          <button class="chart_modify_button">Modify</button></a>
@@ -249,7 +250,7 @@
 const source = document.getElementById('source_number')
 const targetDivs = document.querySelectorAll('.one_date_container');
 const sourceWidth = window.getComputedStyle(source).width; 
-console.log(sourceWidth)
+
 const numericWidth = parseFloat(sourceWidth); // convert "100px" to 100
 
 targetDivs.forEach(div => {
@@ -260,6 +261,26 @@ targetDivs.forEach(div => {
 // Filling the chart
 let chart_data = {};
 
+function toggleGrid(){
+  const rows = document.querySelectorAll('.chart_right_task_row')
+
+  rows.forEach(row => {
+    const currentBorder = window.getComputedStyle(row).getPropertyValue('border-right');
+    const currentBorderL = window.getComputedStyle(row).getPropertyValue('border-left');
+    if (currentBorder.includes('rgba(0,0,0,0)') || currentBorder.includes('rgba(0, 0, 0, 0)')){
+      row.style.borderRight = '2px solid rgb(63, 63, 63)';
+      row.style.borderLeft = '2px solid rgb(63, 63, 63)';
+    }
+    else {
+       row.style.borderRight = 'none';
+       row.style.borderLeft = 'none';
+    }
+    
+   
+  });
+
+
+}
 function Filltask(n, cn) {
     console.log(n)
     const div = document.getElementById('right_rows'+ n + cn)

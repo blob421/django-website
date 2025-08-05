@@ -1,0 +1,121 @@
+
+.extreme_outer_div_schedule{
+  border: 3px solid black;
+    left: 50%;
+    bottom: 1vh;
+    position: absolute;
+    transform: translateX(-50%);
+    width: 97vw;
+    height: 94vh;
+
+}
+.title_container_schedule{
+    display: flex;
+    height: 17%;
+    
+     width: 97vw;
+     left: 50%;
+      position: absolute;
+    transform: translateX(-50%);
+  border: 2px solid black;
+    background-color: rgb(175, 192, 207);
+}
+.schedule_title{
+
+/*border: 2px solid orange;*/
+
+font-size:xx-large;
+padding-left: 0.75%;
+display: flex;
+
+    padding-left: 1.5%;
+    align-items: center;
+    justify-content: center;
+}
+.schedule_time_range{
+   /* border: 2px solid green;*/
+    display: flex;
+
+    padding-left: 1.5%;
+    align-items: center;
+    justify-content: center;
+}
+.schedule_outer_frame{
+  
+    height: 83%;
+    width: 100%;
+    display: flex;
+    bottom: 0%;
+    position: absolute;
+}
+
+.schedule_left_panel{
+ width: 10%;
+ height: 100%;
+/* border: 2px solid orange;*/
+ background-color: rgb(88, 88, 102);
+
+}
+.schedule_right_area{
+    width: 90%;
+    height: 100%;
+  /*  border: 2px solid blue;*/
+    background-color: aliceblue;
+    display: flex;
+}
+
+.week_button_div{
+ /*   border: 2px solid red;*/
+    width: 100%;
+    height: 18%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
+.week_button{
+
+}
+
+.schedule_day_col{
+    width: calc(100% / 7);
+    border: 2px solid rgb(81, 81, 81);
+}
+.week_day_title{
+    border: 2px solid rgb(77, 77, 77);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.hour_range_div{
+    height: 50%;
+    border: solid orange 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.ammend_button{
+ 
+  
+
+    height: 50%;
+    border:2px solid green;
+    padding: 2%;
+    
+}
+.schedule_button_div{
+    height: 100%;
+    width: 12.5%;
+      display: flex;
+      border: 2px solid green;
+        right: 0%;
+    position: absolute;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(140, 168, 193);
+}
+

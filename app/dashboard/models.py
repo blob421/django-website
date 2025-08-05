@@ -34,7 +34,7 @@ class UserProfile(models.Model):
     recipients = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                       blank = True, related_name='many_relation', default='----' )
     team = models.ForeignKey('Team', on_delete=models.CASCADE, null=True)
-
+    schedules = models.ManyToManyField('Schedule')
     class Meta:
 
         verbose_name_plural = "Add a user" 
@@ -176,5 +176,29 @@ class ChartData(models.Model):
 
 
 
+class Schedule(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    week_range = models.ForeignKey('WeekRange', on_delete=models.CASCADE)
+    monday = models.CharField(null=True, blank=True, help_text='9-17')
+    tuesday = models.CharField(null=True, blank=True)
+    wednesday = models.CharField(null=True, blank=True)
+    thursday = models.CharField(null=True, blank=True)
+    friday = models.CharField(null=True, blank=True)
+    saturday = models.CharField(null=True, blank=True)
+    sunday = models.CharField(null=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+            if not self.end_date and self.start_date:
+                self.end_date = self.start_date + relativedelta(days=7)
+            super().save(*args, **kwargs)
 
+    
+
+
+class WeekRange(models.Model):
+    starting_day = models.DateTimeField()
+    end_day = models.DateTimeField()
+    
 

@@ -1,0 +1,120 @@
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+ <div class="extreme_outer_div_schedule_management">
+<div class="title_container_schedule_management">
+<div class="schedule_title">Schedule management</div>
+
+</div>
+
+<div class="schedule_outer_frame_management">
+
+
+    <div class="schedule_left_panel">
+
+            <div class="schedule_users_title">
+             Users
+
+            </div>
+           {% for user in users %}
+           <div class="schedule_user_div">
+            
+                {{user.user.username}}
+              
+           </div>
+           {% endfor %}
+
+    </div>
+
+
+    <div class="schedule_right_area_management">
+            
+           <div class="schedule_top_row_management">
+                     
+                     <div class="schedule_availability_title">
+                         Availability
+
+
+                     </div>
+                     {% for week in week_objects %}
+                     <div class="schedule_week_title_top_management">
+                        {{week.starting_day.day}}-{{week.end_day.day}}
+                     </div>
+
+                     {% endfor %}
+           </div>
+         
+
+           {% for user in users %}
+          
+           <div class="schedules_user_rows">
+                    
+
+                     <div class="schedule_user_availability"> 
+                        
+                    </div>
+                    
+               
+                     {% if user.id in week1_user %}
+                 
+                     <a href="{% url 'dashboard:schedule_update' user.id 1 %}" 
+                     class="schedule_container_management"> </a>
+                
+                    {% else %}
+                    <a href="{% url 'dashboard:create_schedule' user.id 1 %}" 
+                    class="schedule_add_schedule_cont">
+                     Add +
+                    </a>   
+                    {% endif %}
+          
+
+                    {% if user.id in week2_user %}
+                    <div class="schedule_container_management">
+                     Schedule       
+                    </div>
+                    {% else %}
+                   <a href="{% url 'dashboard:create_schedule' user.id 2 %}" 
+                   class="schedule_add_schedule_cont">
+                     Add +
+                    </a>   
+                    {% endif %}
+                          
+                  
+                    {% if user.id in week3_user %}
+                    <div class="schedule_container_management">
+                     Schedule       
+                    </div>
+                    {% else %}
+                  
+                   <a href="{% url 'dashboard:create_schedule' user.id 3 %}" 
+                   class="schedule_add_schedule_cont">
+                     Add +
+                    </a>   
+                    {% endif %}
+
+                     
+                    {% if user.id in week4_user %}
+                    <div class="schedule_container_management">
+                     Schedule       
+                    </div>
+                    {% else %}
+                    <a href="{% url 'dashboard:create_schedule' user.id 4 %}" 
+                    class="schedule_add_schedule_cont">
+                     Add +
+                    </a>   
+                    {% endif %}
+
+
+                     </div>
+           
+       
+       {% endfor %}
+   
+    </div>
+
+  
+
+
+</div>
+ </div>
+ {% endblock %}

@@ -195,6 +195,14 @@
 
 
 }
+.btn-div-5{
+          display: flex;
+  justify-content: center;   
+  align-items: center;   
+  margin-top: 15%;
+  padding: 5%;
+
+}
 /*********Management completed tasks********/
 .task_blocks2{
      
@@ -397,7 +405,124 @@
     margin-top: 5%;
     height: 45%;
 
+}
+
+/*****************SCHEDULES*****************/
+
+
+.extreme_outer_div_schedule_management{
+  border: 3px solid rgb(12, 12, 12);
+    left: 50%;
+    bottom: 1vh;
+    position: absolute;
+    transform: translateX(-50%);
+    width: 97vw;
+    height: 94vh;
+
+}
+.schedule_outer_frame_management{
+  
+    height: 80%;
+    width: 100%;
+    display: flex;
+    bottom: 0%;
+    position: absolute;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: aliceblue;
+}
+
+.title_container_schedule_management{
+    display: flex;
+    height: 20%;
+    
+     width: 97vw;
+     left: 50%;
+      position: absolute;
+    transform: translateX(-50%);
+  border: 2px solid black;
+    background-color: rgb(199, 71, 52);
+    
+}
+.schedule_users_title{
+    width: 100%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    background-color: rgb(227, 227, 227);
+    border: 2px solid black;
+}
+.schedule_user_div{
+    border: 2px solid rgb(44, 44, 44);
+    display: flex;
+    width: 100%;
+    height: 20%;
+    color: white;
+    align-items: center;
+    background-color: rgb(65, 65, 84);
+
+}
+.schedule_availability_title{
+     width:20%;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.schedule_top_row_management{
+    display: flex;
+    height: 5%;
+        align-items: center;
+    justify-content:center;
+ width: 100%;
+border: 2px solid rgb(41, 41, 41);
+}
+.schedule_week_title_top_management{
+    width: 20%;
 
     
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.schedules_user_rows{
+   border: 2px solid rgb(43, 43, 43);
+   width: 100%;
+   height:20%;
+   display: flex;
    
 }
+
+.schedule_right_area_management{
+   width: 90%;
+    height: 100%;
+  /*  border: 2px solid blue;*/
+  
+    
+
+}
+.schedule_add_schedule_cont{
+    border: 2px solid black;
+    height: 100%;
+    width: 20%;
+}
+.schedule_container_management{
+    border: 2px solid orangered;
+    height: 100%;
+    width: 20%;
+}
+.schedule_user_availability{
+
+    width:20%;
+    
+
+}
+.add_a_schedule_cell{
+    width: 20%;
+    border: solid black 2px;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
