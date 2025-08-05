@@ -462,22 +462,7 @@ class ScheduleManage(ProtectedView):
 
         query = Q(week_range = week1) | Q(week_range = week2) | Q(week_range = week3) | Q(week_range = week4)
         schedules = Schedule.objects.filter(user__team = self.request.user.userprofile.team)
-        
-        week_1 = schedules.filter(week_range = week1)
-        week_2 = schedules.filter(week_range = week2)
-        week_3 = schedules.filter(week_range = week3)
-        week_4 = schedules.filter(week_range = week4)
-        week1_user = [schedule.user.id for schedule in week_1]
-        week2_user = [schedule.user.id for schedule in week_2]
-        week3_user = [schedule.user.id for schedule in week_3]
-        week4_user = [schedule.user.id for schedule in week_4]
-     
-
-
-        week_2 = schedules.filter(week_range = week2)
-        week_3 = schedules.filter(week_range = week3)
-        week_4 = schedules.filter(week_range = week4)
-        last_month_schedules  = schedules.filter(query)
+        last_month_schedules  = schedules.filter(query).order_by('id')
 
         week_array = []
         for week in weeks:
@@ -490,9 +475,7 @@ class ScheduleManage(ProtectedView):
 
       
         ctx= {'users':team_users, 'weeks':week_array, 
-              'week_objects':weeks, 'week1_user': week1_user, 
-              'week2_user': week2_user, 'week3_user': week3_user, 
-              'week4_user': week4_user, 'schedules':last_month_schedules, 'w1_sched': week1}
+              'week_objects':weeks, 'schedules':last_month_schedules, 'w1_sched': week1}
         
         return render(request, self.template_name, ctx)
 
@@ -501,29 +484,8 @@ class ScheduleUpdate(ProtectedUpdate):
     model = Schedule
     success_url = reverse_lazy('dashboard:schedule_manage')
     fields = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
-    
-    def get_object(self, queryset = None):
-        user = int(self.kwargs.get('user'))
-        week = int(self.kwargs.get('week'))
-        user_profile = UserProfile.objects.get(id = user)
-        weeks = WeekRange.objects.all()[:4]
-        
-        query = Q(user = user_profile) & Q(week_range = weeks[week -1])
-    
-    
-        return Schedule.objects.get(query)
 
 
-
-        
-        
-
-
-class ScheduleCreate(ProtectedCreate):
-    template_name = 'dashboard/management/schedule_create.html'
-    model = Schedule
-    fields= ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday','sunday']
-    success_url = reverse_lazy('dashboard:schedule_manage')
 
 
 ######### Management #################

@@ -3,7 +3,7 @@
  {% block content %}
  <div class="extreme_outer_div_schedule_management">
 <div class="title_container_schedule_management">
-<div class="schedule_title">Schedule management</div>
+<div class="schedule_title_management">Schedule management</div>
 
 </div>
 
@@ -55,55 +55,63 @@
                     </div>
                     
                
-                     {% if user.id in week1_user %}
-                 
-                     <a href="{% url 'dashboard:schedule_update' user.id 1 %}" 
-                     class="schedule_container_management"> </a>
-                
-                    {% else %}
-                    <a href="{% url 'dashboard:create_schedule' user.id 1 %}" 
-                    class="schedule_add_schedule_cont">
+                     {% for schedule in schedules %}
+                     {% if schedule.user == user %}
+                     {% if schedule.monday %}
+                     <a href="{% url 'dashboard:schedule_update' schedule.id %}" 
+                     class="schedule_container_management">
+                        <div class="day_separator"> 
+                               <div class="schedule_day_left">
+                                                             
+                                 <div> Mon: {{schedule.monday}}  </div>
+                                  <div>
+
+                                       Wed: {{schedule.wednesday}}
+                                  </div>
+                                   
+                                 <div>
+                                       Fri: {{schedule.friday}}  
+                                 </div>
+                                 <div>
+                                     Sun: {{schedule.sunday}}  
+                                 </div>
+                                   
+                              </div>
+                              <div class="schedule_day_right">
+                                   <div>
+                                    Tue: {{schedule.tuesday}}
+                                     
+                                  </div>
+                                   <div>
+                                     Tur: {{schedule.thursday}}
+                                   </div>
+                                 
+                                    <div>
+                                      Sat: {{schedule.saturday}}                      
+                                    </div>
+                                   
+                              </div>
+                        
+                                
+                                  
+                            
+                          
+                            
+                         </div>
+                    </a>   
+                     {% else %}
+
+                       <a href="{% url 'dashboard:schedule_update' schedule.id %}" 
+                   class="schedule_add_schedule_cont">
                      Add +
                     </a>   
+                 
+                     {% endif %}
                     {% endif %}
           
-
-                    {% if user.id in week2_user %}
-                    <div class="schedule_container_management">
-                     Schedule       
-                    </div>
-                    {% else %}
-                   <a href="{% url 'dashboard:create_schedule' user.id 2 %}" 
-                   class="schedule_add_schedule_cont">
-                     Add +
-                    </a>   
-                    {% endif %}
+                    {% endfor %}
+            
                           
-                  
-                    {% if user.id in week3_user %}
-                    <div class="schedule_container_management">
-                     Schedule       
-                    </div>
-                    {% else %}
-                  
-                   <a href="{% url 'dashboard:create_schedule' user.id 3 %}" 
-                   class="schedule_add_schedule_cont">
-                     Add +
-                    </a>   
-                    {% endif %}
-
-                     
-                    {% if user.id in week4_user %}
-                    <div class="schedule_container_management">
-                     Schedule       
-                    </div>
-                    {% else %}
-                    <a href="{% url 'dashboard:create_schedule' user.id 4 %}" 
-                    class="schedule_add_schedule_cont">
-                     Add +
-                    </a>   
-                    {% endif %}
-
 
                      </div>
            

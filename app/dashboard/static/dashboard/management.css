@@ -441,16 +441,17 @@
       position: absolute;
     transform: translateX(-50%);
   border: 2px solid black;
-    background-color: rgb(199, 71, 52);
+    background-color: rgb(72, 72, 72);
     
 }
 .schedule_users_title{
     width: 100%;
     height: 5%;
     display: flex;
+
     align-items: center;
     justify-content:center;
-    background-color: rgb(227, 227, 227);
+    background-color: rgb(249, 219, 167);
     border: 2px solid black;
 }
 .schedule_user_div{
@@ -464,12 +465,13 @@
 
 }
 .schedule_availability_title{
-     width:20%;
-  
+     width:20%;  
+    
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
+    background-color: rgb(192, 239, 223);
 }
 .schedule_top_row_management{
     display: flex;
@@ -481,8 +483,8 @@ border: 2px solid rgb(41, 41, 41);
 }
 .schedule_week_title_top_management{
     width: 20%;
-
-    
+    background-color: rgb(210, 250, 250);
+     
     display: flex;
     align-items: center;
     justify-content: center;
@@ -509,9 +511,10 @@ border: 2px solid rgb(41, 41, 41);
     width: 20%;
 }
 .schedule_container_management{
-    border: 2px solid orangered;
+    border: 2px solid rgb(69, 69, 68);
     height: 100%;
     width: 20%;
+    
 }
 .schedule_user_availability{
 
@@ -526,3 +529,29 @@ border: 2px solid rgb(41, 41, 41);
     border-bottom: 0px;
 }
 
+.schedule_day_right{
+
+    width: 50%;
+}
+.schedule_day_left{
+
+    width: 50%;
+}
+.day_separator{
+    display: flex;
+    width: 100%;
+    
+    
+}
+.schedule_title_management{
+
+/*border: 2px solid orange;*/
+color: rgb(235, 235, 235);
+font-size:xx-large;
+padding-left: 0.75%;
+display: flex;
+
+    padding-left: 1.5%;
+    align-items: center;
+    justify-content: center;
+}

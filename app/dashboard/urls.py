@@ -40,10 +40,9 @@ urlpatterns = [
     path('schedules', views.ScheduleView.as_view(), name = 'schedule_view'),
     path('schedules/<int:pk>', views.ScheduleDetail.as_view(), name = 'schedule_detail'),
     path('schedules/manage', views.ScheduleManage.as_view(), name = 'schedule_manage'),
-    path('schedules/user/<int:user>/week/<int:week>', views.ScheduleUpdate.as_view(), 
+    path('schedules/update/<int:pk>', views.ScheduleUpdate.as_view(), 
          name = 'schedule_update'),
-    path('schedules/create/user/<int:user>/week/<int:week>', views.ScheduleCreate.as_view(),
-          name='create_schedule'),
+ 
     #######TEAM ##########
     path('team/update/<int:pk>', views.TeamUpdate.as_view(), name='team_update'),
     path('team/completed/', views.TeamCompletedTask.as_view(), name='team_completed'),
