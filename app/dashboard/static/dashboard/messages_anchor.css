@@ -55,13 +55,15 @@ a:visited{
     transform: translateX(-50%);
     height:96vh;
     width: 82vw;
-    border: rgb(65, 65, 65) 1px solid;
+    border: rgb(65, 65, 65) 1.5px solid;
     padding-left: 1vw;
-    background-color: rgb(188, 202, 212);
+    background-color: rgb(124, 126, 127);
+    color: white;
 }
 
 .text_field textarea{
     height: 49vh;
+    
 }
 
 .reports_div_top_section{
@@ -76,10 +78,14 @@ a:visited{
 }
 .link_divs_send_msg{
     margin-left: 4%;
+    
 }
 .title_bar_send_msg input{
     width: 100%;
     margin-left: 2%;
+      background-color: #ebebeb;
+      border: 0px;
+       border: 1px solid rgb(81, 81, 81);
     
 }
 .title_bar_send_msg{
@@ -94,12 +100,14 @@ a:visited{
  height: 80%;
  margin-top: 3%;
  width: 90%;
-
+   background-color: #ebebeb;
+       border: 1px solid rgb(61, 61, 61);
    
 }
 .filefield_send_msg input{
     width: 140%;
     margin-top: 2%;
+    
 }
 .bottom_send_msg{
  
@@ -118,6 +126,8 @@ a:visited{
     height: 78%;
      margin-top: 1%;
      margin-bottom: 2%;
+    background-color: #ebebeb;
+        border: 1.5px solid rgb(61, 61, 61);
     
 }
 .bottom_right_send_msg{
@@ -137,7 +147,7 @@ a:visited{
    /* border: 2px orange solid;*/
 }
 .send_msg_btn_create{
-    background-color: rgb(77, 128, 238);
+    background-color: rgb(104, 104, 104);
     border-radius: 4px;
     width: 25%;
     padding: 1%;
@@ -239,9 +249,9 @@ form textarea{
    position: absolute;
     top:50%;
     transform: translateY(-50%);
-    width: 9.5%;
+    width: 9%;
  
-    margin-left: 1px;
+    margin-left: 1%;
     
  }
 
@@ -274,18 +284,24 @@ form textarea{
   top: 0;
   z-index: 100; 
   padding: 10%;
-  background-color: rgb(155, 139, 117);
+
+    background-color: rgb(155, 139, 117);
+
   border-bottom: 3px solid #ccc;
 }
 .history {
   display: flex;
   justify-content: center;     
   align-items: center;       
-  height: 11vh;              
-  background-color: rgb(232, 232, 232);
-  border: 1px grey solid;
+  height: 13vh;              
+  background-color: rgb(234, 234, 234);
+  margin-top: 1px;
+  border: 1px solid black;
+  border-left: 0px;
+  border-right: 0px;
   border-radius: 1px;
   font-size:smaller;
+  width: 100%;
   text-align: center;
   
   
@@ -297,11 +313,12 @@ form textarea{
 }
 
 .reports_menu{
-    border: 1.5px rgb(121, 120, 120) solid;
+    border: 2px rgb(108, 107, 107) solid;
     width: 18%;
     text-align: center;
     background-color: rgb(155, 139, 117);
-    overflow: auto;
+    overflow-y: scroll;
+    
     
 }
 .link_block{
@@ -316,6 +333,7 @@ form textarea{
     padding-left: 0.5vw;;
     padding-top: 1.5vh;
     
+    
 }
 
 
@@ -323,7 +341,7 @@ form textarea{
     
     font-size:smaller;
     text-decoration: none;
-    color: rgb(63, 101, 236) !important;
+    color: rgb(232, 232, 232) !important;
    
     position: relative;
    
@@ -341,7 +359,7 @@ form textarea{
 #thumbnail{
     position: fixed;
     max-width: 16%;
-    bottom: 4%;
+    bottom: 5%;
     right: 0.5%;
 }
 .overlay{
@@ -401,8 +419,8 @@ select:focus {
     outline-style: inset;
     border-width: 2px;
  outline-color: rgb(40, 194, 255);
-  background-color: #f8f8f8;
-  border: 2px solid rgb(96, 136, 255);
+  
+  border: 2px solid rgb(132, 155, 224);
   transition: all 0.2s ease-in-out;
   box-shadow: 0 0 14px rgb(114, 154, 248);
 }
@@ -445,12 +463,21 @@ form button{
     
 }
 /******************* View a message **********************/
+.title_container_send_msg_update input{
+    background-color: #ebebeb;
+    border: 0px;
+    position: relative;
+    left: 4%;
+    padding-left: 1%;
+
+}
 .top_send_msg_update{
   /*  border: 2px solid red;*/
     width:100%;
     height: 5%;
       padding-left: 3.5%;
     padding-top: 4%;
+    color: white;
 }
 .send_update_recipients{
    /* border: orangered solid 2px;*/
@@ -467,12 +494,14 @@ form button{
 }
 .send_update_recipients select{
     height: 123%;
+    background-color: #ebebeb;
 }
 .send_update_text_area textarea{
      margin-top: 1%;
     width:95%;
     height: 90%;
     margin-left: 1%;
+    background-color: #ebebeb;
 }
 .send_msg_update_recipient{
     margin-top: 2%;
@@ -484,7 +513,7 @@ form button{
 }
 
 .send_msg_update_submit{
-    background-color: royalblue;
+    background-color: rgb(104, 104, 104);
     margin-left: 3.5%;
     width: 15%;
     padding: 0.5%;
@@ -496,6 +525,7 @@ form button{
 
 .top_send_msg_update input{
     width: 60%;
+    margin-left: 1%;
 
 }
 .bottom_send_msg_update{
@@ -504,6 +534,7 @@ form button{
     display: flex;
     padding-top: 1%;
      margin-right: 3%;
+     color: white;
 }
 .visual_frame_update_pin_msg{
  border: 2.5px solid black;
@@ -516,15 +547,57 @@ form button{
        background-color: rgb(174, 196, 215);
 
 }
+.top_visual_frame_detail{
+    background-color: rgb(148, 113, 91);
+    height:7%;
+    position: absolute;
+    top: 0%;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px;
+}
+.bot_visual_frame_detail{
+    background-color: rgb(148, 113, 91);
+    height:3%;
+    position: absolute;
+    bottom: 0%;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px;
+    z-index: -1;
+}
+.top_visual_frame_task_list{
+    background-color: rgb(150, 120, 102);
+    height:7%;
+    position: absolute;
+    top: 0%;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px;
+}
+.bot_visual_frame_task_list{
+     background-color: rgb(150, 120, 102);
+    height:3%;
+    position: absolute;
+    bottom: 0%;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px;
+    z-index: -1;
+}
 .visual_frame_update{
-    border: 2.5px solid black;
+    border: 1.5px solid black;
     height: 86%;
     width: 65%;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -47%);
-       background-color: rgb(174, 196, 215);
+       background-color: rgb(141, 142, 143);
 
 }
 .message_update_submit{
@@ -587,7 +660,7 @@ form button{
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-     background-color: rgb(127, 158, 184);
+     background-color: rgb(165, 186, 207);
      padding-top: 5%;
      
 
@@ -596,6 +669,7 @@ form button{
     margin-left: 3.2%;
     top: 4.6%;
     position: fixed;
+    color: #343333;
 }
 .billboard_head{
     text-align: center;
@@ -638,7 +712,7 @@ form button{
     white-space: pre-wrap;
     text-align:justify top;
     transform-origin: top;
-    background-color: rgb(241, 241, 241);
+    background-color: #ebebeb;
     font-family: 'Times New Roman', Times, serif;
     
     overflow-wrap: break-word;   
@@ -658,24 +732,7 @@ form button{
   font-size: 15px;
     
 }
-.general_medium_container{
 
-      border: 2px solid rgb(156, 156, 156);
-    width: 40vw;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-47.5%);
-    height: 85.5vh;
-    overflow: auto;
-   
-    white-space: pre-wrap;
-    
-    background-color: rgb(230, 231, 233);
-    font-family: 'Times New Roman', Times, serif;
-   
-   
-}
 .data_container__view_msg{
     /*border: 2px solid black;*/
     left: 15%;
@@ -688,7 +745,7 @@ form button{
 
 .home_head{
     text-align: center;
-    padding-top: 4vh;
+    padding-top: 3vh;
     color: rgb(38, 38, 38);
     
  
@@ -697,14 +754,14 @@ form button{
 }
 
 .center_container{
- border: rgb(99, 99, 99) 1.5px solid;
+ border: rgb(99, 99, 99) 1px solid;
      font-size: smaller;
     left: 50%;
     position: absolute;
     bottom: 0%;
     height: 100%;
     transform: translate(-50%);
-    width: 70vw;
+    width: 75vw;
     background-color: rgb(188, 204, 215);
   
    
@@ -740,14 +797,14 @@ form button{
     
 }  
 .text_container{
-    background-color: rgb(230, 231, 233);
+    background-color: rgb(235, 234, 232);
     height: 77%;
-    width: 80%;
+    width: 78%;
     left: 50%;
     position: absolute;
     transform: translateX(-50%);
     bottom:1%;
-    border: 1.5px rgb(170, 170, 170) solid;
+    
     border-radius: 3px;
     
     
@@ -870,15 +927,28 @@ form button{
     margin-top: 15%;
 }
 /****************** TASKS ******************/
-
+.task_detail_outer_div{
+    display:flex;
+    border: 1px solid rgb(105, 105, 105);
+    position: absolute;
+    height: 85vh;
+    width: 70vw;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-47%);
+}
 .flex_container_tasks{
    /* border: orange solid 2px;*/
     width: 100%;
-    height: 100vh;
+    height: 97vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
     gap: 2%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-53%);
      
 }
 
@@ -905,7 +975,7 @@ form button{
 
 .task_blocks2_denied{
          background-color: rgb(247, 147, 147);
-         border: 2.5px rgb(146, 146, 146) solid;
+        border: 2px grey solid;
          padding-left: 1%;
 
 }
@@ -914,18 +984,19 @@ form button{
   top: 0;
   z-index: 100; 
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+   
   text-align: center;
    background-color: rgb(174, 196, 215);
+   
   
 }
 .task_block_container2{
-      overflow: auto;
+      overflow-y: scroll;
     height: 77%;
     width: 25%;
     margin-top: 5%;
-    border: 2.5px rgb(146, 146, 146) solid;
-      background-color: rgb(232, 229, 229);
+   border: 2.5px grey solid;
+      background-color: rgb(244, 243, 243);
        font-family: 'Times New Roman', Times, serif;
         font-size: 15px;
 }
@@ -950,11 +1021,11 @@ form button{
 .task_block_container3{
     z-index: 50;
     height: 77%;
-  background-color: rgb(232, 229, 229);
+  background-color: rgb(249, 247, 247);
      width: 25%;
     margin-top: 5%;
-    overflow: auto;
-     border: 2.5px rgb(146, 146, 146) solid;
+    overflow-y: scroll;
+     border: 2.5px grey solid;
      font-family: 'Times New Roman', Times, serif;
      font-size: 15px;
 }
@@ -970,7 +1041,7 @@ form button{
    background-color: rgb(174, 196, 215);
   z-index: 100; 
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+
   text-align: center;
 }
   
@@ -981,80 +1052,28 @@ form button{
   background-color: rgb(174, 196, 215);
   z-index: 100; 
   padding: 10px;
-  border-bottom: 1px solid #ccc;
   text-align: center;
 }
 
 .flex_container_task_view{
     border: 2px rgb(85, 85, 85) solid;
-   
+    margin: 1%;
     padding-top: 10px;
     top: 15%;
     background-color: white;
      padding: 2%;
 }
 .title_task_view{
-
+   
      border: 2px rgb(85, 85, 85) solid;
      position: relative;
     background-color: white;
     padding: 2%;
+    margin: 1%;
+    
 }
 
-.task_detail_right_panel{
-     border: 2px rgb(0, 0, 0) solid;
-     height: 85vh;
-    width: 17vw;
-    top:50%;
-    transform: translateY(-50%);
-    position: absolute;
-    right: 10%;
-    margin: 2px;
-    background-color: rgb(174, 196, 215);
-    padding: 2px;
-    margin-top: 1%;
-}
-.task_detail_completed_btn2{
- width: 90%;
- height: 10%;
-    left: 50%;
-    top: 0%;
-    transform: translateX(-50%);
-    position: relative;
-    margin-top:10%;
-}
-.task_detail_completed_btn{
- width: 90%;
- height: 90%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    position: relative;
-}
-.task_completed_deny_container{
-     margin-top: 10%;
-  /*  border: 2px purple solid;*/
-    height: 10%;
-}
-.task_completed_deny_container2 textarea{
-  border: 2px solid grey;
-  width: 95%;
-  margin-top: 4%;
-}
-.task_completed_deny_container2{
-  text-align: center;
-  
-  margin-top: 7%;
-}
-.btn_deny{
-    position: fixed;
-    height: 9%;
-    width: 90%;
 
-    left: 50%;
-  
-    transform: translateX(-50%);
-}
 .task_submit_form textarea{
     margin-top: 2%;
     width: 99%;
@@ -1091,32 +1110,54 @@ form button{
 
 }
 .task_detail_left_panel{
-     border: 2px rgb(0, 0, 0) solid;
-    height: 85vh;
-    width: 17vw;
-    top:50%;
-    transform: translateY(-50%);
-    position: absolute;
-    left: 10%;
-    margin: 2px;
+     border: 2px rgb(62, 62, 62) solid;
+     margin-right: 2px;
     background-color: rgb(174, 196, 215);
     padding: 2px;
-    margin-top: 1%;
-
+   
 }
 
+.general_medium_container{
+
+      border: 3px solid rgb(70, 70, 70);
+    width: 87%;
+    overflow: auto;
+   
+    white-space: pre-wrap;
+    
+    background-color: rgb(241, 241, 241);
+    font-family: 'Times New Roman', Times, serif;
+   
+   
+}
+.task_detail_team_container{
+    border: 2px solid black;
+    height: 50%;
+    overflow-y: scroll;
+    background-color: rgb(100, 100, 100);
+    margin-top: 7%;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+
+}
 .task_completed{
-   border: 2px rgb(85, 85, 85) solid;
+  
      position: relative;
-    background-color: white;
-     margin-top: 1%;
-    padding: 2%;
+    background-color: rgb(65, 65, 65);
+   color: white;
+    padding: 5%;
 
 
 }
 .title_data{
-    padding-top: 10px;
+    padding-top: 8%;
     margin-left: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 .task_submit_form{
     width: 50%;

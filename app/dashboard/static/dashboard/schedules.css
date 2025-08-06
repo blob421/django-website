@@ -73,6 +73,9 @@ display: flex;
     justify-content: center;
   
 }
+.week_button_pending{
+  background-color: rgb(235, 191, 110);
+}
 .week_button{
 
 }
@@ -97,7 +100,17 @@ display: flex;
     justify-content: center;
 
 }
+.hour_range_div_pending{
+   height: 50%;
+    border: solid orange 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color:rgb(228, 187, 120) ;
 
+}
+/*******************Ammend form*********************/
 .ammend_button{
  
   
@@ -119,3 +132,34 @@ display: flex;
   background-color: rgb(140, 168, 193);
 }
 
+.schedule_ammend_outer_div{
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%,-47%);
+width: 40vw;
+height: 75vh;
+border: 2px solid rgb(49, 49, 49);
+background-color: rgb(222, 204, 156);
+padding-left: 3%;
+padding-top: 2%;
+padding-right: 1.5%;
+}
+.schedule_ammend_labeltag{
+padding-bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+}
+.schedule_ammend_textarea{
+ padding-top: 10%;
+}
+.schedule_ammend_submit_btn{
+  margin-top: 2%;
+  height: 10%;
+  width: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+
+}

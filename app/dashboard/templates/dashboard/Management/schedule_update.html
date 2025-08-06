@@ -2,10 +2,61 @@
 {% block content %}
 
 
+    <div class="schedule_update_outer_div">
 
-<form method="POST">
-  {% csrf_token %}
-  {{form.as_p}}
-  <input type="submit">
-</form>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="monday">  
+    {{form.monday.label_tag}}
+      {{form.monday}}
+    </div>
+    <div class="tuesday">  
+        {{form.tuesday.label_tag}}
+      {{form.tuesday}}
+    </div>
+    <div class="wednesday">  
+      {{form.wednesday.label_tag}}
+      {{form.wednesday}}
+    </div>
+    <div class="thursday">  
+      {{form.thursday.label_tag}}
+      {{form.thursday}}
+    </div>
+    <div class="friday">  
+      {{form.friday.label_tag}}
+      {{form.friday}}
+    </div>
+    <div class="saturday">  
+        {{form.saturday.label_tag}}
+      {{form.saturday}}
+    </div>
+    <div class="sunday">  
+        {{form.sunday.label_tag}}
+      {{form.sunday}}
+      </div>
+      <div class="unscheduled">
+        {{form.unscheduled.label_tag}}
+        {{form.unscheduled}}
+      </div>
+
+    
+      <input type="submit" class="schedule_update_button" value="Confirm">
+
+    </form>
+
+    </div>
+  {% if schedule.message %}
+    <div class="schedule_update_message">
+
+      {{form.message}}
+    </div>
+    {% endif %}
+    
+
+
+
+ <div class="send_msg_back">
+   <a href="{% url 'dashboard:schedule_manage' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
 {% endblock %}

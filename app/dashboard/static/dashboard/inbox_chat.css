@@ -46,12 +46,14 @@ height: 100%;
     top: 0%;
     background-color: rgb(155, 139, 117);
     position: absolute;
-    left: 50%;
+    left: 50%; 
     text-align: center;
     transform: translateX(-50%);
     width: 100%;
      padding-top: 4vh;
      border: 1px grey solid;
+
+
 }
 .bubble_wrapper_inbox{
  left: 1%;
@@ -59,14 +61,15 @@ height: 100%;
   
   /*border: 2px solid black;*/
   width: 90%;
-  margin-top: 11.5%;
+  margin-top: 14.5%;
   
   
 }
 
 .msg_date{
-    right: 0%;
+    left: 70%;
     position: absolute;
+    
     
 }
 
@@ -89,7 +92,7 @@ height: 100%;
     position: relative;
    
     background-color: rgb(240, 239, 239);
-    border-radius: 35px;
+    border-radius: 5px;
     height: 14vh;
    
     overflow: scroll;            /* Enables scrolling */
@@ -101,16 +104,16 @@ height: 100%;
 }
 .text_container_inbox{
 
-     background-color: rgb(230, 231, 233);
+      background-color: rgb(235, 234, 232);
     height: 77%;
-    width: 80%;
+    width: 78%;
     left: 50%;
     position: absolute;
     overflow-y: scroll;
     
     transform: translateX(-50%);
     bottom:1%;
-    border: 1.5px rgb(170, 170, 170) solid;
+
     border-radius: 3px;
 }
 
@@ -123,7 +126,7 @@ height: 100%;
    padding-left:15px;
    padding-right: 15px;
    overflow: hidden;
-   font-weight: bold;
+  
    color: rgb(81, 115, 219);
   
 }

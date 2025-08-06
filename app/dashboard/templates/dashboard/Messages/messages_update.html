@@ -8,7 +8,7 @@
       {% csrf_token %}
      <div class="title_container_send_msg_update">
       {{form.title.label_tag}}
-{{form.title}}   
+      {{form.title}}   
                </div>   
  </div>
 
@@ -33,7 +33,7 @@
 
 
   <div class="send_msg_back">
-   <a href="{% url 'dashboard:messages' %}">
+   <a href="{% url 'dashboard:messages_create' %}">
     <button class="del_btn2" type="button">Back</button></a>
  </div>
   {% endblock %}

@@ -42,6 +42,10 @@ urlpatterns = [
     path('schedules/manage', views.ScheduleManage.as_view(), name = 'schedule_manage'),
     path('schedules/update/<int:pk>', views.ScheduleUpdate.as_view(), 
          name = 'schedule_update'),
+    path('schedules/user/<int:pk>/availability', views.AvailabilityForm.as_view(), 
+         name='availability'),
+    path('schedules/user/<int:pk>/request', views.ScheduleChangeRequest.as_view(),
+          name='schedule_request'),
  
     #######TEAM ##########
     path('team/update/<int:pk>', views.TeamUpdate.as_view(), name='team_update'),

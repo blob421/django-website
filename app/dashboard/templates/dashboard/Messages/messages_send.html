@@ -4,7 +4,7 @@
  
  <div class="reports_container">
   
- <h class="title">Reports</h>
+ <div class="title">Reports</div>
  <div class="reports_div">
 
 
@@ -55,7 +55,7 @@
   <div class="history_title"> Reports History </div>
    {% for report in data %}
    <div class="history">
-    <a class ="link_block" href="{% url 'dashboard:report_update' report.id %}" target="_blank">{{report.title}}</a>
+    <a class ="link_block" href="{% url 'dashboard:report_update' report.id %}">{{report.title}}</a>
   </div>
    {% endfor %}
   

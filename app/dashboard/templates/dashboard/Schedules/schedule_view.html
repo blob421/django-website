@@ -4,9 +4,19 @@
  <div class="extreme_outer_div_schedule">
 <div class="title_container_schedule">
 <div class="schedule_title">Your schedule</div>
-<div class="schedule_time_range"> ( {{schedule.start_date}} - {{schedule.end_date}} )</div>
-<div class="schedule_button_div"> <button class="ammend_button">Request a change</button> </div>
+<div class="schedule_time_range">
+( {{schedule.week_range.starting_day.day}} {{start_month}} - 
+{{schedule.week_range.end_day.day}} {{end_month}} )</div>
+       
+       {% if schedule %}
+       <div class="schedule_button_div"> 
+              <a href="{% url 'dashboard:schedule_request' schedule.id %}">
+              <button class="ammend_button">Request a change
 
+              </button> 
+              </a>
+       </div>
+       {% endif %}
 </div>
 <div class="schedule_outer_frame">
 
@@ -16,7 +26,9 @@
            {% for schedule in schedules %}
            <div class="week_button_div">
                 <a href="{% url 'dashboard:schedule_detail' schedule.id %}">
-                <button class="week_button">Week{{forloop.counter}}</button>
+                <button class="week_button
+                 {% if schedule.request_pending %} week_button_pending
+            {% endif %}">Week{{forloop.counter}}</button>
                 </a>
            </div>
            {% endfor %}
@@ -36,7 +48,8 @@
                   <div class="week_day_title"> 
                   {{week_days}}
                   </div>
-                  <div class="hour_range_div">
+                  <div class="hour_range_div {% if schedule.request_pending %} 
+                  hour_range_div_pending {% endif %}">
                             <div class="hour_range">
                                   {{hours}}
                             </div>

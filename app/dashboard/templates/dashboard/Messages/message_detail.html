@@ -1,6 +1,10 @@
  {% include 'dashboard/base.html' %}
  {% block content %}
- <div class="visual_frame_msg_detail">   </div>
+ <div class="top_visual_frame_detail"></div>
+ <div class="visual_frame_msg_detail"> 
+    
+
+</div>
  <div class="general_text_container">
   <p class="general_text"> {{ report.content}} </p>
  </div>
@@ -13,7 +17,7 @@
 {% if report.content_type %}
 <div id="overlay" class="overlay" style="display: none; text-align: center;"
      onclick="hideOverlay();">
-    <img style="width:90%;margin-top: 5px; border:3px solid black;" 
+    <img style="width:87%;margin-top: 5px;" 
          src="{% url 'dashboard:pic_picture' report.id %}">
 </div>
 {% endif %}
@@ -23,7 +27,7 @@
      src="{% url 'dashboard:pic_picture' report.id %}"
      onclick="showOverlay();">
 {% endif %}
-
+ <div class="bot_visual_frame_detail"></div>
 <script>
 function showOverlay() {
     document.getElementById('overlay').style.display = 'block';

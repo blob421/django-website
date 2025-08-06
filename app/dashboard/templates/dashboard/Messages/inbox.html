@@ -62,7 +62,7 @@
        </div>
        {% else %}
         <div class="msg_content_inbox"><strong>{{message.forwarded_by}}: </strong>
-          {{message.title}}<em> (forwarded from {{message.user}}) </em> </div> </a>
+          {{message.title}}<strong><em> (forwarded from {{message.user}})  </em></strong> </div> </a>
        </div>
        {% endif %}
       <p class="msg_date">{{message.timestamp}}</p>

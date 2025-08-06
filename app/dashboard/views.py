@@ -416,15 +416,26 @@ class TaskSubmit(LoginRequiredMixin, View):
        
         return redirect(self.success_url)
     
-######### SCHEDULES ##################
+######### SCHEDULES ###########################################
 
 class ScheduleView(LoginRequiredMixin, View):
     template_name = 'dashboard/schedules/schedule_view.html'
     def get(self, request):
-        schedules = Schedule.objects.filter(user=self.request.user.userprofile)
+        all_schedules = Schedule.objects.filter(user=self.request.user.userprofile)
+        weeks = WeekRange.objects.all()[:4]
         
+        week1=weeks[0]
+        week2=weeks[1]
+        week3=weeks[2]
+        week4=weeks[3]
+
+        query = Q(week_range = week1) | Q(week_range = week2) | Q(week_range = week3) | Q(week_range = week4)
+        start_month = week1.starting_day.strftime("%B")
+        end_month = week4.end_day.strftime("%B")
+        schedules = all_schedules.filter(query).order_by('id')
         week_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-        ctx = {'schedules':schedules,'week_days':week_days}
+        ctx = {'schedules':schedules,'week_days':week_days, 'start_month':start_month,
+               'end_month':end_month}
         return render(request, self.template_name, ctx)
 
 
@@ -433,7 +444,20 @@ class ScheduleDetail(LoginRequiredMixin, View):
     template_name = 'dashboard/schedules/schedule_view.html'
     def get(self, request, pk):
         schedule = Schedule.objects.get(id = pk)
-        schedules = Schedule.objects.filter(user=self.request.user.userprofile)
+
+        start_month = schedule.week_range.starting_day.strftime("%B")
+        end_month = schedule.week_range.end_day.strftime("%B")
+
+        all_schedules = Schedule.objects.filter(user=self.request.user.userprofile)
+        weeks = WeekRange.objects.all()[:4]
+        week1=weeks[0]
+        week2=weeks[1]
+        week3=weeks[2]
+        week4=weeks[3]
+
+        query = Q(week_range = week1) | Q(week_range = week2) |Q(week_range = week3) | Q(week_range = week4)
+
+        schedules = all_schedules.filter(query).order_by('id')
 
         week_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
         hours = [schedule.monday, schedule.tuesday, schedule.wednesday, schedule.thursday,
@@ -441,7 +465,8 @@ class ScheduleDetail(LoginRequiredMixin, View):
         
         days_hours = zip(week_days, hours)
         ctx = {'schedule':schedule, 'schedules':schedules,'week_days':week_days, 
-               'hours': hours , 'days_hours':days_hours}
+               'hours': hours , 'days_hours':days_hours, 'start_month':start_month,
+               'end_month':end_month}
         return render(request, self.template_name, ctx)
 
 
@@ -460,6 +485,9 @@ class ScheduleManage(ProtectedView):
         week3=weeks[2]
         week4=weeks[3]
 
+        starting_month = week1.starting_day.strftime("%B")
+        ending_month = week4.end_day.strftime("%B")
+
         query = Q(week_range = week1) | Q(week_range = week2) | Q(week_range = week3) | Q(week_range = week4)
         schedules = Schedule.objects.filter(user__team = self.request.user.userprofile.team)
         last_month_schedules  = schedules.filter(query).order_by('id')
@@ -470,25 +498,49 @@ class ScheduleManage(ProtectedView):
               end_day = week.end_day
               start_month = start_day.strftime("%B")[:3]
               end_month = end_day.strftime("%B")[:3]
+
               week_range = f'{start_day.day} {start_month}- {end_day.day} {end_month}' 
               week_array.append(week_range)
 
       
         ctx= {'users':team_users, 'weeks':week_array, 
-              'week_objects':weeks, 'schedules':last_month_schedules, 'w1_sched': week1}
+              'week_objects':weeks, 'schedules':last_month_schedules, 
+              'start_month':starting_month, 'end_month':ending_month}
         
         return render(request, self.template_name, ctx)
+
+
 
 class ScheduleUpdate(ProtectedUpdate):
     template_name = 'dashboard/management/schedule_update.html'
     model = Schedule
     success_url = reverse_lazy('dashboard:schedule_manage')
-    fields = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+    fields = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 
+              'saturday', 'sunday', 'unscheduled', 'message']
+    def form_valid(self, form):
+        form.instance.message = None
+        form.instance.request_pending = False
+        return super().form_valid(form)
 
 
+class AvailabilityForm(ProtectedUpdate):
+    template_name = 'dashboard/management/availability.html'
+    model = UserProfile
+    fields = ['availability', 'weekends']
+    success_url = reverse_lazy('dashboard:schedule_manage')
 
 
-######### Management #################
+class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
+    template_name = 'dashboard/schedules/schedule_change.html'
+    model = Schedule
+    fields = ['message']
+    success_url = reverse_lazy('dashboard:schedule_view')
+    def form_valid(self, form):
+        form.instance.request_pending = True
+        return super().form_valid(form)
+
+
+######### Management ############################################
 
 class TeamView(ProtectedView):
     template_name='dashboard/Management/team_view.html'
@@ -576,7 +628,7 @@ class TeamCompletedApprove(ProtectedView):
 
 
 
-############# CHAT #################
+############# CHAT ####################################################
 
 class ChatView(LoginRequiredMixin, View):
     template = 'dashboard/chat_view.html'
@@ -599,7 +651,7 @@ class ChatView(LoginRequiredMixin, View):
         return redirect(reverse('dashboard:chat_view'))
 
 
-######## PROJECTS ###############
+######## PROJECTS ####################################################
 class ChartCreate(ProtectedCreate):
     template_name = 'dashboard/projects/chart_create.html'
     model = Chart

@@ -3,8 +3,13 @@
  {% block content %}
  <div class="extreme_outer_div_schedule_management">
 <div class="title_container_schedule_management">
-<div class="schedule_title_management">Schedule management</div>
+<div class="schedule_title_management">
+    Schedule management 
 
+</div>
+<div class="date_range_title_top">
+    ( {{start_month}} - {{end_month}} )
+</div>
 </div>
 
 <div class="schedule_outer_frame_management">
@@ -19,7 +24,7 @@
            {% for user in users %}
            <div class="schedule_user_div">
             
-                {{user.user.username}}
+                <p class="schedule_user_text">{{user.user.username}} </p>
               
            </div>
            {% endfor %}
@@ -49,44 +54,47 @@
           
            <div class="schedules_user_rows">
                     
-
-                     <div class="schedule_user_availability"> 
-                        
-                    </div>
-                    
+                        <a href="{% url 'dashboard:availability' user.id %}" 
+                        class="schedule_user_availability"> 
+                        {% if user.availability %}
+                        <div>Week : {{user.availability}}  </div>
+                        Weekends : {{user.weekends}}
+                        {% endif %}
+                       </a>
                
                      {% for schedule in schedules %}
                      {% if schedule.user == user %}
-                     {% if schedule.monday %}
+                     {% if schedule.unscheduled or schedule.monday or schedule.tuesday or schedule.wednesday or schedule.thursday or schedule.friday or schedule.friday or schedule.saturday or schedule.sunday %}
                      <a href="{% url 'dashboard:schedule_update' schedule.id %}" 
-                     class="schedule_container_management">
+                     class="schedule_container_management {% if schedule.message %} 
+                     schedule_container_management_ammend{% endif %}">
                         <div class="day_separator"> 
                                <div class="schedule_day_left">
                                                              
-                                 <div> Mon: {{schedule.monday}}  </div>
-                                  <div>
+                                      <div class="justified_day">Mon: {{schedule.monday}}  </div>
+                                       <div class="justified_day">
 
                                        Wed: {{schedule.wednesday}}
                                   </div>
                                    
-                                 <div>
+                                 <div class="justified_day">
                                        Fri: {{schedule.friday}}  
                                  </div>
-                                 <div>
+                                      <div class="justified_day">
                                      Sun: {{schedule.sunday}}  
                                  </div>
                                    
                               </div>
                               <div class="schedule_day_right">
-                                   <div>
+                                   <div class="justified_day">
                                     Tue: {{schedule.tuesday}}
                                      
                                   </div>
-                                   <div>
-                                     Tur: {{schedule.thursday}}
+                                   <div class="justified_day">
+                                     Thu: {{schedule.thursday}}
                                    </div>
                                  
-                                    <div>
+                                    <div class="justified_day">
                                       Sat: {{schedule.saturday}}                      
                                     </div>
                                    
@@ -103,7 +111,7 @@
 
                        <a href="{% url 'dashboard:schedule_update' schedule.id %}" 
                    class="schedule_add_schedule_cont">
-                     Add +
+                    <div class="schedule_add_text"> Add + </div>
                     </a>   
                  
                      {% endif %}
