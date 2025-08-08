@@ -65,7 +65,7 @@
  {% if task.completed %}
  {% if not task.denied %}
 <a href="{% url 'dashboard:task_detail' task.id %}">
- <div class="task_blocks2">
+ <div class="task_blocks2_employee">
       <p class="task_title">{{task.name}} </p>
      <p class="task_due_date">Due date: {{task.due_date}}  </p>
  </div>

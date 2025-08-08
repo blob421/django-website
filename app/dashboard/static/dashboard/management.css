@@ -1,38 +1,19 @@
 
 /*************TEAMS********************/
 
-.message_update_pin_msg{
- margin-top: 8%;
- margin-left: 1%;
-    width: 60%;
-    left: 50%;
-    position:relative;
-    transform: translateX(-50%);
-    height: 100%;
 
-}
-.update_team_submit{
-    background-color: rgb(0, 128, 255);
-    width: 20%;
-    padding: 1%;
-    border-radius: 4px;
-    color: white;
-    margin-top: 1%;
-}
-.form_update_team label{
-    padding: 1%
-}
+
 
 .border_container{
         border: solid black 2px;
-    height: 79.3vh;
+    height: 84vh;
     display: flex;
     position: fixed;
     bottom: 0%;
     left:49.8%;
     transform: translateX(-50%);
     width: 90.1vw;
-    background-color: red;
+    background-color: rgb(150, 107, 87);
     border: 2px black solid;
  
 }
@@ -47,7 +28,7 @@
     left:50%;
     transform: translateX(-50%);
     width: 90vw;
-   
+    border-top: 2px solid rgb(60, 60, 60);   
 }
 .team_tasks{
   width: 75%;
@@ -66,8 +47,9 @@
    width:25%;
  /* border: rgb(55, 226, 43) 2px solid;*/
   height: 100%;
-  background-color: rgb(141, 155, 164);
+  background-color: rgb(150, 163, 171);
   border: 2px rgb(36, 36, 36) solid;
+  border-top: 0px;
   
  
 }
@@ -83,22 +65,23 @@
     
 }
 .team_name_container{
-    border: solid rgb(59, 59, 59) 2.5px;
+    border: solid rgb(88, 88, 88) 2.5px;
     width: 23%;
     flex-shrink: 0;
     position: sticky;
   left: 0;
   z-index: 100; 
-  background-color: rgb(196, 196, 196);
+
+  background-color: #b3c7e0;
  
   padding-left: 2px;
 }
 
 .tasks_units_blocks{
-   border: 2px rgb(45, 45, 45) solid;
+   border: 2px rgb(100, 100, 100) solid;
    width: 20%;
    flex-shrink: 0;
-   background-color: azure;
+   background-color: white;
    padding-left: 2px;
  
 }
@@ -127,19 +110,24 @@
    padding-left: 2px;
 }
 .tasks_units_blocks:hover{
-    background-color: rgb(227, 227, 227);
+    background-color: rgb(237, 237, 237);
 }
 .team_title{
     position: fixed;
     left:5%;
     top: 0%;
+    color: #403232;
+    
+ 
+    
 }
 
 .team_second_title{
-
+    z-index: 100;
     position: fixed;
-    top: 14%;
-    left: 5%;
+    top: 16%;
+    left: 5.5%;
+    font-size: medium;
 }
 
 .link_management{
@@ -199,7 +187,7 @@
           display: flex;
   justify-content: center;   
   align-items: center;   
-  margin-top: 15%;
+  margin-top: 6%;
   padding: 5%;
 
 }
@@ -208,11 +196,11 @@
    display:flex;
     border: 2px solid rgb(62, 62, 62);
     position: absolute;
-    height: 85vh;
-    width: 75vw;
+    height: 88vh;
+    width: 82vw;
     left: 50%;
     top: 50%;
-    transform: translate(-50%,-47%);
+    transform: translate(-50%,-48%);
 
 
 }
@@ -224,21 +212,106 @@
     padding: 2px;
     width:20%;   
 }
-.task_blocks2{
-     
-  
+.tasklist_blocks_title_manage{
+       height: 6%;
+      display: flex;
+      align-items: center;
+   position: sticky;
+    z-index: 100;
+    top: 0;
        background-color: rgb(255, 255, 255);
-         border: 2px rgb(155, 152, 152) solid;
+         border: 1px rgb(155, 152, 152) solid;
+}
+.task_blocks2{
+       height: 11%;
+      display: flex;
+      align-items: center;
+
+       background-color: rgb(242, 242, 242);
+         border: 1px rgb(155, 152, 152) solid;
+}
+.task_list_manage_task_name_title{
+   border: 2px solid rgb(62, 62, 62);
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(188, 188, 188);
+    
+
+}
+
+.task_list_manage_task_duedate_title{
+        border: 2px solid rgb(62, 62, 62);
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1px;
+     background-color: rgb(188, 188, 188);
+   
+ 
+}
+.task_list_manage_task_name{
+     border: 2px solid rgb(62, 62, 62);
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.task_list_manage_task_duedate{
+      border: 2px solid rgb(62, 62, 62);
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 1px;
+    background-color: rgb(201, 233, 242);
+}
+.task_list_manage_task_duedate_late{
+        border: 2px solid rgb(62, 62, 62);
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 1px;
+    background-color: rgb(223, 184, 132);
+}
+.task_list_due_date_text{
+    position: relative;
+    left: 14%;
+}
+.task_list_review_title_text{
+   
+    position: relative;
+    color: rgb(22, 22, 22);
 }
 .task_title2{
       position: sticky;
   top: 0;
   z-index: 100; 
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-  text-align: center;
-  background-color: rgb(141, 155, 164);
+  height: 11vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: x-large;
+   padding-bottom: 1%;
+  border: 1px solid black;
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 0px;
+   
+ 
+ 
+
   
+}
+.task_list_manage_separator{
+    height: 4vh;
+     background-color: #f4f4f4;
 }
 
 
@@ -249,33 +322,64 @@
    
 }
 .tasks_completed_list{
-    border: 3px solid rgb(55, 55, 55);
-    width: 40vw;
-    height: 80vh;
+   
+    width: 65vw;
+    height: 88vh;
     left: 50%;
     top: 50%;
     position: absolute;
-    transform: translate(-50% ,-50%);
-    background-color: #ccc;
-    overflow: auto;
-}
+    transform: translate(-50% ,-53%);
+   
+    overflow-x: hidden;
 
+  
+
+}
+.task_list_blocks_div{
+    height: 83%;
+ overflow-y: scroll;
+ overflow-x: hidden;
+ background-color: rgb(236, 236, 236);
+
+}
+.task_list_manage_task_name_text{
+    margin-left: 1%;
+}
 #thumbnail2{ 
     max-width: 100%;
     position: fixed;
     bottom: 2%;
    
 }
-
+.top_visual_frame_task_list_management{
+        width: 100vw;
+    background-color: rgb(148, 113, 91);
+    height: 6.05vh;
+    top: 0%;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: -1;
+}
+.bot_visual_frame_task_list_management{
+    width: 100vw;
+    background-color: rgb(148, 113, 91);
+    height: 4vh;
+    bottom: 0%;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: -1;
+}
 .task_detail_left_panel{
    
 
 
 }
 .task_detail_right_panel{
-     border: 2px rgb(0, 0, 0) solid;
-    width: 20%;
-
+     border: 2px solid rgb(62, 62, 62);
+    width: 23%;
+    border-right: 0px;
     background-color: rgb(174, 196, 215);
 
  
@@ -291,7 +395,7 @@
     border: 2px solid rgb(96, 95, 95);
 }
 .task_detail_completed_btn{
- width: 90%;
+ width: 75%;
  height: 90%;
     left: 50%;
     top: 50%;
@@ -307,17 +411,19 @@
 .task_completed_deny_container2 textarea{
   border: 2px solid grey;
   width: 95%;
-  margin-top: 4%;
+  margin-top: 14%;
 }
 .task_completed_deny_container2{
   text-align: center;
   
-  margin-top: 7%;
+  margin-top: 10%;
 }
 .btn_deny{
-   
-    height: 9%;
-  
+   background-color: #5b5b5b;
+   width: 75%;
+    padding: 6%;
+    position: relative;
+    transform: translateX(-50%);
     left: 50%;
 
 }
@@ -326,6 +432,7 @@
     height: 40%;
     width: 99%;
     overflow: auto;
+    margin-top: 1%;
  
 }
 
@@ -347,7 +454,7 @@
     
  
      width: 100%;
-    
+    overflow-y: scroll;
     text-justify: auto;
     white-space: pre-wrap;
     text-align:justify top;
@@ -371,22 +478,28 @@
 }
 .title_completion_note{
     height: 5%;
-    border: 2px rgb(66, 66, 66) solid;
+    border: 2px rgb(62, 62, 62) solid;
     background-color: rgb(192, 152, 116);
     text-align: center;
     width: 100%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    
 } 
 .title_task_description_management{
      height: 5%;
      border: 2px rgb(66, 66, 66) solid;
-     background-color: rgb(192, 152, 116);
+      background-color: rgb(192, 152, 116);
      text-align: center;
       width: 100%;
+      padding-top: 1%;
+      padding-bottom: 1%;
 }
 .general_text_management{
     top: -20%;
    position: relative;
-    margin-right: 1%;            
+    margin-right: 1%;     
+    margin-left: 1%;      
     overflow-wrap: break-word;    
     overflow: hidden;   
 }
@@ -394,16 +507,31 @@
      top: -20%;
     position: relative;
    /* border: 2px solid green;*/
-
+    padding-left: 1%;
     overflow-wrap: break-word;    
     overflow: hidden;   
 
 }
 /*************Task Form*****************/
-.description_task_form{
+.task_create_middle_container select{
+    height: 10vh
+
+}
+.task_create_middle_container{
+
     width: 100%;
+  /*  border: 2px solid green;*/
+    display: flex;
     margin-top: 1%;
+}
+.description_task_form{
+    width: 72%;
+    margin-top: 1%;
+ /*   border: 2px black solid;*/
  
+}
+.description_task_form textarea{
+    background-color: rgb(255, 255, 255);
 }
 .form_frame{
     background-color: aqua;
@@ -413,28 +541,47 @@
     margin-top: 1%;
     
 }
+.task_create_title input{
+   width: 26vw;
+   margin-left: 3vw;
+   margin-bottom: 1vh;
+}
 .form_container{
     
-    height: 90vh;
-    width: 50vw;
+    height: 85vh;
+   
        position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 50%;
+    width: 65%;
   
     background-color: rgb(174, 196, 215);
-    padding-left: 3%;
+    padding-left: 2%;
     padding-right: 1%;
-    padding-top:1%;
-    padding-bottom: 2%;
+    padding-top:4%;
+    padding-bottom: 1%;
     border: 2px solid black;
    
     
 }
+.urgent_input{
+    transform: scale(1.5);
+}
+.title_div_create_task{
+    display: flex;
+   
+   /* border: 2px solid black;*/
+}
+.title_div_create_task{
+/*border: 2px solid black;*/
+    width: 84.9%;
+    
+}
 .task_form_select{
-    height: 100%;
-    width: 60%;
+    height: 51.2vh;
+    width: 25%;
+    margin-top: 1%;
   
 }
 .task_form_select select{
@@ -459,10 +606,11 @@
     gap: 7%;
     width: 100%;
     padding: 0.5%;
+    margin-top: 1vh;
     
 }
 .bot_flex_form_container{
-    margin-top: 1.2%;
+    margin-top: 3%;
     display: flex;
     /*border: green 2px solid;*/
    
@@ -471,7 +619,7 @@
 .task_form_btn_container{
 /*border: 2px blue solid;*/
 
-  margin-left: 1.2%;
+  margin-left: 0.5%;
   width: 35%;
 
 
@@ -501,6 +649,7 @@
     width: 90vw;
     height: 94vh;
 
+
 }
 .schedule_outer_frame_management{
   
@@ -524,6 +673,16 @@
     transform: translateX(-50%);
   border: 2px solid black;
     background-color: rgb(72, 72, 72);
+    
+}
+.schedule_users_title_manage{
+     width: 100%;
+    height: 5%;
+    display: flex;
+
+    align-items: center;
+    justify-content:center;
+    background-color: rgb(249, 219, 167);
     
 }
 .schedule_users_title{
@@ -588,10 +747,7 @@ border: 2px solid rgb(41, 41, 41);
    background-color: aliceblue;
    
 }
-.schedules_user_rows:hover{
-   
- background-color: rgb(192, 235, 219);
-}
+
 .schedule_right_area_management{
    width: 90%;
     height: 100%;
@@ -606,7 +762,7 @@ border: 2px solid rgb(41, 41, 41);
     width: 20%;
      border-top: 0px;
     border-bottom: 0px;
-    background-color: rgb(242, 243, 247);
+    background-color: aliceblue;;
 }
 .schedule_container_management{
     border: 2px solid rgb(69, 69, 68);
@@ -614,15 +770,13 @@ border: 2px solid rgb(41, 41, 41);
     width: 20%;
      border-top: 0px;
     border-bottom: 0px;
-    font-size: 14px;
-
-
     color: #000000;
     font-family:'Courier'; /**Consolas**/
      display: flex;
-     font-size: 13px;
+     font-size: 12.5px;
      flex-direction: column;
      justify-content: center;
+     background-color: aliceblue;
      
 }
 .schedule_container_management_ammend{
@@ -631,9 +785,9 @@ border: 2px solid rgb(41, 41, 41);
     width: 20%;
      border-top: 0px;
     border-bottom: 0px;
-    font-size: 14px;
+    font-size: 12.5px;
 
-  font-size: 13px;
+  
     color: #000000;
     font-family:'Courier';
      display: flex;
@@ -652,7 +806,7 @@ border: 2px solid rgb(41, 41, 41);
     width:20%;
     align-items: center;
     justify-content: center;
-     background-color: rgb(242, 243, 247);
+    background-color: aliceblue;
     
     
 
@@ -687,7 +841,7 @@ font-size:xx-large;
 padding-left: 0.75%;
 display: flex;
 
-    padding-left: 1.5%;
+    padding-left: 2.5%;
     align-items: center;
     justify-content: center;
 }
@@ -697,7 +851,7 @@ display: flex;
     bottom: 30%;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-40%);
  
 }
 .justified_day{
@@ -779,6 +933,74 @@ display: flex;
     width: 40%;
     height: 15%;
 }
+
+.update_team_submit{
+    background-color: rgb(86, 86, 86);
+    width: 23%;
+    padding: 1%;
+    border-radius: 4px;
+    color: white;
+    margin-top: 3%;
+    position: absolute;
+}
+
+.pinned_message_team_update{
+    left: 1.3%;
+    position: relative;
+
+}
+.form_update_team textarea{
+    position: relative;
+    height: 98%;
+    width: 99%;
+    padding-left: 1.5%;
+    padding-top: 2%;
+}
+.form_update_team label{
+    position: relative;
+    margin-left: 1%;
+}
+.form_update_team{
+     position: relative;
+       width: 100%;
+       height: 75%;
+    /*border: 2px solid green;*/
+}
+.visual_frame_update_pin_msg{
+ border: 2.5px solid black;
+    height: 85vh;
+    width: 55vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -48%);
+       background-color: rgb(174, 196, 215);
+       padding-top: 1%;
+       padding-left:5%;
+       padding-bottom: 1%;
+       padding-right: 5%;
+
+}
+.thumbnail_img_icon{
+   
+ 
+   
+    
+}
+.images_title{
+    margin-top: 4%;
+    color: white;
+    text-align: center;
+    background-color: #5b5b5b;
+    padding: 1%;
+}
+.image_container_task_review_detail{
+ 
+    height: 20%;
+   padding-top: 5%;
+   padding-left: 1%;
+
+}
 @media (max-width:1024px){
     .date_range_title_top{
         font-size: larger;
@@ -786,13 +1008,18 @@ display: flex;
     .schedule_title_management{
         font-size: x-large;
     }
-    .schedule_container_management{
-        font-size: 14.5px;
-    }
-    .schedule_container_management{
-        font-size: 10px;
-        
-        
 
+    .schedule_container_management{
+        font-size: 11px;
+        font-family: 'consolas';
+        color: #6f6f6f;
+        
+    
+}
+.extreme_outer_div_schedule_management{
+    width: 95vw;
+}
+.title_container_schedule_management{
+    width: 95vw;
 }
 }

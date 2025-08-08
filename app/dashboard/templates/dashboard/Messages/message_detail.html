@@ -6,8 +6,19 @@
 
 </div>
  <div class="general_text_container">
-  <p class="general_text"> {{ report.content}} </p>
+  <p class="general_text"> {{ report.content}} 
+     {% if report.content_type %}
+ {% load static %}
+<img id="thumbnail" 
+     src="{% static 'img_icon2.png' %}"
+     onclick="showOverlay();" style="width: 5%;">
+{% endif %}
+
+  </p>
  </div>
+
+
+
 <div class="data_container__view_msg">   
 
 <div class="from_who_title_msg_detail"><strong> From {{report.user.username}} : </strong> </div>
@@ -22,11 +33,6 @@
 </div>
 {% endif %}
 
-{% if report.content_type %}
-<img id="thumbnail" 
-     src="{% url 'dashboard:pic_picture' report.id %}"
-     onclick="showOverlay();">
-{% endif %}
  <div class="bot_visual_frame_detail"></div>
 <script>
 function showOverlay() {

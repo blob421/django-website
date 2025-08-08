@@ -310,7 +310,7 @@ class TasksList(LoginRequiredMixin, View):
     def get(self, request):   
       
         tasks = Task.objects.filter(users=self.request.user.userprofile.id)
-        print(tasks)
+       
         time = timezone.now()
       
         context = {'tasks': tasks, 'time': time}
@@ -571,12 +571,13 @@ class TeamCompletedTask(ProtectedView):
     model = Task
     template_name = 'dashboard/management/task_list.html'
   
-
+ 
     def get(self, request):
+        time = timezone.now()
         team = Team.objects.get(team_lead = self.request.user.userprofile)
         team_name = team.name
-        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name) 
-        ctx = {'tasks':team_tasks}     
+        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name).order_by('due_date') 
+        ctx = {'tasks':team_tasks, 'time':time}     
         return render(request, self.template_name, ctx)
 
 

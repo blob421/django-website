@@ -35,11 +35,11 @@
 }
 
 .charts_title_text{
-  transform: translateY(-50%);
-  top: 50%;
- left: 16%;
+ 
+
  width: 60%;
  position: relative;
+ right: 4%;
 /*border: 2px solid black;*/
  font-size: 2.2vw;
  
@@ -53,7 +53,19 @@
        
        
       }
+.outer_chart_title{
 
+  border: 2px solid burlywood;
+  width: 85%;
+  height: 85%;
+  top: 50%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .chart_create_buttons{
     margin-left: 0.5%;
     display: flex;

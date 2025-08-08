@@ -1,5 +1,6 @@
  {% include 'dashboard/base.html' %}
  {% block content %}
+   <div class="top_visual_frame_task_list_management"></div>
 <div class="extreme_outer_div_task_manage_detail">  
 
    <div class="task_detail_left_panel_manage">
@@ -12,13 +13,22 @@
               {% for user in task.users.all %}
               <div class="task_completed">{{user.user.username}}</div>
               {% endfor %}
+
+
+            
+              
           </div>
-          <!--
-            {% if task.content_type %}
-            <img id="thumbnail2" style="right:0.2%;" 
-                src="{% url 'dashboard:stream_completed_task_img' task.id %}"
-                onclick="showOverlay();">
-            {% endif %}-->
+    
+{% if task.content_type %}
+   {% load static %}
+<div class="images_title"> Images</div>
+      <div class="image_container_task_review_detail">
+        <img id="thumbnail_img_icon" style=" width: 28%; position: relative;" 
+         src="{% static 'img_icon2.png' %}"
+         onclick="showOverlay();">
+          </div>
+{% endif %}
+
      </div>
 
           <div class="text_frames_container_management">  
@@ -83,11 +93,11 @@
   {% if task.content_type %}
      <div id="overlay" class="overlay" style="display: none; text-align: center;"
      onclick="hideOverlay();">
-    <img style="width:80%;margin-top: 5px; border:3px solid black;" 
+    <img style="width:85%;margin-top: 5px; border:3px solid black;" 
          src="{% url 'dashboard:stream_completed_task_img' task.id %}">
   </div>
   {% endif %}
-
+<div class="bot_visual_frame_task_list"></div>
 <script>
 function showOverlay() {
     document.getElementById('overlay').style.display = 'block';

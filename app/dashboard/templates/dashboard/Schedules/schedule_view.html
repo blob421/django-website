@@ -28,7 +28,7 @@
                 <a href="{% url 'dashboard:schedule_detail' schedule.id %}">
                 <button class="week_button
                  {% if schedule.request_pending %} week_button_pending
-            {% endif %}">Week{{forloop.counter}}</button>
+            {% endif %}">Week {{forloop.counter}}</button>
                 </a>
            </div>
            {% endfor %}

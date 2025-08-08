@@ -1,6 +1,7 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
+  <div class="top_visual_frame_task_list_management"></div>
       <div class="send_msg_back">
    <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
 
@@ -9,21 +10,43 @@
     
 
 <div class="tasks_completed_list"> 
- <div class="task_title2"><p>Completed</p></div>
+    <div class="task_title2"><div class="task_list_review_title_text"></div></div>
+  <div class="task_list_blocks_div">  
+    
+    <div class="tasklist_blocks_title_manage">
+          <div class="task_list_manage_task_name_title">Name</div>
+          <div class="task_list_manage_task_duedate_title">  Due date {{task.due_date}}  </div>
+    </div>
+  
+    {% for task in tasks %}
+    {% if task.completed %}
+    {% if not task.approved_by %}
+    <a href="{% url 'dashboard:task_completed_detail' task.id %}">
+    <div class="task_blocks2">
+                <div class="task_list_manage_task_name">
+                    <div class="task_list_manage_task_name_text">
+                        {{task.name}}
 
-{% for task in tasks %}
-{% if task.completed %}
-{% if not task.approved_by %}
-<a href="{% url 'dashboard:task_completed_detail' task.id %}">
- <div class="task_blocks2">
-      <p class="task_title">{{task.name}} 
-     <p class="task_due_date">Due date: {{task.due_date}}  </p>
- </div>
+                    </div>  
+                  
+                </div>
+
+            <div class="task_list_manage_task_duedate {% if task.due_date < time %}
+            task_list_manage_task_duedate_late {% endif %}">
+                <div class="task_list_due_date_text">
+                  {{task.due_date}}  
+                </div>
+            
+          </div>
+    </div>
 </a>
+
 {% endif %}
 {% endif %}
 {% endfor %}
 </div>
+</div>
 
+ <div class="bot_visual_frame_task_list_management"></div>
  {% endblock %}
 

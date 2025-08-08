@@ -1,16 +1,21 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-<div class="visual_frame_update_pin_msg"></div>
-  <form method="post" class="message_update_pin_msg">
-      {% csrf_token %}
-  <p>{{form.pinned_msg.label_tag}}</p>
- <p class="form_update_team"> {{ form.pinned_msg }}</p>
-  <input type="submit" name="send" value="send" class="update_team_submit">
 
- </form>
+  <form method="post" class="message_update_pin_msg">
+    <div class="visual_frame_update_pin_msg">
+      {% csrf_token %}
+  <p class="pinned_message_team_update">{{form.pinned_msg.label_tag}}</p>
+ <div class="form_update_team"> {{ form.pinned_msg }}</div>
+  <input type="submit" name="send" value="send" class="update_team_submit">
+ </div>
+   </form>
+
+
+
      <div class="send_msg_back">
    <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
 
  </div>
+
   {% endblock %}

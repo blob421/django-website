@@ -1,30 +1,39 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-<!--['name', 'description', 'urgent', 'due_date', 'users', 'completed']-->
+ {% if user.userprofile == user.userprofile.team.team_lead %}
 <form method="post" class="task_form">
 
 <div class="form_container">
       {% csrf_token %}
 
-<div> 
-   <div class="forms"> {{ form.name.label_tag }}</div>
-   <div class="form_margin">{{form.name}}</div>
+<div class="task_create_title"> 
+  {{ form.name.label_tag }}
+   {{form.name}}
 </div>
+         <div class="title_div_create_task">
+                  <div class="title_div_create_task">
+                     {{form.description.label_tag}}
+                  </div>
+                  <div>  
+                  {{form.users.label_tag}}
+                  </div>
+         </div>
 
-<div>  
-  <div class="form_margin"> {{form.description.label_tag}}</div>
- <div class="description_task_form"> {{form.description}} </div>
-</div>
+         <div class="task_create_middle_container">  
+ 
+               <div class="description_task_form"> {{form.description}} </div>
+               
+                  <div class="task_form_select"> {{form.users}}</div>
+         </div>
 
 
-<div class="flex_form_container_update">
+<div class="flex_form_container">
     <div>{{form.due_date.label_tag}}</div>
     <div class="due_date_task_form">{{form.due_date}}</div>
           <div> {{form.urgent.label_tag}}</div>
-       <div> {{form.urgent}}</div>
-         <div> {{form.completed.label_tag}}</div>
-    <div> {{form.completed}}</div>
+       <div class="urgent_input"> {{form.urgent}}</div>
+   
 
 </div>
 
@@ -32,11 +41,10 @@
 <div class="bot_flex_form_container">
 
   
-    <div class="task_form_select"> {{form.users}}</div>
 
     <div class="task_form_btn_container">
         <input type="submit" name="send" value="Submit" class="btn-submit-task-manage">
-         <a href="{% url 'dashboard:task_delete' form.instance.id %}"><button class="del-btn" type="button">Delete</button></a>
+
    </div>
 </div>
 
@@ -44,8 +52,10 @@
 </div>
  
  </form>
- <div class="send_msg_back">
+
+      <div class="send_msg_back">
    <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
 
  </div>
+{% endif %}
   {% endblock %}
