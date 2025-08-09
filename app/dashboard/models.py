@@ -3,6 +3,8 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 from dateutil.relativedelta import relativedelta
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 
 ### USERS ###
 
@@ -37,6 +39,9 @@ class UserProfile(models.Model):
 
     availability = models.CharField(null=True, blank=True)
     weekends = models.BooleanField(default=False)
+    stats = GenericRelation('Stats')
+
+   
     class Meta:
 
         verbose_name_plural = "Add a user" 
@@ -45,6 +50,22 @@ class UserProfile(models.Model):
         return self.user.username
     
 
+class Stats(models.Model):
+
+    completed_tasks = models.PositiveIntegerField(default=0)
+    late_tasks = models.PositiveIntegerField(default=0)
+    unfinished_tasks = models.PositiveIntegerField(default=0)
+    denied_tasks= models.PositiveIntegerField(default=0)
+    urgent_tasks_success = models.PositiveIntegerField(default=0)
+  
+    days_missed = models.PositiveIntegerField(default=0)
+    days_scheduled = models.PositiveIntegerField(default=0)
+    
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, null=True, blank=True)
+    object_id = models.PositiveBigIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+
 
 class Team(models.Model):
     team_lead =models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
@@ -52,9 +73,10 @@ class Team(models.Model):
     pinned_msg = models.TextField(null=True , default='---')
     name = models.CharField(max_length=40, blank=True )
     description = models.TextField(null=True)
+    stats = GenericRelation('Stats')
+
     def __str__(self):
         return self.name
-
 
 
 
@@ -70,6 +92,8 @@ class Messages(models.Model):
     title = models.CharField(max_length=60)
     content = models.TextField(null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    new = models.BooleanField(default=True)
+    
     task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
     forwarded = models.BooleanField(default=False)
     forwarded_by = models.ForeignKey(UserProfile, null=True, on_delete=models.CASCADE)
@@ -101,6 +125,7 @@ class MessagesCopy(models.Model):
     def __str__(self):
         return self.title
 
+
 class ChatMessages(models.Model):
     team = models.ForeignKey('Team', on_delete=models.CASCADE)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -116,6 +141,8 @@ class Task(models.Model):
         name = models.CharField(max_length=50)
         creation_date = models.DateField(auto_now_add=True)
         starting_date = models.DateTimeField(null=True, blank=True)
+        completion_time = models.FloatField(null=True, blank=True)
+
         due_date = models.DateTimeField()
         completed = models.BooleanField(default=False)
         urgent = models.BooleanField(default=False)
@@ -142,8 +169,8 @@ class Task(models.Model):
         def __str__(self):
            return self.name
        
-   
- 
+
+
 class ChartSection(models.Model):
     name = models.CharField(max_length=30, null=True)
     chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)

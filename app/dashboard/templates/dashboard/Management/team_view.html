@@ -12,7 +12,7 @@
 
 {% for member in team %}
 <div class="team_member_rows">
-<div class="team_name_container">{{member.user.username}} ({{member.role.name}})</div>
+<a href="{% url 'dashboard:perf_detail' member.id %}" class="team_name_container">{{member.user.username}} ({{member.role.name}})</a>
 {% for task in member.task_users.all %}
 {% if task.denied %}
 <div class="tasks_units_blocks_denied">
@@ -69,6 +69,10 @@
 
 </div>
 
+<div class="btn_div_6">
+   <a href="{% url 'dashboard:perf_team' user.userprofile.team.id %}"> <button class="button_tasks_list"> Performance metrics</button></a>
+
+</div>
 
 </div>
 </div>

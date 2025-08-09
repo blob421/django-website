@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView, CreateView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, ChatMessages
+from .models import Messages, UserProfile, Task, Team, ChatMessages, Stats
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, WeekRange
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages, ChatForm, AddTaskChart
@@ -30,7 +30,11 @@ allowed_roles_management = ['dev']
 
 
 ##### BASIC ###############
-
+def safe_divide(numerator, denominator):
+            try:
+                return (numerator / denominator) * 100
+            except ZeroDivisionError:
+                return 0
     
 def role_dispatch(request):
     user_profile = request.user.userprofile
@@ -59,6 +63,8 @@ class HomeView(LoginRequiredMixin, View):
         template_name = 'dashboard/messages/messages_view.html'
         user_id = self.request.user.id
         reports = Messages.objects.filter(recipient=user_id).order_by('-timestamp')[:9]
+        
+    
         context = {'user': self.request.user, 'reports': reports}
         response = render(request, template_name, context)
         return response
@@ -100,7 +106,10 @@ class MessageDetail(LoginRequiredMixin, DetailView):
     def get_object(self):
        report_id = self.kwargs['id']
     
-       return Messages.objects.get(id=report_id, recipient=self.request.user.userprofile)
+       msg = Messages.objects.get(id=report_id, recipient=self.request.user.userprofile)
+       msg.new = False
+       msg.save()
+       return msg
     
 
 # Create a message view dashboard, shows history too
@@ -603,12 +612,23 @@ class TaskCompletedDetail(ProtectedView):
             ctx = {'form': form}
             return render(request, self.template_name, ctx)
         
-    
+        team = Team.objects.get(id = self.request.user.userprofile.team.id)
         task = Task.objects.get(id = pk)
         task.completed = False
         task.denied = True
         task.deny_reason = form.cleaned_data['deny_reason']
         task.save()
+
+        users = task.users.all()
+        for user in users:
+            user_stats = user.stats.get()
+            user_stats.denied_tasks += 1
+            user_stats.save()
+
+        team_stats = team.stats.get()
+        team_stats.denied_tasks += 1
+        team_stats.save()
+
         return redirect(self.success_url)
         
 
@@ -616,16 +636,103 @@ class TaskCompletedDetail(ProtectedView):
 class TeamCompletedApprove(ProtectedView):
 
     def get(self, request, pk):
+        task = Task.objects.get(id=pk)
+        users = task.users.all()
+        team = Team.objects.get(id = self.request.user.userprofile.team.id)
+   
+        if timezone.now() > task.due_date:
+            for user in users:
+                user_stats = user.stats.get()
+                user_stats.completed_tasks += 1
+                user_stats.late_tasks += 1
+                user_stats.save()
 
-        user_profile = self.request.user.userprofile
+            team_stats = team.stats.get()
+            team_stats.completed_tasks += 1
+            team_stats.late_tasks += 1
+            team_stats.save()
 
-        if user_profile == user_profile.team.team_lead:
-            task = Task.objects.get(id=pk)
-            
-            task.approved_by = self.request.user.userprofile
-                                        
-            task.save()
-            return redirect(reverse('dashboard:team'))
+        else:
+            if task.urgent:
+                for user in users:
+                    user_stats = user.stats.get()
+                    user_stats.completed_tasks += 1
+                    user_stats.urgent_tasks_success += 1
+                    user_stats.save()
+
+                team_stats = team.stats.get()
+                team_stats.completed_tasks += 1
+                team_stats.urgent_tasks_success += 1
+                team_stats.save()
+
+            else:
+                for user in users:
+                    user_stats = user.stats.get()
+                    user_stats.completed_tasks += 1
+                    user_stats.save()
+
+                team_stats = team.stats.get()
+                team_stats.completed_tasks += 1
+                team_stats.save()
+
+        task.approved_by = self.request.user.userprofile   
+        task.completion_time = round(((((task.starting_date - timezone.now()).seconds)/60)/60), 2)                           
+        task.save()
+        return redirect(reverse('dashboard:team'))
+
+
+############## METRICS MANAGEMENT #####################################
+
+class PerformanceDetail(ProtectedView):
+    template_name = 'dashboard/management/perf_detail.html'
+    def get(self, request, pk):
+        employee = UserProfile.objects.get(id = pk)
+        stats = employee.stats.get()
+
+        tasks = Task.objects.filter(users__in=[employee])
+        total_urgent_completed = tasks.filter(urgent=True).count()
+        
+        tasks_time_total = 0
+        for task in tasks:
+            tasks_time_total += task.completion_time
+
+        
+        task_mean_time = safe_divide(tasks_time_total, tasks.count())
+        denied_ratio = safe_divide(stats.denied_tasks, stats.completed_tasks)
+        late_ratio = safe_divide(stats.late_tasks, stats.completed_tasks)
+        days_missed_ratio = safe_divide(stats.days_missed, stats.days_scheduled)
+        urgent_ratio = safe_divide(stats.urgent_tasks_success, total_urgent_completed)
+       
+
+        ctx = {'user': employee, 'stats':stats, 'denied_ratio': denied_ratio, 
+               'late_ratio':late_ratio, 'days_missed_ratio':days_missed_ratio, 
+               'urgent_ratio':urgent_ratio, 'task_mean_time': task_mean_time}
+        
+        return render(request, self.template_name, ctx)
+
+
+class PerformanceView(ProtectedView):
+    template_name = 'dashboard/management/perf_view.html'
+
+    def get(self, request, pk):
+
+        team = Team.objects.get(id = self.request.user.userprofile.team.id)
+        stats = team.stats.get()
+        users = UserProfile.objects.filter(team=team)
+
+        try:
+            denied_ratio = (stats.denied_tasks / stats.completed_tasks  ) * 100
+            late_ratio = (stats.late_tasks / stats.completed_tasks  ) * 100
+          
+
+        except ZeroDivisionError:
+            denied_ratio = 0
+            late_ratio = 0
+        
+        ctx = {'team': team, 'users': users, 'stats': stats, 'denied_ratio': denied_ratio,
+               'late_ratio':late_ratio}
+
+        return render(request, self.template_name, ctx)
 
 
 

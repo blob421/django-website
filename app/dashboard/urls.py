@@ -36,6 +36,7 @@ urlpatterns = [
     path('tasks/update/<int:pk>', views.TaskUpdate.as_view(), name = 'task_manage_update'),
     path('tasks/completed/approve/<int:pk>', views.TeamCompletedApprove.as_view(), 
          name = 'task_approve'),
+
     ####### SCHEDULES ########
     path('schedules', views.ScheduleView.as_view(), name = 'schedule_view'),
     path('schedules/<int:pk>', views.ScheduleDetail.as_view(), name = 'schedule_detail'),
@@ -50,6 +51,9 @@ urlpatterns = [
     #######TEAM ##########
     path('team/update/<int:pk>', views.TeamUpdate.as_view(), name='team_update'),
     path('team/completed/', views.TeamCompletedTask.as_view(), name='team_completed'),
+    path('team/user/<int:pk>/stats', views.PerformanceDetail.as_view(), name = 'perf_detail'),
+    path('team/<int:pk>/stats', views.PerformanceView.as_view(), name = 'perf_team'),
+   
     
     #######PROJECTS ######
     path('projects', views.ProjectsView.as_view(), name='projects'),

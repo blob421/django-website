@@ -25,6 +25,7 @@
   
   <a href="{% url 'dashboard:home' %}">Home</a>
   <a href="{% url 'dashboard:messages' %}">Messages</a>
+  {% if new > 0 %}<div class="new_msg_count_div">{{new}}</div>{% endif %}
   <a href="{% url 'dashboard:tasks_list' %}">Tasks</a>
   <a href="{% url 'dashboard:projects' %}">Projects</a>
   {% if user.userprofile == user.userprofile.team.team_lead %}

@@ -191,6 +191,15 @@
   padding: 5%;
 
 }
+.btn_div_6{
+              display: flex;
+  justify-content: center;   
+  align-items: center;   
+  margin-top: 5%;
+  padding: 5%;
+}
+
+
 /*********Management completed tasks********/
 .extreme_outer_div_task_manage_detail{
    display:flex;
@@ -677,7 +686,7 @@
 }
 .schedule_users_title_manage{
      width: 100%;
-    height: 5%;
+    height: 6%;
     display: flex;
 
     align-items: center;
@@ -725,7 +734,7 @@
 }
 .schedule_top_row_management{
     display: flex;
-    height: 5%;
+    height: 6%;
         align-items: center;
     justify-content:center;
  width: 100%;
@@ -791,7 +800,7 @@ border: 2px solid rgb(41, 41, 41);
     color: #000000;
     font-family:'Courier';
      display: flex;
-    background-color:rgb(239, 210, 156) ;
+    background-color: rgb(249, 219, 167);
      flex-direction: column;
      justify-content: center;
 

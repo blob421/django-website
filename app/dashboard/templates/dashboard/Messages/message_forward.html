@@ -2,10 +2,11 @@
 
  {% block content %}
 <div class="visual_frame_forward">
-  <form method="post" class="message_update">
+  <div class="forward_title"> Forward a message</div>
+  <form method="post" class="message_forward_form_textarea">
       {% csrf_token %}
-  {{form.recipient.label_tag}}
- {{ form.recipient }}
+ 
+    {{ form.recipient }}
   <input type="submit" name="send" value="Forward" class="button_forward"> 
  </form>
 
