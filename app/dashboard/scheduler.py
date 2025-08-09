@@ -40,7 +40,7 @@ def CheckWeekRanges():
         if week_day == 1:
                last_range  = WeekRange.objects.last()
                if last_range.end_day.day != (now + relativedelta(days=28)).day:
-                     print((now + relativedelta(days=28)).day)
+
                     
                      week_range = WeekRange.objects.create(starting_day = now + relativedelta(days=21),
                                               end_day = now + relativedelta(days=28) )

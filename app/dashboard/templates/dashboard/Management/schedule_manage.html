@@ -1,7 +1,7 @@
  {% include 'dashboard/base.html' %}
-
+ {% load user_data %}
  {% block content %}
- 
+ {% with user|get_schedules:True as schedules_ctx %}
  <div class="extreme_outer_div_schedule_management">
 <div class="title_container_schedule_management">
 <div class="schedule_title_management">
@@ -9,7 +9,7 @@
 
 </div>
 <div class="date_range_title_top">
-    ( {{start_month}} - {{end_month}} )
+    ( {{schedules_ctx.start_month}} - {{schedules_ctx.end_month}} )
 </div>
 </div>
 
@@ -42,7 +42,7 @@
 
 
                      </div>
-                     {% for week in week_objects %}
+                     {% for week in schedules_ctx.week_objects %}
                      <div class="schedule_week_title_top_management">
                         {{week.starting_day.day}}-{{week.end_day.day}}
                      </div>
@@ -63,7 +63,7 @@
                         {% endif %}
                        </a>
                
-                     {% for schedule in schedules %}
+                     {% for schedule in schedules_ctx.schedules %}
                      {% if schedule.user == user %}
                      {% if schedule.unscheduled or schedule.monday or schedule.tuesday or schedule.wednesday or schedule.thursday or schedule.friday or schedule.friday or schedule.saturday or schedule.sunday %}
                      <a href="{% url 'dashboard:schedule_update' schedule.id %}" 
@@ -135,5 +135,5 @@
 </div>
  </div>
 
-
+{% endwith %}
  {% endblock %}

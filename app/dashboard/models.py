@@ -139,7 +139,7 @@ class Task(models.Model):
         users = models.ManyToManyField(UserProfile, related_name='task_users')
         description = models.TextField()
         name = models.CharField(max_length=50)
-        creation_date = models.DateField(auto_now_add=True)
+        creation_date = models.DateTimeField(auto_now_add=True)
         starting_date = models.DateTimeField(null=True, blank=True)
         completion_time = models.FloatField(null=True, blank=True)
 
@@ -153,8 +153,10 @@ class Task(models.Model):
         submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
         approved_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
                                     related_name='aproved_by', null=True, blank=True)
-        section = models.ForeignKey('ChartSection', on_delete=models.CASCADE, null=True)
-        chart = models.ForeignKey('Chart', on_delete=models.CASCADE, null=True)
+        section = models.ForeignKey(
+            'ChartSection', on_delete=models.CASCADE, null=True, blank=True)
+        chart = models.ForeignKey(
+            'Chart', on_delete=models.CASCADE, null=True, blank=True)
         
         denied = models.BooleanField(default=False)
         deny_reason = models.TextField(null=True, blank=True)
@@ -178,6 +180,7 @@ class ChartSection(models.Model):
     def __str__(self):
         return self.name
 
+
 class Chart(models.Model):
     title = models.CharField(max_length=40)
     
@@ -197,6 +200,7 @@ class Chart(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class ChartData(models.Model):
      chart = models.ForeignKey(Chart, on_delete=models.CASCADE)

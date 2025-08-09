@@ -1,12 +1,13 @@
  {% include 'dashboard/base.html' %}
-
+ {% load user_data %}
  {% block content %}
+ {% with user|get_schedules as schedules_ctx %}
  <div class="extreme_outer_div_schedule">
 <div class="title_container_schedule">
 <div class="schedule_title">Your schedule</div>
 <div class="schedule_time_range">
-( {{schedule.week_range.starting_day.day}} {{start_month}} - 
-{{schedule.week_range.end_day.day}} {{end_month}} )</div>
+( {{schedule.week_range.starting_day.day}} {{schedules_ctx.start_month}} - 
+{{schedule.week_range.end_day.day}} {{schedules_ctx.end_month}} )</div>
        
        {% if schedule %}
        <div class="schedule_button_div"> 
@@ -22,8 +23,8 @@
 
 
     <div class="schedule_left_panel">
-
-           {% for schedule in schedules %}
+          
+           {% for schedule in schedules_ctx.schedules %}
            <div class="week_button_div">
                 <a href="{% url 'dashboard:schedule_detail' schedule.id %}">
                 <button class="week_button
@@ -32,6 +33,7 @@
                 </a>
            </div>
            {% endfor %}
+        
 
     </div>
 
@@ -71,4 +73,5 @@
 
 </div>
  </div>
+    {% endwith %}
  {% endblock %}

@@ -1,6 +1,39 @@
  {% include 'dashboard/base.html' %}
 {% block content %}
+{% load user_data %}
+{% with user|get_stats:user.userprofile as stats_ctx %}
+<div class="extreme_outer_div_graph">
+
+<div class="left_graph_panel">
+    <div class="graph_left_btn_div">
+
+        <button class="graph_side_btn"> Metrics 1</button>
+    </div>
+
+
+</div>
+
+<div class="graph_container1">
+    
+
+
+    <div class="graph1">
+        {{ stats_ctx.plot1|safe }}
+    </div>
+  
+</div>
+<div class="graph_container2">
+    
+
+
+    <div class="graph2">
+        {{ stats_ctx.plot2|safe }}
+    </div>
+  
+</div>
 
 
 
+</div>
+{% endwith %}
 {% endblock %}

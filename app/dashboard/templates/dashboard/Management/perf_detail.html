@@ -1,39 +1,70 @@
 {% include 'dashboard/base.html' %}
+{% load user_data %}
+
+
 {% block content %}
+{% with user|get_stats as stats_ctx %}
+<div class="perf_detail_extreme_frame"></div>
+<div class="perf_detail_outer_div"> 
 
-    Statistics
-    <div>
-    Employee : {{user.user.first_name}} {{user.user.last_name}}
+      <div class="employee_div">
+         <div class="employee_name"> Employee : {{user.user.first_name}} {{user.user.last_name}}</div>
+          <div class="member_since">Joined : {{user.user.assigned_on}}</div>
     </div>
-    <div>
-    Member since: {{user.user.assigned_on}}
-    </div>
-    <div>
-    Total days scheduled: {{stats.days_scheduled}}
-    </div>
-    <div>
-    Days missed: {{stats.days_missed}} Missed ratio: {{days_missed_ratio}} %
-    </div>
-    <div>
-    Completed tasks :{{stats.completed_tasks}}
-    <div>
-    Denied tasks :{{stats.denied_tasks}} Denied ratio :{{denied_ratio}} %
-    </div>
-    <div>
-    Late tasks : {{stats.late_tasks}} Late ratio : {{late_ratio}} %
-    </div>
-    <div>
-    Urgent tasks completed :{{stats.urgent_tasks_success}} 
-    Urgent respected ratio: {{urgent_ratio}} %
-    </div>
-    </div>
-    <div>
-     <div>
-        Task mean completion time : {{task_mean_time}} h
-     </div>
-      
-        
-        
+   
+      <div class="stats_div">
+            <div class="text_col_1">
+               <div class="perf_detail_row"> Completed tasks</div>
+               <div class="perf_detail_row">Denied tasks</div>
+          
+               <div class="perf_detail_row">Late tasks</div>
+               <div class="perf_detail_row">Urgent tasks</div>
+               <div class="perf_detail_row">Days Scheduled</div>
+               <div class="perf_detail_row"></div>
 
 
+           </div>
+           <div class="number_col_1">
+ 
+               <div class="perf_detail_row">{{stats_ctx.stats.completed_tasks}}</div>
+               <div class="perf_detail_row">{{stats_ctx.stats.denied_tasks}}</div>
+               <div class="perf_detail_row">{{stats_ctx.stats.late_tasks}}</div>
+               <div class="perf_detail_row">{{stats_ctx.stats.urgent_tasks_success}} </div >    
+               <div class="perf_detail_row">{{stats_ctx.stats.days_scheduled}}</div>
+                <div class="perf_detail_row"></div>
+                 
+
+
+           </div>
+           <div class="text_col2">
+               <div class="perf_detail_row"> Mean time</div>
+               <div class="perf_detail_row">Denied ratio</div>
+               <div class="perf_detail_row">Late ratio</div>
+               <div class="perf_detail_row">Urgent ratio</div>
+               <div class="perf_detail_row">Days missed</div>
+               <div class="perf_detail_row">Days missed ratio</div>
+
+
+           </div>
+           <div class="number_col2">
+                  <div class="perf_detail_row">{{stats_ctx.task_mean_time}} h</div >   
+                  <div class="perf_detail_row">  {{stats_ctx.denied_ratio}} %</div >
+                  <div class="perf_detail_row">{{stats_ctx.late_ratio}} %</div > 
+                  <div class="perf_detail_row"> {{stats_ctx.urgent_ratio}} %</div >    
+                  <div class="perf_detail_row">{{stats_ctx.stats.days_missed}}</div >      
+                  <div class="perf_detail_row">{{stats_ctx.days_missed_ratio}} %</div >    
+                     
+
+           </div>
+    <div>
+
+   </div>
+    
+
+
+
+
+ 
+  
+{% endwith %}
 {% endblock %}

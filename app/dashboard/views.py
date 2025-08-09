@@ -1,80 +1,63 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import View, UpdateView, DetailView, DeleteView, ListView, CreateView
+from django.views.generic import View, UpdateView, DetailView, DeleteView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, ChatMessages, Stats
-from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, WeekRange
+from .models import Messages, UserProfile, Task, Team, ChatMessages
+from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages, ChatForm, AddTaskChart
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from .owner import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedView
+from django.http import HttpResponse, JsonResponse
+from .utility import copy_message_data, days_of_the_week
+from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedView
 from django import forms
 from django.db.models import Q
 import json
 
-from django.core.exceptions import ValidationError
-from django.utils.timezone import datetime, timedelta
+from django.utils.timezone import timedelta
 
 
 
-##### CONFIG ##################
+########## CONFIG ############
 
 user_model = get_user_model()
 allowed_roles_forms = ['dev']
 allowed_roles_management = ['dev']
 
 
-##### BASIC ###############
-def safe_divide(numerator, denominator):
-            try:
-                return (numerator / denominator) * 100
-            except ZeroDivisionError:
-                return 0
-    
-def role_dispatch(request):
-    user_profile = request.user.userprofile
-    if user_profile and user_profile.role:
-        return redirect(user_profile.role.redirect_url)
-    
-    return redirect('dashboard:home')
+########## Home #############
 
 
-
-class Logout(LogoutView):
-    template_name = 'dashboard/logout.html'
-
-
-########## HOME + BILLBOARD #############
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
     def get(self, request):
-        user = UserProfile.objects.get(id=self.request.user.userprofile.id)
-        context = {'users':user}
-        return render(request, self.template, context)
 
+        return render(request, self.template)
 
-class HomeView(LoginRequiredMixin, View):
-    def get(self, request):
-        template_name = 'dashboard/messages/messages_view.html'
-        user_id = self.request.user.id
-        reports = Messages.objects.filter(recipient=user_id).order_by('-timestamp')[:9]
-        
-    
-        context = {'user': self.request.user, 'reports': reports}
-        response = render(request, template_name, context)
-        return response
 
 
 ######## Messages #################################
 
+class HomeView(LoginRequiredMixin, View):
+    def get(self, request):
+        template_name = 'dashboard/messages/messages_view.html'
+        user_id = self.request.user.userprofile
+        reports = Messages.objects.filter(recipient=user_id).order_by('-timestamp')[:9]
+     
+    
+        context = {'user': self.request.user, 'reports': reports}
+        response = render(request, template_name, context)
+        return response
+    
+
 class InboxView(LoginRequiredMixin, View):
     template_name = "dashboard/messages/inbox.html"
     def get(self, request):
+       
        search = request.GET.get('search', None)
        if search :
            query = Q(recipient=self.request.user.userprofile) & (
@@ -99,6 +82,7 @@ class InboxView(LoginRequiredMixin, View):
         return redirect(reverse('dashboard:inbox'))
 
 
+
 class MessageDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/messages/message_detail.html'
     context_object_name = 'report'
@@ -111,6 +95,7 @@ class MessageDetail(LoginRequiredMixin, DetailView):
        msg.save()
        return msg
     
+
 
 # Create a message view dashboard, shows history too
 class MessageView(LoginRequiredMixin, View):
@@ -140,20 +125,7 @@ class MessageView(LoginRequiredMixin, View):
         report.recipient.set(recipient.all())
 
         ##Making a copy for inbox
-        id = report.id
-        user = report.user
-        recipient = report.recipient
-        title = report.title
-        content = report.content
-        timestamp = report.timestamp
-        task = report.task
-        picture = report.picture
-        content_type = report.content_type
-        copy = MessagesCopy(id=id, user=user, title=title, 
-                            content=content,timestamp=timestamp, task=task, picture=picture,
-                            content_type=content_type)
-        copy.save()
-        copy.recipient.set(recipient.all())
+        copy_message_data(report , MessagesCopy)
         return redirect('dashboard:messages_create')  
     
 
@@ -185,21 +157,7 @@ class MessageUpdate(LoginRequiredMixin, UpdateView):
 
         # Create a copy of the updated instance
         report = self.object
-        id = report.id
-        user = report.user
-        recipient = report.recipient
-        title = report.title
-        content = report.content
-        timestamp = report.timestamp
-        task = report.task
-        picture = report.picture
-        content_type = report.content_type
-    
-        Updated_messsage = Messages(id=id, user=user, title=title, 
-                            content=content,timestamp=timestamp, task=task, picture=picture,
-                            content_type=content_type)
-        Updated_messsage.save()
-        Updated_messsage.recipient.set(recipient.all())
+        copy_message_data(report, Messages)
         return response
 
 
@@ -235,8 +193,6 @@ class MessageForward(LoginRequiredMixin, View):
         return redirect(reverse('dashboard:messages_create'))
     
 
-
-### RECIPIENTS ##############################
 
 class AddRecipient(LoginRequiredMixin, View):
     template = 'dashboard/messages/recipient_add.html'
@@ -419,347 +375,14 @@ class TaskSubmit(LoginRequiredMixin, View):
         task.completion_note = note
         task.completed = True
         task.submitted_by = user_profile
-        task.save()
-        
-       
+        task.save() 
        
         return redirect(self.success_url)
     
-######### SCHEDULES ###########################################
-
-class ScheduleView(LoginRequiredMixin, View):
-    template_name = 'dashboard/schedules/schedule_view.html'
-    def get(self, request):
-        all_schedules = Schedule.objects.filter(user=self.request.user.userprofile)
-        weeks = WeekRange.objects.all()[:4]
-        
-        week1=weeks[0]
-        week2=weeks[1]
-        week3=weeks[2]
-        week4=weeks[3]
-
-        query = Q(week_range = week1) | Q(week_range = week2) | Q(week_range = week3) | Q(week_range = week4)
-        start_month = week1.starting_day.strftime("%B")
-        end_month = week4.end_day.strftime("%B")
-        schedules = all_schedules.filter(query).order_by('id')
-        week_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-        ctx = {'schedules':schedules,'week_days':week_days, 'start_month':start_month,
-               'end_month':end_month}
-        return render(request, self.template_name, ctx)
-
-
-
-class ScheduleDetail(LoginRequiredMixin, View):
-    template_name = 'dashboard/schedules/schedule_view.html'
-    def get(self, request, pk):
-        schedule = Schedule.objects.get(id = pk)
-
-        start_month = schedule.week_range.starting_day.strftime("%B")
-        end_month = schedule.week_range.end_day.strftime("%B")
-
-        all_schedules = Schedule.objects.filter(user=self.request.user.userprofile)
-        weeks = WeekRange.objects.all()[:4]
-        week1=weeks[0]
-        week2=weeks[1]
-        week3=weeks[2]
-        week4=weeks[3]
-
-        query = Q(week_range = week1) | Q(week_range = week2) |Q(week_range = week3) | Q(week_range = week4)
-
-        schedules = all_schedules.filter(query).order_by('id')
-
-        week_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-        hours = [schedule.monday, schedule.tuesday, schedule.wednesday, schedule.thursday,
-                       schedule.friday, schedule.saturday, schedule.sunday]
-        
-        days_hours = zip(week_days, hours)
-        ctx = {'schedule':schedule, 'schedules':schedules,'week_days':week_days, 
-               'hours': hours , 'days_hours':days_hours, 'start_month':start_month,
-               'end_month':end_month}
-        return render(request, self.template_name, ctx)
-
-
-
-class ScheduleManage(ProtectedView):
-    template_name = 'dashboard/management/schedule_manage.html'
-
-    def get(self, request):
-     
-        team_users = UserProfile.objects.filter(team = self.request.user.userprofile.team)
-        
-       
-        weeks = WeekRange.objects.all()[:4]
-        week1=weeks[0]
-        week2=weeks[1]
-        week3=weeks[2]
-        week4=weeks[3]
-
-        starting_month = week1.starting_day.strftime("%B")
-        ending_month = week4.end_day.strftime("%B")
-
-        query = Q(week_range = week1) | Q(week_range = week2) | Q(week_range = week3) | Q(week_range = week4)
-        schedules = Schedule.objects.filter(user__team = self.request.user.userprofile.team)
-        last_month_schedules  = schedules.filter(query).order_by('id')
-
-        week_array = []
-        for week in weeks:
-              start_day = week.starting_day
-              end_day = week.end_day
-              start_month = start_day.strftime("%B")[:3]
-              end_month = end_day.strftime("%B")[:3]
-
-              week_range = f'{start_day.day} {start_month}- {end_day.day} {end_month}' 
-              week_array.append(week_range)
-
-      
-        ctx= {'users':team_users, 'weeks':week_array, 
-              'week_objects':weeks, 'schedules':last_month_schedules, 
-              'start_month':starting_month, 'end_month':ending_month}
-        
-        return render(request, self.template_name, ctx)
-
-
-
-class ScheduleUpdate(ProtectedUpdate):
-    template_name = 'dashboard/management/schedule_update.html'
-    model = Schedule
-    success_url = reverse_lazy('dashboard:schedule_manage')
-    fields = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 
-              'saturday', 'sunday', 'unscheduled', 'message']
-    def form_valid(self, form):
-        form.instance.message = None
-        form.instance.request_pending = False
-        return super().form_valid(form)
-
-
-class AvailabilityForm(ProtectedUpdate):
-    template_name = 'dashboard/management/availability.html'
-    model = UserProfile
-    fields = ['availability', 'weekends']
-    success_url = reverse_lazy('dashboard:schedule_manage')
-
-
-class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
-    template_name = 'dashboard/schedules/schedule_change.html'
-    model = Schedule
-    fields = ['message']
-    success_url = reverse_lazy('dashboard:schedule_view')
-    def form_valid(self, form):
-        form.instance.request_pending = True
-        return super().form_valid(form)
-
-
-######### Management ############################################
-
-class TeamView(ProtectedView):
-    template_name='dashboard/Management/team_view.html'
-    def get(self, request):
-
-        profile = UserProfile.objects.get(id=self.request.user.id)
-        team = profile.team.name
-        team_member = UserProfile.objects.filter(team__name=team)
-        team = Team.objects.get(team_lead = self.request.user.userprofile)
-        team_name = team.name
-        query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
-        team_tasks = Task.objects.filter(query).count()    
-        user = self.request.user
-        context = {'user':user, 'team': team_member , 'count':team_tasks}
-        return render(request, self.template_name, context)
-
-
-
-class TeamUpdate(ProtectedUpdate):
-     template_name = 'dashboard/management/team_update.html'
-     model = Team
-     fields = ['pinned_msg']
-     success_url = reverse_lazy('dashboard:team')
-     
-
-
-class TeamCompletedTask(ProtectedView):
-    model = Task
-    template_name = 'dashboard/management/task_list.html'
-  
- 
-    def get(self, request):
-        time = timezone.now()
-        team = Team.objects.get(team_lead = self.request.user.userprofile)
-        team_name = team.name
-        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name).order_by('due_date') 
-        ctx = {'tasks':team_tasks, 'time':time}     
-        return render(request, self.template_name, ctx)
-
-
-
-class TaskCompletedDetail(ProtectedView):
-    template_name = 'dashboard/management/task_detail.html'
-    context_object_name = 'task'
-    success_url =  'dashboard:team'
-    
-    def get(self, request, pk):
-      
-        form = DenyCompletedTask()
-        task = Task.objects.get(id = pk)
-        ctx = {'form': form, 'task': task}   
-        return render(request, self.template_name, ctx)
-     
-    
-    def post(self, request, pk):
-
-        form = DenyCompletedTask(request.POST)
-
-        if not form.is_valid():
-            ctx = {'form': form}
-            return render(request, self.template_name, ctx)
-        
-        team = Team.objects.get(id = self.request.user.userprofile.team.id)
-        task = Task.objects.get(id = pk)
-        task.completed = False
-        task.denied = True
-        task.deny_reason = form.cleaned_data['deny_reason']
-        task.save()
-
-        users = task.users.all()
-        for user in users:
-            user_stats = user.stats.get()
-            user_stats.denied_tasks += 1
-            user_stats.save()
-
-        team_stats = team.stats.get()
-        team_stats.denied_tasks += 1
-        team_stats.save()
-
-        return redirect(self.success_url)
-        
-
-
-class TeamCompletedApprove(ProtectedView):
-
-    def get(self, request, pk):
-        task = Task.objects.get(id=pk)
-        users = task.users.all()
-        team = Team.objects.get(id = self.request.user.userprofile.team.id)
-   
-        if timezone.now() > task.due_date:
-            for user in users:
-                user_stats = user.stats.get()
-                user_stats.completed_tasks += 1
-                user_stats.late_tasks += 1
-                user_stats.save()
-
-            team_stats = team.stats.get()
-            team_stats.completed_tasks += 1
-            team_stats.late_tasks += 1
-            team_stats.save()
-
-        else:
-            if task.urgent:
-                for user in users:
-                    user_stats = user.stats.get()
-                    user_stats.completed_tasks += 1
-                    user_stats.urgent_tasks_success += 1
-                    user_stats.save()
-
-                team_stats = team.stats.get()
-                team_stats.completed_tasks += 1
-                team_stats.urgent_tasks_success += 1
-                team_stats.save()
-
-            else:
-                for user in users:
-                    user_stats = user.stats.get()
-                    user_stats.completed_tasks += 1
-                    user_stats.save()
-
-                team_stats = team.stats.get()
-                team_stats.completed_tasks += 1
-                team_stats.save()
-
-        task.approved_by = self.request.user.userprofile   
-        task.completion_time = round(((((task.starting_date - timezone.now()).seconds)/60)/60), 2)                           
-        task.save()
-        return redirect(reverse('dashboard:team'))
-
-
-############## METRICS MANAGEMENT #####################################
-
-class PerformanceDetail(ProtectedView):
-    template_name = 'dashboard/management/perf_detail.html'
-    def get(self, request, pk):
-        employee = UserProfile.objects.get(id = pk)
-        stats = employee.stats.get()
-
-        tasks = Task.objects.filter(users__in=[employee])
-        total_urgent_completed = tasks.filter(urgent=True).count()
-        
-        tasks_time_total = 0
-        for task in tasks:
-            tasks_time_total += task.completion_time
-
-        
-        task_mean_time = safe_divide(tasks_time_total, tasks.count())
-        denied_ratio = safe_divide(stats.denied_tasks, stats.completed_tasks)
-        late_ratio = safe_divide(stats.late_tasks, stats.completed_tasks)
-        days_missed_ratio = safe_divide(stats.days_missed, stats.days_scheduled)
-        urgent_ratio = safe_divide(stats.urgent_tasks_success, total_urgent_completed)
-       
-
-        ctx = {'user': employee, 'stats':stats, 'denied_ratio': denied_ratio, 
-               'late_ratio':late_ratio, 'days_missed_ratio':days_missed_ratio, 
-               'urgent_ratio':urgent_ratio, 'task_mean_time': task_mean_time}
-        
-        return render(request, self.template_name, ctx)
-
-
-class PerformanceView(ProtectedView):
-    template_name = 'dashboard/management/perf_view.html'
-
-    def get(self, request, pk):
-
-        team = Team.objects.get(id = self.request.user.userprofile.team.id)
-        stats = team.stats.get()
-        users = UserProfile.objects.filter(team=team)
-
-        try:
-            denied_ratio = (stats.denied_tasks / stats.completed_tasks  ) * 100
-            late_ratio = (stats.late_tasks / stats.completed_tasks  ) * 100
-          
-
-        except ZeroDivisionError:
-            denied_ratio = 0
-            late_ratio = 0
-        
-        ctx = {'team': team, 'users': users, 'stats': stats, 'denied_ratio': denied_ratio,
-               'late_ratio':late_ratio}
-
-        return render(request, self.template_name, ctx)
-
-
-
-############# CHAT ####################################################
-
-class ChatView(LoginRequiredMixin, View):
-    template = 'dashboard/chat_view.html'
-    def get(self, request):
-        form = ChatForm()
-        ctx = {'form': form}
-        return render(request, self.template, ctx)
-    
-    def post(self, request):
-        form = ChatForm(request.POST)
-        if not form.is_valid():
-             ctx = {'form': form}
-             return render(request, self.template, ctx)
-        submit = form.save(commit=False)
-        profile = UserProfile.objects.get(id=request.user.id)
-        team = profile.team
-        submit.team = team
-        submit.user = profile
-        submit.save()
-        return redirect(reverse('dashboard:chat_view'))
 
 
 ######## PROJECTS ####################################################
+
 class ChartCreate(ProtectedCreate):
     template_name = 'dashboard/projects/chart_create.html'
     model = Chart
@@ -970,7 +593,266 @@ class AddSection(ProtectedCreate):
     def get_success_url(self):
          chart_id = self.kwargs.get('pk')  
          return reverse('dashboard:chart_detail', kwargs={'pk':chart_id})
+
+
+######### TEAM SCHEDULES ###########################################
+
+class ScheduleView(LoginRequiredMixin, View):
+    template_name = 'dashboard/schedules/schedule_view.html'
+    def get(self, request):
+        
+        return render(request, self.template_name)
+
+
+
+class ScheduleDetail(LoginRequiredMixin, View):
+    template_name = 'dashboard/schedules/schedule_view.html'
+    def get(self, request, pk):
+        schedule = Schedule.objects.get(id = pk)
+
+        week_days = days_of_the_week
+        hours = [schedule.monday, schedule.tuesday, schedule.wednesday, schedule.thursday,
+                                      schedule.friday, schedule.saturday, schedule.sunday]
+        
+        days_hours = zip(week_days, hours)
+
+        ctx = {'schedule':schedule, 'days_hours':days_hours}
+        return render(request, self.template_name, ctx)
+
+
+
+class ScheduleManage(ProtectedView):
+    template_name = 'dashboard/management/schedule_manage.html'
+
+    def get(self, request):
+     
+        team_users = UserProfile.objects.filter(team = self.request.user.userprofile.team)
+          
+        ctx= {'users':team_users}
+        
+        return render(request, self.template_name, ctx)
+
+
+
+class ScheduleUpdate(ProtectedUpdate):
+    template_name = 'dashboard/management/schedule_update.html'
+    model = Schedule
+    success_url = reverse_lazy('dashboard:schedule_manage')
+    fields = days_of_the_week
+
+    def form_valid(self, form):
+        form.instance.message = None
+        form.instance.request_pending = False
+        return super().form_valid(form)
+
+
+class AvailabilityForm(ProtectedUpdate):
+    template_name = 'dashboard/management/availability.html'
+    model = UserProfile
+    fields = ['availability', 'weekends']
+    success_url = reverse_lazy('dashboard:schedule_manage')
+
+
+class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
+    template_name = 'dashboard/schedules/schedule_change.html'
+    model = Schedule
+    fields = ['message']
+    success_url = reverse_lazy('dashboard:schedule_view')
+    def form_valid(self, form):
+        form.instance.request_pending = True
+        return super().form_valid(form)
+
+
+######### TEAM ############################################
+
+class TeamView(ProtectedView):
+    template_name='dashboard/Management/team_view.html'
+    def get(self, request):
+
+        profile = UserProfile.objects.get(id=self.request.user.id)
+        team = profile.team.name
+        team_member = UserProfile.objects.filter(team__name=team)
+        team = Team.objects.get(team_lead = self.request.user.userprofile)
+        team_name = team.name
+        query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
+        team_tasks = Task.objects.filter(query).count()    
+        user = self.request.user
+        context = {'user':user, 'team': team_member , 'count':team_tasks}
+        return render(request, self.template_name, context)
+
+
+
+class TeamUpdate(ProtectedUpdate):
+     template_name = 'dashboard/management/team_update.html'
+     model = Team
+     fields = ['pinned_msg']
+     success_url = reverse_lazy('dashboard:team')
+     
+
+
+class TeamCompletedTask(ProtectedView):
+    model = Task
+    template_name = 'dashboard/management/task_list.html'
+  
  
+    def get(self, request):
+        time = timezone.now()
+        team = Team.objects.get(team_lead = self.request.user.userprofile)
+        team_name = team.name
+        team_tasks = Task.objects.filter(completed=True, submitted_by__team__name = team_name).order_by('due_date') 
+        ctx = {'tasks':team_tasks, 'time':time}     
+        return render(request, self.template_name, ctx)
+
+
+
+class TaskCompletedDetail(ProtectedView):
+    template_name = 'dashboard/management/task_detail.html'
+    context_object_name = 'task'
+    success_url =  'dashboard:team'
+    
+    def get(self, request, pk):
+      
+        form = DenyCompletedTask()
+        task = Task.objects.get(id = pk)
+        ctx = {'form': form, 'task': task}   
+        return render(request, self.template_name, ctx)
+     
+    
+    def post(self, request, pk):
+
+        form = DenyCompletedTask(request.POST)
+
+        if not form.is_valid():
+            ctx = {'form': form}
+            return render(request, self.template_name, ctx)
+        
+        team = Team.objects.get(id = self.request.user.userprofile.team.id)
+        task = Task.objects.get(id = pk)
+        task.completed = False
+        task.denied = True
+        task.deny_reason = form.cleaned_data['deny_reason']
+        task.save()
+
+        users = task.users.all()
+        for user in users:
+            user_stats = user.stats.get()
+            user_stats.denied_tasks += 1
+            user_stats.save()
+
+        team_stats = team.stats.get()
+        team_stats.denied_tasks += 1
+        team_stats.save()
+
+        return redirect(self.success_url)
+        
+
+
+class TeamCompletedApprove(ProtectedView):
+
+    def get(self, request, pk):
+        task = Task.objects.get(id=pk)
+        users = task.users.all()
+        team = Team.objects.get(id = self.request.user.userprofile.team.id)
+   
+        if timezone.now() > task.due_date:
+            for user in users:
+                user_stats = user.stats.get()
+                user_stats.completed_tasks += 1
+                user_stats.late_tasks += 1
+                user_stats.save()
+
+            team_stats = team.stats.get()
+            team_stats.completed_tasks += 1
+            team_stats.late_tasks += 1
+            team_stats.save()
+
+        else:
+            if task.urgent:
+                for user in users:
+                    user_stats = user.stats.get()
+                    user_stats.completed_tasks += 1
+                    user_stats.urgent_tasks_success += 1
+                    user_stats.save()
+
+                team_stats = team.stats.get()
+                team_stats.completed_tasks += 1
+                team_stats.urgent_tasks_success += 1
+                team_stats.save()
+
+            else:
+                for user in users:
+                    user_stats = user.stats.get()
+                    user_stats.completed_tasks += 1
+                    user_stats.save()
+
+                team_stats = team.stats.get()
+                team_stats.completed_tasks += 1
+                team_stats.save()
+
+        task.approved_by = self.request.user.userprofile   
+        task.completion_time = round(((((task.creation_date - timezone.now()).seconds)/60)/60), 2)                           
+        task.save()
+        return redirect(reverse('dashboard:team'))
+
+
+############## TEAM STATS #####################################
+
+class PerformanceDetail(ProtectedView):
+    template_name = 'dashboard/management/perf_detail.html'
+    def get(self, request, pk):
+        employee = UserProfile.objects.get(id = pk)
+      
+        ctx = {'user': employee}  
+        return render(request, self.template_name, ctx)
+
+
+class PerformanceView(ProtectedView):
+    template_name = 'dashboard/management/perf_view.html'
+
+    def get(self, request, pk):
+
+        return render(request, self.template_name)
+
+
+
+############# CHAT ####################################################
+
+class ChatView(LoginRequiredMixin, View):
+    template = 'dashboard/chat_view.html'
+    def get(self, request):
+        form = ChatForm()
+        ctx = {'form': form}
+        return render(request, self.template, ctx)
+    
+    def post(self, request):
+        form = ChatForm(request.POST)
+        if not form.is_valid():
+             ctx = {'form': form}
+             return render(request, self.template, ctx)
+        submit = form.save(commit=False)
+        profile = UserProfile.objects.get(id=request.user.id)
+        team = profile.team
+        submit.team = team
+        submit.user = profile
+        submit.save()
+        return redirect(reverse('dashboard:chat_view'))
+
+
+
+
+
+
+############ FUNCTION VIEWS ################################
+
+def role_dispatch(request):
+    user_profile = request.user.userprofile
+    if user_profile and user_profile.role:
+        return redirect(user_profile.role.redirect_url)
+    
+    return redirect('dashboard:home')
+
+
+
 def SectionDelete(request, pk):
     section = ChartSection.objects.get(id=pk)
     chart = section.chart.id
@@ -1024,6 +906,7 @@ def stream_file(request, pk):
     return response
 
 
+
 def stream_completed_task_img(request, pk):
     pic = get_object_or_404(Task, id=pk)
     response = HttpResponse()
@@ -1031,3 +914,7 @@ def stream_completed_task_img(request, pk):
     response['Content-Length'] = len(pic.picture)
     response.write(pic.picture)
     return response
+
+
+class Logout(LogoutView):
+    template_name = 'dashboard/logout.html'
