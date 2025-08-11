@@ -29,19 +29,3 @@ def create_schedule(sender, instance, **kwargs):
                 
                 Schedule.objects.create(user=instance, week_range=week)
         
-
-@receiver(post_save, sender=UserProfile)
-def ensure_stats_exists(sender, instance, **kwargs):
-    if not instance.stats.exists():
-        Stats.objects.create(
-            content_type=ContentType.objects.get_for_model(instance),
-            object_id=instance.id
-        )
-
-@receiver(post_save, sender=Team)
-def ensure_stats_exists(sender, instance, **kwargs):
-    if not instance.stats.exists():
-        Stats.objects.create(
-            content_type=ContentType.objects.get_for_model(instance),
-            object_id=instance.id
-        )

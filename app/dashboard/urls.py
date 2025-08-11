@@ -53,6 +53,8 @@ urlpatterns = [
     path('team/completed/', views.TeamCompletedTask.as_view(), name='team_completed'),
     path('team/user/<int:pk>/stats', views.PerformanceDetail.as_view(), name = 'perf_detail'),
     path('team/<int:pk>/stats', views.PerformanceView.as_view(), name = 'perf_team'),
+    path('team/<int:pk>/stats/page/<int:page>', views.PerformanceView.as_view(),
+         name='perf_team_detail'),
    
     
     #######PROJECTS ######

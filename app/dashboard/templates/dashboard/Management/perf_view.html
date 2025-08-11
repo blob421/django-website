@@ -1,24 +1,36 @@
  {% include 'dashboard/base.html' %}
 {% block content %}
-{% load user_data %}
-{% with user|get_stats:user.userprofile as stats_ctx %}
+
+
 <div class="extreme_outer_div_graph">
 
 <div class="left_graph_panel">
-    <div class="graph_left_btn_div">
+    <div class="graph_btns_frame">
+    {% for n in ranges %}
+        <div class="graph_left_btn_div">
+        <a href="{% url 'dashboard:perf_team_detail' user.userprofile.team.id n %}">
+            <button class="graph_side_btn"> Metrics {{forloop.counter}}</button>
+            </a>
+        </div>
+   
+    {% endfor %}
+ </div>
+ <div class="graph_stats_left_frame">
+    <div class="graph_stats_title1">Tasks</div>
+    <div class="graph_stats_divs">Mean time: {{task_mean_time}} h</div>
+    <div class="graph_stats_divs">Late ratio: {{late_ratio}} %</div>
+    <div class="graph_stats_divs">Denied ratio: {{denied_ratio}} % </div>
+    <div class="graph_stats_divs">Urgent ratio: {{urgent_ratio}} %</div>
 
-        <button class="graph_side_btn"> Metrics 1</button>
-    </div>
-
-
+ </div>
 </div>
 
 <div class="graph_container1">
     
-
+<h1 class="title_graphs"> {{date_string }}</h1>
 
     <div class="graph1">
-        {{ stats_ctx.plot1|safe }}
+        {{plot1|safe }}
     </div>
   
 </div>
@@ -27,7 +39,7 @@
 
 
     <div class="graph2">
-        {{ stats_ctx.plot2|safe }}
+        {{ plot2|safe }}
     </div>
   
 </div>
@@ -35,5 +47,5 @@
 
 
 </div>
-{% endwith %}
+
 {% endblock %}

@@ -1102,17 +1102,29 @@ display: flex;
 
 }
 /*******************GRAPHS*******************/
+.title_graphs{
+  /*  border: 2px solid black;*/
+    position: absolute;
+    left: 3%;
+
+
+    top: 4%;
+    color: white;
+    font-size: x-large;
+}
 .left_graph_panel{
     width: 15%;
-    border: 2px solid orange;
-     background-color: #5b5b5b;
+  /*  border: 2px solid orange;*/
+     background-color: #4a4a4a;
+     display: flex;
+     flex-direction: column;
  
 }
 .graph_container1{
     position: relative;
     width: 42.5%;
     height: 100%;
- /*  border: 2px solid red;*/
+/* border: 2px solid red;*/
   
 
 }
@@ -1120,7 +1132,7 @@ display: flex;
  position: relative;
     width: 42.5%;
     height: 100%;
-/*   border: 2px solid rgb(72, 31, 31);*/
+  /*border: 2px solid rgb(72, 31, 31);*/
 
 }
 .graph2{
@@ -1130,6 +1142,7 @@ display: flex;
   transform: scale(0.7);
  transform-origin: center left;
   width: 140%;
+  margin-top: 4%;
 }
 .graph1{
  
@@ -1138,9 +1151,10 @@ display: flex;
  transform: scale(0.7);
  transform-origin: center left;
   width: 140%;
+  margin-top: 4%;
 }
 .extreme_outer_div_graph{
-  /*  border: 2px solid violet;*/
+    border: 6px solid rgb(43, 43, 43);
     width: 97vw;
     height: 95vh;
     position: absolute;
@@ -1150,16 +1164,40 @@ display: flex;
      background-color: #5b5b5b;
     display: flex;
 }
+.graph_btns_frame{
+    position: relative;
+    margin-top: 23.5%;
+  /*  border: 2px solid red;*/
+}
 .graph_left_btn_div{
   width: 100%;
-  border: 2px solid yellow;
-  margin-top: 60%;
+/*  border: 2px solid yellow;*/
+  margin-bottom: 15%;
 }
 .graph_side_btn{
     position: relative;
     left: 50%;
     transform: translateX(-50%);
     width: 75%;
+}
+.graph_stats_left_frame{
+    border: 2px solid rgb(57, 57, 57);
+    height: 39%;
+    width: 75%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #b5b4b4;
+    font-size: smaller;
+}
+.graph_stats_title1{
+    text-align: center;
+     margin-bottom: 7%;
+     margin-top: 3%;
+}
+.graph_stats_divs{
+    margin-bottom: 7%;
+    margin-left: 3%;
 }
 @media (max-width:1024px){
     .date_range_title_top{

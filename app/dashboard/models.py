@@ -51,21 +51,23 @@ class UserProfile(models.Model):
     
 
 class Stats(models.Model):
+  
+    timestamp = models.DateTimeField(auto_now_add=True) 
 
     completed_tasks = models.PositiveIntegerField(default=0)
     late_tasks = models.PositiveIntegerField(default=0)
     unfinished_tasks = models.PositiveIntegerField(default=0)
     denied_tasks= models.PositiveIntegerField(default=0)
     urgent_tasks_success = models.PositiveIntegerField(default=0)
-  
+
     days_missed = models.PositiveIntegerField(default=0)
     days_scheduled = models.PositiveIntegerField(default=0)
     
+    submission = models.PositiveIntegerField(default=0)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, null=True, blank=True)
     object_id = models.PositiveBigIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
-
-
+    
 
 class Team(models.Model):
     team_lead =models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
@@ -152,7 +154,8 @@ class Task(models.Model):
         completion_note = models.TextField(null=True , blank=True)
         submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
         approved_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
-                                    related_name='aproved_by', null=True, blank=True)
+                                 related_name='aproved_by', null=True, blank=True)
+        submitted_at = models.DateTimeField(null=True, blank=True)
         section = models.ForeignKey(
             'ChartSection', on_delete=models.CASCADE, null=True, blank=True)
         chart = models.ForeignKey(

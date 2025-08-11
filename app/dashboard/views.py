@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, ChatMessages
+from .models import Messages, UserProfile, Task, Team, ChatMessages,Stats
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages, ChatForm, AddTaskChart
@@ -17,7 +17,7 @@ from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, Protecte
 from django import forms
 from django.db.models import Q
 import json
-
+from .utility import get_stats_data
 from django.utils.timezone import timedelta
 
 
@@ -29,6 +29,11 @@ allowed_roles_forms = ['dev']
 allowed_roles_management = ['dev']
 
 
+
+
+def create_stats(instance):
+    stats = Stats.objects.create(content_object = instance, object_id=instance.id)  
+    return stats    
 ########## Home #############
 
 
@@ -375,6 +380,7 @@ class TaskSubmit(LoginRequiredMixin, View):
         task.completion_note = note
         task.completed = True
         task.submitted_by = user_profile
+        task.submitted_at = timezone.now()
         task.save() 
        
         return redirect(self.success_url)
@@ -735,12 +741,16 @@ class TaskCompletedDetail(ProtectedView):
 
         users = task.users.all()
         for user in users:
-            user_stats = user.stats.get()
+            user_stats = create_stats(user)
+                
             user_stats.denied_tasks += 1
+            user_stats.submission += 1
             user_stats.save()
 
-        team_stats = team.stats.get()
+    
+        team_stats = create_stats(team)
         team_stats.denied_tasks += 1
+        team_stats.submission += 1
         team_stats.save()
 
         return redirect(self.success_url)
@@ -754,42 +764,56 @@ class TeamCompletedApprove(ProtectedView):
         users = task.users.all()
         team = Team.objects.get(id = self.request.user.userprofile.team.id)
    
-        if timezone.now() > task.due_date:
+        if task.submitted_at > task.due_date:
             for user in users:
-                user_stats = user.stats.get()
+              
+                user_stats = create_stats(user)
                 user_stats.completed_tasks += 1
                 user_stats.late_tasks += 1
+                user_stats.submission += 1
                 user_stats.save()
 
-            team_stats = team.stats.get()
+         
+            team_stats = create_stats(team)
+            team_stats.submission += 1
             team_stats.completed_tasks += 1
             team_stats.late_tasks += 1
-            team_stats.save()
+         
 
         else:
             if task.urgent:
                 for user in users:
-                    user_stats = user.stats.get()
+
+                    user_stats = create_stats(user)
+                    user_stats.submission += 1
                     user_stats.completed_tasks += 1
                     user_stats.urgent_tasks_success += 1
                     user_stats.save()
 
-                team_stats = team.stats.get()
+          
+                team_stats = create_stats(team)
+                team_stats.submission += 1
                 team_stats.completed_tasks += 1
                 team_stats.urgent_tasks_success += 1
-                team_stats.save()
+              
 
             else:
                 for user in users:
-                    user_stats = user.stats.get()
+                 
+                    user_stats = create_stats(user)
+                    user_stats.submission += 1
                     user_stats.completed_tasks += 1
                     user_stats.save()
 
-                team_stats = team.stats.get()
+           
+                team_stats = create_stats(team)
+                team_stats.submission += 1
                 team_stats.completed_tasks += 1
-                team_stats.save()
+        
+        team_stats.save()
 
         task.approved_by = self.request.user.userprofile   
+        task.submitted_at = timezone.now()
         task.completion_time = round(((((task.creation_date - timezone.now()).seconds)/60)/60), 2)                           
         task.save()
         return redirect(reverse('dashboard:team'))
@@ -801,7 +825,7 @@ class PerformanceDetail(ProtectedView):
     template_name = 'dashboard/management/perf_detail.html'
     def get(self, request, pk):
         employee = UserProfile.objects.get(id = pk)
-      
+       
         ctx = {'user': employee}  
         return render(request, self.template_name, ctx)
 
@@ -809,9 +833,12 @@ class PerformanceDetail(ProtectedView):
 class PerformanceView(ProtectedView):
     template_name = 'dashboard/management/perf_view.html'
 
-    def get(self, request, pk):
-
-        return render(request, self.template_name)
+    def get(self, request, pk, page=1):
+        
+        user_profile = UserProfile.objects.get(user = self.request.user)
+        ctx = get_stats_data(user_profile, page)
+        
+        return render(request, self.template_name, ctx)
 
 
 
