@@ -1,21 +1,35 @@
 <!DOCTYPE html>
-
+{% load crispy_forms_tags %}
 <head>
+   <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="..." crossorigin="anonymous">
+
+    <!-- Bootstrap 5 JS Bundle -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="..." crossorigin="anonymous"></script>
 <title>Login</title>
+     {% load static %}
+     <link rel="stylesheet" href="{% static 'dashboard/forms.css' %}">
 </head>
+
+
 <body>
+   
    {% if next %}
    <p>You don't have acess to this page , please login.</p>
    {% endif %}
-   <h1>Login</h1>
+   <h1 class="login_title">Login</h1>
    
-   <form method="post">
-   {% csrf_token %}
-   {{ form.as_p }}
-   {% if form.errors %}
-   <p>Wrong password</p>
-   {% endif %}
-   <input type="submit">
+
+
+
+   {% crispy form %}
+
+
    <input type="hidden" name="next" value="{{ next }}">
    </form>
 </body>
+
+<style>
+
+
+</style>

@@ -160,92 +160,41 @@
                    <div class="chart_section_right" id="source{{forloop.counter}}">
                            {% for task in chart.task_set.all %}
                            {% if task.section == section %}
-                           <div class="chart_right_task_row_grey">1
+                           <div class="chart_right_task_row_grey">
                            </div>
                             {% endif %}
                            {% endfor %}  
-                             <div class="chart_right_task_row_grey">0 </div>
+                             <div class="chart_right_task_row_grey"></div>
                    </div>
                     {% endfor %}
             </div>
-            {% if week_int < 32 %}
-            {% for week in weeks %}
+            {% if week_int < 21 %}
+                {% with col_class="chart_col_right_21" %}
+                  {% include "dashboard/projects/chart_body.html" %}
+                {% endwith %}
+            {% elif week_int < 32 %}
+                {% with col_class="chart_col_right_32" %}
+                                   {% include "dashboard/projects/chart_body.html" %}
+                {% endwith %}
+              {% elif week_int < 37 %}
+                {% with col_class="chart_col_right_37" %}
+                                  {% include "dashboard/projects/chart_body.html" %}                       
+                {% endwith %}
+                  {% elif week_int < 46 %}
+                {% with col_class="chart_col_right_46" %}
+                                  {% include "dashboard/projects/chart_body.html" %}
+                {% endwith %}
+                  {% elif week_int < 50 %}
+                {% with col_class="chart_col_right_50" %}
+                                  {% include "dashboard/projects/chart_body.html" %}
+                {% endwith %}
+                  {% else %}
+                {% with col_class="chart_col_right_52" %}
+                                  {% include "dashboard/projects/chart_body.html" %}
+                {% endwith %}
+              {% endif %}
           
-            {% with week_index=forloop.counter %}
-           
-            <div class="chart_col_right">
-                 
-                   <div class="chart_col_right_top_row" id="source_number"> 
-                   {{forloop.counter}} 
-                   </div>
-                    
-                    {% for section in sections %}
-                   <div class="chart_section_right"> 
-             
-                           {% for task in chart.task_set.all %}
-                         
-                           {% if task.section == section %}
-                           {% if user.userprofile.role.name == 'dev' %}
-                           <div class="chart_right_task_row  {% if week_index < grey %}chart_right_task_row_grey{% endif %}"
-                            id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
-                            onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
-                           </div>
-                           {% else %}
-                             <div class="chart_right_task_row_basic  {% if week_index < grey %}chart_right_task_row_grey{% endif %}"
-                            id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
-                            onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
-                           </div>
-                           {% endif %}
-                            {% endif %}
-                           {% endfor %}  
-                             <div class="chart_right_task_row_grey">0 </div>
-                   </div>
-                    {% endfor %}
-                    
-            
-            {% endwith %}
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% if week_int > 32 %}
-            {% for week in weeks %}
-          
-            {% with week_index=forloop.counter %}
-           
-            <div class="chart_col_right_32">
-                 
-                   <div class="chart_col_right_top_row" id="source_number"> 
-                   <div class="invisible_top_numbers"> 0 </div>
-                   </div>
-                    
-                    {% for section in sections %}
-                   <div class="chart_section_right"> 
-             
-                           {% for task in chart.task_set.all %}
-                         
-                           {% if task.section == section %}
-                           {% if user.userprofile.role.name == 'dev' %}
-                           <div class="chart_right_task_row  {% if week_index < grey %}chart_right_task_row_grey{% endif %}"
-                            id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
-                            onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
-                           </div>
-                           {% else %}
-                             <div class="chart_right_task_row_basic  {% if week_index < grey %}chart_right_task_row_grey{% endif %}"
-                            id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
-                            onclick="Filltask('{{task.id}}', '{{week_index}}')">{{task.week}}
-                           </div>
-                           {% endif %}
-                            {% endif %}
-                           {% endfor %}  
-                             <div class="chart_right_task_row_grey">0 </div>
-                   </div>
-                    {% endfor %}
-                    
-            
-            {% endwith %}
-            </div>
-            {% endfor %}
-            {% endif %}
+         
 
 
 

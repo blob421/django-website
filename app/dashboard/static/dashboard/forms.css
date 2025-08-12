@@ -1,7 +1,28 @@
 @import url('widgets.css');
 
 /* FORM ROWS */
+.login_title{
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    top: 10%;
+    font-size: xx-large;
+    z-index: 2;
 
+
+}
+
+.login_form input[type="submit"]{
+    width: 38vw;
+    margin-top: 10%;
+}
+.login_form{
+    width: 38vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-40%);
+}
 .form-row {
     overflow: hidden;
     padding: 10px;

@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages,Stats
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
-from .forms import ForwardMessages, ChatForm, AddTaskChart
+from .forms import ForwardMessages, ChatForm, AddTaskChart, LoginForm
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -35,6 +35,13 @@ def create_stats(instance):
     stats = Stats.objects.create(content_object = instance, object_id=instance.id)  
     return stats    
 ########## Home #############
+class CustomLoginView(LoginView):
+    authentication_form = LoginForm
+    template_name = 'dashboard/login.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        return context
 
 
 class BillboardView(LoginRequiredMixin, View):
@@ -493,16 +500,17 @@ class ChartDetail(LoginRequiredMixin, DetailView):
 
         time_delta = chart.end_date - chart.start_date
         number_of_weeks = time_delta.days / 7
-     
-        if end >= 30:
-             total_week_col = range(int(round(number_of_weeks + grey /4)))
-             week_int = int(round(number_of_weeks + grey) /4)
-        elif end <= 10:
-             total_week_col = range(int(number_of_weeks) + grey + 1)
-             week_int = int(number_of_weeks + grey + 1)
-        else : 
-             total_week_col = range(int(number_of_weeks) + grey)
-             week_int = int(number_of_weeks + grey)
+
+        total_week_col = range(int(number_of_weeks) + grey)
+        week_int = int(number_of_weeks + grey)
+
+        grey_col_list = []
+        for number in range(1, week_int + 1):
+            if ((number - 1) //4) % 2 == 0:
+                grey_col_list.append(number)
+
+    
+
 
         if week_int > 32:
             month_list = []
@@ -515,7 +523,8 @@ class ChartDetail(LoginRequiredMixin, DetailView):
         team = self.request.user.userprofile.team
         charts = Chart.objects.filter(teams = team ).order_by('id')
         ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 
-               'grey':grey , 'sections':sections, 'week_int':week_int, 'months_list':month_list}
+               'grey':grey , 'sections':sections, 'week_int':week_int, 
+               'grey_col_list':grey_col_list,'months_list':month_list}
        
    
 

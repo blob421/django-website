@@ -6,6 +6,21 @@ from itertools import chain
 from django import forms
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import Q
+from django.contrib.auth.forms import AuthenticationForm
+from	crispy_forms.layout	import Submit
+from	crispy_forms.helper	import FormHelper
+
+
+class LoginForm(AuthenticationForm):
+     def __init__(self, *args, **kwargs):
+          super(LoginForm, self).__init__(*args, **kwargs)
+          self.helper = FormHelper()                               
+          self.helper.add_input(Submit('submit','Submit'))           
+          self.helper.form_class = 'login_form'
+         
+       
+
+
 
 
 class MessageForm(ModelForm):
