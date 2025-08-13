@@ -220,6 +220,7 @@
     background-color: rgb(174, 196, 215);
     padding: 2px;
     width:20%;   
+    border-left: 0px;
 }
 .tasklist_blocks_title_manage{
        height: 6%;
@@ -437,30 +438,42 @@
 
 }
 .left_bar_team_members_container{
- /*  border: solid 1px black;*/
-    height: 40%;
+ 
+    height: 45%;
     width: 99%;
     overflow: auto;
     margin-top: 1%;
  
 }
-
-.general_medium_container_management{
-         border: 2px solid rgb(156, 156, 156);
-    height: 50%;
-    overflow: auto;
+.task_description_text_modal_manage{
+    border: 1px solid black;
+    position: relative;
+    height: 90%;
+    overflow-y: scroll;
+      overflow-y: scroll;
     text-justify: auto;
     white-space: pre-wrap;
-    text-align:justify top;
-    transform-origin: top;
-     background-color: rgb(245, 245, 245);
+    text-align:justify left;
+    padding-left: 1%;
+    padding-top: 2%;
     font-family: 'Times New Roman', Times, serif;
-      width: 100%;
+    background-color: rgb(234, 234, 234);
+}
+.task_description_title_modal_manage{
+    font-size: x-large;
+    text-align: center;
+    color: rgb(41, 41, 41);
+}
+.task_modal_manage_btn{
+    width: 10%;
+    height:10%;
+ 
+   
 }
 .second_text_container_management{
     border: 2px solid rgb(110, 110, 110);
-    height: 40%;
-    
+    height: 100%;
+
  
      width: 100%;
     overflow-y: scroll;
@@ -495,25 +508,25 @@
     padding-bottom: 1%;
     
 } 
-.title_task_description_management{
-     height: 5%;
-     border: 2px rgb(66, 66, 66) solid;
-      background-color: rgb(192, 152, 116);
-     text-align: center;
-      width: 100%;
-      padding-top: 1%;
-      padding-bottom: 1%;
+.task_detail_completed_link{
+
+    border: 2px rgb(85, 85, 85) solid;
+    margin: 1%;
+    padding-top: 10px;
+    top: 15%;
+    width: 98%;
+    height: 10%;
+ 
+    background-color: rgb(192, 231, 204);
+     padding: 2%;
+     border-radius: 4px;
+
+    
+
 }
-.general_text_management{
-    top: -20%;
-   position: relative;
-    margin-right: 1%;     
-    margin-left: 1%;      
-    overflow-wrap: break-word;    
-    overflow: hidden;   
-}
+
 .general_text_management2{
-     top: -20%;
+     top: -6%;
     position: relative;
    /* border: 2px solid green;*/
     padding-left: 1%;

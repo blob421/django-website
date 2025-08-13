@@ -1,13 +1,13 @@
  {% include 'dashboard/base.html' %}
 
  {% block content %}
-<div class="visual_frame_update_submit"></div>
+<div class="visual_frame_update_submit">
   <form method="post" class="message_update_submit" enctype="multipart/form-data">
       {% csrf_token %}
   
  <div class="task_submit_form"> 
-  <div>{{form.completion_note.label_tag}}   </div>
-  {{ form.completion_note }}
+  <div class="completion_note_title">{{form.completion_note.label_tag}}   </div>
+  <div class="completion_note_task_submit"> {{ form.completion_note }}</div>
 
   <div class="task_submit_inputs_container">
  <div class="task_submit_picture_input"> {{form.picture}}
@@ -21,7 +21,7 @@
   <input type="submit" name="send" value="send" class="task_submit_button"></div>
    
  </form>
- 
+ </div>
  </div>
   <div class="send_msg_back">
    <a href="{% url 'dashboard:task_detail' task.id %}"><button class="del_btn2" type="button">Back</button></a>

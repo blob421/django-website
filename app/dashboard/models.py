@@ -140,7 +140,7 @@ class Task(models.Model):
         
         users = models.ManyToManyField(UserProfile, related_name='task_users')
         description = models.TextField()
-        name = models.CharField(max_length=50)
+        name = models.CharField(max_length=50, unique=True)
         creation_date = models.DateTimeField(auto_now_add=True)
         starting_date = models.DateTimeField(null=True, blank=True)
         completion_time = models.FloatField(null=True, blank=True)

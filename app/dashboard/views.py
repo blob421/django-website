@@ -116,30 +116,70 @@ class MessageView(LoginRequiredMixin, View):
     def get(self, request):
         pk = self.request.user.id
         data = MessagesCopy.objects.filter(user_id=pk)
+
         form = MessageForm(sender_id = self.request.user.id)
-        context = {'data': data, 'form': form}
+        form_add = RecipientForm(sender_id=self.request.user.id)
+        form_del = RecipientDelete(sender_id=self.request.user.id)
+
+        context = {'data': data, 'form': form, 'form_add':form_add, 'form_del':form_del}
         return render(request, self.template, context)
        
 
     def post(self, request):
-        form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
- 
-        if not form.is_valid():
-            pk = self.request.user.id
-            data = MessagesCopy.objects.filter(user_id=pk)
-            context = {'data':data, 'form': form}
-            return render(request, self.template, context)
-        report = form.save(commit=False)
+        user_profile = self.request.user.userprofile
+       
+        if 'send' in request.POST:
+            form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
+            if not form.is_valid():
+                pk = self.request.user.id
+                data = MessagesCopy.objects.filter(user_id=pk)
+                context = {'data': data, 'form': form, 'form_add':form_add, 'form_del':form_del}
+                return render(request, self.template, context)
+            
+            report = form.save(commit=False)
 
-        recipient = form.cleaned_data['recipient']
-        report.user_id = request.user.id
-        report.save()
-        report.recipient.set(recipient.all())
+            recipient = form.cleaned_data['recipient']
+            report.user_id = request.user.id
+            report.save()
+            report.recipient.set(recipient.all())
 
-        ##Making a copy for inbox
-        copy_message_data(report , MessagesCopy)
-        return redirect('dashboard:messages_create')  
+            ##Making a copy for inbox
+            copy_message_data(report , MessagesCopy)
+            return redirect('dashboard:messages_create')  
     
+        if 'add' in request.POST:
+            form_add = RecipientForm(request.POST, sender_id=self.request.user.id, 
+                                                         instance = user_profile) 
+            if not form_add.is_valid():
+                pk = self.request.user.id
+                data = MessagesCopy.objects.filter(user_id=pk)
+                context = {'data': data, 'form': form, 'form_add':form_add, 'form_del':form_del}
+                return render(request, self.template, context)
+            
+            add = form_add.save(commit=False)
+            previous_receivers = user_profile.recipients.all() 
+            new_receivers = form_add.cleaned_data['recipients']
+            combined_receivers = previous_receivers | new_receivers
+            add.save()
+            add.recipients.set(combined_receivers)
+            return redirect('dashboard:messages_create')  
+        
+        if 'delete' in request.POST:
+            form_del = RecipientDelete(request.POST, sender_id=self.request.user.id, 
+                                                     instance = user_profile)
+            if not form_del.is_valid():
+                pk = self.request.user.id
+                data = MessagesCopy.objects.filter(user_id=pk)
+                context = {'data': data, 'form': form, 'form_add':form_add, 'form_del':form_del}
+                return render(request, self.template, context)
+            
+            remove = form_del.save(commit=False)
+            previous = user_profile.recipients.all()
+            added = form_del.cleaned_data['recipients']
+            new = previous.exclude(id__in=added.values_list('id', flat=True))
+            remove.save()
+            remove.recipients.set(new)
+            return redirect('dashboard:messages_create')
 
     
 
@@ -204,63 +244,6 @@ class MessageForward(LoginRequiredMixin, View):
         forwarded_msg.recipient.set(recipients.all())
         return redirect(reverse('dashboard:messages_create'))
     
-
-
-class AddRecipient(LoginRequiredMixin, View):
-    template = 'dashboard/messages/recipient_add.html'
-    def get(self, request):
-
-        form = RecipientForm(sender_id=self.request.user.id)
-        
-        context = {'form': form}
-        return render(request, self.template, context)
-    
-    def post(self, request):
-        user_profile = UserProfile.objects.get(user=self.request.user)
-        form = RecipientForm(request.POST, sender_id=self.request.user.id, 
-                             instance = user_profile)
-        if not form.is_valid():
-          
-            context = {'form': form}
-            return render(request, self.template, context)
-    
-
-        add = form.save(commit=False)
-        previous_receivers = user_profile.recipients.all() 
-        new_receivers = form.cleaned_data['recipients']
-        combined_receivers = previous_receivers | new_receivers
-        add.save()
-        add.recipients.set(combined_receivers)
-        return redirect('dashboard:messages_create')  
-    
-
-
-class DeleteRecipient(LoginRequiredMixin, View):
-    template_name = 'dashboard/messages/recipient_delete.html'
-    
-    def get(self, request):
-        form = RecipientDelete(sender_id=self.request.user.id)
-
-        context = {'form': form}
-        return render(request, self.template_name, context)
-    
-    def post(self, request):
-        user_profile = UserProfile.objects.get(user = self.request.user)
-        form = RecipientDelete(request.POST, sender_id = self.request.user.id, 
-                         instance = user_profile)
-        if not form.is_valid():
-            context = {'form': form}
-            return render(self.request, self.template_name, context)
-        
-        remove = form.save(commit=False)
-        previous = user_profile.recipients.all()
-        added = form.cleaned_data['recipients']
-        new = previous.exclude(id__in=added.values_list('id', flat=True))
-        remove.save()
-        remove.recipients.set(new)
-        return redirect('dashboard:messages_create')
-
-
 
 
 
@@ -388,6 +371,7 @@ class TaskSubmit(LoginRequiredMixin, View):
         task.completed = True
         task.submitted_by = user_profile
         task.submitted_at = timezone.now()
+        task.completion_time = round(((((timezone.now()-task.creation_date).total_seconds())/60)/60), 2)
         task.save() 
        
         return redirect(self.success_url)
@@ -653,7 +637,7 @@ class ScheduleUpdate(ProtectedUpdate):
     template_name = 'dashboard/management/schedule_update.html'
     model = Schedule
     success_url = reverse_lazy('dashboard:schedule_manage')
-    fields = days_of_the_week
+    fields =['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
     def form_valid(self, form):
         form.instance.message = None
@@ -823,7 +807,7 @@ class TeamCompletedApprove(ProtectedView):
 
         task.approved_by = self.request.user.userprofile   
         task.submitted_at = timezone.now()
-        task.completion_time = round(((((task.creation_date - timezone.now()).seconds)/60)/60), 2)                           
+                           
         task.save()
         return redirect(reverse('dashboard:team'))
 
@@ -835,7 +819,7 @@ class PerformanceDetail(ProtectedView):
     def get(self, request, pk):
         employee = UserProfile.objects.get(id = pk)
        
-        ctx = {'user': employee}  
+        ctx = get_stats_data(employee)  
         return render(request, self.template_name, ctx)
 
 

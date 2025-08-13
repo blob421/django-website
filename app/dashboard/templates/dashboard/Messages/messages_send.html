@@ -17,8 +17,8 @@
  {{form.title.label_tag}}
  <div class="title_bar_send_msg">{{form.title}} </div>
  <div class="link_divs_send_msg"> 
-  <a class="add_recipient" href="{% url 'dashboard:add' %}">Add a recipient |</a>
-   <a class="add_recipient" href="{% url 'dashboard:recipient_delete' %}">Delete recipients</a>
+  <a class="add_recipient" onclick="document.getElementById('shade_background_modal_add').style.display = 'flex'">Add a recipient |</a>
+   <a class="add_recipient" onclick="document.getElementById('shade_background_modal_del').style.display = 'flex'">Delete recipients</a>
    </div>
 </div>
    </div>
@@ -66,4 +66,112 @@
 
  </div>
  <div class="bot_visual_frame_send_msg"></div>
+
+
+
+ <!-------------------------------ADD & DELETE MODALS----------------------------------->
+
+
+<!------------------ADD FORM----------------------->
+ <div id="shade_background_modal_add" style="
+ width: 100vw; 
+ height: 100vh;
+ background-color: rgba(0, 0, 0, 0.714);
+ display: none;
+ position: absolute;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%,-50%);
+ 
+ ">
+ <div class="add_form_container">
+
+
+ 
+
+
+
+ 
+    <h1 class="title_add"> Add contacts</h1>
+ <form method="post" class="add_contact_form"> 
+    
+ 
+      <button type="submit" class="left_add_btn" name="add">Add</button> 
+    
+
+
+
+   
+     
+         <button onclick="document.getElementById('shade_background_modal_add').style.display='none'"
+          type="button" class="right_add_btn">Close</button>
+    
+      
+
+   
+      
+      {% csrf_token %}
+      {{form_add.recipients}}
+ 
+  
+  </form>
+
+ </div>
+
+ </div>
+
+
+<!---------------------DEL FORM ------------------------>
+
+ <div id="shade_background_modal_del" style="
+ width: 100vw; 
+ height: 100vh;
+ background-color: rgba(0, 0, 0, 0.714);
+ display: none;
+ position: absolute;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%,-50%);
+ 
+ ">
+ 
+ <div class="add_form_container">
+
+
+     <h1 class="title_add"> Delete contacts</h1>
+
+
+
+ 
+ <form method="post" class="add_contact_form"> 
+ 
+  
+      <button type="submit"  class="left_add_btn" name="delete">Delete</button> 
+    
+
+
+
+       <button onclick="document.getElementById('shade_background_modal_del').style.display='none'"
+          type="button" class="right_add_btn">Close</button>
+      
+
+   
+      
+      {% csrf_token %}
+      {{form_del.recipients}}
+ 
+  
+  
+  </form>
+
+
+ </div>
+
+
+ </div>
  {% endblock %}
+
+
+
+
+

@@ -401,17 +401,18 @@ form textarea{
     text-align: center;
     font-size: x-large;
     margin-top: 4vh;
-    color: rgb(61, 61, 61);
+    color: rgb(255, 255, 255);
     /* border: 2px solid black;*/
 }
 .add_contact_form{
     left:50%;
-    top:50%;
-    transform: translate(-50%, -50%);
+    bottom:5%;
+    transform: translate(-50%);
     position: absolute;
     /*border: 2px solid yellow;*/
-    width: 100%;
-    height: 100%;
+    width: 70%;
+    height: 85%;
+    
   
 
  
@@ -423,7 +424,7 @@ form textarea{
   transform: translateX(-50%);
   position: absolute;
   width: 100%;
-  height: 75%;
+  height: 80%;
   margin-top: 5%;
   padding-top: 5%;
   font-family: 'Times New Roman', Times, serif;
@@ -459,7 +460,7 @@ form button{
     height:100%;
     width: 100%;
     border-radius: 5px;
-    background-color: royalblue;
+    background-color: rgb(71, 71, 71);
     color: azure;
     border: 0.3px;
     font-size: smaller;
@@ -471,6 +472,8 @@ form button{
      width: 45%;
     bottom:0%;
     position: fixed;
+     background-color: rgb(71, 71, 71) !important;
+ 
 }
 .left_add_btn{
     height:10%;
@@ -478,6 +481,8 @@ form button{
     bottom: 0%;
     right: 0%;
     position: fixed;
+    color: black;
+    background-color: rgb(241, 234, 215) !important;
   
 }
 .add_form_container{
@@ -485,9 +490,13 @@ form button{
   position: absolute;
   left:50%;
   top:50%;
-  transform: translate(-50%, -50%);
-  height:77vh;
-  width: 29vw;
+  transform: translate(-50%, -47%);
+  height:90vh;
+  width: 43vw;
+  background-color: rgb(121, 96, 80);
+  border-radius: 10px;
+  
+ 
     
 }
 /******************* View a message **********************/
@@ -627,6 +636,7 @@ form button{
     top: 50%;
     transform: translate(-50%, -47%);
      background-color: rgb(160, 183, 206);
+     padding-right: 3%;
 
 }
 .message_update_submit{
@@ -634,13 +644,13 @@ form button{
 }
 .visual_frame_update_submit{
     border: 2.5px solid black;
-    height: 83%;
-    width: 55%;
+    height: 85vh;
+    width: 55vw;
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
-       background-color: rgb(174, 196, 215);
+    transform: translate(-50%, -48%);
+    background-color: rgb(174, 196, 215);
 
 }
 .visual_frame_forward{
@@ -991,7 +1001,7 @@ form button{
     border: 1px solid rgb(105, 105, 105);
     position: absolute;
     height: 85vh;
-    width: 70vw;
+    width: 76vw;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-47%);
@@ -1137,10 +1147,17 @@ form button{
     
 }
 
+.completion_note_task_submit{
+    
+    height: 83%;
 
-.task_submit_form textarea{
-    margin-top: 2%;
-    width: 99%;
+}
+.completion_note_title{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-bottom: 2%;
+
 }
 .message_update input{
      padding: 1%;
@@ -1184,7 +1201,7 @@ form button{
 .general_medium_container{
 
       border: 2px solid rgb(70, 70, 70);
-    width: 87%;
+    width: 89%;
     overflow: auto;
    
     white-space: pre-wrap;
@@ -1225,9 +1242,17 @@ form button{
     
 }
 .task_submit_form{
-    width: 50%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+
+  left: 50%;
+  width: 85%;
+  top: 50%;
+  height: 90%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  
 }
 
+.task_submit_form textarea{
+    height: 95%;
+    width: 99%;
+}

@@ -7,6 +7,8 @@ from django.utils import timezone
 ##### UTILITY ###############
 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+
+
 def copy_message_data(source, target_model):
     copy = target_model(
         id=source.id,
@@ -29,7 +31,34 @@ def safe_divide(numerator, denominator):
                 return (numerator / denominator) * 100
             except ZeroDivisionError:
                 return 0
-            
+
+
+def get_user_data(stats):
+
+    total_completed = 0 
+    late_task_count = 0
+    total_denied = 0
+    total_urgent = 0
+    total_submissions = 0
+    days_missed = 0
+    days_scheduled = 0
+    
+    for stat in stats:
+
+        total_submissions += stat.submission  
+        late_task_count += stat.late_tasks
+        total_denied += stat.denied_tasks
+        total_urgent += stat.urgent_tasks_success
+        total_completed += stat.completed_tasks
+        days_missed += stat.days_missed
+        days_scheduled += stat.days_scheduled
+        return {'total_completed':total_completed, 'late_task_count':late_task_count,
+                    'total_denied':total_denied,'total_urgent':total_urgent,
+                    'total_submissions':total_submissions, 'days_missed':days_missed,
+                    'days_scheduled':days_scheduled}
+        
+
+
 def get_graph_data(stats, ytick_var):
         x_ticks = []
         y_ticks = []
@@ -46,7 +75,7 @@ def get_graph_data(stats, ytick_var):
             total_denied += stat.denied_tasks
             total_urgent += stat.urgent_tasks_success
             total_completed += stat.completed_tasks
-    
+              
             x_ticks.append(stat.timestamp)
 
             if ytick_var == "total_denied":
@@ -85,6 +114,7 @@ graph_x_axis = dict(
             tickangle=0
                     )
 
+########## Main stats fetching function for both views ##########
 
 def get_stats_data(user_profile, page=None):
 
@@ -96,15 +126,19 @@ def get_stats_data(user_profile, page=None):
 
     total_urgent_completed = 0
     tasks_time_total = 0
+
+    ########## FOR USERS ###########
     if not page:
-        stats = user_profile.stats.get()   
+        all_user_stats = user_profile.stats.filter().all()
+        stats = get_user_data(all_user_stats)
+      
         tasks = Task.objects.filter(users__in=[user_profile])
-        
-        
+
         for task in tasks:
             if task.completion_time:
                 tasks_time_total += task.completion_time 
-                
+        
+        days_missed_ratio = safe_divide(stats['days_missed'], stats['days_scheduled'])
 
         users = None
         plot_div1 = None
@@ -113,6 +147,7 @@ def get_stats_data(user_profile, page=None):
         total_urgent_completed = tasks.filter(urgent=True, 
                 submitted_at__lte = now, submitted_at__gte=three_months_ago).count()
 
+    ############ FOR TEAMS #############
     if page:
 
         tasks = Task.objects.filter(creation_date__lte = now,
@@ -124,12 +159,10 @@ def get_stats_data(user_profile, page=None):
                  task_mean_time += task.completion_time
              if task.urgent:
                  total_urgent_completed  += 1
-
+        days_missed_ratio = 0
         team = Team.objects.get(id = user_profile.team.id)
         users = UserProfile.objects.filter(team=team)
-        days_missed = 0 
-       
-        total_days_scheduled = 0
+    
         stats = team.stats.filter(timestamp__lte = now,
                                          timestamp__gte=three_months_ago,
                                        ).order_by('timestamp')   
@@ -273,12 +306,13 @@ def get_stats_data(user_profile, page=None):
             
             plot_div1 = plot(fig1, output_type='div')
 
-
-    denied_ratio = round(safe_divide(data['total_denied'],  data['total_submissions']), 0)
-    late_ratio = safe_divide(data['late_task_count'],  data['total_completed'])
-    days_missed_ratio = safe_divide(days_missed, total_days_scheduled)
-    urgent_ratio = safe_divide(data['total_urgent'], total_urgent_completed)
+    ##### PROCEEDS FOR BOTH ######
+    denied_ratio = round(safe_divide(data['total_denied'],  data['total_submissions']), 1)
+    late_ratio = round(safe_divide(data['late_task_count'],  data['total_completed']), 1)
+   
+    urgent_ratio = round(safe_divide(data['total_urgent'], total_urgent_completed), 1)
     ranges = range(1, 5)
+
     return {'stats':stats, 'denied_ratio': denied_ratio, 
             'late_ratio':late_ratio, 'days_missed_ratio':days_missed_ratio, 
             'urgent_ratio':urgent_ratio,  'users':users, 'plot1':plot_div1, 

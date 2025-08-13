@@ -1,11 +1,20 @@
  {% include 'dashboard/base.html' %}
+ 
  {% block content %}
    <div class="top_visual_frame_task_list_management"></div>
 <div class="extreme_outer_div_task_manage_detail">  
 
    <div class="task_detail_left_panel_manage">
+           
+
           <div class ="title_task_view">{{task.name}}</div>
-          <div class="flex_container_task_view">Due date:    {{task.due_date}} </div>
+          <div class="flex_container_task_view">Due date : {{task.due_date}} </div>
+          <div class="flex_container_task_view">Took : {{task.completion_time}} h</div>
+          <a onclick="document.getElementById('popup').style.display='flex'">
+                <button class="task_detail_completed_link">More details  
+              </button>
+           </a>
+                
           <div class="title_data">Team</div>
     
 
@@ -32,20 +41,14 @@
      </div>
 
           <div class="text_frames_container_management">  
-              <div class="title_task_description_management">
-                Task description
-              </div>
-
-              <div class="general_medium_container_management">
             
-              <div class="general_text_management"> {{ task.description}} </div>
-            
-              </div>
 
               <div class="title_completion_note"> 
-                Completion note
+          
+                   Completion note 
+               
               </div>
-              
+           
               <div class="second_text_container_management">
                   <p class="general_text_management2">  {{task.completion_note}}</p>
              </div>
@@ -79,10 +82,6 @@
 
 </div>
 
-
-
-
-
  </div>
         <div class="send_msg_back">
           <a href="{% url 'dashboard:team_completed' %}"><button class="del_btn2" type="button">Back</button></a>
@@ -98,7 +97,46 @@
   </div>
   {% endif %}
 <div class="bot_visual_frame_task_list"></div>
+
+
+
+<!--------------------------------------MODAL------------------------------------------->
+
+                <div id="popup" style="
+                  display: none;
+                  position: absolute;
+                  left: 50%;
+                  top:50%;
+                  transform: translate(-50%,-50%);
+                  width: 100vw; height: 100vh;
+                  background: rgba(0,0,0,0.5);
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 100;
+                ">
+                  <div style="
+                     background-color: rgb(156, 129, 105);
+                    width: 60vw; height: 81vh;
+                    padding: 20px;
+                    border-radius: 8px;
+                    margin-top: 1%;
+                    display: flex;
+                    flex-direction: column;
+                  ">
+                  <div class="task_description_title_modal_manage">Description</div>
+                  <p class="task_description_text_modal_manage">{{task.description}}</p>
+             
+                  <button class="task_modal_manage_btn" onclick="document.getElementById('popup').style.display='none'">Close</button>
+               
+            </div>
+
+
+
+
+
 <script>
+
+
 function showOverlay() {
     document.getElementById('overlay').style.display = 'block';
     document.getElementById('thumbnail').style.display = 'none';

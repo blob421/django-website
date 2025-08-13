@@ -1,15 +1,13 @@
 {% include 'dashboard/base.html' %}
-{% load user_data %}
 
 
 {% block content %}
-{% with user|get_stats as stats_ctx %}
 <div class="perf_detail_extreme_frame"></div>
 <div class="perf_detail_outer_div"> 
 
       <div class="employee_div">
-         <div class="employee_name"> Employee : {{user.user.first_name}} {{user.user.last_name}}</div>
-          <div class="member_since">Joined : {{user.user.assigned_on}}</div>
+         <div class="employee_name"> Employee : {{user.first_name}} {{user.last_name}}</div>
+          <div class="member_since">Joined : {{user.assigned_on}}</div>
     </div>
    
       <div class="stats_div">
@@ -26,11 +24,11 @@
            </div>
            <div class="number_col_1">
  
-               <div class="perf_detail_row">{{stats_ctx.stats.completed_tasks}}</div>
-               <div class="perf_detail_row">{{stats_ctx.stats.denied_tasks}}</div>
-               <div class="perf_detail_row">{{stats_ctx.stats.late_tasks}}</div>
-               <div class="perf_detail_row">{{stats_ctx.stats.urgent_tasks_success}} </div >    
-               <div class="perf_detail_row">{{stats_ctx.stats.days_scheduled}}</div>
+               <div class="perf_detail_row">{{stats.total_completed}}</div>
+               <div class="perf_detail_row">{{stats.total_denied}}</div>
+               <div class="perf_detail_row">{{stats.late_task_count}}</div>
+               <div class="perf_detail_row">{{stats.total_urgent}} </div >    
+               <div class="perf_detail_row">{{stats.days_scheduled}}</div>
                 <div class="perf_detail_row"></div>
                  
 
@@ -47,12 +45,12 @@
 
            </div>
            <div class="number_col2">
-                  <div class="perf_detail_row">{{stats_ctx.task_mean_time}} h</div >   
-                  <div class="perf_detail_row">  {{stats_ctx.denied_ratio}} %</div >
-                  <div class="perf_detail_row">{{stats_ctx.late_ratio}} %</div > 
-                  <div class="perf_detail_row"> {{stats_ctx.urgent_ratio}} %</div >    
-                  <div class="perf_detail_row">{{stats_ctx.stats.days_missed}}</div >      
-                  <div class="perf_detail_row">{{stats_ctx.days_missed_ratio}} %</div >    
+                  <div class="perf_detail_row">{{task_mean_time}} h</div >   
+                  <div class="perf_detail_row">  {{denied_ratio}} %</div >
+                  <div class="perf_detail_row">{{late_ratio}} %</div > 
+                  <div class="perf_detail_row"> {{urgent_ratio}} %</div >    
+                  <div class="perf_detail_row">{{stats.days_missed}}</div >      
+                  <div class="perf_detail_row">{{days_missed_ratio}} %</div >    
                      
 
            </div>
@@ -65,6 +63,5 @@
 
 
  
-  
-{% endwith %}
+
 {% endblock %}

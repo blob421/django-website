@@ -9,8 +9,7 @@ urlpatterns = [
     path('role_dispatch/', views.role_dispatch, name='role_dispatch'),
 
     ####### Recipients ########
-    path('add_recipient/', views.AddRecipient.as_view(), name = 'add'),
-    path('recipient_delete/', views.DeleteRecipient.as_view(), name = 'recipient_delete'),
+
     ####### Messages ##########
 
     path('messages/', views.HomeView.as_view(), name='messages'),
