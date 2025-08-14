@@ -45,10 +45,20 @@ async function update_messages() {
 
             const row = data[x]
                chatContainer.innerHTML += '<div class="chat_bubble_container">' + 
-                '<div class="chat_user">' +row.user +'</div>' + 
-                '<div class="chat_bubbles">' +row.text+ ' '+
-                 '</div>'+'<div class="chat_bubble_time">'+'('+row.time+')'+ '</div>' +  
-                  '</div>';
+                    '<div class="chat_user">' + 
+                        row.user + 
+                    '</div>' + 
+                    '<div class="chat_bubbles">' + 
+                        row.text + ' ' +
+                    '</div>'+ 
+                    '<div class="time_cont">' + 
+                        '<div class="bubble_timeleft">' + 
+                        '</div>' + 
+                        '<div class="chat_bubble_time">'+ 
+                        '('+row.time+')'+ 
+                        '</div>' + 
+                    '</div>' +
+                 '</div>';
         }
        setTimeout(update_messages, 10000);
     }

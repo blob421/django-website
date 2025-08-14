@@ -117,13 +117,15 @@ graph_x_axis = dict(
 ########## Main stats fetching function for both views ##########
 
 def get_stats_data(user_profile, page=None):
-
+    
     now = timezone.now()
     three_months_ago = now - relativedelta(days=90)
     start_date = f"{three_months_ago.day} {three_months_ago.strftime('%B')}" 
     end_date = f"{now.day} {now.strftime('%B')}" 
     date_string = start_date + ' '+  '-' + ' ' + end_date
-
+    
+    days_missed_ratio = 0
+    task_mean_time = 0
     total_urgent_completed = 0
     tasks_time_total = 0
 
@@ -138,12 +140,12 @@ def get_stats_data(user_profile, page=None):
             if task.completion_time:
                 tasks_time_total += task.completion_time 
         
-        days_missed_ratio = safe_divide(stats['days_missed'], stats['days_scheduled'])
+       
 
         users = None
         plot_div1 = None
         plot_div2 = None
-        task_mean_time = safe_divide(tasks_time_total, tasks.count())
+   
         total_urgent_completed = tasks.filter(urgent=True, 
                 submitted_at__lte = now, submitted_at__gte=three_months_ago).count()
 
@@ -153,13 +155,13 @@ def get_stats_data(user_profile, page=None):
         tasks = Task.objects.filter(creation_date__lte = now,
                                         creation_date__gte=three_months_ago,
                                     ).order_by('creation_date')
-        task_mean_time = 0
+       
         for task in tasks:
              if task.completion_time:
                  task_mean_time += task.completion_time
              if task.urgent:
                  total_urgent_completed  += 1
-        days_missed_ratio = 0
+      
         team = Team.objects.get(id = user_profile.team.id)
         users = UserProfile.objects.filter(team=team)
     
@@ -307,10 +309,20 @@ def get_stats_data(user_profile, page=None):
             plot_div1 = plot(fig1, output_type='div')
 
     ##### PROCEEDS FOR BOTH ######
-    denied_ratio = round(safe_divide(data['total_denied'],  data['total_submissions']), 1)
-    late_ratio = round(safe_divide(data['late_task_count'],  data['total_completed']), 1)
-   
-    urgent_ratio = round(safe_divide(data['total_urgent'], total_urgent_completed), 1)
+    if page:
+     
+        origin = data
+    else:
+        origin = stats
+        days_missed_ratio = safe_divide(origin['days_missed'], origin['days_scheduled'])
+        task_mean_time = safe_divide(tasks_time_total, tasks.count())
+
+    denied_ratio = round(safe_divide(origin['total_denied'],  origin['total_submissions']), 1)
+    late_ratio = round(safe_divide(origin['late_task_count'],  origin['total_completed']), 1)
+    urgent_ratio = round(safe_divide(origin['total_urgent'], total_urgent_completed), 1)
+ 
+    
+         
     ranges = range(1, 5)
 
     return {'stats':stats, 'denied_ratio': denied_ratio, 

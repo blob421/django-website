@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
 
 def start():
+ 
 
     DjangoJobExecution.objects.all().delete()
     DjangoJob.objects.all().delete()

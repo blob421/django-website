@@ -4,9 +4,9 @@ from django.views.generic import View, UpdateView, DetailView, DeleteView
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages,Stats
-from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule
+from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
-from .forms import ForwardMessages, ChatForm, AddTaskChart, LoginForm
+from .forms import ForwardMessages, ChatForm, AddTaskChart, LoginForm, DocumentForm
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -19,8 +19,11 @@ from django.db.models import Q
 import json
 from .utility import get_stats_data
 from django.utils.timezone import timedelta
-
-
+from dateutil.relativedelta import relativedelta
+import os
+from django.utils.encoding import smart_str
+import mimetypes
+from django.core.files.storage import default_storage
 
 ########## CONFIG ############
 
@@ -286,14 +289,53 @@ class TaskCreate(ProtectedCreate):
 
 
 
-class TaskDetail(LoginRequiredMixin, DetailView):
+class TaskDetail(LoginRequiredMixin, View):
     template_name = 'dashboard/tasks/task_detail.html'
     context_object_name = 'task'
+    def get(self, request, pk):
+        form = DocumentForm()
+        task = Task.objects.get(id = pk, users=self.request.user.userprofile)
+        
+        files = Document.objects.filter(object_id = task.id)
+        time_threshold = timezone.now() - relativedelta(hours=24)
+
+        old_files = files.filter(upload_time__lte=time_threshold)
+        recent_files = files.filter(upload_time__gte = time_threshold).order_by('-upload_time')
+
+        ctx = {'task': task, 'form':form, 'files': old_files, 'recent_files':recent_files}
+        return render(request, self.template_name, ctx)
     
-    def get_object(self):
-        report_id = self.kwargs['pk']   
-        return Task.objects.filter(id = report_id, users=self.request.user.userprofile)
+    def post(self, request, pk):
+        form = DocumentForm(request.POST, request.FILES)
+        task = Task.objects.get(id = pk, users=self.request.user.userprofile)
+
+        if not form.is_valid():
+            files = Document.objects.filter(object_id = task.id)
+            ctx = {'task': task, 'form':form, 'files': files}
+            return render(request, self.template_name, ctx)
+        
+        file = form.save(commit=False)
+      
+        file_name = request.FILES['file'].name
+        file_path = f'task/{task.id}/{file_name}'
+
+        if default_storage.exists(file_path):
+            default_storage.delete(file_path)
+            old_file = Document.objects.filter(object_id=task.id, file__icontains=file_name)
+            old_file.delete()
+        
+
+        file.content_object = task
+        file.save()
+        
+        return redirect(reverse('dashboard:task_detail', args=[pk]))
+
     
+  
+       
+ 
+
+       
 
 class TaskUpdate(ProtectedUpdate):
     model = Task
@@ -934,6 +976,17 @@ def stream_completed_task_img(request, pk):
     response['Content-Length'] = len(pic.picture)
     response.write(pic.picture)
     return response
+
+def GetFile(request, pk):
+    file = get_object_or_404(Document, id=pk)
+    file_path = file.file.path
+    file_name = file.file.name
+
+    with open(file_path, 'rb') as f:
+        response = HttpResponse(f.read(), content_type=mimetypes.guess_type(file_name)[0] or 'application/octet-stream')
+        response['Content-Disposition'] = f'attachment; filename="{smart_str(file_name)}"'
+        return response
+
 
 
 class Logout(LogoutView):

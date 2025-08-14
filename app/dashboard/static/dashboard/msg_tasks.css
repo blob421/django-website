@@ -123,6 +123,114 @@ a:visited{
     margin-top: 2%;
     
 }
+.inner_right_panel_task_files{
+    width: 88%;
+    height: 90%;
+    background-color: rgb(105, 105, 105);
+    left: 50%;
+    top: 50%;
+    position: relative;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    border: 2px rgb(24, 24, 24) solid;
+  
+    
+
+}
+.add_file_modal_btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+}
+.form_add_file_task_detail input{
+   left: 0%;
+   position: absolute;
+  
+  margin-left: 3%;
+ 
+   top: 50%;
+   transform: translateY(-50%);
+  
+}
+.x_btn_add_file{
+    position: absolute;
+    right: 1.2%;
+    top: 4%;
+    border: 0.5px solid black;
+    font-size: x-small;
+    height: 18%;
+    border-radius: 7px;
+    background-color: rgba(0, 0, 0, 0.064);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add_file_modal_sub_btn{
+    position: absolute;
+    bottom: 7%;
+    height: 30%;
+    right: 2%;
+    width: 20%;
+  
+
+}
+.add_files_btn{
+    width: 75%;
+    padding: 2%;
+}
+.file_div_task_detail{
+    width: 90%;
+   color: white;
+    padding: 5%;
+    padding-left: 5%;
+   font-size: smaller;
+  display: inline-block;   
+  max-width: 100%;         
+  word-wrap: break-word;   
+  overflow-wrap: break-word;
+  margin-top: 1%;
+  left: 50%;
+  position: relative;
+  transform: translateX(-50%);
+    background-color: rgb(65, 65, 65);
+}
+.file_div_task_detail:hover{
+     background-color: #353535;
+}
+.recently_modified_files_detail{
+     left: 50%;
+       width: 90%;
+    height: 30%;
+    border: 2px solid black;
+     transform: translateX(-50%);
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+      margin-top: 10%;
+        background-color: rgb(100, 100, 100);
+    
+}
+.time_recent_file{
+    font-size: x-small;
+  
+    margin-top: 2%;
+}
+.files_outer_div{
+    background-color: rgb(100, 100, 100);
+    height: 50%;
+    width: 90%;
+    left: 50%;
+    margin-top: 10%;
+    transform: translateX(-50%);
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: 2px solid black;
+}
+
 .bottom_send_msg{
  
    width: 100%;
@@ -1001,10 +1109,10 @@ form button{
     border: 1px solid rgb(105, 105, 105);
     position: absolute;
     height: 85vh;
-    width: 76vw;
-    left: 50%;
+    width: 90vw;
+    right: 2%;
     top: 50%;
-    transform: translate(-50%,-47%);
+    transform: translateY(-49%);
 }
 .flex_container_tasks{
    /* border: orange solid 2px;*/
@@ -1195,13 +1303,14 @@ form button{
      margin-right: 2px;
     background-color: rgb(174, 196, 215);
     padding: 2px;
+    width: 18%;
    
 }
 
 .general_medium_container{
 
       border: 2px solid rgb(70, 70, 70);
-    width: 89%;
+    width: 62%;
     overflow: auto;
    
     white-space: pre-wrap;
@@ -1210,6 +1319,12 @@ form button{
     font-family: 'Times New Roman', Times, serif;
    
    
+}
+.right_file_panel_task_detail{
+    width:19%;
+    margin-left: 2px;
+      background-color: rgb(174, 196, 215);
+      border: 2px rgb(62, 62, 62) solid;
 }
 .task_detail_team_container{
     border: 2px solid black;

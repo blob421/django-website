@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Messages, UserProfile, Task, Team, ChatMessages, ChartSection, Schedule
+from .models import Messages, UserProfile, Task, Team, ChatMessages, ChartSection, Document
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from itertools import chain
@@ -19,7 +19,10 @@ class LoginForm(AuthenticationForm):
           self.helper.form_class = 'login_form'
          
        
-
+class DocumentForm(ModelForm):
+     class Meta: 
+          model = Document
+          fields=  ['file']
 
 
 

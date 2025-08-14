@@ -25,9 +25,11 @@ urlpatterns = [
     path('tasks/create', views.TaskCreate.as_view(), name = 'task_form'),
     path('tasks/delete/<int:pk>', views.TaskDelete.as_view(), name = 'task_delete'),
     path('tasks/completed/<int:pk>', views.TaskSubmit.as_view(), name='task_submit'),
-    ######### PICTURES #########
+    ######### Files #########
     path('pic_picture/<int:pk>', views.stream_file, name='pic_picture'),
-    path('pic_picture_completed_task/<int:pk>', views.stream_completed_task_img, name='stream_completed_task_img'),
+    path('pic_picture_completed_task/<int:pk>', views.stream_completed_task_img, 
+         name='stream_completed_task_img'),
+    path('file/<int:pk>/download', views.GetFile, name="get_file"),
     ####### MANAGE ###########
     path('team/', views.TeamView.as_view(), name = 'team'),
     path('tasks/completed/<int:pk>/', views.TaskCompletedDetail.as_view(), name='task_completed_detail'),

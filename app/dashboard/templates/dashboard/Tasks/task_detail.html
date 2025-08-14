@@ -1,34 +1,98 @@
  {% include 'dashboard/base.html' %}
  {% block content %}
+
+     
+ <div class="top_visual_frame_task_list"></div>
  <div class="task_detail_outer_div">
     
-        {% for tasks in task %}
+  
         <div class="task_detail_left_panel">
-            <div class ="title_task_view">{{tasks.name}}</div>
-              <div class="flex_container_task_view">Due date:    {{tasks.due_date}} </div>
-              <a href="{% url 'dashboard:task_submit' tasks.id %}">
+            <div class ="title_task_view">{{task.name}}</div>
+              <div class="flex_container_task_view">Due date:    {{task.due_date}} </div>
+              <a href="{% url 'dashboard:task_submit' task.id %}">
                 <button type="button" class="task_detail_completed_btn2">Mark as completed</button>
                 </a>
               <div class="title_data">Team</div>
               <div class="task_detail_team_container"> 
-                {% for user in tasks.users.all %}
+                {% for user in task.users.all %}
                 <div class="task_completed">{{user.user.username}}</div>
                 {% endfor %}
              </div>
 
         </div>
 
-    {% endfor %}
+
     <div class="general_medium_container">
     
-    {% for tasks in task %}
-      <p class="general_text"> {{ tasks.description}} </p>
+
+      <p class="general_text"> {{ task.description}} </p>
       
     </div>
+    <div class="right_file_panel_task_detail">
+             
+         
+      
+           <div class="recently_modified_files_detail">
+               {% if recent_files %}
+                   {% for file in recent_files %}
+                    <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
+                  <div class="file_div_task_detail">
+                   <div> {{file.file_name}}   </div>
+                   <div class="time_recent_file">({{file.time}})</div>
+                  </div>
+                  </a>
+                   {% endfor %}
+               {% endif %}
+           </div>
+            <div class="files_outer_div">
+                    {% if files %}
+                   {% for file in files %}
+                    <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
+                  <div class="file_div_task_detail">
+                   {{file.file_name}} 
+                  </div>
+                  </a>
+                   {% endfor %}
+               {% endif %}
+         
+             
+               
 
+          </div>
+              <div class="add_file_modal_btn">
+                    <button class="add_files_btn" 
+                    onclick="document.getElementById('add_file_modal_task_detail').style.display = 'flex'">Add files
+
+                    </button>
+                  </div>
+            </div>
 </div>
 
+<!------------------------------FILE MODAL--------------------->
 
+<div id="add_file_modal_task_detail" style="
+              width: 40%;
+              height: 20%;
+              position: absolute;
+              display: none;
+              left: 50%;
+              top: 50%;
+              border-radius: 15px;
+              transform: translate(-45%,-50%);
+              background-color: rgb(198, 198, 198);
+            
+        
+
+          ">
+          <form method="post" enctype="multipart/form-data" class="form_add_file_task_detail">
+            {% csrf_token %}
+          {{form.file}}
+          <button type="submit" class="add_file_modal_sub_btn"> Submit</button>
+
+          </form>
+          <button class="x_btn_add_file"
+          onclick="document.getElementById('add_file_modal_task_detail').style.display = 'none'">X</button>
+          </div>
 
 
  <div class="send_msg_back">
@@ -38,8 +102,7 @@
 
 
 
+ <div class="bot_visual_frame_task_list"></div>
 
-
- {% endfor %}
 
 {% endblock %}

@@ -5,7 +5,8 @@ from django.contrib.postgres.fields import ArrayField
 from dateutil.relativedelta import relativedelta
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-
+import os
+from django.contrib.humanize.templatetags.humanize import naturaltime
 ### USERS ###
 
 class Users(AbstractUser):
@@ -156,6 +157,8 @@ class Task(models.Model):
         approved_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
                                  related_name='aproved_by', null=True, blank=True)
         submitted_at = models.DateTimeField(null=True, blank=True)
+
+        documents = GenericRelation('Document')
         section = models.ForeignKey(
             'ChartSection', on_delete=models.CASCADE, null=True, blank=True)
         chart = models.ForeignKey(
@@ -173,7 +176,38 @@ class Task(models.Model):
         
         def __str__(self):
            return self.name
-       
+        
+        def delete(self, *args, **kwargs):
+            self.users.clear()
+            super().delete(*args, **kwargs)
+
+
+class SubTask(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+    duration = models.TimeField()
+
+
+
+def object_directory_path(instance, filename):
+    model_name = instance.content_type.model
+    object_id = instance.object_id
+    return f'{model_name}/{object_id}/{filename}'
+
+class Document(models.Model):
+  
+    file = models.FileField(upload_to=object_directory_path)
+    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
+    content_object = GenericForeignKey('content_type', 'object_id')
+    upload_time = models.DateTimeField(auto_now_add=True)
+    @property
+    def file_name(self):
+        return os.path.basename(self.file.name)
+    @property
+    def time(self):
+        return naturaltime(self.upload_time)
+
 
 
 class ChartSection(models.Model):
