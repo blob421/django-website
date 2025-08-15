@@ -394,16 +394,7 @@
 
  
 }
-.task_detail_completed_btn2{
- width: 90%;
- height: 10%;
-    left: 50%;
-    top: 0%;
-    transform: translateX(-50%);
-    position: relative;
-    margin-top:10%;
-    border: 2px solid rgb(96, 95, 95);
-}
+
 .task_detail_completed_btn{
  width: 75%;
  height: 90%;

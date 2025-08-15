@@ -185,7 +185,9 @@ class Task(models.Model):
 class SubTask(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     name = models.CharField(max_length=40)
-    duration = models.TimeField()
+    completed = models.BooleanField(default=False)
+    description = models.TextField(null=True,blank=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
 
 
 
@@ -201,6 +203,8 @@ class Document(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
     content_object = GenericForeignKey('content_type', 'object_id')
     upload_time = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+
     @property
     def file_name(self):
         return os.path.basename(self.file.name)

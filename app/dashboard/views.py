@@ -4,9 +4,9 @@ from django.views.generic import View, UpdateView, DetailView, DeleteView
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages,Stats
-from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document
+from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
-from .forms import ForwardMessages, ChatForm, AddTaskChart, LoginForm, DocumentForm
+from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,DocumentForm,SubTaskForm
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -20,7 +20,6 @@ import json
 from .utility import get_stats_data
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
-import os
 from django.utils.encoding import smart_str
 import mimetypes
 from django.core.files.storage import default_storage
@@ -291,51 +290,91 @@ class TaskCreate(ProtectedCreate):
 
 class TaskDetail(LoginRequiredMixin, View):
     template_name = 'dashboard/tasks/task_detail.html'
+    time_threshold = timezone.now() - relativedelta(hours=24)
     context_object_name = 'task'
+    
     def get(self, request, pk):
         form = DocumentForm()
+        subtask_form = SubTaskForm()
+     
+
         task = Task.objects.get(id = pk, users=self.request.user.userprofile)
-        
-        files = Document.objects.filter(object_id = task.id)
-        time_threshold = timezone.now() - relativedelta(hours=24)
+        subtasks = SubTask.objects.filter(task=task).order_by('-id')
+        user_files = Document.objects.filter(owner = self.request.user.userprofile)
+        files = Document.objects.filter(object_id = task.id)      
+        old_files = files.filter(upload_time__lte=self.time_threshold)
+        recent_files = files.filter(upload_time__gte = self.time_threshold).order_by('-upload_time')
 
-        old_files = files.filter(upload_time__lte=time_threshold)
-        recent_files = files.filter(upload_time__gte = time_threshold).order_by('-upload_time')
-
-        ctx = {'task': task, 'form':form, 'files': old_files, 'recent_files':recent_files}
+        ctx = {'task': task, 'form':form, 'subtask_form':subtask_form, 'files': old_files, 
+               'recent_files':recent_files, 'user_files':user_files, 'subtasks':subtasks}
         return render(request, self.template_name, ctx)
     
     def post(self, request, pk):
-        form = DocumentForm(request.POST, request.FILES)
+       
         task = Task.objects.get(id = pk, users=self.request.user.userprofile)
+        subtask_form = SubTaskForm(request.POST)
+        form = DocumentForm(request.POST, request.FILES)
+        if request.FILES:
+            if not form.is_valid():
+                subtasks = SubTask.objects.filter(task=task).order_by('-id')
+                user_files = Document.objects.filter(owner = self.request.user.userprofile)
+                files = Document.objects.filter(object_id = task.id)
+                time_threshold = timezone.now() - relativedelta(hours=24)
+                old_files = files.filter(upload_time__lte=time_threshold)
+                recent_files = files.filter(upload_time__gte = time_threshold).order_by('-upload_time')
 
-        if not form.is_valid():
-            files = Document.objects.filter(object_id = task.id)
-            ctx = {'task': task, 'form':form, 'files': files}
-            return render(request, self.template_name, ctx)
+                ctx = {'task': task, 'form':form, 'subtask_form':subtask_form, 'files': old_files, 
+                'recent_files':recent_files, 'user_files':user_files, 'subtasks':subtasks}
+                return render(request, self.template_name, ctx)
         
-        file = form.save(commit=False)
-      
-        file_name = request.FILES['file'].name
-        file_path = f'task/{task.id}/{file_name}'
+        
+            file = form.save(commit=False)
+            file_name = request.FILES['file'].name
+            file_path = f'task/{task.id}/{file_name}'
+ 
+            if default_storage.exists(file_path):
+                if file.owner == self.request.user.userprofile:
+                    default_storage.delete(file_path)
+                    old_file = Document.objects.filter(object_id=task.id, 
+                                                       file__icontains=file_name)
+                    old_file.delete()
+            
+            file.owner = self.request.user.userprofile
+            file.content_object = task
+            file.save()
+               
+        else:
+            subtask = subtask_form.save(commit=False)
 
-        if default_storage.exists(file_path):
-            default_storage.delete(file_path)
-            old_file = Document.objects.filter(object_id=task.id, file__icontains=file_name)
-            old_file.delete()
-        
+            if request.POST['subtask_id']:
+                subtask_id = request.POST['subtask_id']
+                existing_subtask = SubTask.objects.get(id = subtask_id)
+                existing_subtask.name = subtask.name
+                existing_subtask.description = subtask.description.strip()
+                existing_subtask.save()
+                
+            else:
+           
+                subtask.task = task
+                subtask.user = self.request.user.userprofile
+                subtask.save()
 
-        file.content_object = task
-        file.save()
-        
         return redirect(reverse('dashboard:task_detail', args=[pk]))
 
-    
-  
-       
- 
 
-       
+
+
+def SubtaskCompleted(request, task, pk):
+    subtask = SubTask.objects.get(id = pk)
+    if subtask.completed:
+        subtask.completed= False
+        
+    else:
+        subtask.completed = True
+    subtask.save()
+    return redirect(reverse('dashboard:task_detail', args=[task]))
+
+
 
 class TaskUpdate(ProtectedUpdate):
     model = Task
@@ -940,7 +979,13 @@ def LoadChart(request, pk):
         json_data = json.dumps(data)
         return JsonResponse(json_data, safe=False)
 
-
+def FetchSubtask(request, pk):
+    if request.method =='GET':
+        subtask = SubTask.objects.get(id=pk)
+        data = {'name':subtask.name, 'description': subtask.description, 
+                'user':subtask.user.user.username}
+  
+        return JsonResponse(data)
 
 def ChatUpdate(request):
 
@@ -987,7 +1032,14 @@ def GetFile(request, pk):
         response['Content-Disposition'] = f'attachment; filename="{smart_str(file_name)}"'
         return response
 
-
+def DelFile(request, pk, task_id):
+    file = Document.objects.get(id = pk)
+    file_path = file.file.path
+    
+    if default_storage.exists(file_path):
+        default_storage.delete(file_path)
+    file.delete()
+    return redirect(reverse('dashboard:task_detail', args=[task_id]))
 
 class Logout(LogoutView):
     template_name = 'dashboard/logout.html'

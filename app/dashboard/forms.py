@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Messages, UserProfile, Task, Team, ChatMessages, ChartSection, Document
+from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSection, Document
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from itertools import chain
@@ -23,6 +23,15 @@ class DocumentForm(ModelForm):
      class Meta: 
           model = Document
           fields=  ['file']
+
+class SubTaskForm(ModelForm):
+     class Meta:
+          model = SubTask
+          fields = ['name', 'description']
+          widgets = {
+            'name': forms.TextInput(attrs={'id': 'name_form'}),
+            'description': forms.Textarea(attrs={'id': 'description_form'}),
+        }
 
 
 
