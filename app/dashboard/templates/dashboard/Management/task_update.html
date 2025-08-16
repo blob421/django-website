@@ -104,7 +104,7 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
 
 </div>
       <div class="send_msg_back">
-   <a onclick="window.history.back()"><button class="del_btn2" type="button">Back</button></a>
+   <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
 
  </div>
 {% endif %}
@@ -134,7 +134,7 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
               <div class="your_files_container_modal">
                 
                 {% for file in user_files %}
-                 <a href="{% url 'dashboard:delete_file' file.id task.id %}" >
+                 <a href="{% url 'dashboard:delete_file' file.id 1 %}" >
                 <div class="your_files_div">
                  
                       {{file.file_name}}

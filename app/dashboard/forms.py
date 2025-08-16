@@ -2,7 +2,6 @@ from django.forms import ModelForm
 from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSection, Document
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
-from itertools import chain
 from django import forms
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import Q

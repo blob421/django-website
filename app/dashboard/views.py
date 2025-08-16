@@ -17,7 +17,7 @@ from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, Protecte
 from django import forms
 from django.db.models import Q
 import json
-from .utility import get_stats_data
+from .utility import get_stats_data, save_files, create_stats
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
 from django.utils.encoding import smart_str
@@ -32,11 +32,6 @@ allowed_roles_management = ['dev']
 
 
 
-
-
-def create_stats(instance):
-    stats = Stats.objects.create(content_object = instance, object_id=instance.id)  
-    return stats    
 ########## Home #############
 class CustomLoginView(LoginView):
     authentication_form = LoginForm
@@ -302,13 +297,11 @@ class TaskManageCreate(ProtectedCreate):
         if file_form.is_valid():
    
             files = self.request.FILES.getlist('file_field')
-      
-            for f in files:
-                Document.objects.create(file = f, owner =self.request.user.userprofile,
-                                        content_object = task)
+            save_files(self, files, task)
+            
 
         return response
-        
+
 
 class TasksList(LoginRequiredMixin, View):
 
@@ -325,13 +318,6 @@ class TasksList(LoginRequiredMixin, View):
 
 
 
-class TaskCreate(ProtectedCreate):
-     
-     model = Task
-     fields = ['name', 'description', 'urgent', 'due_date', 'users']
-     success_url = reverse_lazy('dashboard:tasks_list')
-
-
 
 class TaskDetail(LoginRequiredMixin, View):
     template_name = 'dashboard/tasks/task_detail.html'
@@ -339,9 +325,8 @@ class TaskDetail(LoginRequiredMixin, View):
     context_object_name = 'task'
     
     def get(self, request, pk):
-        form = DocumentForm()
+        form = FileFieldForm()
         subtask_form = SubTaskForm()
-     
 
         task = Task.objects.get(id = pk, users=self.request.user.userprofile)
         subtasks = SubTask.objects.filter(task=task).order_by('-id')
@@ -358,7 +343,7 @@ class TaskDetail(LoginRequiredMixin, View):
        
         task = Task.objects.get(id = pk, users=self.request.user.userprofile)
         subtask_form = SubTaskForm(request.POST)
-        form = DocumentForm(request.POST, request.FILES)
+        form = FileFieldForm(request.POST, request.FILES)
         print(request.POST)
         if request.FILES:
             if not form.is_valid():
@@ -374,20 +359,8 @@ class TaskDetail(LoginRequiredMixin, View):
                 return render(request, self.template_name, ctx)
         
         
-            file = form.save(commit=False)
-            file_name = request.FILES['file'].name
-            file_path = f'task/{task.id}/{file_name}'
- 
-            if default_storage.exists(file_path):
-                if file.owner == self.request.user.userprofile:
-                    default_storage.delete(file_path)
-                    old_file = Document.objects.filter(object_id=task.id, 
-                                                       file__icontains=file_name)
-                    old_file.delete()
-            
-            file.owner = self.request.user.userprofile
-            file.content_object = task
-            file.save()
+            files = self.request.FILES.getlist('file_field')
+            save_files(self, files, task)
                
         else:
             subtask = subtask_form.save(commit=False)
@@ -432,10 +405,14 @@ def SubtaskCompleted(request, task, pk):
 class TaskUpdate(ProtectedUpdate):
     model = Task
     template_name = 'dashboard/management/task_update.html'
-
     fields = ['name', 'description', 'urgent', 'due_date', 'users', 'completed']
-    success_url = reverse_lazy('dashboard:team')
-
+    
+    
+    def get_success_url(self):
+        task_id = self.object.id
+        success_url = reverse('dashboard:task_manage_update', args=[task_id])
+        return success_url
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         file_form = FileFieldForm()
@@ -446,6 +423,8 @@ class TaskUpdate(ProtectedUpdate):
         context['file_form'] = file_form
         context['files'] = files
         context['user_files'] = user_files
+        context['task'] = self.object
+      
         return context
     
 
@@ -466,9 +445,7 @@ class TaskUpdate(ProtectedUpdate):
    
             files = self.request.FILES.getlist('file_field')
       
-            for f in files:
-                Document.objects.create(file = f, owner =self.request.user.userprofile,
-                                        content_object = task)
+            save_files(self, files, task)
 
         return response
         
@@ -599,7 +576,7 @@ class ChartTaskCreate(ProtectedCreate):
 class ChartTaskUpdate(ProtectedUpdate):
     model= Task
     fields= ['name', 'description', 'users', 'starting_date', 'due_date', 'section']
-    template_name = 'dashboard/projects/task_form.html'
+    template_name = 'dashboard/projects/chart_task_create.html'
 
     
     def get_form(self, form_class=None):
@@ -631,9 +608,10 @@ class ProjectsView(LoginRequiredMixin, View):
 class ChartDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/projects/projects_view.html'
     def get(self,request, pk):
+
         chart = Chart.objects.get(id = pk)
         day = chart.start_date.day
-        end = chart.end_date.day
+   
         if day <= 7:
             grey =  1
         elif day <= 14:
@@ -653,9 +631,6 @@ class ChartDetail(LoginRequiredMixin, DetailView):
         for number in range(1, week_int + 1):
             if ((number - 1) //4) % 2 == 0:
                 grey_col_list.append(number)
-
-    
-
 
         if week_int > 32:
             month_list = []
@@ -1113,14 +1088,21 @@ def GetFile(request, pk):
         response['Content-Disposition'] = f'attachment; filename="{smart_str(file_name)}"'
         return response
 
-def DelFile(request, pk, task_id):
+def DelFile(request, pk, manage=0):
+   
     file = Document.objects.get(id = pk)
     file_path = file.file.path
-    
+    task_id = file.content_object.id
+ 
     if default_storage.exists(file_path):
         default_storage.delete(file_path)
     file.delete()
-    return redirect(reverse('dashboard:task_detail', args=[task_id]))
+
+    if manage == 1:
+        success_url = redirect(reverse('dashboard:task_manage_update', args=[task_id]))
+    else:
+        success_url = redirect(reverse('dashboard:task_detail', args=[task_id]))
+    return success_url
 
 class Logout(LogoutView):
     template_name = 'dashboard/logout.html'

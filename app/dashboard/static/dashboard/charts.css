@@ -219,6 +219,14 @@ background-color: rgb(133, 131, 131);
       padding-left: 1.5%;
      
 }
+.chart_left_task_row_late{
+  border: 2px solid rgb(59, 59, 59);
+    height: 2em;
+    font-size: small;
+      background-color: rgb(236, 182, 182);
+      padding-bottom: 0.4em;
+      padding-left: 1.5%;
+}
 .chart_right_task_row_grey{
     color: rgba(0, 0, 0, 0);
     border: 2px solid rgb(63, 63, 63);

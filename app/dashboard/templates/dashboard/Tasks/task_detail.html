@@ -279,7 +279,7 @@ background-color: rgb(155, 155, 155);
           ">
           <form method="post" enctype="multipart/form-data" class="form_add_file_task_detail">
             {% csrf_token %}
-          {{form.file}}
+          {{form.file_field}}
           <button type="submit" class="add_file_modal_sub_btn"> Submit</button>
 
           </form>
