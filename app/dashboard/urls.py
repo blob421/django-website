@@ -11,7 +11,8 @@ urlpatterns = [
     ####### Recipients ########
 
     ####### Messages ##########
-
+    path('messages/reply/create/<int:recipient_id>', views.ReplyView.as_view(),
+          name="message_reply"),
     path('messages/', views.HomeView.as_view(), name='messages'),
     path('messages/create/', views.MessageView.as_view(), name = 'messages_create'),
     path('messages/forward/<int:pk>', views.MessageForward.as_view(), name='message_forward'),
@@ -19,7 +20,8 @@ urlpatterns = [
     path('messages/inbox', views.InboxView.as_view(), name = 'inbox'),
     path('delete_report/<int:pk>', views.MessageDelete.as_view(), name = 'report_delete'),
     path('update_report/<int:pk>', views.MessageUpdate.as_view(), name = 'report_update'),
-   
+    ##########TASKS#########
+
     path('tasks/subtask/<int:pk>', views.FetchSubtask, name='fetch_subtask'),
     path('tasks/<int:task>/subtask/<int:pk>', views.SubtaskCompleted, name="subtask_completed"),
     path('tasks/', views.TasksList.as_view(), name = 'tasks_list'),

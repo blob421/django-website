@@ -2,7 +2,7 @@
 
  {% block content %}
  <div> 
-<form method="post" class="task_form">
+<form method="post" class="task_form_chart">
 
 <div class="form_container_create_task_chart">
       {% csrf_token %}
@@ -14,38 +14,41 @@
 
 <div>  
   <div class="form_margin"> {{form.description.label_tag}}</div>
- <div class="description_task_form"> {{form.description}} </div>
+      <div class="task_create_chart_text_select"> 
+    <div class="description_task_form_chart"> {{form.description}} </div>
+      <div class="task_form_chart_select"> {{form.users}}</div>
+      </div>
 </div>
 
 
 <div class="flex_form_container_chart_task">
-    <div>  
-    <div> {{form.starting_date.label_tag}}</div>
-    <div> {{form.starting_date}}</div>
-    </div>
+ 
+   {{form.starting_date.label_tag}}
+   {{form.starting_date}}
 
-    <div>
-    <div>{{form.due_date.label_tag}}</div>
-    <div class="due_date_task_form">{{form.due_date}}</div>
-     </div>
+ <div>{{form.section.label_tag}}</div>
+    <div>{{form.section}}</div>
+
+
+   
          <div>
 
-    <div>{{form.section.label_tag}}</div>
-    <div>{{form.section}}</div>
+  
      </div>
-   
+    
 
 </div>
-
+<div class="due_date_chart_create">{{form.due_date.label_tag}}{{form.due_date}}</div> 
+    
 
 <div class="bot_flex_form_container">
 
   
-    <div class="task_form_select"> {{form.users}}</div>
+  
 
     <div class="task_form_btn_container">
         <input type="submit" name="send" value="Submit" class="btn-submit-task-manage">
-          <a><button onclick="history.back()" class="del-btn" type="bu tton">Back</button></a>
+     
   
 </div>
 

@@ -74,12 +74,34 @@ a:visited{
     background-color: rgb(160, 183, 206);
     color: white;
 }
+.reports_container_reply{
+  display: flex;
+    padding-top: 3vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height:93vh;
+    width: 64vw;
+    border: rgb(65, 65, 65) 3px solid;
+  
+    background-color: rgb(160, 183, 206);
+    color: white;
+    
 
+}
 .text_field textarea{
     height: 49vh;
     
 }
 
+.reports_div_top_section_reply{
+  
+    height: 5%;
+    margin-left: 1%;
+    padding-top: 3.5%;
+    width: 100%;
+   
+}
 .reports_div_top_section{
     
    /* border: 2px blue solid;*/
@@ -89,6 +111,10 @@ a:visited{
     width: 100%;
    
     
+}
+.reply_msg_title_recipient{
+    left: 6%;
+    position: relative;
 }
 .link_divs_send_msg{
     margin-left: 4%;
@@ -102,9 +128,24 @@ a:visited{
        border: 1px solid rgb(81, 81, 81);
     
 }
+.title_bar_send_msg_reply input{
+      width: 100%;
+   
+      background-color: #ebebeb;
+      border: 0px;
+       border: 1px solid rgb(81, 81, 81);
+}
+.title_bar_send_msg_reply{
+    width:35%;
+     margin-left: 5%;
+}
 .title_bar_send_msg{
     width:35%;
     
+}
+.add_rec_title_div_reply{
+    margin-left: 5.2%;
+    display: flex;
 }
 .add_rec_title_div{
     display: flex;
@@ -114,6 +155,7 @@ a:visited{
  height: 80%;
  margin-top: 3%;
  width: 90%;
+ overflow-x: scroll;
    background-color: #ebebeb;
        border: 1px solid rgb(61, 61, 61);
    
@@ -150,12 +192,12 @@ a:visited{
   
   margin-left: 3%;
  
-   top: 48%;
+   top: 50%;
    transform: translateY(-50%);
   
 }
 #middle_sub_task_expand{
-    display: block;
+    display: none;
  
    
 }
@@ -247,7 +289,7 @@ a:visited{
     top: 4%;
     border: 0.5px solid black;
     font-size: x-small;
-    height: 18%;
+    height: 15%;
     border-radius: 7px;
      background-color: rgba(246, 242, 225, 0.807);
     display: flex;
@@ -266,7 +308,7 @@ position: absolute;
 
     font-size: small;
     padding: 1.7%;
-    height: 6%;
+    height: 5%;
     border-radius: 8px;
   
     display: flex;
@@ -384,7 +426,11 @@ position: absolute;
     
 }
 
-
+.form_reply_msg{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
 .send_msg_textarea textarea{
   
     width: 98%;
@@ -395,10 +441,19 @@ position: absolute;
         border: 1.5px solid rgb(61, 61, 61);
     
 }
+
 .bottom_right_send_msg{
   /*  border: solid brown 2px;*/
     width:23%;
      padding-left: 2%;
+}
+.bottom_left_send_msg_update{
+ left: 50%;
+ position: absolute;
+ transform: translateX(-50%);
+ width: 87%;
+ height: 73%;
+
 }
 .bottom_left_send_msg{
 /*border: 2px green solid;*/
@@ -406,10 +461,21 @@ position: absolute;
     margin-left: 1%;
 
 }
+
 .bottom_inputs_send_msg{
     display: flex;
    
-   /* border: 2px orange solid;*/
+    
+}
+
+.send_msg_btn_create_reply{
+       background-color: rgb(104, 104, 104);
+    border-radius: 4px;
+    width: 25%;
+    padding: 1%;
+    border: 2px rgb(76, 76, 76) solid;
+ margin-left: 23%;
+    color: white;
 }
 .send_msg_btn_create{
     background-color: rgb(104, 104, 104);
@@ -439,9 +505,16 @@ position: absolute;
 }
 .reports_div{
     padding-top: 1em;
-  /* border: 2px red solid;*/
+  
     width: 82%; 
 }
+.reports_div_reply{
+    width: 100%; 
+    height: 95%;
+    margin-top: 2%;
+  
+}
+
 .text_field label{
     font-size: 14.5px;
 }
@@ -638,9 +711,7 @@ form textarea{
     width: 50%;
     display: flex;
 }
-#thumbnail{
-  
-}
+
 .overlay{
     z-index: 1000;
     position: absolute;
@@ -693,8 +764,7 @@ form textarea{
 
 
 .message_update textarea:focus,
-input:focus,
-select:focus {
+input:focus{
      border-style: outset;
     outline-style: inset;
     border-width: 2px;
@@ -1037,7 +1107,14 @@ form button{
   font-size: 15px;
     
 }
-
+.general_text_detail_msg{
+    white-space: pre-wrap;
+    top: -8%;
+      position: relative;
+        margin-right: 1%;
+    margin-left: 1%;
+       overflow-wrap: break-word;   
+}
 .general_text{
     top: -18%;
   position: relative;
@@ -1443,12 +1520,16 @@ form button{
 }
 .task_detail_completed_btn2{
 
- height: 100%;
+ padding: 2%;
+ 
+   width: 90%;
+   left: 50%;
    position: relative;
-   right: 0%;
+   transform: translateX(-50%);
+   margin-top: 4%;
  
 
-    border: 2px solid rgb(96, 95, 95);
+    
 }
 .left_detail_pane_btns_div{
     display: flex;
@@ -1456,6 +1537,8 @@ form button{
     width: 98%;
     align-items: center;
     justify-content: center;
+   
+
  
 
 }
@@ -1475,7 +1558,7 @@ form button{
     overflow: auto;
     padding-top: 2%;
     white-space: pre-wrap;
-    display: none;
+   
     background-color: rgb(241, 241, 241);
     font-family: 'Times New Roman', Times, serif;
    
@@ -1512,12 +1595,79 @@ form button{
     transform: translate(-50%,-50%);
 
 }
-.x_btn_middle_subtask_detail{
-    top: 0%;
-    right: 0%;
+#delete_btn_subtask{
+    
+     border: 2px solid grey;
    
+    width: 100%;
+}
+#delete_btn_subtask:hover{
+    background-color: rgb(177, 66, 66);
+    
+   
+
+}
+.confirm_deletion_text{
+    width: 50%;
+    padding-left: 4%;
+    padding-right: 2%;
+}
+.button_confirm_delete_div{
+    width: 47%;
   
-    height: 5.4%;
+ height: 40%;
+ padding-right: 4%;
+ 
+ 
+}
+.confirm_delete_modal_subtask_cont{
+   
+    left: 50%;
+    top: 0%;
+    position: relative;
+    width: 95%;
+    height: 85%;
+    display: flex;
+    align-items: center;
+    transform: translateX(-50%);
+}
+.btn_cancel_subtask_del{
+    height: 60%;
+    margin-top: 2%;
+    border: 2px solid grey;
+}
+.x_btn_middle_subtask_update{
+        top: 0%;
+    right: 0%;
+     
+/*   border: 2px solid red;*/
+    font-size: x-small;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.x_btn_update_subtask{
+   margin-right: 1%;
+  
+
+}
+.x_btn_middle_subtask_expand{
+       top: 0%;
+    right: 0%;
+
+    top: 0;
+    position: sticky;
+    width: 98%;
+    display: flex;
+    justify-content: end;
+   
+}
+.x_btn_middle_subtask_detail{
+
+   position: relative;
+
+    margin-top: 4%;
+   
     width: 100%;
     display: flex;
     justify-content: end;
@@ -1528,6 +1678,10 @@ form button{
 .task_completed_flex{
     display: flex;
      gap: 8%;
+}
+.task_completed_flex:hover{
+  
+    cursor: pointer;
 }
 .middle_task_detail_description_div{
     /*border: 2px solid rgb(232, 165, 89);*/
@@ -1547,7 +1701,7 @@ form button{
     border: 2px solid rgb(172, 172, 172);
     height: 69%;
     margin-top: 2%;
-    padding-top: 1%;
+    padding-top: 3%;
     overflow-y: scroll;
     overflow-x: hidden;
     color: white;
@@ -1568,6 +1722,7 @@ form button{
 .subtask_detail_frame{
   /*  border: 2px solid orange;*/
     width: 90%;
+   
     margin-left: 5%;
     display: flex;
     flex-direction: column;
@@ -1587,6 +1742,7 @@ form button{
     padding-top: 1%;
     background-color: rgba(34, 34, 34, 0.737);
     display: none;
+    flex-direction: column;
     font-family: 'Times New Roman', Times, serif;
 
 }
@@ -1652,14 +1808,33 @@ form button{
     margin-right: 3.5%;
     margin-top: 2%;
 }
+.add_subtask_modal_sub_btn_del{
+    
+       width: 20%;
+    padding: 1%;
+    margin-right: 3.5%;
+    margin-top: 2%;
+}
+.add_subtask_modal_sub_btn_del:hover{
+  background-color: rgb(177, 66, 66);
+}
+
 .subtask_update_description textarea{
     border: 2px solid rgb(172, 172, 172);
-    height: 70%;
+    height: 100%;
     margin-top: 2%;
- 
-   
+    padding-top: 2%;
+    padding-left: 1%;
+  /* border: 2px solid red;*/
+
     color: white;
     background-color: #3b3b3b;
+}
+
+.subtask_update_description{
+  /*  border: 2px solid green;*/
+    height: 59vh;
+    position: relative;
 }
 .form_add_subtask textarea{
   height: 85%;
@@ -1672,9 +1847,10 @@ form button{
 }
 #hidden_subtask_update_form{
     display: none;
+    overflow:hidden;
 }
 .form_update_subtask textarea{
-  height: 40vh;
+  height: 50vh;
   margin-top: 2%;
 
  
@@ -1698,10 +1874,17 @@ form button{
   
 
 }
+.team_ctn_button{
+    width: 50%;
+}
+.task_completed:hover{
+      background-color: #5a5a5a;
+}
 .subtask_name{
    
     width: 80%;
 }
+
 .indicator_subtask_yellow{
     width: 10%;
     background-color: rgb(255, 174, 0);

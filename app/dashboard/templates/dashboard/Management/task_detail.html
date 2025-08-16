@@ -11,6 +11,10 @@
           <div class="flex_container_task_view">Due date : {{task.due_date}} </div>
           <div class="flex_container_task_view">Took : {{task.completion_time}} h</div>
           <a onclick="document.getElementById('popup').style.display='flex'">
+                <button class="task_detail_completed_link">Description  
+              </button>
+           </a>
+            <a href="{% url 'dashboard:task_manage_update' task.id %}">
                 <button class="task_detail_completed_link">More details  
               </button>
            </a>

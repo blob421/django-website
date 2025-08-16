@@ -2,9 +2,15 @@
 
  {% block content %}
  {% if user.userprofile == user.userprofile.team.team_lead %}
-<form method="post" class="task_form">
+ 
+ <div class="update_task_manage_extreme_outer"> 
 
-<div class="form_container">
+   <div id="form_container_update_subtask_detail_manage"></div>
+   
+   <div class="form_container" id="task_update_manage_form">
+<form method="post" enctype="multipart/form-data">
+
+
       {% csrf_token %}
 
 <div class="task_create_title"> 
@@ -15,7 +21,7 @@
                   <div class="title_div_create_task">
                      {{form.description.label_tag}}
                   </div>
-                  <div>  
+                  <div class="user_labeltag_task_update">  
                   {{form.users.label_tag}}
                   </div>
          </div>
@@ -41,21 +47,141 @@
 <div class="bot_flex_form_container">
 
   
-
+       <div>   {{file_form.file_field}}</div>
     <div class="task_form_btn_container">
-        <input type="submit" name="send" value="Submit" class="btn-submit-task-manage">
-
+        <input type="submit" name="send" value="Update" class="btn-submit-task-manage">
+    
    </div>
+   
 </div>
 
 
-</div>
- 
+
+ </div>
  </form>
 
+
+<div class="task_update_manage_right_subtask_div" id="right_task_detail_manage">
+      <div class="task_update_right_pane_title">Subtasks</div>
+      <div class="task_update_subtask_cont">
+                {% for subtask in subtasks %}
+                 <div class="task_completed">
+                <div class="task_completed_flex"> 
+               <div class="subtask_name" onclick="renderSubtask('{{subtask.id}}')"> {{subtask.name}} </div>
+                         <a
+                      class="indicator_subtask_yellow {% if subtask.completed %}
+                      indicator_subtask_green {% endif %}">
+             
+                    </a>
+                 </div>
+                 <div class="subtask_user_manage">( {{subtask.user}} ) </div> 
+                  </div> 
+                {% endfor %}
+            
+      </div>
+                 <div class="task_update_right_pane_title">Files </div>
+               <div class="files_outer_div_update_manage">
+                  {% if files %}
+                  {% for file in files %}
+                  <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
+               <div class="file_div_task_detail">
+                  {{file.file_name}} 
+               </div>
+               </a>
+                  {% endfor %}
+               {% endif %}
+               </div>
+               <div class="btn_div_task_manage_rightpanel" style="background-color: rgb(69, 69, 69);">
+                                 <button class="add_files_btn_subtask_manage" 
+onclick="document.getElementById('your_file_modal_task_detail').style.display = 'flex'">
+                    Manage files
+                  </button>
+               </div>
+</div>
+
+
+
+
+</div>
       <div class="send_msg_back">
-   <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
+   <a onclick="window.history.back()"><button class="del_btn2" type="button">Back</button></a>
 
  </div>
 {% endif %}
+
+
+<!---------------------------YOUR FILE MODAL -------------------------------->
+
+<div id="your_file_modal_task_detail" style="
+              width: 30%;
+              height: 70%;
+              position: absolute;
+              display: none;
+              left: 50%;
+              top: 50%;
+              border-radius: 5px;
+              transform: translate(-45%,-50%);
+              background-color: rgba(99, 99, 99, 0.91);
+            
+        
+
+          "> 
+            <button class="x_btn_your_files"
+onclick="document.getElementById('your_file_modal_task_detail').style.display = 'none'">
+          X
+          </button>
+
+              <div class="your_files_container_modal">
+                
+                {% for file in user_files %}
+                 <a href="{% url 'dashboard:delete_file' file.id task.id %}" >
+                <div class="your_files_div">
+                 
+                      {{file.file_name}}
+                        
+                    </div>
+                     
+                       </a>
+                        
+               
+                {% endfor %}
+              </div>
+</div>
+
+
+<script>
+
+async function renderSubtask(id){
+  
+   document.getElementById('task_update_manage_form').style.display='none';
+   
+   const middle = document.getElementById('form_container_update_subtask_detail_manage');
+   const right_div = document.getElementById('right_task_detail_manage');
+   const left_border = window.getComputedStyle(right_div).getPropertyValue('border-left');
+   right_div.style.borderLeft = '2px solid black';
+   middle.style.display='block';
+   middle.innerHTML = ''
+   const data = await getSubTask(id)
+   console.log(data)
+   middle.innerHTML  = `
+      
+      <div class="subtask_detail_frame">
+   
+          <div class="x_btn_middle_subtask_detail">
+            <button onclick="document.getElementById('task_update_manage_form').style.display = 'block';
+            document.getElementById('form_container_update_subtask_detail_manage').style.display ='none';
+            document.getElementById('right_task_detail_manage').style.borderLeft = '0px';">X</button>
+            </div>
+        <div class="subtask_detail_title">${data.name}</div>
+          <div class="subtask_detail_middle_user">( ${data.user} )</div>
+        <div class="subtask_detail_description_block_manage">${data.description}</div>
+      
+      </div>
+       </div> 
+    `;
+
+  }
+
+
+</script>
   {% endblock %}

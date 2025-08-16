@@ -3,9 +3,9 @@
  {% block content %}
 
  {% if user.userprofile == user.userprofile.team.team_lead %}
-<form method="post" class="task_form">
+<form method="post" class="task_form" enctype="multipart/form-data">
 
-<div class="form_container">
+<div class="form_container_manage">
       {% csrf_token %}
 
 <div class="task_create_title"> 
@@ -41,10 +41,10 @@
 
 <div class="bot_flex_form_container">
 
-  
+<div>   {{file_form.file_field}}</div>
 
     <div class="task_form_btn_container">
-        <input type="submit" name="send" value="Submit" class="btn-submit-task-manage">
+        <input type="submit" name="send" value="Submit" class="btn_submit_manage_create_task">
 
    </div>
 </div>

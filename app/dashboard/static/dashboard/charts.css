@@ -616,26 +616,17 @@ width: 100%;
 
 .create_task_chart_name_div{
   display: flex;
-  margin-top: 3%;
+  margin-top: 4%;
+  width: 50%;
+}
+.create_task_chart_name_div input{
+  width: 20vw;
+  margin-left: 18%;
+}
+.task_create_chart_text_select{
+  display: flex;
 }
 
-.form_container_create_task_chart{
-  height: 92vh;
-    width: 50vw;
-       position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-  
-    background-color: rgb(174, 196, 215);
-    padding-left: 3%;
-    padding-right: 1%;
-    padding-top:1%;
-    padding-bottom: 2%;
-    border: 2px solid black;
-
-}
 
 .create_task_chart_name_label{
   margin-top: 1%;

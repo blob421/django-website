@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages,Stats
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
-from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,DocumentForm,SubTaskForm
+from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,DocumentForm,SubTaskForm,FileFieldForm
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -29,6 +29,7 @@ from django.core.files.storage import default_storage
 user_model = get_user_model()
 allowed_roles_forms = ['dev']
 allowed_roles_management = ['dev']
+
 
 
 
@@ -117,7 +118,7 @@ class MessageView(LoginRequiredMixin, View):
     template = 'dashboard/messages/messages_send.html'
     def get(self, request):
         pk = self.request.user.id
-        data = MessagesCopy.objects.filter(user_id=pk)
+        data = MessagesCopy.objects.filter(user_id=pk).order_by('-id')
 
         form = MessageForm(sender_id = self.request.user.id)
         form_add = RecipientForm(sender_id=self.request.user.id)
@@ -248,6 +249,31 @@ class MessageForward(LoginRequiredMixin, View):
     
 
 
+class ReplyView(LoginRequiredMixin, View):
+    template_name = 'dashboard/messages/reply_view.html'
+
+    def get(self, request, recipient_id):
+        form = MessageForm(sender_id = self.request.user.id)
+        recipient = UserProfile.objects.get(id = recipient_id)
+        ctx = {'form':form, 'recipient':recipient}
+        return render(request, self.template_name, ctx)
+    
+    def post(self, request, recipient_id):
+        form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
+        recipient = UserProfile.objects.filter(id = recipient_id)
+        if not form.is_valid:
+       
+            ctx = {'form':form, 'recipient':recipient}
+            return render(request, self.template_name, ctx)
+    
+        message = form.save(commit=False)
+      
+        message.user_id = request.user.id
+        message.save()
+        message.recipient.set(recipient.all())
+        copy_message_data(message , MessagesCopy)
+        return redirect('dashboard:messages')  
+
 
 ################### TASKS #######################
 
@@ -263,6 +289,25 @@ class TaskManageCreate(ProtectedCreate):
         form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
         return form
     
+    def get_context_data(self, **kwargs):
+        fileform = FileFieldForm()
+        context = super().get_context_data(**kwargs)
+        context['file_form'] = fileform
+        return context
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        task = self.object
+        file_form = FileFieldForm(self.request.POST, self.request.FILES)
+        if file_form.is_valid():
+   
+            files = self.request.FILES.getlist('file_field')
+      
+            for f in files:
+                Document.objects.create(file = f, owner =self.request.user.userprofile,
+                                        content_object = task)
+
+        return response
         
 
 class TasksList(LoginRequiredMixin, View):
@@ -300,7 +345,7 @@ class TaskDetail(LoginRequiredMixin, View):
 
         task = Task.objects.get(id = pk, users=self.request.user.userprofile)
         subtasks = SubTask.objects.filter(task=task).order_by('-id')
-        user_files = Document.objects.filter(owner = self.request.user.userprofile)
+        user_files = Document.objects.filter(owner = self.request.user.userprofile, object_id=task.id)
         files = Document.objects.filter(object_id = task.id)      
         old_files = files.filter(upload_time__lte=self.time_threshold)
         recent_files = files.filter(upload_time__gte = self.time_threshold).order_by('-upload_time')
@@ -314,10 +359,11 @@ class TaskDetail(LoginRequiredMixin, View):
         task = Task.objects.get(id = pk, users=self.request.user.userprofile)
         subtask_form = SubTaskForm(request.POST)
         form = DocumentForm(request.POST, request.FILES)
+        print(request.POST)
         if request.FILES:
             if not form.is_valid():
                 subtasks = SubTask.objects.filter(task=task).order_by('-id')
-                user_files = Document.objects.filter(owner = self.request.user.userprofile)
+                user_files = Document.objects.filter(owner = self.request.user.userprofile, object_id=task.id)
                 files = Document.objects.filter(object_id = task.id)
                 time_threshold = timezone.now() - relativedelta(hours=24)
                 old_files = files.filter(upload_time__lte=time_threshold)
@@ -346,12 +392,19 @@ class TaskDetail(LoginRequiredMixin, View):
         else:
             subtask = subtask_form.save(commit=False)
 
-            if request.POST['subtask_id']:
+            if request.POST.get('action'):
+                  id = request.POST.get('action')[6:]
+             
+                  subtask = SubTask.objects.get(id = int(id))
+                  subtask.delete()
+
+            elif request.POST.get('subtask_id'):
                 subtask_id = request.POST['subtask_id']
                 existing_subtask = SubTask.objects.get(id = subtask_id)
                 existing_subtask.name = subtask.name
                 existing_subtask.description = subtask.description.strip()
                 existing_subtask.save()
+
                 
             else:
            
@@ -383,6 +436,19 @@ class TaskUpdate(ProtectedUpdate):
     fields = ['name', 'description', 'urgent', 'due_date', 'users', 'completed']
     success_url = reverse_lazy('dashboard:team')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        file_form = FileFieldForm()
+        subtasks = SubTask.objects.filter(task = self.object)
+        files = Document.objects.filter(object_id = self.object.id)
+        user_files = files.filter(owner= self.request.user.userprofile)
+        context['subtasks'] = subtasks
+        context['file_form'] = file_form
+        context['files'] = files
+        context['user_files'] = user_files
+        return context
+    
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         profile = UserProfile.objects.get(id=self.request.user.id)
@@ -392,6 +458,20 @@ class TaskUpdate(ProtectedUpdate):
         form.fields['users'].queryset = team_users
         return form
     
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        task = self.object
+        file_form = FileFieldForm(self.request.POST, self.request.FILES)
+        if file_form.is_valid():
+   
+            files = self.request.FILES.getlist('file_field')
+      
+            for f in files:
+                Document.objects.create(file = f, owner =self.request.user.userprofile,
+                                        content_object = task)
+
+        return response
+        
     
 class TaskDelete(ProtectedDelete):
     model = Task
@@ -987,6 +1067,7 @@ def FetchSubtask(request, pk):
   
         return JsonResponse(data)
 
+ 
 def ChatUpdate(request):
 
     data = []

@@ -6,7 +6,7 @@
 
 </div>
  <div class="general_text_container">
-  <p class="general_text"> {{ report.content}} 
+  <p class="general_text_detail_msg"> {{ report.content}} 
      {% if report.content_type %}
  {% load static %}
 <img id="thumbnail" 
@@ -51,7 +51,7 @@ function hideOverlay() {
  <a href="{% url 'dashboard:inbox' %}">
   <button type="button" class="del_btn2">Back</button>
 </a>
-<a href="{% url 'dashboard:messages_create' %}"> 
+<a href="{% url 'dashboard:message_reply' report.user.id %}"> 
 <button type="button" class="del_btn2">Reply</button>
 </a>
 </div>
