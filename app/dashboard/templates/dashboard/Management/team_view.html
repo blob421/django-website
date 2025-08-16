@@ -1,12 +1,44 @@
- {% include 'dashboard/base.html' %}
+ {% extends 'dashboard/base.html' %}
 
  {% block content %}
 
  <h1 class="team_title">{{user.userprofile.team.name}} management</h1>
- <div class="team_second_title">Employee / tasks</div>
+ <div class="team_second_title">
+ <button onclick="setVisible('team_tasks', 'team_all_task_list')" id="toggle_manage">
+   Employee / Tasks
+</button>
+ <button onclick="setVisible('team_all_task_list', 'team_tasks')" id="toggle_manage">
+   Task list
+</button>
+ 
+ </div>
 <div class="border_container"></div>
  <div class="team_container1">
-<div class="team_tasks">
+
+
+<div id="team_all_task_list">
+
+      <div class="manage_all_task_list_container_title">
+          <div class="manage_all_task_list_name_title">Task name</div>
+            
+          <div class="manage_all_task_list_date_title">Due date</div>
+
+     </div>
+     {% for task in tasks %}
+     <a href="{% url 'dashboard:task_manage_update' task.id %}"> 
+     <div class="manage_all_task_list_container">
+               <div class="manage_all_task_list_name">{{task.name}} </div>
+            
+               <div class="manage_all_task_list_date {% if task.due_date < time %}
+                  manage_all_task_list_date_late {% endif %}">{{task.due_date}}</div>
+     </div>
+     </a>
+     {% endfor %}
+
+
+
+</div>
+<div class="team_tasks" id="team_tasks">
 
 
 

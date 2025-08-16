@@ -2,12 +2,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
-from dashboard.models import UserProfile, Stats, Team, WeekRange, Schedule
-from django.contrib.contenttypes.models import ContentType
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
+from dashboard.models import UserProfile, WeekRange, Schedule
 
 user_model = get_user_model()
+
 
 @receiver(post_save, sender=user_model)
 def assign_admin_group(sender, instance, **kwargs):
@@ -19,7 +17,7 @@ def assign_admin_group(sender, instance, **kwargs):
 def create_schedule(sender, instance, **kwargs):
        
         has_schedule = Schedule.objects.filter(user=instance).exists()
-        print(has_schedule)
+
         if not has_schedule:
       
                 

@@ -7,6 +7,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 import os
 from django.contrib.humanize.templatetags.humanize import naturaltime
+
+
 ### USERS ###
 
 class Users(AbstractUser):
@@ -100,7 +102,8 @@ class Messages(models.Model):
     task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
     forwarded = models.BooleanField(default=False)
     forwarded_by = models.ForeignKey(UserProfile, null=True, on_delete=models.CASCADE)
-
+    
+   
     picture = models.BinaryField(null=True, blank=True, editable=True)
     content_type = models.CharField(max_length=50, null=True, blank=True)
 
@@ -252,8 +255,6 @@ class ChartData(models.Model):
 
 class Schedule(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    # start_date = models.DateField()
-    # end_date = models.DateField(blank=True, null=True)
     week_range = models.ForeignKey('WeekRange', on_delete=models.CASCADE)
     monday = models.CharField(null=True, blank=True, help_text='9-17')
     tuesday = models.CharField(null=True, blank=True)

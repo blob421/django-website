@@ -9,9 +9,21 @@ from django.core.files.storage import default_storage
 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
+
+def save_stats(stats, late=False, urgent=False):
+    stats.completed_tasks += 1
+    stats.submission += 1
+    if late:
+        stats.late_tasks += 1
+    if urgent:
+        stats.urgent_tasks_success += 1
+    stats.save()
+
+
 def create_stats(instance):
     stats = Stats.objects.create(content_object = instance, object_id=instance.id)  
     return stats    
+
 
 def save_files(self, files, task):
     for f in files:
@@ -71,7 +83,8 @@ def get_user_data(stats):
         total_completed += stat.completed_tasks
         days_missed += stat.days_missed
         days_scheduled += stat.days_scheduled
-        return {'total_completed':total_completed, 'late_task_count':late_task_count,
+    
+    return {'total_completed':total_completed, 'late_task_count':late_task_count,
                     'total_denied':total_denied,'total_urgent':total_urgent,
                     'total_submissions':total_submissions, 'days_missed':days_missed,
                     'days_scheduled':days_scheduled}
@@ -150,9 +163,10 @@ def get_stats_data(user_profile, page=None):
 
     ########## FOR USERS ###########
     if not page:
+       
         all_user_stats = user_profile.stats.filter().all()
         stats = get_user_data(all_user_stats)
-      
+        print(stats)
         tasks = Task.objects.filter(users__in=[user_profile])
 
         for task in tasks:
@@ -348,6 +362,6 @@ def get_stats_data(user_profile, page=None):
             'late_ratio':late_ratio, 'days_missed_ratio':days_missed_ratio, 
             'urgent_ratio':urgent_ratio,  'users':users, 'plot1':plot_div1, 
             'plot2':plot_div2, 'ranges':ranges, 'date_string':date_string,
-            'task_mean_time': round(task_mean_time/tasks.count(),1)
+            'task_mean_time': round(safe_divide(task_mean_time, tasks.count()),1)
            
               }

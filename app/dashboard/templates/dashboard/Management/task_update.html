@@ -47,10 +47,14 @@
 <div class="bot_flex_form_container">
 
   
-       <div>   {{file_form.file_field}}</div>
+       <div class="file_input_task_manage">   {{file_form.file_field}}</div>
     <div class="task_form_btn_container">
-        <input type="submit" name="send" value="Update" class="btn-submit-task-manage">
-    
+      
+        <button type="submit" name="send" class="btn-update-task-manage">Update</button>
+      <button type="button" class="btn-submit-task-manage" onclick="setVisible('confirm_delete_modal_manage')">
+         Delete
+      </button>
+      
    </div>
    
 </div>
@@ -58,6 +62,41 @@
 
 
  </div>
+
+ <!-----------------------------------Delete confirm modal--------------------------------->
+<div id="confirm_delete_modal_manage" style="width: 25vw;
+                height: 27vh;
+                background-color: rgba(79, 79, 79, 0.686);
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                display: none;
+                border-radius: 8px;
+                color: white;
+                transform: translate(-50%,-50%);
+                ">
+
+                <div class="confirm_delete_modal_subtask_cont"> 
+                     <div class="confirm_deletion_text"> Confirm deletion  </div>
+                     <div class="button_confirm_delete_div"> 
+                    <button type="submit" name="delete" id="delete_btn_task"
+                    class="btn-submit-task-manage" value="1">
+                      Delete
+                    </button>
+
+                      <div> 
+                         <button type="button" id="cancel_btn_task"
+                            onclick="document.getElementById(
+                              'confirm_delete_modal_manage').style.display ='none'">
+                            Cancel
+                        </button>
+                      </div>
+                      </div>
+                 </div>
+</div>
+
+
+ <!----------------------------------------------------------------------------------------->
  </form>
 
 

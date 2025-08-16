@@ -6,73 +6,70 @@
  <div class="task_detail_outer_div">
     
   
-        <div class="task_detail_left_panel">
-            <div class ="title_task_view">{{task.name}}</div>
-              <div class="flex_container_task_view">Due date:    {{task.due_date}} </div>
+    <div class="task_detail_left_panel">
+        <div class ="title_task_view">{{task.name}}</div>
+        <div class="flex_container_task_view">Due date:    {{task.due_date}} </div>
 
              
-              <a href="{% url 'dashboard:task_submit' task.id %}">
-                <button type="button" class="task_detail_completed_btn2">Mark as completed</button>
-                </a>
+        <a href="{% url 'dashboard:task_submit' task.id %}">
+        <button type="button" class="task_detail_completed_btn2">Mark as completed</button>
+        </a>
           
          
 
-              <div class="subtask_title_btn_div">
-                <button onclick="document.getElementById('team_task_detail').style.display= 'none';
-                  document.getElementById('subtask_container').style.display='none';
-                   document.getElementById('team_subtasks').style.display='block'"
-                 class="team_btn_task_detail" >Team
+        <div class="subtask_title_btn_div">
+        <button onclick="setVisible('team_subtasks', 'subtask_container', 'team_task_detail')"
+         class="team_btn_task_detail" >Team
 
-                  </button>
-                  <button onclick="document.getElementById('team_task_detail').style.display= 'none';
-                  document.getElementById('subtask_container').style.display='block';
-                   document.getElementById('team_subtasks').style.display='none'"
-                  class="subtask_btn_task_detail"> Subtasks
+        </button>
+        <button onclick="setVisible('subtask_container', 'team_subtasks', 'team_task_detail')"
+        class="subtask_btn_task_detail"> Subtasks
 
-                      <a>
-                  <button class="subtask_add_btn"
-              
-      onclick="document.getElementById('subtask_modal_task_detail').style.display = 'flex'">
+         <a>
+          <button class="subtask_add_btn" onclick="setVisible('subtask_modal_task_detail')">
                    +
-                  </button>
+          </button>
               
-                </a>
+          </a>
                 
 
-             </div>
+    </div>
              
    <!-----------------------CONTAINER TOGGLE ----------------------->
-              <div class="task_detail_team_container" id="team_task_detail" style="display: none;"> 
-                <button class="team_ctn_button" onclick="document.getElementById('team_subtasks').style.display='block';
-                document.getElementById('team_task_detail').style.display ='none'">Tasks</button>
-                {% for user in task.users.all %}
-                <div class="task_completed">{{user.user.username}}</div>
-                {% endfor %}
-             </div>
-             
-                <div class="task_detail_team_container" id="team_subtasks" style="display: none;"> 
-<button onclick="document.getElementById('team_subtasks').style.display='none';
- document.getElementById('team_task_detail').style.display ='block'">Members</button>
 
-<button class="expand_btn_subtask"
-onclick="document.getElementById('middle_sub_task_expand').style.display='block';
-document.getElementById('task_detail_text_middle').style.display='none';
-document.getElementById('hidden_subtask_update_form').style.display='none';
-document.getElementById('middle_sub_task_detail').style.display='none'">Expand</button>
-
-                {% for subtask in subtasks %}
-                 <div class="task_completed">
-                <div class="task_completed_flex"> 
-               <div class="subtask_name" onclick="renderSubtask('{{subtask.id}}')"> {{subtask.name}} </div>
-                         <a
-                      class="indicator_subtask_yellow {% if subtask.completed %}
-                      indicator_subtask_green {% endif %}">
+    <div class="task_detail_team_container" id="team_task_detail" style="display: none;"> 
+      <button class="team_ctn_button" onclick="setVisible('team_subtasks', 'team_task_detail')">
+        Tasks
+      </button>
+      {% for user in task.users.all %}
+      <div class="task_completed">{{user.user.username}}</div>
+      {% endfor %}
+    </div>
              
-                    </a>
-                 </div>
-                 <div class="subtask_user">( {{subtask.user}} ) </div> 
-                  </div> 
-                {% endfor %}
+    <div class="task_detail_team_container" id="team_subtasks" style="display: none;"> 
+      <button onclick="setVisible('team_task_detail', 'team_subtasks')">
+        Members
+      </button>
+
+      <button class="expand_btn_subtask"
+      onclick="setVisible('middle_sub_task_expand', 'task_detail_text_middle', 
+      'hidden_subtask_update_form', 'middle_sub_task_detail')
+      ">Expand</button>
+
+      {% for subtask in subtasks %}
+        <div class="task_completed">
+      <div class="task_completed_flex"> 
+      <div class="subtask_name" onclick="renderSubtask('{{subtask.id}}')"> 
+      {{subtask.name}}
+       </div>
+            <a
+            class="indicator_subtask_yellow {% if subtask.completed %}
+            indicator_subtask_green {% endif %}">
+           </a>
+        </div>
+        <div class="subtask_user">( {{subtask.user}} ) </div> 
+        </div> 
+      {% endfor %}
                 
              </div>
 
@@ -106,14 +103,14 @@ document.getElementById('middle_sub_task_detail').style.display='none'">Expand</
         </div>
 
       <!-----------------------UPDATE FORM --------------------------->
-      <div id="hidden_subtask_update_form"  class="middle_sub_task_detail_update">
-                 <div class="x_btn_middle_subtask_update">
-            <button onclick="document.getElementById('task_detail_text_middle').style.display = 'block';
-            document.getElementById('hidden_subtask_update_form').style.display ='none'"
+<div id="hidden_subtask_update_form"  class="middle_sub_task_detail_update">
+        <div class="x_btn_middle_subtask_update">
+            <button onclick="setVisible('task_detail_text_middle','hidden_subtask_update_form')"
             class="x_btn_update_subtask">X</button>
-            </div>
+    </div>
 
-             <form method="post" class="form_update_subtask">
+    <form method="post" class="form_update_subtask">
+
             {% csrf_token %}
            
          <div class="name_subtask_form_flex">{{subtask_form.name.label_tag}} 
@@ -122,7 +119,7 @@ document.getElementById('middle_sub_task_detail').style.display='none'">Expand</
           <div class="subtask_update_description"> {{subtask_form.description.label_tag}} {{subtask_form.description}}</div> 
           <div class="subtask_form_submit_div"> 
               
-<!----Are YOU SURE DELETE MODAL-->
+<!----Are YOU SURE DELETE MODAL (IN FORM)----------------------->
 
 <div id="confirm_delete_modal_subtask" style="width: 25vw;
                 height: 27vh;
@@ -134,21 +131,23 @@ document.getElementById('middle_sub_task_detail').style.display='none'">Expand</
                 border-radius: 8px;
                 transform: translate(-50%,-50%);
                 ">
-      <div class="confirm_delete_modal_subtask_cont"> 
-        <div class="confirm_deletion_text"> Confirm deletion  </div>
-      <div class="button_confirm_delete_div"> 
+
+                <div class="confirm_delete_modal_subtask_cont"> 
+                     <div class="confirm_deletion_text"> Confirm deletion  </div>
+                     <div class="button_confirm_delete_div"> 
                     <button type="submit" name="action" id="delete_btn_subtask">
                       Delete
                     </button>
+
                       <div class="btn_cancel_subtask_del"> 
-                            <button type="button" 
+                        <button type="button" 
                             onclick="document.getElementById(
                               'confirm_delete_modal_subtask').style.display ='none'">
                             Cancel
                         </button>
                       </div>
                       </div>
-    </div>
+                 </div>
 </div>
 
 
@@ -167,18 +166,17 @@ document.getElementById('middle_sub_task_detail').style.display='none'">Expand</
                   </button>
              </div>
             <input type="hidden" name="subtask_id" value="" id="update_sub_task_form">
-          </form>
+      </form>
          
-      </div>
+</div>
 
 
  <!------------------------------------EXPANDED VIEW ---------------------------------------->
       
       <div id="middle_sub_task_expand" class="middle_sub_task_expand">
-
+ 
          <div class="x_btn_middle_subtask_expand">
-            <button onclick="document.getElementById('task_detail_text_middle').style.display = 'block';
-            document.getElementById('middle_sub_task_expand').style.display ='none'">X</button>
+            <button onclick="setVisible('task_detail_text_middle', 'middle_sub_task_expand')">X</button>
             </div>
 
           {% for subtask in subtasks %}
@@ -273,21 +271,23 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
               top: 50%;
               border-radius: 15px;
               transform: translate(-45%,-50%);
-background-color: rgb(155, 155, 155);            
+              background-color: rgb(155, 155, 155);            
         
 
           ">
+
           <form method="post" enctype="multipart/form-data" class="form_add_file_task_detail">
             {% csrf_token %}
           {{form.file_field}}
           <button type="submit" class="add_file_modal_sub_btn"> Submit</button>
 
           </form>
-          <button class="x_btn_add_file"
-onclick="document.getElementById('add_file_modal_task_detail').style.display = 'none'">
+
+        <button class="x_btn_add_file"
+         onclick="document.getElementById('add_file_modal_task_detail').style.display = 'none'">
           X
-          </button>
-          </div>
+        </button>
+</div>
 
 <!---------------------------YOUR FILE MODAL -------------------------------->
 
@@ -302,32 +302,26 @@ onclick="document.getElementById('add_file_modal_task_detail').style.display = '
               transform: translate(-45%,-50%);
               background-color: rgba(99, 99, 99, 0.91);
             
-        
+             "> 
 
-          "> 
-            <button class="x_btn_your_files"
-onclick="document.getElementById('your_file_modal_task_detail').style.display = 'none'">
+         <button class="x_btn_your_files"
+        onclick="document.getElementById('your_file_modal_task_detail').style.display = 'none'">
           X
-          </button>
+        </button>
 
               <div class="your_files_container_modal">
                 
-                {% for file in user_files %}
-                 <a href="{% url 'dashboard:delete_file' file.id task.id %}" >
-                <div class="your_files_div">
-                 
-                      {{file.file_name}}
-                        
-                    </div>
-                     
-                       </a>
-                        
+                  {% for file in user_files %}
 
+                  <a href="{% url 'dashboard:delete_file' file.id task.id %}" >
+                  <div class="your_files_div">
                   
-                                
-                  
-               
-                {% endfor %}
+                  {{file.file_name}}
+                          
+                  </div>        
+                  </a>
+
+                  {% endfor %}
               </div>
 </div>
 
@@ -346,31 +340,30 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
               transform: translate(-45%,-50%);
               background-color: rgba(87, 87, 87, 0.967);
             
-        
-
           ">
-          <form method="post" class="form_add_subtask">
-            {% csrf_token %}
-            <div class="subtask_title">New subtask</div>
-         <div class="name_subtask_form_flex">
-          {{subtask_form.name.label_tag}} 
-          {{subtask_form.name}}
-        </div>
-          <div> {{subtask_form.description.label_tag}} {{subtask_form.description}}</div> 
-                      <div class="subtask_form_submit_div"> 
-                      <button type="submit" class="add_subtask_modal_sub_btn" 
-                      name="subtask"> Submit</button>
-                      </div>
-          </form>
-          <button class="x_btn_add_subtask"
-onclick="document.getElementById('subtask_modal_task_detail').style.display = 'none'">
-          X
-          </button>
-          </div>
+          
+       <form method="post" class="form_add_subtask">
+        {% csrf_token %}
+              <div class="subtask_title">New subtask</div>
+              <div class="name_subtask_form_flex">
+                {{subtask_form.name.label_tag}} 
+                {{subtask_form.name}}
+              </div>
 
+              <div> {{subtask_form.description.label_tag}} {{subtask_form.description}}</div> 
 
+              <div class="subtask_form_submit_div"> 
+              <button type="submit" class="add_subtask_modal_sub_btn" 
+              name="subtask"> Submit</button>
+              </div>
 
+        </form>
 
+        <button class="x_btn_add_subtask"
+        onclick="document.getElementById('subtask_modal_task_detail').style.display = 'none'">
+        X
+        </button>
+  </div>
 
 
  <div class="send_msg_back">
@@ -379,44 +372,21 @@ onclick="document.getElementById('subtask_modal_task_detail').style.display = 'n
  </div>
 
 
-
-
  <div class="bot_visual_frame_task_list"></div>
 
 <script>
 
-function setVisible(id_name){
 
-   const first = document.getElementById('task_detail_text_middle');
-   const second = document.getElementById('hidden_subtask_update_form');
-   const third = document.getElementById('middle_sub_task_detail');
 
-   if (id_name == first){
-     second.style.display = 'none'
-     third.style.display = 'none'
-     first.style.display = 'block'
-   } 
-    else if (id_name == second){
-     second.style.display = 'block'
-     third.style.display = 'none'
-     first.style.display = 'none'
-   } 
-    else {
-     
-     second.style.display = 'block'
-     third.style.display = 'none'
-     first.style.display = 'none'
 
-    }
-}
 async function getSubTaskForm(id){
-  document.getElementById('middle_sub_task_expand').style.display = 'none';
-   document.getElementById('task_detail_text_middle').style.display='none';
-   const middle = document.getElementById('hidden_subtask_update_form');
-  document.getElementById('middle_sub_task_detail').style.display = 'none';
+
+  setVisible('hidden_subtask_update_form',
+  'middle_sub_task_expand','task_detail_text_middle','middle_sub_task_detail')
+
    document.getElementById('update_sub_task_form').value = id
    document.getElementById('delete_btn_subtask').value = 'delete' + id
-   middle.style.display='flex';
+
    const data = await getSubTask(id);
    document.getElementById('name_form').value = data.name;
    document.getElementById('description_form').value = data.description
@@ -424,11 +394,8 @@ async function getSubTaskForm(id){
 }
 
 async function renderSubtask(id){
-  
-   document.getElementById('task_detail_text_middle').style.display='none';
-   document.getElementById('hidden_subtask_update_form').style.display='none';
-    document.getElementById('middle_sub_task_expand').style.display = 'none';
-   
+  setVisible('middle_sub_task_detail','task_detail_text_middle','hidden_subtask_update_form','middle_sub_task_expand')
+
    const middle = document.getElementById('middle_sub_task_detail');
    middle.style.display='flex';
    middle.innerHTML = ''

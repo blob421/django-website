@@ -3,10 +3,10 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, ChatMessages,Stats
+from .models import Messages, UserProfile, Task, Team, ChatMessages
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
-from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,DocumentForm,SubTaskForm,FileFieldForm
+from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -17,7 +17,7 @@ from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, Protecte
 from django import forms
 from django.db.models import Q
 import json
-from .utility import get_stats_data, save_files, create_stats
+from .utility import get_stats_data, save_files, create_stats, save_stats
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
 from django.utils.encoding import smart_str
@@ -442,6 +442,11 @@ class TaskUpdate(ProtectedUpdate):
         task = self.object
         file_form = FileFieldForm(self.request.POST, self.request.FILES)
         if file_form.is_valid():
+            if self.request.POST.get('delete'):
+        
+                Task.objects.get(id = task.id).delete()
+                return redirect('dashboard:team')
+            
    
             files = self.request.FILES.getlist('file_field')
       
@@ -803,16 +808,20 @@ class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
 class TeamView(ProtectedView):
     template_name='dashboard/Management/team_view.html'
     def get(self, request):
-
-        profile = UserProfile.objects.get(id=self.request.user.id)
-        team = profile.team.name
-        team_member = UserProfile.objects.filter(team__name=team)
+        time = timezone.now()
+      
         team = Team.objects.get(team_lead = self.request.user.userprofile)
+        team_member = UserProfile.objects.filter(team__name=team)
         team_name = team.name
+        tasks = Task.objects.filter(
+            users__team = team, completed=False).order_by('due_date').distinct()
+        
         query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
-        team_tasks = Task.objects.filter(query).count()    
-        user = self.request.user
-        context = {'user':user, 'team': team_member , 'count':team_tasks}
+        completed_task_count = Task.objects.filter(query).count()    
+
+    
+        context = {'team': team_member , 'count':completed_task_count,'tasks':tasks,
+                   'time':time}
         return render(request, self.template_name, context)
 
 
@@ -884,7 +893,10 @@ class TaskCompletedDetail(ProtectedView):
 
         return redirect(self.success_url)
         
+        
 
+
+    
 
 class TeamCompletedApprove(ProtectedView):
 
@@ -897,49 +909,30 @@ class TeamCompletedApprove(ProtectedView):
             for user in users:
               
                 user_stats = create_stats(user)
-                user_stats.completed_tasks += 1
-                user_stats.late_tasks += 1
-                user_stats.submission += 1
-                user_stats.save()
+                save_stats(user_stats, late=True)
 
-         
             team_stats = create_stats(team)
-            team_stats.submission += 1
-            team_stats.completed_tasks += 1
-            team_stats.late_tasks += 1
+            save_stats(team_stats, late=True)
          
-
         else:
             if task.urgent:
                 for user in users:
 
                     user_stats = create_stats(user)
-                    user_stats.submission += 1
-                    user_stats.completed_tasks += 1
-                    user_stats.urgent_tasks_success += 1
-                    user_stats.save()
-
-          
+                    save_stats(user_stats, urgent=True)
+       
                 team_stats = create_stats(team)
-                team_stats.submission += 1
-                team_stats.completed_tasks += 1
-                team_stats.urgent_tasks_success += 1
+                save_stats(team_stats, urgent=True)
               
-
+              
             else:
-                for user in users:
-                 
+                for user in users:           
                     user_stats = create_stats(user)
-                    user_stats.submission += 1
-                    user_stats.completed_tasks += 1
-                    user_stats.save()
-
-           
+                    save_stats(user_stats)
+ 
                 team_stats = create_stats(team)
-                team_stats.submission += 1
-                team_stats.completed_tasks += 1
+                save_stats(team_stats)
         
-        team_stats.save()
 
         task.approved_by = self.request.user.userprofile   
         task.submitted_at = timezone.now()
@@ -992,10 +985,6 @@ class ChatView(LoginRequiredMixin, View):
         submit.user = profile
         submit.save()
         return redirect(reverse('dashboard:chat_view'))
-
-
-
-
 
 
 ############ FUNCTION VIEWS ################################

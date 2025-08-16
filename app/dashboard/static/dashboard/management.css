@@ -41,7 +41,13 @@
      background-color: rgb(239, 241, 241);
    
 }
-
+#team_all_task_list{
+    width: 75%;
+    display: none;
+     overflow-y: scroll;  
+  overflow-x: scroll;
+     background-color: rgb(239, 241, 241);
+}
 .team_management{
    
    width:25%;
@@ -121,15 +127,62 @@
  
     
 }
-
+#toggle_manage{
+    background-color: #fafafad0;
+    border: 1px solid rgb(74, 74, 74);
+    border-radius: 3px;
+}
+.manage_all_task_list_container{
+    padding:2%;
+    border: 2px solid black;
+    display: flex;
+}
+.manage_all_task_list_container_title{
+     
+    border: 2px solid black;
+    display: flex;
+    height: 6vh;
+    position: sticky;
+    top: 0;
+    
+    background-color: #e6e3d8;
+}
 .team_second_title{
     z-index: 100;
     position: fixed;
     top: 16%;
-    left: 5.5%;
+    left: 5%;
+    margin-top: 0.1%;
     font-size: medium;
 }
-
+.manage_all_task_list_name{
+    width: 50%;
+    margin-right: 2%;
+    
+}
+.manage_all_task_list_date{
+    width: 50%;
+}
+.manage_all_task_list_name_title{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    
+      align-items: center;
+   
+     
+}
+.manage_all_task_list_date_title{
+    width: 50%;
+     display: flex;
+    justify-content: center;
+    align-items: center;
+        border-left: 2px solid black;
+}
+.manage_all_task_list_date_late{
+        width: 50%;
+        background-color: rgb(235, 156, 156);
+}
 .link_management{
   /*  border: blue 2px solid;*/
     display: block;
@@ -733,26 +786,66 @@ height: 51.2vh;
     margin-top: 1vh;
     
 }
+#delete_btn_task{
+    width: 10vw;
+    padding: 10%;
+    background-color: #3b3b3b;
+    color: white;
+    border-radius: 5px;
+   border: 2px solid rgb(162, 162, 162);
+}
+#cancel_btn_task{
+    width: 10vw;
+    padding:7%;
+      border: 2px solid rgb(162, 162, 162);
+      border-radius: 5px;
+    color: white;
+    background-color: #3b3b3b;
+}
+#cancel_btn_task:hover{
+ background-color: rgb(88, 123, 230);
+}
+
+.btn-submit-task-manage:hover{
+  background-color: rgb(191, 78, 78) !important;
+}
 .bot_flex_form_container{
     margin-top: 3%;
     display: flex;
     gap: 6%;
-    /*border: green 2px solid;*/
-   
+  
+   width:101%;
    height: 20%;
 }
+.bot_flex_form_container input{
+    width: 100%;
+}
 .task_form_btn_container{
-/*border: 2px blue solid;*/
-  
-  margin-left: 0.5%;
-  width: 35%;
+
+  display: flex;
+
+ 
+  width: 30%;
 
 
 
+}
+.file_input_task_manage{
+    width: 70%;
 }
 .btn-submit-task-manage{
   padding: 5%;
-    width: 17vw;
+  width: 45%;
+    
+}
+.btn-update-task-manage{
+  padding: 1%;
+
+    
+    background-color: rgb(243, 243, 237);
+    color: black;   
+    position: relative;
+   
 }
 .btn_submit_manage_create_task{
     padding: 4%;
