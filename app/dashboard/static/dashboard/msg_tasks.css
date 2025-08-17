@@ -76,10 +76,11 @@ a:visited{
 }
 .reports_container_reply{
   display: flex;
-    padding-top: 3vh;
+    padding-top: 1vh;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
     height:93vh;
     width: 64vw;
     border: rgb(65, 65, 65) 3px solid;
@@ -1031,7 +1032,7 @@ form button{
     justify-content: center;
     padding: 7%;
     margin: 5%;
-    margin-top: 8%;
+    margin-top: 13%;
     background-color: #969696;
      border-radius: 4px;
 }
@@ -1058,7 +1059,7 @@ form button{
     top: 0;
     color: white;
     justify-content: center;
-    background-color: #777777;
+    background-color: #8a8a8a5d;
     
 }
 .from_who_msg_detail_limt{
