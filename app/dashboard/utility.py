@@ -5,6 +5,7 @@ import plotly.graph_objs as go
 from plotly.offline import plot
 from django.utils import timezone
 from django.core.files.storage import default_storage
+
 ##### UTILITY ###############
 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
@@ -29,7 +30,9 @@ def save_files(self, files, task):
     for f in files:
         file_name = f.name
         file_path = f'task/{task.id}/{file_name}'
-
+        if f.size > 2 * 1024 * 1024:
+            return False
+          
         if default_storage.exists(file_path):
             file = Document.objects.get(file__icontains=file_name, object_id = task.id)
             if file.owner == self.request.user.userprofile:
@@ -38,7 +41,9 @@ def save_files(self, files, task):
                 file.delete()
 
         Document.objects.create(file = f, owner =self.request.user.userprofile,
-                                                            content_object = task)
+                                                          content_object = task)
+    return True
+   
 
 def copy_message_data(source, target_model):
     copy = target_model(
@@ -48,11 +53,11 @@ def copy_message_data(source, target_model):
         content=source.content,
         timestamp=source.timestamp,
         task=source.task,
-        picture=source.picture,
-        content_type=source.content_type
+           
     )
     copy.save()
     copy.recipient.set(source.recipient.all())
+    copy.documents.set(source.documents.all())
     return copy
 
 

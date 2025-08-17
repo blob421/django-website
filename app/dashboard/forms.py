@@ -60,24 +60,19 @@ class SubTaskForm(ModelForm):
 
 
 class MessageForm(ModelForm):
-     max_size_limit = 2 * 1024 * 1024
-     picture = forms.FileField(required=False, label="File to upload <= 2MB")
-     upload_field_name = 'picture'
 
      class Meta:
           model = Messages
-          fields = ['recipient', 'title', 'content','picture']
+          fields = ['recipient', 'title', 'content']
           
-          
+     
      def __init__(self, *args, sender_id=None):
                
             super().__init__(*args)
             
             if sender_id:
-                
-
+          
                profile = UserProfile.objects.get(user=sender_id)
-
 
                combined_qs = UserProfile.objects.filter(
                Q(team=profile.team) | Q(user__in=profile.recipients.all())
@@ -86,28 +81,6 @@ class MessageForm(ModelForm):
                allowed = combined_qs.exclude(id=sender_id)
                self.fields['recipient'].queryset = allowed
             
-
-     def clean(self):
-          cleaned_data = super().clean()
-          pic = cleaned_data.get('picture')
-          if pic is None: return
-          if len(pic) > self.max_size_limit:
-               self.add_error('picture','Pictures must be less than 2 megabytes')
-
-
-     def save(self, commit=True):
-          instance = super().save(commit=False)
-          f = self.cleaned_data.get('picture')
-
-          if isinstance(f, InMemoryUploadedFile):
-               bytearr = f.read()
-               instance.content_type = f.content_type
-               instance.picture = bytearr  # Store raw bytes
-
-          if commit:
-               instance.save()
-
-          return instance
 
 class ForwardMessages(ModelForm):
      class Meta:

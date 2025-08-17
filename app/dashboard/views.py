@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from .utility import copy_message_data, days_of_the_week
 from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedView
 from django import forms
@@ -104,6 +104,12 @@ class MessageDetail(LoginRequiredMixin, DetailView):
        msg.new = False
        msg.save()
        return msg
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        documents = Document.objects.filter(object_id = self.object.id)
+        context['documents'] = documents
+        print(documents)
+        return context
     
 
 
@@ -115,31 +121,52 @@ class MessageView(LoginRequiredMixin, View):
         pk = self.request.user.id
         data = MessagesCopy.objects.filter(user_id=pk).order_by('-id')
 
+        file_form = FileFieldForm()
         form = MessageForm(sender_id = self.request.user.id)
         form_add = RecipientForm(sender_id=self.request.user.id)
         form_del = RecipientDelete(sender_id=self.request.user.id)
 
-        context = {'data': data, 'form': form, 'form_add':form_add, 'form_del':form_del}
+        context = {'data': data, 'form': form, 'file_form': file_form, 'form_add':form_add, 
+                   'form_del':form_del}
         return render(request, self.template, context)
        
 
     def post(self, request):
         user_profile = self.request.user.userprofile
-       
+        
         if 'send' in request.POST:
+
+            file_form = FileFieldForm(request.POST, request.FILES)
             form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
             if not form.is_valid():
                 pk = self.request.user.id
                 data = MessagesCopy.objects.filter(user_id=pk)
-                context = {'data': data, 'form': form, 'form_add':form_add, 'form_del':form_del}
+                context = {'data': data, 'form': form, 'file_form': file_form, 'form_add':form_add, 'form_del':form_del}
                 return render(request, self.template, context)
             
+        
             report = form.save(commit=False)
+        
 
             recipient = form.cleaned_data['recipient']
             report.user_id = request.user.id
             report.save()
+            if request.FILES: 
+                files = self.request.FILES.getlist('file_field')
+                valid = save_files(self, files, report)
+
+                if not valid:
+                    pk = self.request.user.id
+                    form_add = RecipientForm(sender_id=self.request.user.id)
+                    form_del = RecipientDelete(sender_id=self.request.user.id)
+                    data = MessagesCopy.objects.filter(user_id=pk).order_by('-id')
+                    file_form.add_error('file_field',"Files must be below 2 MB")
+                    ctx = {'data': data, 'form': form, 'form_add':form_add, 
+                          'file_form': file_form, 'form_del':form_del}
+                    return render(self.request, self.template, ctx)
+                
             report.recipient.set(recipient.all())
+
 
             ##Making a copy for inbox
             copy_message_data(report , MessagesCopy)
@@ -187,9 +214,15 @@ class MessageUpdate(LoginRequiredMixin, UpdateView):
     
     fields = ['recipient','title', 'content']
     success_url = reverse_lazy('dashboard:messages_create')
-    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        file_form = FileFieldForm()
+        context['file_form'] = file_form
+        return context
+
+
     def get_form(self, form_class=None):
-               
             form = super().get_form(form_class)
             sender_id = self.request.user.id
             profile = UserProfile.objects.get(user=sender_id)
@@ -202,11 +235,21 @@ class MessageUpdate(LoginRequiredMixin, UpdateView):
 
 
     def form_valid(self, form):
-      
+        file_form = FileFieldForm(self.request.POST, self.request.FILES)
         response = super().form_valid(form)
-
-        # Create a copy of the updated instance
         report = self.object
+
+        if self.request.FILES:
+         
+            files = self.request.FILES.getlist('file_field')
+            valid = save_files(self, files, report)
+
+            if not valid:
+                file_form.add_error('file_field',"Files must be below 2 MB")
+                ctx = {'form': form, 'file_form': file_form}
+                return render(self.request, self.template_name, ctx)
+          
+        # Create a copy of the updated instance
         copy_message_data(report, Messages)
         return response
 
@@ -233,12 +276,17 @@ class MessageForward(LoginRequiredMixin, View):
              return render(request, self.template_name, ctx)
         
         recipients = form.cleaned_data['recipient']
-        message = Messages.objects.get(id = pk)
+        
+        message = MessagesCopy.objects.get(id = pk)
+        documents = Document.objects.filter(object_id = message.id)
+
         forwarded_msg = Messages(user=message.user, title=message.title,
                   content=message.content, task= message.task, forwarded=True, 
-                  forwarded_by=self.request.user.userprofile,
-                  picture=message.picture, content_type=message.content_type)
+                  forwarded_by=self.request.user.userprofile, timestamp=message.timestamp)
         forwarded_msg.save()
+        
+
+        forwarded_msg.documents.set(documents.all())
         forwarded_msg.recipient.set(recipients.all())
         return redirect(reverse('dashboard:messages_create'))
     
@@ -248,23 +296,37 @@ class ReplyView(LoginRequiredMixin, View):
     template_name = 'dashboard/messages/reply_view.html'
 
     def get(self, request, recipient_id):
+        file_form = FileFieldForm()
         form = MessageForm(sender_id = self.request.user.id)
         recipient = UserProfile.objects.get(id = recipient_id)
-        ctx = {'form':form, 'recipient':recipient}
+
+        ctx = {'form':form, 'recipient':recipient, 'file_form':file_form}
         return render(request, self.template_name, ctx)
     
+
     def post(self, request, recipient_id):
+
+        file_form = FileFieldForm(request.POST, request.FILES or None)
         form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
-        recipient = UserProfile.objects.filter(id = recipient_id)
+        recipient = UserProfile.objects.get(id = recipient_id)
         if not form.is_valid:
-       
-            ctx = {'form':form, 'recipient':recipient}
+
+            ctx = {'form':form, 'recipient':recipient, 'file_form':file_form}
             return render(request, self.template_name, ctx)
-    
-        message = form.save(commit=False)
+        
       
+        message = form.save(commit=False)
         message.user_id = request.user.id
         message.save()
+
+        if request.FILES:
+            files = request.FILES.getlist('file_field')
+            valid = save_files(self, files, message)
+            if not valid:
+                file_form.add_error('file_field',"Files must be below 2 MB")
+                ctx = {'form':form, 'recipient':recipient, 'file_form':file_form}
+                return render(request, self.template_name, ctx)
+
         message.recipient.set(recipient.all())
         copy_message_data(message , MessagesCopy)
         return redirect('dashboard:messages')  
@@ -1050,12 +1112,18 @@ def ChatUpdate(request):
 
 
 def stream_file(request, pk):
-    pic = get_object_or_404(Messages, id=pk)
-    response = HttpResponse()
-    response['Content-Type'] = pic.content_type
-    response['Content-Length'] = len(pic.picture)
-    response.write(pic.picture)
-    return response
+    file = Document.objects.get(id = pk)
+    content_type=mimetypes.guess_type(file.file.name)[0]
+    file_path = file.file.path
+    if content_type not in ['image/png', 'image/jpeg', 'image/jpg']:
+    
+  
+        return FileResponse(open(file_path, 'rb') , as_attachment=True, filename=file.file.name)
+    
+    else:
+        
+        with open(file_path, 'rb') as f:
+            return HttpResponse(f.read(), content_type=content_type)
 
 
 

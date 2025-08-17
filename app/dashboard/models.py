@@ -103,9 +103,8 @@ class Messages(models.Model):
     forwarded = models.BooleanField(default=False)
     forwarded_by = models.ForeignKey(UserProfile, null=True, on_delete=models.CASCADE)
     
+    documents = GenericRelation('Document')
    
-    picture = models.BinaryField(null=True, blank=True, editable=True)
-    content_type = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -125,8 +124,7 @@ class MessagesCopy(models.Model):
     task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
     forwarded = models.BooleanField(default=False)
     forwarded_by = models.ForeignKey(UserProfile, null=True, on_delete=models.CASCADE)
-    picture = models.BinaryField(null=True, blank=True, editable=True)
-    content_type = models.CharField(max_length=50, null=True, blank=True)
+    documents =  GenericRelation('Document')
 
     def __str__(self):
         return self.title

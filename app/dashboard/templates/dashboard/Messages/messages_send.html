@@ -31,13 +31,13 @@
 
     <div class="bottom_inputs_send_msg">
     <div class="bottom_send_msg"> <div class="filefield_send_msg">
-      {{form.picture}} 
+      {{file_form.file_field}} 
     </div>
   <input class="send_msg_btn_create" type="submit" name="send" value="Send"></div>
   
  </div>
-   {% if form.errors %}
-     <div class="send_messages_error"> {{form.picture.errors}}  </div>
+   {% if file_form.errors %}
+     <div class="send_messages_error"> {{file_form.file_field.errors}}  </div>
       {% endif %} 
   </div>
   <div class="bottom_right_send_msg">

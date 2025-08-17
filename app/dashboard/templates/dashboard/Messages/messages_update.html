@@ -4,7 +4,7 @@
 <div class="visual_frame_update">
 
 <div class="top_send_msg_update">  
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
      <div class="title_container_send_msg_update">
       {{form.title.label_tag}}
@@ -22,9 +22,22 @@
    {{form.recipient.label_tag}}   
  <div class="send_msg_update_recipient"> {{ form.recipient }}</div>     </div> 
 </div>
+<div class="msg_update_bottom_cont_flex">
+
+   
+     <div>{{file_form.file_field}}</div>
+   
+     <input type="submit" name="send" value="Update" class="send_msg_update_submit">
+     
+      {% if file_form.errors %}
+    <div style="color: rgb(19, 19, 19); font-weight: bold;
+    font-size: smaller;"> {{file_form.file_field.errors}}
+    </div> 
+      {% endif %} 
 
 
-  <input type="submit" name="send" value="Update" class="send_msg_update_submit">
+</div>
+  
  </form>
 
 </div>

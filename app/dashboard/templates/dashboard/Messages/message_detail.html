@@ -1,48 +1,113 @@
  {% include 'dashboard/base.html' %}
+ {% load user_data %}
  {% block content %}
- <div class="top_visual_frame_detail"></div>
- <div class="visual_frame_msg_detail"> 
-    
-
-</div>
- <div class="general_text_container">
-  <p class="general_text_detail_msg"> {{ report.content}} 
-     {% if report.content_type %}
+ 
  {% load static %}
-<img id="thumbnail" 
-     src="{% static 'file_icon3.png' %}"
-     onclick="showOverlay();" style="width: 7.5%; position: fixed; bottom: 1%; right: 0.5%;">
-{% endif %}
+ <div class="top_visual_frame_detail"></div>
 
-  </p>
+ {% for document in documents %}
+ 
+
+    <img src="{% url 'dashboard:pic_picture' document.id %}" 
+    id="large{{document.id}}" onclick="hideOverlay('{{document.id}}');" 
+    style="width: 76vw;
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;">
+
+{% endfor %}
+
+
+ <div class="visual_frame_msg_detail"> 
+
+
+
+ <div class="general_text_container_msg_detail">
+        <div class="from_who_title_msg_detail">
+            
+            <div class="from_who_msg_detail_limt"><strong>From {{report.user.username}} :  </div>
+            </strong> 
+            <div> {{report.timestamp}}</div>
+
+            </div> 
+  <div class="general_text_detail_msg">
+
+{{ report.content}} 
+
+ 
+
+  </div>
+
+
+
+
  </div>
+
 
 
 
 <div class="data_container__view_msg">   
 
-<div class="from_who_title_msg_detail"><strong> From {{report.user.username}} : </strong> </div>
+
 </div>
 
 
-{% if report.content_type %}
-<div id="overlay" class="overlay" style="display: none; text-align: center;"
-     onclick="hideOverlay();">
-    <img style="width:87%;margin-top: 5px;" 
-         src="{% url 'dashboard:pic_picture' report.id %}">
+
+<div class="msg_detail_infopanel">
+        <div class="files_div_messages_detail"> 
+        <div class="attachments_title_msg_detail">
+            Attachments
+        </div>
+        {% for document in documents %}
+            {% if document.id|slicer == "image" %}
+            <div class="image_div_msg_detail">
+            <img src="{% url 'dashboard:pic_picture' document.id %}" 
+            id="thumbnail{{document.id}}" 
+            onclick="showOverlay('{{document.id}}');" style="width: 100%;
+            cursor: pointer;
+            ">
+            </div>
+            {% else %}
+            <a href="{% url 'dashboard:pic_picture' document.id %}">
+            <div class="file_div_msg_detail"> 
+                
+                <div class="file_name_div"> {{document.file_name}}  </div> 
+
+                
+                 <div class="image_icon_div_msg_detail">
+                   
+                <img src="{% static 'file_icon3.png' %}"style="z-index: 1;width: 100%;">
+                </div>
+              
+           </div>
+            </a>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+
 </div>
-{% endif %}
+
+
+
+
+
+</div>
+
 
  <div class="bot_visual_frame_detail"></div>
 <script>
-function showOverlay() {
-    document.getElementById('overlay').style.display = 'block';
-    document.getElementById('thumbnail').style.display = 'none';
+function showOverlay(id) {
+    document.getElementById('large'+ id).style.display = 'block';
+    document.getElementById('thumbnail' + id).style.display = 'none';
 }
 
-function hideOverlay() {
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('thumbnail').style.display = 'inline';
+function hideOverlay(id) {
+    document.getElementById('large' + id).style.display = 'none';
+    document.getElementById('thumbnail' + id ).style.display = 'block';
 }
 </script>
 
@@ -51,7 +116,7 @@ function hideOverlay() {
  <a href="{% url 'dashboard:inbox' %}">
   <button type="button" class="del_btn2">Back</button>
 </a>
-<a href="{% url 'dashboard:message_reply' report.user.id %}"> 
+<a href="{% url 'dashboard:message_reply' report.user.userprofile.id %}"> 
 <button type="button" class="del_btn2">Reply</button>
 </a>
 </div>
