@@ -3,7 +3,7 @@ from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSect
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from django import forms
-from django.core.files.uploadedfile import InMemoryUploadedFile
+
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
 from	crispy_forms.layout	import Submit
@@ -142,7 +142,7 @@ class TaskCreate(ModelForm):
 
 class SubmitTask(forms.Form):
           completion_note = forms.CharField(widget=forms.Textarea)
-          picture = forms.FileField(required=False)
+     
           
     
 

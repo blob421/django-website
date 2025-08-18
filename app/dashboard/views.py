@@ -25,6 +25,10 @@ import mimetypes
 from django.core.files.storage import default_storage
 
 ########## CONFIG ############
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie 
+
 
 user_model = get_user_model()
 allowed_roles_forms = ['dev']
@@ -41,7 +45,7 @@ class CustomLoginView(LoginView):
         context['form'] = self.get_form()
         return context
 
-
+@method_decorator([cache_page(60 * 60), vary_on_cookie], name='dispatch')
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
     def get(self, request):
@@ -101,6 +105,8 @@ class MessageDetail(LoginRequiredMixin, DetailView):
        report_id = self.kwargs['id']
     
        msg = Messages.objects.get(id=report_id, recipient=self.request.user.userprofile)
+    
+
        msg.new = False
        msg.save()
        return msg
@@ -108,7 +114,30 @@ class MessageDetail(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         documents = Document.objects.filter(object_id = self.object.id)
         context['documents'] = documents
-        print(documents)
+
+        messages = Messages.objects.filter(recipient = self.request.user.userprofile)
+
+ ### Previous and next function ###
+        index_list = []
+        for message in messages:
+            index_list.append(message.id)
+        index_list.sort()
+        position = index_list.index(self.object.id)
+
+        if len(index_list) - 1 > position:
+            next_index = index_list[position + 1] 
+        else:
+            next_index = None
+
+        if index_list[0] != position:
+            previous_index = index_list[position - 1]
+        else:
+            previous_index = None
+
+        context['next_index'] = next_index
+        context['previous_index'] = previous_index
+
+        
         return context
     
 
@@ -309,6 +338,7 @@ class ReplyView(LoginRequiredMixin, View):
         file_form = FileFieldForm(request.POST, request.FILES or None)
         form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
         recipient = UserProfile.objects.get(id = recipient_id)
+        
         if not form.is_valid:
 
             ctx = {'form':form, 'recipient':recipient, 'file_form':file_form}
@@ -326,7 +356,8 @@ class ReplyView(LoginRequiredMixin, View):
                 file_form.add_error('file_field',"Files must be below 2 MB")
                 ctx = {'form':form, 'recipient':recipient, 'file_form':file_form}
                 return render(request, self.template_name, ctx)
-
+            
+        recipient = UserProfile.objects.filter(id = recipient_id)
         message.recipient.set(recipient.all())
         copy_message_data(message , MessagesCopy)
         return redirect('dashboard:messages')  
@@ -549,28 +580,14 @@ class TaskSubmit(LoginRequiredMixin, View):
 
     def post(self, request, pk):
         form = SubmitTask(request.POST, request.FILES or None)
-        
+        task = Task.objects.get(id = pk)
         if not form.is_valid():
-            ctx = {'form': form}
+            ctx = {'form': form, 'task':task}
             return render(request, self.template, ctx)
         
-        task = Task.objects.get(id = pk)
+        
         user_profile = self.request.user.userprofile
         note = form.cleaned_data['completion_note']
-        picture_file = form.cleaned_data['picture']
-
-        if picture_file:
-            if len(picture_file) > 2 * 1024 *1024:
-                form.add_error('picture','Pictures must be less than 2 megabytes')
-
-        if form.errors:
-            task = get_object_or_404(Task, Q(id=pk) & Q(users__in=[self.request.user.userprofile]))
-            return render(request, self.template, {'form': form, 'task':task})
-        
-        if picture_file:
-            
-            task.picture = picture_file.read()  
-            task.content_type = picture_file.content_type
 
         task.completion_note = note
         task.completed = True
@@ -1004,16 +1021,18 @@ class TeamCompletedApprove(ProtectedView):
 
 
 ############## TEAM STATS #####################################
-
+@method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
 class PerformanceDetail(ProtectedView):
     template_name = 'dashboard/management/perf_detail.html'
     def get(self, request, pk):
+
         employee = UserProfile.objects.get(id = pk)
        
         ctx = get_stats_data(employee)  
         return render(request, self.template_name, ctx)
 
 
+@method_decorator([cache_page(60 * 60 * 6), vary_on_cookie], name='dispatch')
 class PerformanceView(ProtectedView):
     template_name = 'dashboard/management/perf_view.html'
 

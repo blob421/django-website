@@ -9,22 +9,26 @@
  
 
     <img src="{% url 'dashboard:pic_picture' document.id %}" 
-    id="large{{document.id}}" onclick="hideOverlay('{{document.id}}');" 
-    style="width: 95vw;
-    display: none;
-    border: 6px rgb(74, 74, 74) solid;
-    position: absolute;
-    border-radius: 17px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    z-index: 1000;">
+    id="large{{document.id}}" onclick="hideOverlay('{{document.id}}');" class="big_img">
 
 {% endfor %}
 
 
  <div class="visual_frame_msg_detail"> 
 
+
+{% if previous_index %}
+<a href="{% url 'dashboard:reportview' previous_index %}">
+<button class="msg_detail_prev_btn"><</button>
+</a>
+{% endif %}
+
+
+{% if next_index %}
+<a href="{% url 'dashboard:reportview' next_index %}">
+<button class="msg_detail_next_btn">></button>
+</a>
+{% endif %}
 
 
  <div class="general_text_container_msg_detail">
@@ -94,22 +98,36 @@
 </div>
 
 
-
-
-
 </div>
 
 
+
  <div class="bot_visual_frame_detail"></div>
+
+<div id="dark_screen_image_overlay" style="
+width: 100vw;
+height: 100vh;
+background-color: rgba(0, 0, 0, 0.57);
+z-index: 100;
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+display: none;
+">
+</div>
+
 <script>
 function showOverlay(id) {
     document.getElementById('large'+ id).style.display = 'block';
     document.getElementById('thumbnail' + id).style.display = 'none';
+    document.getElementById('dark_screen_image_overlay').style.display ='block'
 }
 
 function hideOverlay(id) {
     document.getElementById('large' + id).style.display = 'none';
     document.getElementById('thumbnail' + id ).style.display = 'block';
+    document.getElementById('dark_screen_image_overlay').style.display ='none'
 }
 </script>
 
@@ -121,5 +139,11 @@ function hideOverlay(id) {
 <a href="{% url 'dashboard:message_reply' report.user.userprofile.id %}"> 
 <button type="button" class="del_btn2">Reply</button>
 </a>
+
+
+
 </div>
+
+
+
 {% endblock %}

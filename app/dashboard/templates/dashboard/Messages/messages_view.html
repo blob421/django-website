@@ -1,20 +1,22 @@
 
  {% extends 'dashboard/base.html' %}
-
+ {% load cache %}
  {% block content %}
   
 
   <div class="center_container">
-    
+     
+
        {% if user.is_authenticated %}
        <div class="title_container">  <h1 class="home_head">Welcome {{user.first_name}}</h1></div>
        {% endif %}
 
+        {% cache 3600 welcome_section %}
        <div class="btn-container-msg">
      <div class="messages_send_msg_btn"><a href="{% url 'dashboard:messages_create' %}"><button class="send_a_msg_btn">Send a message</button></a></div>
       <div class="messages_view_msg_btn"><a href="{% url 'dashboard:inbox' %}"><button class="view_a_msg_btn">See inbox</button></a></div>
       </div>
-      
+       {% endcache %}
       <div class="text_container">
    
       <h2 class="home_head">Messages</h2>
@@ -45,11 +47,16 @@
       </div>
       </div>
    </div>
- 
+    {% cache 3600 backbutton %}
       <div class="send_msg_back">
-   <a href="{% url 'dashboard:home' %}"><button class="del_btn2" type="button">Back</button></a>
+        
+      <a href="{% url 'dashboard:home' %}"><button class="del_btn2" type="button">
+        Back
+      </button>
+      </a>
 
- </div>
+     </div>
+    {% endcache %}
  {% endblock %}
 
 

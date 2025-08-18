@@ -545,9 +545,13 @@ form textarea{
 
 }
 .del_btn2{
+    width: 4.2vw;
     height: 100%;
     background-color: #f8f8f8aa;
     border: 2px rgb(161, 161, 161) solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     
 }
 .send_msg_back{
@@ -594,14 +598,29 @@ form textarea{
     
  }
 
-
+.big_img{
+    height: 96vh;
+    
+    display: none;
+    border: 6px rgb(74, 74, 74) solid;
+    position: absolute;
+    border-radius: 17px;
+    left: 50%;
+    top: 50%;
+    max-width: 98vw;
+    max-height: 98vh;
+    transform: translate(-50%,-50%);
+    z-index: 1000;
+}
 @media (max-width:1024px){
 .view_a_msg_btn,
 .send_a_msg_btn{
     font-size: 11px;
 }
 
+
 }
+
 .message_forward_form_textarea{
      padding-top: 1%;
     width: 75%;
@@ -1915,7 +1934,31 @@ form button{
      margin-top: 8%;
       
 }
+.msg_detail_next_btn{
+    right: -6.2%;
+    position: fixed;
+    height: 12vh;
+    top: 50%;
+      padding: 2%;
+      background-color: #505050eb;
+      color: white;
+      border-radius: 4px;
+      border: 2px solid rgb(162, 162, 162);
+    transform: translateY(-50%);
+}
+.msg_detail_prev_btn{
+   position: fixed;
+    height: 12vh;
+    top: 50%;
+    padding: 2%;
+    left: -6.2%;
+       background-color: #505050eb;
+      color: white;
+      border-radius: 4px;
+      border: 2px solid rgb(162, 162, 162);
+    transform: translateY(-50%);
 
+}
 .subtask_update_description textarea{
     border: 2px solid rgb(172, 172, 172);
     height: 100%;
