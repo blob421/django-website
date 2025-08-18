@@ -70,7 +70,6 @@ def safe_divide(numerator, denominator):
 
 
 def get_user_data(stats):
-
     total_completed = 0 
     late_task_count = 0
     total_denied = 0
@@ -171,7 +170,6 @@ def get_stats_data(user_profile, page=None):
        
         all_user_stats = user_profile.stats.filter().all()
         stats = get_user_data(all_user_stats)
-        print(stats)
         tasks = Task.objects.filter(users__in=[user_profile])
 
         for task in tasks:

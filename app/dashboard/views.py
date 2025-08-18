@@ -28,7 +28,7 @@ from django.core.files.storage import default_storage
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie 
-
+from django.core.cache import cache
 
 user_model = get_user_model()
 allowed_roles_forms = ['dev']
@@ -1027,19 +1027,31 @@ class PerformanceDetail(ProtectedView):
     def get(self, request, pk):
 
         employee = UserProfile.objects.get(id = pk)
-       
-        ctx = get_stats_data(employee)  
+        cache_key = f'individual_stats{employee.id}'
+
+        if cache.has_key(cache_key):
+            ctx = cache.get(cache_key)
+        else:
+            ctx = get_stats_data(employee)  
+            cache.set(cache_key, ctx, (24 * 60 * 60))
+        
         return render(request, self.template_name, ctx)
 
 
-@method_decorator([cache_page(60 * 60 * 6), vary_on_cookie], name='dispatch')
+@method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
 class PerformanceView(ProtectedView):
     template_name = 'dashboard/management/perf_view.html'
 
     def get(self, request, pk, page=1):
-        
+     
         user_profile = UserProfile.objects.get(user = self.request.user)
-        ctx = get_stats_data(user_profile, page)
+        cache_key = f'team_stats{user_profile.team.id}_page{page}'
+
+        if cache.has_key(cache_key):
+            ctx = cache.get(cache_key)
+        else:
+            ctx = get_stats_data(user_profile, page)
+            cache.set(cache_key, ctx, (24 * 60 * 60))
         
         return render(request, self.template_name, ctx)
 
