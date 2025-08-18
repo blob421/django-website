@@ -1,3 +1,4 @@
+{% load user_data %}
   {% for week in weeks %}
           
             {% with week_index=forloop.counter %}
@@ -12,9 +13,9 @@
                     {% for section in sections %}
                    <div class="chart_section_right"> 
              
-                           {% for task in chart.task_set.all %}
+                           {% for task in tasks_by_section|get_item:section.id %}
                          
-                           {% if task.section == section %}
+                       
                            {% if user.userprofile.role.name == 'dev' %}
                            <div class="chart_right_task_row  {% if week_index < grey %} chart_right_task_row_grey {% elif week_index in grey_col_list %} chart_right_task_row_grey_alt {% endif %}"
                             id="right_rows{{task.id}}{{week_index}}" value="{{task.week}}"
@@ -26,7 +27,7 @@
                             onclick="Filltask('{{task.id}}', '{{week_index}}')">
                            </div>
                            {% endif %}
-                            {% endif %}
+                    
                            {% endfor %}  
                              <div class="chart_right_task_row_grey"> </div>
                    </div>

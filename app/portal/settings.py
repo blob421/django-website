@@ -20,6 +20,10 @@ LOGIN_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = 'dashboard:role_dispatch'
 
+INTERNAL_IPS = [
+'127.0.0.1',
+]
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -44,6 +48,7 @@ ALLOWED_HOSTS = [ '*' ]
 # Application definition
 
 INSTALLED_APPS = [
+    'debug_toolbar',
     'crispy_bootstrap5',
     'crispy_forms',
     'django_apscheduler',
@@ -59,6 +64,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

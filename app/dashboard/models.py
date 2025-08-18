@@ -48,6 +48,12 @@ class UserProfile(models.Model):
     class Meta:
 
         verbose_name_plural = "Add a user" 
+      
+        indexes = [
+            models.Index(fields=['team']),
+            models.Index(fields=['id']),
+            models.Index(fields=['user']),
+        ]
 
     def __str__(self):
         return self.user.username
@@ -82,6 +88,13 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['team_lead']),
+            models.Index(fields=['id']),
+            models.Index(fields=['name']),
+        ]
 
 
 
@@ -105,10 +118,17 @@ class Messages(models.Model):
     
     documents = GenericRelation('Document')
    
-
+    
     def __str__(self):
         return self.title
     
+    class Meta:
+        indexes = [
+        
+            models.Index(fields=['user']),
+            models.Index(fields=['timestamp']),
+            models.Index(fields=['id']),
+        ]
 
 
 class MessagesCopy(models.Model):
@@ -182,6 +202,14 @@ class Task(models.Model):
             self.users.clear()
             super().delete(*args, **kwargs)
 
+        class Meta:
+            indexes = [
+                models.Index(fields=['completed']),
+                models.Index(fields=['due_date']),
+                models.Index(fields=['id']),
+                models.Index(fields=['creation_date']),
+            ]
+
 
 class SubTask(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
@@ -212,6 +240,12 @@ class Document(models.Model):
     @property
     def time(self):
         return naturaltime(self.upload_time)
+    
+    indexes = [
+            models.Index(fields=['object_id']),
+            models.Index(fields=['owner']),
+            models.Index(fields=['upload_time']),
+        ]
 
 
 
@@ -242,6 +276,13 @@ class Chart(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['id']),
+            models.Index(fields=['start_date']),
+            models.Index(fields=['end_date']),
+        ]
 
 
 class ChartData(models.Model):

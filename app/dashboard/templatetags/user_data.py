@@ -12,7 +12,9 @@ def slicer(doc_id):
  print(content_type[:5])
  return content_type[:5]
     
-
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 @register.filter
 def get_schedules(user, manage = False):

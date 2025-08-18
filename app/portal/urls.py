@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
     path('', CustomLoginView.as_view(template_name='dashboard/login.html')),
+    path('__debug__/', include('debug_toolbar.urls')),
+
 ]
 

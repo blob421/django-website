@@ -21,6 +21,7 @@ from .utility import get_stats_data, save_files, create_stats, save_stats
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
 from django.utils.encoding import smart_str
+from collections import defaultdict
 import mimetypes
 from django.core.files.storage import default_storage
 
@@ -693,9 +694,12 @@ class ChartDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/projects/projects_view.html'
     def get(self,request, pk):
 
+        team = self.request.user.userprofile.team
         chart = Chart.objects.get(id = pk)
         day = chart.start_date.day
-   
+        time_delta = chart.end_date - chart.start_date
+        number_of_weeks = time_delta.days / 7
+
         if day <= 7:
             grey =  1
         elif day <= 14:
@@ -705,9 +709,7 @@ class ChartDetail(LoginRequiredMixin, DetailView):
         else:
             grey= 4
 
-        time_delta = chart.end_date - chart.start_date
-        number_of_weeks = time_delta.days / 7
-
+      
         total_week_col = range(int(number_of_weeks) + grey)
         week_int = int(number_of_weeks + grey)
 
@@ -724,11 +726,18 @@ class ChartDetail(LoginRequiredMixin, DetailView):
             month_list = None
       
         sections = ChartSection.objects.filter(chart=chart)
-        team = self.request.user.userprofile.team
+        tasks = Task.objects.filter(chart=chart)
+     
+        tasks_by_section = defaultdict(list)
+        for task in tasks:
+             tasks_by_section[task.section_id].append(task)
+
+   
         charts = Chart.objects.filter(teams = team ).order_by('id')
         ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 
                'grey':grey , 'sections':sections, 'week_int':week_int, 
-               'grey_col_list':grey_col_list,'months_list':month_list}
+               'grey_col_list':grey_col_list,'months_list':month_list, 
+               'tasks_by_section':tasks_by_section}
        
    
 
@@ -739,15 +748,14 @@ class ChartDetail(LoginRequiredMixin, DetailView):
     def post(self,request, pk):
 
         json_data = json.loads(request.body)
-        print(json_data['data'])
+
         all_data = json_data['data']
         chart = Chart.objects.get(id=pk)
         
-        for key, value in all_data.items():
-            
+        for key, value in all_data.items():            
             chart_data = ChartData(id = key, task_id=key, columns = value, chart=chart)
-            print(chart_data)
             chart_data.save()
+
         return redirect(reverse('dashboard:projects'))
     
 
@@ -1131,7 +1139,7 @@ def ChatUpdate(request):
     profile = UserProfile.objects.get(id=request.user.id)
 
     team = profile.team
-    messages = ChatMessages.objects.filter(team= team).order_by('-created_at')[:10]
+    messages = ChatMessages.objects.filter(team= team).order_by('-created_at')[:50]
     for message in messages:
         text = message.message
         user = message.user.user.username
