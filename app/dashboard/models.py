@@ -83,7 +83,7 @@ class Team(models.Model):
                                  related_name='team_lead', null=True)
     pinned_msg = models.TextField(null=True , default='---')
     name = models.CharField(max_length=40, blank=True )
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
     stats = GenericRelation('Stats')
 
     def __str__(self):

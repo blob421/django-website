@@ -1,0 +1,679 @@
+.add_no_tasks{
+  position: relative;
+  top: 5%;
+}
+.create_chart_div{
+    border: 2px orange solid;
+    height: 10.5vh;
+    display: flex;
+    width: 98.1vw;
+      background-color: rgb(192, 192, 192);
+      
+      
+}
+.chart_clear_btn{
+  background-color: rgb(249, 144, 144);
+  
+  border: 1px solid black;
+  border-radius: 1px; 
+  margin-top: 17%;
+ 
+}
+.chart_clear_btn:hover{
+  background-color: rgb(214, 117, 117);
+}
+.plus_sign_button{
+  background-color: rgb(178, 213, 231);
+  border: 1px solid grey;
+  font-size: medium;
+
+
+}
+.plus_sign_button:hover{
+  background-color: rgb(143, 179, 196);
+ 
+}
+
+.charts_title_text{
+ 
+
+ width: 60%;
+ position: relative;
+ right: 4%;
+/*border: 2px solid black;*/
+ font-size: 2.2vw;
+ color:rgb(42, 31, 9);
+ 
+}
+.charts_title{
+ /*   border: 2px black solid;*/
+    font-size: x-large;
+     width: 10%;
+       background-color: rgb(86, 88, 88);
+       border: 2px solid burlywood;
+       
+       
+       
+      }
+.outer_chart_title{
+background-color: rgb(133, 131, 131);
+  border: 3px solid burlywood;
+  width: 85%;
+  height: 75%;
+  top: 50%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chart_create_buttons{
+    margin-left: 0.5%;
+    display: flex;
+    gap: 0.5%;
+    margin-top: 0.175%;
+}
+.chart_create_new_chart{
+   /* border: 2px solid blue;*/
+    width: 87vw;
+}
+.chart_create_chart_title{
+    border: 2px solid burlywood;
+      background-color: rgb(156, 155, 155);
+      width: 100%;
+      padding-left: 0.6%;
+}
+.chart_dates{
+ display: flex;
+ padding-left: 25.9vw;
+ border: 3px solid rgb(32, 32, 32);
+ border-bottom: rgba(0, 0, 0, 0);
+ background-color:aliceblue;
+   flex-wrap: wrap; 
+}
+.one_date_container{
+ 
+  border: 1px solid rgb(105, 105, 105);
+  border-bottom: rgba(245, 245, 220, 0);
+  text-align: center;
+}
+.charts_container{
+
+    border: 3px solid rgb(32, 32, 32);
+    border-top: rgba(0, 0, 0, 0);
+    height: 85vh;
+    width: 98vw;
+    display: flex;
+    bottom: 0%;
+    overflow: auto;
+    overflow-y: auto;
+    background-color: aliceblue;
+    
+}
+
+.left_left_pane{
+    width: 3%;
+    /*border: 1px solid rgb(61, 61, 61);*/
+}
+.chart_left_pane{
+ /*   border: 2px solid violet;*/
+    width: 20%;
+    height: 200vh;
+}
+.chart_right_pane{
+   /*border: 2px solid purple;*/
+    width: 77%;
+    display: flex;
+    height: 200vh;
+    
+  
+  
+    flex-wrap: wrap; 
+}
+.chart_left_title{
+    border: 2px solid black;
+    height: 2%;
+    background-color: rgb(192, 192, 192);
+    z-index: 100;
+    top: 0;
+    position: sticky;
+    padding-left: 2%;
+    display: flex;
+    align-items: center;
+  
+  
+         
+}
+.chart_section_left_description_text{
+     writing-mode: vertical-rl; /* or vertical-lr */
+    margin-top: 10%;
+    width: 11%;  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+  margin-right: -11%;
+  left: -13%;
+  position: relative;
+    
+
+}
+.chart_section_left{
+  /* border: 2px solid green;*/
+      margin-top: 1.5em;
+    width: 19vw;
+  
+   
+    
+}
+.name_section_wrapper_chart{
+/*  border: 2px solid orange;*/
+  display: flex;
+
+ 
+
+}
+.chart_section_right{
+ /* border: 2px solid green;*/
+    margin-top: 1.5em;
+  
+    
+}
+.chart_section_left_label_container{
+     border: 2px solid rgb(49, 49, 49);
+    margin-top: 60%;
+    
+  height: 80%;
+   
+   
+}
+.left_pane_add_task{
+    border: 2px solid rgb(52, 52, 52);
+     font-size: small;
+     background-color: rgb(209, 228, 244);
+      height: 2em;
+     padding-bottom: 0.4em;
+     padding-left:0.5%;
+}
+.del_btn_red{
+  background-color: rgb(219, 87, 87);
+  height: 45%;
+  margin-top: 3%;
+}
+.del_btn_red:hover{
+  background-color: rgb(228, 69, 69);
+  height: 45%;
+}
+.back_btn_chart_task{
+  left: 0%;
+  position: absolute;
+}
+.chart_left_task_row{
+   
+    border: 2px solid rgb(59, 59, 59);
+    height: 2em;
+    font-size: small;
+      background-color: rgb(224, 224, 224);
+      padding-bottom: 0.4em;
+      padding-left: 1.5%;
+     
+}
+.chart_left_task_row_late{
+  border: 2px solid rgb(59, 59, 59);
+    height: 2em;
+    font-size: small;
+      background-color: rgb(236, 182, 182);
+      padding-bottom: 0.4em;
+      padding-left: 1.5%;
+}
+.chart_right_task_row_grey{
+    color: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(63, 63, 63);
+    height: 2em;
+    font-size: small;
+    padding-bottom: 0.4em;
+    background-color: rgb(142, 142, 142);
+    pointer-events: none;
+    opacity: 95%;
+     
+
+}
+.chart_right_task_row_grey_alt{
+      color: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(63, 63, 63);
+    height: 2em;
+    font-size: small;
+    padding-bottom: 0.4em;
+    background-color: rgba(101, 101, 101, 0.824);
+}
+.chart_right_task_row{
+    color: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(63, 63, 63);
+   /* border-right: rgba(0, 0, 0, 0);*/
+   /* border-left: rgba(0, 0, 0, 0);*/
+    height: 2em;
+    font-size: small;
+    padding-bottom: 0.4em;
+  
+   
+    
+}
+.chart_right_task_row_basic{
+    color: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(63, 63, 63);
+    height: 2em;
+    font-size: small;
+    padding-bottom: 0.4em;
+    pointer-events: none;
+   
+    
+}
+
+
+.right_row_description{
+  
+   /* border: 2px solid blue;*/
+    width: 5%;
+   
+}
+.right_row_description_top_row{
+    border: 2px black solid;
+    height: 2%;
+    text-align: center;
+    background-color: rgb(192, 192, 192);
+    font-size: 1.35vw;
+ 
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    top: 0;
+    position: sticky;
+        
+         
+}
+.invisible_top_numbers{
+  color: rgba(240, 248, 255, 0);
+  
+  font-size: 0.5px;
+}
+.chart_col_right_top_row{
+    border: 2px solid black;
+    height: 2%;
+    text-align: center;
+    background-color: rgb(192, 192, 192);
+    z-index: 100;
+    top: 0;
+    position: sticky;
+ 
+         
+}
+.chart_col_right_52grey{
+  width: 13.2px;
+   
+    background-color: rgb(188, 188, 188);
+}
+.chart_col_right_50grey{
+  width: 13.2px;
+   
+   background-color: rgb(188, 188, 188);
+}
+.chart_col_right_46grey{
+  width: 16.5px;
+   
+    background-color: rgb(198, 221, 231);
+}
+.chart_col_right_37grey{
+  width: 21px;
+   
+   background-color: rgb(188, 188, 188);
+}
+.chart_col_right_32grey{
+  width: 25px;
+   
+   background-color: rgb(226, 226, 226);
+}
+
+.chart_col_right_21grey{
+  width: 30px;
+   background-color: rgb(222, 222, 222);
+}
+
+.chart_col_right_52{
+  width: 12.9px;
+   
+    background-color: aliceblue;
+}
+.chart_col_right_50{
+  width: 13.2px;
+   
+    background-color: aliceblue;
+}
+.chart_col_right_46{
+  width: 16.5px;
+   
+    background-color: aliceblue;
+}
+.chart_col_right_37{
+  width: 21px;
+   
+    background-color: aliceblue;
+}
+.chart_col_right_32{
+  width: 25px;
+   
+    background-color: aliceblue;
+}
+
+.chart_col_right_21{
+  width: 30px;
+   background-color: aliceblue;
+}
+
+@media (max-width:1024px){
+.chart_col_right_52{
+  width: 9px;
+   
+    background-color: aliceblue;
+}
+.chart_col_right_50{
+  width: 10.5px;
+   
+    background-color: aliceblue;
+}
+.chart_col_right_46{
+  width: 11.5px;
+   
+    background-color: aliceblue;
+}
+.chart_col_right_37{
+  width: 13px;
+   
+    background-color: aliceblue;
+}
+.chart_col_right_32{
+  width: 16px;
+   
+    background-color: aliceblue;
+}
+
+.chart_col_right_21{
+  width: 25px;
+   background-color: aliceblue;
+}
+
+.chart_col_right_top_row{
+  color: rgba(0, 0, 0, 0);
+}
+}
+.chart_col_right{
+  /*  border: 2px solid rgb(71, 71, 71);*/
+    width: 23px;
+   
+    background-color: aliceblue;
+}
+.chart_right_task_row:hover{
+  background-color: rgb(223, 254, 254);
+}
+
+#dropdown_charts{
+  margin-top: 5%;
+  width: 12vw;
+  display:flex;
+  flex-direction: column;
+   background-color: aliceblue;
+ 
+  display: none;
+      
+}
+.dropdown_links_charts{
+  position: relative;
+  z-index: 1000;
+
+}
+.chart_dropdown_btn{
+  width: 100%;
+  border: 1px solid rgb(0, 0, 0);
+  padding: 3%;
+  background-color: rgb(244, 238, 238);
+  
+}
+.chart_dropdown_btn:hover{
+  background-color:rgb(234, 234, 232) ;
+}
+/***************FORMS****************/
+.form_container_chart_create{
+  border: 3px solid rgb(33, 33, 33);
+     height: 80vh;
+    width: 30vw;
+       position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -48%);
+   
+  
+    background-color: rgb(174, 196, 215);
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top:1%;
+    padding-bottom: 2%;
+    
+}
+.form_container_chart_update{
+  border: 3px solid rgb(33, 33, 33);
+     height: 85vh;
+    width: 30vw;
+       position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -47%);
+   
+  
+    background-color: rgb(174, 196, 215);
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top:1%;
+    padding-bottom: 2%;
+}
+.flex_container_chart_create_top2{
+/*  border: 2px solid red;*/
+  display: flex;
+  padding-top: 5%;
+  gap: 4.5%;
+}
+.flex_container_chart_update_top{
+  /*border: 2px solid red;*/
+  display: flex;
+  padding-top: 4%;
+  gap: 0.5%;
+
+}
+.flex_container_chart_create_top{
+/*  border: 2px solid red;*/
+ display: flex;
+  gap: 3%;
+}
+.chart_create_select_div{
+  margin-top: 1%;
+  margin-bottom: 1%;
+  /*border: 2px solid green;*/
+  height: 10%;
+}
+.add_section_div_chart{
+  display:flex;
+/* border: 2px solid green;*/
+  width: 100%;
+  gap: 14.5%;
+  margin-left: 1%;
+
+  
+}
+.chart_create_select_div select{
+  margin-top: 2%;
+ 
+ 
+}
+.section_red_link{
+  color: rgb(34, 34, 34);
+  padding: 1%;
+  padding-left: 2%;
+}
+.section_red_link:hover{
+ background-color: rgb(254, 157, 157);
+}
+.sections_chart_update{
+  height: 28%;
+  border: 1px solid rgb(67, 67, 67);
+  overflow: auto;
+  background-color: rgb(255, 255, 255);
+  margin-top: 1%;
+}
+.bot_flex_container_chart_create{
+ display: flex;
+ /*border: 2px solid purple;*/
+  padding-top: 2%;
+  padding-bottom: 1%;
+  gap: 5%;
+
+}
+
+.title_chart_update_flex{
+    display: flex;
+ /* border: 2px solid orange;*/
+  
+   gap: 5%;
+   padding-bottom: 2%;
+   width: 110%;
+}
+.title_chart_create_flex{
+  display: flex;
+  /*border: 2px solid orange;*/
+  
+   gap: 12.5%;
+   padding-bottom: 5%;
+   
+}
+.title_chart_create_flex input{
+ 
+
+width: 100%;
+  
+}
+
+.title_chart_create_flex label{
+ position: relative;
+ bottom: -20%;
+ 
+}
+
+.plus_sign_button_chart_create{
+ width: 60%;
+ cursor: pointer;
+ 
+}
+
+.plus_sign_button_chart_create:hover{
+ background-color: rgb(158, 236, 236);
+ user-select: none;
+}
+.chart_create_select_div{
+ /* border: 2px solid black;*/
+  padding-bottom: 0%;
+  height: 30%;
+}
+
+.chart_create_select_div select{
+  width: 100%;
+  height: 20vh;
+}
+
+
+
+/********FORM 2********/
+.single_title_form{
+
+  position: absolute; 
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  border: 2px solid black;
+  padding: 2%;
+   background-color: rgb(174, 196, 215);
+}
+
+.button_submit_new_section_form{
+
+  width: 50%;
+  margin-top: 5%;
+  padding:2%;
+  margin-left: 25%;
+  
+}
+
+
+/*********Form 3**********/
+.flex_form_container_chart_task{
+    display: flex;
+   /* border: 2px red solid;*/
+    gap: 2%;
+    width: 100%;
+    padding: 0.5%;
+    
+}
+
+.create_task_chart_name_div{
+  display: flex;
+  margin-top: 4%;
+  width: 50%;
+}
+.create_task_chart_name_div input{
+  width: 20vw;
+  margin-left: 18%;
+}
+.task_create_chart_text_select{
+  display: flex;
+}
+
+
+.create_task_chart_name_label{
+  margin-top: 1%;
+  margin-right: 1%;
+}
+
+.chart_modify_button{
+  position: relative;
+  right: 0%;
+}
+
+.save_modify_chart_btn_div{
+  position: absolute;
+  right: 2%;
+  top: 1%;
+}
+
+.chart_update_delete_btn{
+  position: fixed;
+  bottom: 2%;
+  left: 50%;
+  position:absolute;
+  transform: translateX(-50%);
+  width: 20%;
+  background-color: rgb(231, 136, 136);
+
+
+}
+.button_chart_confirm_delete{
+  width: 100%;
+  padding: 8px;
+  border: 1px solid black;
+   background-color: rgb(231, 136, 136);
+}
+.btn-submit-chart_update{
+  width: 59%;
+  margin-bottom: 5%;
+  margin-top: 2%;
+    left: 50%;
+  position:absolute;
+  transform: translateX(-50%);
+}

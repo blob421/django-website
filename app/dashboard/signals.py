@@ -2,16 +2,23 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
-from dashboard.models import UserProfile, WeekRange, Schedule
+from dashboard.models import UserProfile, WeekRange, Schedule, Users
+
 
 user_model = get_user_model()
 
-
 @receiver(post_save, sender=user_model)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created and not hasattr(instance, 'userprofile'):
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=UserProfile)
 def assign_admin_group(sender, instance, **kwargs):
-    if hasattr(instance, 'userprofile') and instance.userprofile.role.name == 'Secretary':
+    role_name = getattr(instance.role, 'name', None)
+    if role_name and role_name.lower().strip() == 'secretary':
         group, _ = Group.objects.get_or_create(name='Administration')
-        group.user_set.add(instance)
+        group.user_set.add(instance.user)
+
 
 @receiver(post_save, sender=UserProfile)
 def create_schedule(sender, instance, **kwargs):

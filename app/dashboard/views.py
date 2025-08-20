@@ -684,7 +684,7 @@ class ProjectsView(LoginRequiredMixin, View):
         team = self.request.user.userprofile.team
         charts = Chart.objects.filter(teams = team ).order_by('id')
 
-        ctx = {'charts': charts}
+        ctx = {'charts': charts, 'allowed_roles':allowed_roles_management}
     
         return render(request, self.template_name, ctx)
     
@@ -827,6 +827,7 @@ class AddSection(ProtectedCreate):
 class ScheduleView(LoginRequiredMixin, View):
     template_name = 'dashboard/schedules/schedule_view.html'
     def get(self, request):
+     
         
         return render(request, self.template_name)
 

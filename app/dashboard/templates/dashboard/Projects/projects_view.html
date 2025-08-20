@@ -2,9 +2,6 @@
 {% load user_data %}
  {% block content %}
 
-{% if not charts %}
-<p> No chart yet , create one ? </p>
-{% endif %}
 
 <div class="create_chart_div">
      <div class="charts_title">
@@ -20,7 +17,7 @@
      <div class="chart_create_new_chart"> 
     
              <div class="chart_create_chart_title">New chart
-                {% if user.userprofile.role.name == 'dev' %}
+                {% if user.userprofile.role.name in allowed_roles %}
                    <a href="{% url 'dashboard:chart_create' %}"><button class="plus_sign_button">
                     +</button> </a>
                     {% if chart.id %}
@@ -243,7 +240,7 @@ function toggleGrid(){
 
 }
 function Filltask(n, cn) {
-    console.log(n)
+  
     const div = document.getElementById('right_rows'+ n + cn)
 
     let weeks = parseInt(div.getAttribute("value"));

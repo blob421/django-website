@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  web:
+    build: 
+        context: .
+        
+    working_dir: /app
+    command: gunicorn portal.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=portal.settings
+      - DATABASE_URL=postgres://postgres:1246@db:5432/django-prod
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - PYTHONPATH=/app
+      - DJANGO_CONFIGURATION=Prod
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+      - DJANGO_SCHEDULE_DAY=2
+
+    
+    
+    
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: django-prod
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1246
+      
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+ 
+
+volumes:
+    pgdata:
+  

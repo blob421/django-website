@@ -9,7 +9,7 @@ register = template.Library()
 def slicer(doc_id):
  document = Document.objects.get(id=doc_id)
  content_type=mimetypes.guess_type(document.file.name)[0]
- print(content_type[:5])
+
  return content_type[:5]
     
 @register.filter

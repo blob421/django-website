@@ -1,0 +1,174 @@
+
+.extreme_outer_div_schedule{
+  border: 3px solid black;
+    left: 50%;
+    bottom: 1vh;
+    position: absolute;
+    transform: translateX(-50%);
+    width: 97vw;
+    height: 94vh;
+
+}
+.title_container_schedule{
+    display: flex;
+    height: 17%;
+    
+     width: 97vw;
+     left: 50%;
+      position: absolute;
+    transform: translateX(-50%);
+  border: 2px solid black;
+    background-color: rgb(127, 155, 206);
+}
+.schedule_title{
+
+/*border: 2px solid orange;*/
+
+font-size:xx-large;
+padding-left: 0.75%;
+display: flex;
+
+    padding-left: 1.5%;
+    align-items: center;
+    justify-content: center;
+}
+.schedule_time_range{
+   /* border: 2px solid green;*/
+    display: flex;
+
+    padding-left: 1.5%;
+    align-items: center;
+    justify-content: center;
+}
+.schedule_outer_frame{
+  
+    height: 83%;
+    width: 100%;
+    display: flex;
+    bottom: 0%;
+    position: absolute;
+}
+
+.schedule_left_panel{
+ width: 10vw;
+ height: 100%;
+ /*border: 2px solid orange;*/
+ background-color: rgb(146, 146, 158);
+  border-top: 2px solid black;
+}
+.schedule_right_area{
+    width: 90%;
+    height: 100%;
+  /*  border: 2px solid blue;*/
+  border-top: 2px solid black;
+    background-color: aliceblue;
+    display: flex;
+}
+
+.week_button_div{
+    /*border: 2px solid red;*/
+    width: 100%;
+    height: 20%;
+  
+  
+}
+.week_button_pending{
+  background-color: rgb(223, 187, 120);
+  border: 0px;
+  border-radius: 2px;
+    border: 1px solid black;
+}
+.week_button{
+height: 50%;
+width: 75%;
+left: 50%;
+top: 50%;
+position: relative;
+transform: translate(-50%, -50%);
+}
+
+.schedule_day_col{
+    width: calc(100% / 7);
+    border: 2px solid rgb(81, 81, 81);
+}
+.week_day_title{
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid rgb(81, 81, 81);
+
+}
+.hour_range_div{
+    height: 50%;
+   /* border: solid orange 2px;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid 2px rgb(81, 81, 81);
+
+}
+.hour_range_div_pending{
+   height: 50%;
+  /*  border: solid orange 2px;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color:rgb(228, 187, 120) ;
+
+}
+/*******************Ammend form*********************/
+.ammend_button{
+ 
+  
+
+    height: 50%;
+   /* border:2px solid green;*/
+    padding: 4%;
+    
+}
+.schedule_button_div{
+    height: 100%;
+    width: 12.5%;
+      display: flex;
+   /*   border: 2px solid green;*/
+        right: 0.4%;
+    position: absolute;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+.schedule_ammend_outer_div{
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%,-47%);
+width: 40vw;
+height: 75vh;
+border: 2px solid rgb(49, 49, 49);
+background-color: rgb(222, 204, 156);
+padding-left: 3%;
+padding-top: 2%;
+padding-right: 1.5%;
+}
+.schedule_ammend_labeltag{
+padding-bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+}
+.schedule_ammend_textarea{
+ padding-top: 10%;
+}
+.schedule_ammend_submit_btn{
+  margin-top: 2%;
+  height: 10%;
+  width: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+
+}
