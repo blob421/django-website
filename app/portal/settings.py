@@ -16,8 +16,7 @@ from configurations import values
 
 class Dev(Configuration):
 
-    SCHEDULE_DAY = values.PositiveIntegerValue()
-
+    SCHEDULE_DAY = 1
 
     LOGGING = {
     'version': 1,
@@ -38,7 +37,7 @@ class Dev(Configuration):
     },
   }
 
-    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+    
 
 
     BASE_DIR = Path(__file__).resolve().parent.parent
@@ -61,7 +60,7 @@ class Dev(Configuration):
     CACHES = {
         'default': {
             'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': 'redis://redis:6379/1',
+            'LOCATION': 'redis://127.0.0.1:6379/1',
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             }
@@ -186,4 +185,15 @@ class Prod(Dev):
     DEBUG = False
     ALLOWED_HOSTS = values.ListValue([])
     SECRET_KEY = values.SecretValue()
-
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': 'redis://redis:6379/1',
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            }
+        }
+    }
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+    
+    SCHEDULE_DAY = values.PositiveIntegerValue()

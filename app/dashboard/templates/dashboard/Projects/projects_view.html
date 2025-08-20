@@ -26,7 +26,7 @@
                          <button onclick="SaveChart('{{chart.id}}')">Save</button> 
                          <a href="{% url 'dashboard:chart_update' chart.id %}">
                          <button class="chart_modify_button">Modify</button></a>
-
+                             
                        
                                <a href="{% url 'dashboard:reset_chart' chart.id %}">
                                <button class="chart_clear_btn">Clear</button></a>
@@ -34,15 +34,28 @@
                     </div>
                         
                     {% endif %}
-  {% endif %}
+                   {% endif %}
              </div>
              <div class="chart_create_buttons">
-                    {% for chart in charts %}     
+                    {% if not charts %}
+                    <div style="
+                    padding-left: 0.4%; 
+                    padding-top: 0.4%;
+                    font-size: small; 
+                    display: flex;
+                    align-items: baseline;"> 
+                    No charts yet 
+                  </div>
+                    {% endif %}
 
-                    {% if forloop.counter < 7 %}
+                    {% for chart in charts %}     
+                    
+                    {% if forloop.counter < 5 %}
                     <a href="{% url 'dashboard:chart_detail' chart.id %}">
-                     <button> Chart {{forloop.counter}}</button></a>
-                    {% if forloop.counter > 5 %}
+                     <button id="chart_btn_title{{chart.id}}"> 
+                      {{chart.title}}</button></a>
+                    {% if forloop.counter > 3 %}
+                   
                     <div> 
                           <div> 
                          <button onclick="ShowDropdown()">...</button>
@@ -55,9 +68,10 @@
                     {% endif %}
                     {% endfor %}
                     {% for chart in charts %}
-                    {% if forloop.counter > 6 %}
+                    {% if forloop.counter > 4 %}
                        <a class="dropdown_links_charts" href="{% url 'dashboard:chart_detail' chart.id %}">
-                            <button class="chart_dropdown_btn">Chart {{forloop.counter}}</button></a>
+                            <button class="chart_dropdown_btn" 
+                            id="chart_btn_title{{chart.id}}">{{chart.title}}</button></a>
                       {% endif %}
                       
                     {% endfor %}
@@ -204,6 +218,13 @@
  </div>
 
 <script>
+
+const chart_id = '{{chart.id}}'
+const btn = document.getElementById('chart_btn_title'+chart_id)
+btn.style.backgroundColor ='rgb(223, 254, 254)'
+
+
+
 
 const source = document.getElementById('source_number')
 const targetDivs = document.querySelectorAll('.one_date_container');

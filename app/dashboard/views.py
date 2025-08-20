@@ -737,7 +737,7 @@ class ChartDetail(LoginRequiredMixin, DetailView):
         ctx = {'charts': charts, 'chart':chart, 'weeks':total_week_col, 
                'grey':grey , 'sections':sections, 'week_int':week_int, 
                'grey_col_list':grey_col_list,'months_list':month_list, 
-               'tasks_by_section':tasks_by_section}
+               'tasks_by_section':tasks_by_section, 'allowed_roles':allowed_roles_management}
        
    
 

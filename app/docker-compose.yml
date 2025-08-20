@@ -7,7 +7,7 @@ services:
         
     working_dir: /app
     command: gunicorn portal.wsgi:application --bind 0.0.0.0:8000
-    volumes:
+    volumes: ##Delete later 
       - .:/app
     ports:
       - "8000:8000"
@@ -21,7 +21,7 @@ services:
       - DJANGO_CONFIGURATION=Prod
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
       - DJANGO_SCHEDULE_DAY=2
-
+    restart: always
     
     
     
@@ -37,10 +37,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+    restart: always
+
   redis:
     image: redis:7
     ports:
       - "6379:6379"
+      
+    restart: always
 
  
 
