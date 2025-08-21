@@ -12,14 +12,24 @@ Class-based views
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))s
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.shortcuts import redirect
+from django.urls import path, include, reverse
 from dashboard.views import CustomLoginView
+from dashboard.views import CustomRegistration
+from dashboard.forms import CustomRegistrationForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('accounts/register/',
+        CustomRegistration.as_view(form_class=CustomRegistrationForm),
+        name='django_registration_register'),
+
+    path("accounts/", include("django_registration.backends.one_step.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
     path('', CustomLoginView.as_view(template_name='dashboard/login.html')),
     path('__debug__/', include('debug_toolbar.urls')),

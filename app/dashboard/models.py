@@ -317,5 +317,17 @@ class Schedule(models.Model):
 class WeekRange(models.Model):
     starting_day = models.DateTimeField()
     end_day = models.DateTimeField()
-    
 
+
+class ResourceCategory(models.Model):
+    name = models.CharField()
+    def __str__(self):
+        return self.name
+
+class Resource(models.Model):
+    what = models.CharField()
+    how = models.TextField()
+    category = models.ForeignKey(ResourceCategory, on_delete=models.CASCADE)
+    management = models.BooleanField(null=True)
+    def __str__(self):
+        return self.what

@@ -41,6 +41,7 @@ urlpatterns = [
     path('tasks/update/<int:pk>', views.TaskUpdate.as_view(), name = 'task_manage_update'),
     path('tasks/completed/approve/<int:pk>', views.TeamCompletedApprove.as_view(), 
          name = 'task_approve'),
+    path('team/ressources', views.RessourcesView.as_view(), name="ressources"),
 
     ####### SCHEDULES ########
     path('schedules', views.ScheduleView.as_view(), name = 'schedule_view'),

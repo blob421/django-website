@@ -9,6 +9,18 @@ from django.contrib.auth.forms import AuthenticationForm
 from	crispy_forms.layout	import Submit
 from	crispy_forms.helper	import FormHelper
 
+from django_registration.forms import RegistrationForm
+
+
+class CustomRegistrationForm(RegistrationForm):
+    class Meta:
+        model = user_model
+        fields = ['username', 'email', 'first_name', 'last_name', 'street_address', 'phone']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Register'))
 
 
 

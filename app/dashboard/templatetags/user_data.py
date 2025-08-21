@@ -2,6 +2,7 @@ from django import template
 from ..models import Schedule, WeekRange, Document
 from django.db.models import Q
 import mimetypes
+from django.utils.html import format_html
 
 register = template.Library()
 
@@ -57,5 +58,20 @@ def get_schedules(user, manage = False):
 
 
 
+########### BOOTSTRAP TAGS #############
+@register.simple_tag
+def	col(extra_classes=""):
+ return	format_html('<div class="col {}">',	
+extra_classes)
+@register.simple_tag
+def	endcol():
+ return	format_html("</div>")
+ 
+@register.simple_tag
+def	row(extra_classes=""):
+ return	format_html('<div class="row {}">',	extra_classes)
 
-       
+@register.simple_tag
+def	endrow(extra_classes=""):
+ return	format_html('<div class="row">')
+

@@ -18,15 +18,15 @@
          
 
         <div class="subtask_title_btn_div">
-        <button onclick="setVisible('team_subtasks', 'subtask_container', 'team_task_detail')"
+        <button onclick="setVisible(this, 'team_subtasks', 'subtask_container', 'team_task_detail')"
          class="team_btn_task_detail" >Team
 
         </button>
-        <button onclick="setVisible('subtask_container', 'team_subtasks', 'team_task_detail')"
+        <button onclick="setVisible(this, 'subtask_container', 'team_subtasks', 'team_task_detail')"
         class="subtask_btn_task_detail"> Subtasks
 
          <a>
-          <button class="subtask_add_btn" onclick="setVisible('subtask_modal_task_detail')">
+          <button class="subtask_add_btn" onclick="setVisible(this, 'subtask_modal_task_detail')">
                    +
           </button>
               
@@ -38,7 +38,7 @@
    <!-----------------------CONTAINER TOGGLE ----------------------->
 
     <div class="task_detail_team_container" id="team_task_detail" style="display: none;"> 
-      <button class="team_ctn_button" onclick="setVisible('team_subtasks', 'team_task_detail')">
+      <button class="team_ctn_button" onclick="setVisible(this, 'team_subtasks', 'team_task_detail')">
         Tasks
       </button>
       {% for user in task.users.all %}
@@ -47,12 +47,12 @@
     </div>
              
     <div class="task_detail_team_container" id="team_subtasks" style="display: none;"> 
-      <button onclick="setVisible('team_task_detail', 'team_subtasks')">
+      <button onclick="setVisible(this, 'team_task_detail', 'team_subtasks')">
         Members
       </button>
 
       <button class="expand_btn_subtask"
-      onclick="setVisible('middle_sub_task_expand', 'task_detail_text_middle', 
+      onclick="setVisible(this, 'middle_sub_task_expand', 'task_detail_text_middle', 
       'hidden_subtask_update_form', 'middle_sub_task_detail')
       ">Expand</button>
 
@@ -105,7 +105,7 @@
       <!-----------------------UPDATE FORM --------------------------->
 <div id="hidden_subtask_update_form"  class="middle_sub_task_detail_update">
         <div class="x_btn_middle_subtask_update">
-            <button onclick="setVisible('task_detail_text_middle','hidden_subtask_update_form')"
+            <button onclick="setVisible(this, 'task_detail_text_middle','hidden_subtask_update_form')"
             class="x_btn_update_subtask">X</button>
     </div>
 
@@ -176,7 +176,7 @@
       <div id="middle_sub_task_expand" class="middle_sub_task_expand">
  
          <div class="x_btn_middle_subtask_expand">
-            <button onclick="setVisible('task_detail_text_middle', 'middle_sub_task_expand')">X</button>
+            <button onclick="setVisible(this, 'task_detail_text_middle', 'middle_sub_task_expand')">X</button>
             </div>
 
           {% for subtask in subtasks %}

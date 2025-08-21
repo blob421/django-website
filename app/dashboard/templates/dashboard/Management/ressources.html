@@ -1,0 +1,39 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<h1 style="text-align: center; padding-top: 1%;">Help Desk</h1>
+<div class="ressources_outer_div">
+
+     <div class="res_top_bar">
+
+     </div>
+
+     <div class="res_main_content">
+            <div class="res_inner_title">
+                <div class="what_title">
+                 What
+                </div>
+                <div class="how_title">
+                 How
+                </div>
+               
+            </div>
+              {% for resource in resources %}
+            <div class="res_inner_div">
+                  <div class="what_content">
+                        <div class="what_content_text">{{resource.what}}</div>
+                  </div>
+                  <div class="how_content">
+                        <div class="how_content_text">{{resource.how}}</div>
+                  </div>            
+            </div>
+            {% endfor %}
+     </div>
+</div>
+
+
+
+ <div class="send_msg_back">
+    <button onclick="window.history.back()" class="del_btn2" type="button">Back</button>
+
+</div>
+{% endblock %}

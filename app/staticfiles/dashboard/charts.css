@@ -83,6 +83,11 @@ background-color: rgb(133, 131, 131);
       background-color: rgb(156, 155, 155);
       width: 100%;
       padding-left: 0.6%;
+     
+}
+#chart_buttons_counter{
+   width: 5%;
+
 }
 .chart_dates{
  display: flex;
@@ -419,7 +424,7 @@ background-color: rgb(133, 131, 131);
 
 #dropdown_charts{
   margin-top: 5%;
-  width: 12vw;
+  width: 15vw;
   display:flex;
   flex-direction: column;
    background-color: aliceblue;

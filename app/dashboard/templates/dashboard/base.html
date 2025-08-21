@@ -10,6 +10,7 @@
      <link rel="stylesheet" href="{% static 'dashboard/charts.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/schedules.css' %}">
      <script src="{% static 'js/getSubtask.js' %}"></script>
+    
      {% block extra_css %}
      {% endblock %}
 
@@ -48,6 +49,14 @@
 
 </nav>
 </div>
+{% load static %}
+<a href="{% url 'dashboard:ressources' %}">
+ <img src= "{% static 'question_mark.png' %}" style="
+ position: fixed; 
+ right: 0.5%; 
+ width: 2%;
+ bottom: 0.5%;">
+ </a>
  {% block content %}{% endblock %}
 
 </body> 

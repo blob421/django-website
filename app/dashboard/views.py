@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, ChatMessages
+from .models import Messages, UserProfile, Task, Team, ChatMessages, Resource
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
@@ -35,6 +35,13 @@ user_model = get_user_model()
 allowed_roles_forms = ['dev']
 allowed_roles_management = ['dev']
 
+
+##############################
+from django_registration.backends.one_step.views import RegistrationView
+
+class CustomRegistration(RegistrationView):
+    template_name = 'dashboard/django_registration/registration_form.html'
+    success_url = reverse_lazy('dashboard:home')
 
 
 ########## Home #############
@@ -76,7 +83,7 @@ class InboxView(LoginRequiredMixin, View):
        search = request.GET.get('search', None)
        if search :
            query = Q(recipient=self.request.user.userprofile) & (
-           Q(title__contains=search) | Q(user__username__contains=search))
+           Q(title__icontains=search) | Q(user__username__icontains=search))
            msg = Messages.objects.filter(query)
            
        else:
@@ -1028,7 +1035,14 @@ class TeamCompletedApprove(ProtectedView):
         task.save()
         return redirect(reverse('dashboard:team'))
 
-
+class RessourcesView(View):
+    template_name = "dashboard/management/ressources.html"
+    def get(self,request):
+        resources = Resource.objects.all()
+        ctx = {'resources':resources}
+        return render(request, self.template_name, ctx)
+    
+    
 ############## TEAM STATS #####################################
 @method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
 class PerformanceDetail(ProtectedView):

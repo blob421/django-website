@@ -266,6 +266,13 @@ a:visited{
     width: 45%;
     font-size: small;
 }
+.expand_btn_subtask.active{
+    background-color: #e5e5e5;
+    border: 0.5px solid black;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    border-radius: 2px;
+}
 .x_btn_add_subtask{
         position: absolute;
     right: 2%;
@@ -2048,12 +2055,28 @@ form button{
     margin-top: 6%;
 
 }
-
+.button.active {
+  background-color: grey;
+}
 .team_btn_task_detail{
     width: 45%;
 }
+.team_btn_task_detail.active{
+    background-color: #e5e5e5;
+    border: 0.5px solid black;
+    border-radius: 1px;
+    padding: 1%;
+}
+
 .subtask_btn_task_detail{
     width: 45%;
+}
+.subtask_btn_task_detail.active{
+     background-color: #e5e5e5;
+    border: 0.5px solid black;
+    border-radius: 1px;
+    padding: 1.5%;
+    width: 55%;
 }
 .task_submit_form{
 

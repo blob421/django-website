@@ -11,9 +11,13 @@ async function getSubTask(id) {
 }
 
 
-function setVisible(show, hide= null, hide2 = null, hide3 = null){
-
+function setVisible(selected ,show, hide= null, hide2 = null, hide3 = null){
+  
   document.getElementById(show).style.display='block';
+  const btn = document.querySelectorAll("button");
+
+  btn.forEach(bt => bt.classList.remove('active'));
+  selected.classList.add('active');
 
   if (hide3) {
       document.getElementById(hide3).style.display='none';

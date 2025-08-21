@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
+admin.site.register(models.Resource)
 admin.site.register(models.ChatMessages)
 admin.site.register(models.Chart)
 user_model = get_user_model()
@@ -12,7 +13,17 @@ admin.site.register(models.Task)
 admin.site.register(models.Schedule)
 admin.site.register(models.Team)
 admin.site.register(models.WeekRange)
-    
+
+
+
+class ResourceAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+     
+        return {}
+
+admin.site.register(models.ResourceCategory, ResourceAdmin)
+
+
 class UserProfileInline(admin.StackedInline):  
     model = models.UserProfile
     can_delete = False
