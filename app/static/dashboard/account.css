@@ -1,0 +1,146 @@
+.account_outer_div{
+
+    border: 2px solid black;
+    width: 70vw;
+    height: 90vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-46%);
+    display: flex;
+    color: white;
+    background-color: rgba(36, 36, 36, 0.876);
+    box-sizing: border-box; 
+    border-radius: 2px;
+}
+.account_left_panel{
+    width: 23%;
+  border: 2px solid rgb(70, 70, 70);
+    background-color: rgb(93, 96, 98);
+    outline: 1px solid white;
+}
+.account_right_content{
+    width: 77%;
+   
+       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+       display: grid;
+        grid-auto-rows: 25%;
+     
+}
+.update_profile_btn{
+    width: 14vw;
+    margin-top: 20%;
+    padding: 1%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+   
+}
+.block_centered_title{
+    padding: 5%;
+}
+.account_block_centered{
+   
+    border: 2px solid rgb(70, 70, 70);
+    outline: 0.5px solid white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 12px 0px 0px grey;
+    
+    
+}
+.btn_cng_pic{
+    width: 95%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: rgb(228, 228, 228);
+    border: 0.5px solid black;
+}
+.account_block{
+  height: 47%;
+    border: 2px solid rgb(69, 69, 69);
+    border-bottom: 0px;
+    display: flex;
+    flex-direction: column;
+background-color: rgb(69, 73, 76);
+}
+.picture_ctn{
+    height: 80%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.change_picture{
+    height: 20%;
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.update_profile{
+    height: 10%;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+}
+.change_password{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
+.upt_prof_btn{
+    padding:1%;
+    width: 100%;
+    
+
+}
+.back_btn_crispy{
+    height: 15%;
+    background-color: brown;
+}
+.x_btn_profile_pic{
+    right: 1%;
+    top: 5%;
+    height: 14%;
+    width: 5%;
+    position: fixed;
+    background-color: rgb(88, 112, 186);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.submit_pic_update{
+    width: 40%;
+     background-color: rgb(88, 112, 186);
+     margin-top: 5%;
+     right: 5%;
+}
+.btn_sub_profile_ctn{
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+.add_prof_pic_modal form{
+  margin-top: 9%;
+}
+.add_prof_pic_modal{
+    border: 2px;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    background-color: rgba(62, 62, 62, 0.945);
+    border-radius: 4px;
+    color: white;
+    height: 15vh;
+    display:none;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+}

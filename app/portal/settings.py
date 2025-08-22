@@ -18,26 +18,71 @@ class Dev(Configuration):
 
     SCHEDULE_DAY = 1
 
+    #Days
+    FILES_RETENTION_DAYS = 90
+    
     LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters':{
+         'require_debug_false':{
+            "()": "django.utils.log.RequireDebugFalse", 
+         },
+    },
+    'formatters':{
+        'verbose': {
+            "format":"{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+
+    },
     'handlers': {
+        'console':{
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout",
+            "formatter": "verbose",
+        },
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': 'django_errors.log',
+            'formatter': 'verbose',
+        },
+        'mail_admins': {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+            "filters": ['require_debug_false'],
+
         },
     },
     'loggers': {
+        'django.request':{
+            'handlers': ['mail_admins'],
+            'level':'ERROR',
+            'propagate': True,
+
+        },
         'django': {
             'handlers': ['file'],
             'level': 'ERROR',
             'propagate': True,
         },
     },
+     'root': {
+
+            'handlers': ['console'],
+            'level': 'DEBUG',
+
+        },
   }
 
-    
+    ADMINS = [("Blob", os.environ.get('ADMIN_MAIL'))]
+    SERVER_EMAIL = "server@example.com"
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = os.environ.get('ADMIN_EMAIL')
+    EMAIL_HOST_PASSWORD = os.environ.get('ADMIN_EMAIL_PASS')
+    EMAIL_USE_TLS = True
 
 
     BASE_DIR = Path(__file__).resolve().parent.parent
@@ -185,7 +230,7 @@ class Dev(Configuration):
 
     STATIC_URL = 'static/'
     MEDIA_URL = '/media/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     # Default primary key field type
     # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

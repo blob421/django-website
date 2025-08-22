@@ -1,0 +1,85 @@
+/****************RESSOURCES*******************/
+.resource_btn_ctn{
+    width: 100%;
+
+    padding-top: 10%;
+    display: flex;
+    justify-content: center;
+}
+.resource_title_ctn{
+    text-align: center;
+    font-size: larger;
+    padding: 2%;
+    margin-bottom: 5%;
+     padding-top: 2%;
+    background-color: rgb(131, 131, 131);
+}
+.btn_resource{
+    width: 75%;
+}
+.ressources_outer_div{
+   
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-41%);
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+   
+}
+.res_top_bar{
+    width: 25%;
+    background-color: white;
+}
+.res_main_content{
+    width: 75%;
+   
+    background-color: white;
+    
+}
+.res_inner_title{
+    height: 6%;
+    
+    display: flex;
+}
+.what_title{
+    display: flex;
+    width: 40%;
+    border-right: 2px solid black;
+    justify-content: center;
+
+}
+.how_title{
+     display: flex;
+    width: 60%;
+
+    justify-content: center;
+    
+}
+.res_inner_div{
+    display: flex;
+    border: 2px solid black;
+   
+  
+}
+.what_content{
+    display: flex;
+      width: 40%;
+      border-right: 2px solid black;
+    
+}
+.what_content_text{
+    margin-left: 1%;
+       padding-top: 2%;
+       
+} 
+.how_content_text{
+    margin-left: 1%;
+    padding-top: 1%;
+    padding-bottom: 2%;
+}
+.how_content{
+    display: flex;
+    width: 60%;
+}

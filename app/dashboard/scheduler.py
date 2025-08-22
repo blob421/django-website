@@ -1,12 +1,15 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
-from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats
+from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
 from django.conf import settings
+from django.core.files.storage import default_storage
 from .utility import calculate_days_scheduled
+import logging
 
+logger = logging.getLogger(__name__)
 
 def start():
  
@@ -19,11 +22,44 @@ def start():
         scheduler.add_jobstore(DjangoJobStore(), "default")
         scheduler.add_job(CheckWeekRanges, 'interval', hours=12, name='my_job', 
                            replace_existing=True)
+        scheduler.add_job(clear_pictures, 'interval', days=4, name='clear_pics',
+                          replace_existing=True)
+        
+        scheduler.add_job(clear_files, 'interval', days=5, name='clear_files',
+                          replace_existing=True)
+        
         register_events(scheduler)
         scheduler.start()
 
 
-    
+def clear_pictures():
+     users = UserProfile.objects.all()
+     for user in users:
+          pictures = Document.objects.filter(object_id = user.id)
+          last_picture = pictures.last()
+          pictures.exclude(last_picture)
+          
+          for picture in pictures:
+               file_path = picture.file.path
+               if default_storage.exists(file_path):
+                    default_storage.delete(file_path)
+
+               picture.delete()
+
+
+def clear_files():
+     try:
+         files = Document.objects.filter(
+          upload_time__lte = timezone.now()-relativedelta(days=settings.FILE_RENTENTION_DAYS))
+         
+         logger.INFO(f'{files.count()} files deleted')
+         files.delete()
+     except:
+          raise('No files to delete')
+          
+
+
+
 def CheckWeekRanges():
      
     now= timezone.now()

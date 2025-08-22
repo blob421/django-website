@@ -11,7 +11,6 @@ from .forms import ProfilePictureForm
 
 from django.utils import timezone
 import time
-import os
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
@@ -128,7 +127,7 @@ class CustomLoginView(LoginView):
         context['form'] = self.get_form()
         return context
 
-#@method_decorator([cache_page(60 * 60), vary_on_cookie], name='dispatch')
+@method_decorator([cache_page(60 * 60), vary_on_cookie], name='dispatch')
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
     def get(self, request):
@@ -1246,7 +1245,7 @@ def ChatUpdate(request):
             pic = Document.objects.filter(object_id = message.user.id).last()   
             pic_id = pic.id
         except:
-            pic_id = 0
+            pic_id = 1
    
         time = naturaltime(message.created_at)
         timed_message = {'user':user, 'text':text,'time': time, 'pic_id':pic_id}
