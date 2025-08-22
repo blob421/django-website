@@ -1,0 +1,114 @@
+{% extends 'dashboard/base.html' %}
+  {% load static %}
+{% block content %}
+<div class="account_outer_div">
+
+    <div class="account_left_panel">
+        
+        <div class="account_block">
+            <div class="picture_ctn">
+                {% if not picture %}
+              
+               <img src="{% static 'avatar.png' %}" style="height: 100%;">
+                {% else %}
+              <img src="{% url 'dashboard:pic_picture' picture.id %}"
+              height="100%">
+                {% endif %}
+            </div>
+            <div class="change_picture">
+                <button onclick="document.getElementById(
+                    'prof_pic_modal').style.display='flex';" class="btn_cng_pic">
+                    Update photo
+                </button>
+            </div>
+        </div>
+        <div class="update_profile">
+            <a href="{% url 'dashboard:account_update' user.id %}"> 
+               <button>Update profile</button> 
+           </a>
+        </div>
+        <a href="{% url 'dashboard:password_update' user.id %}"> 
+        <div class="change_password">
+             <button>Change password</button>
+        </div>
+        </a>
+    </div>
+
+    <div class="account_right_content">
+   
+        <div class="account_block_centered">
+             
+             {{user.username}}
+
+        </div>
+
+        <div class="account_block_centered">
+             
+              {{user.userprofile.role.name}}
+        </div>
+
+        <div class="account_block_centered">
+            
+          {{user.userprofile.team.name}}
+        </div>
+
+        <div class="account_block_centered">
+            <div class="block_centered_title">
+                Time joined
+            </div>
+            {{user.date_joined}}
+           
+        </div>
+
+        <div class="account_block_centered">
+            <div class="block_centered_title">
+              Tasks count
+            </div>
+             {{stats.total_completed}}
+
+        </div>
+         <div class="account_block_centered">
+             <div class="block_centered_title">
+              Days scheduled
+            </div>
+            {{stats.days_scheduled}}
+        </div>
+         <div class="account_block_centered">
+            
+        </div>
+         <div class="account_block_centered">
+            
+        </div>
+         <div class="account_block_centered">
+            
+        </div>
+         <div class="account_block_centered">
+            
+        </div>
+         <div class="account_block_centered">
+       
+        </div>
+         <div class="account_block_centered">
+              <div class="block_centered_title">
+              Last login
+            </div>
+             {{user.last_login}}
+        </div>
+    </div>
+</div>
+
+<div class="add_prof_pic_modal" id="prof_pic_modal">
+    <form method="post" enctype="multipart/form-data">
+     {% csrf_token %}
+      {{form.file}}
+      <button type="submit" name="photo">Submit</button>
+    </form>
+
+</div>
+
+
+ <div class="send_msg_back">
+    <button onclick="window.history.back()" class="del_btn2" type="button">Back</button>
+
+</div>
+{% endblock %}

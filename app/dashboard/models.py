@@ -9,6 +9,12 @@ import os
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
+
+def object_directory_path(instance, filename):
+    model_name = instance.content_type.model
+    object_id = instance.object_id
+    return f'{model_name}/{object_id}/{filename}'
+
 ### USERS ###
 
 class Users(AbstractUser):
@@ -43,7 +49,7 @@ class UserProfile(models.Model):
     availability = models.CharField(null=True, blank=True)
     weekends = models.BooleanField(default=False)
     stats = GenericRelation('Stats')
-
+    picture = GenericRelation('Document')
    
     class Meta:
 
@@ -220,10 +226,6 @@ class SubTask(models.Model):
 
 
 
-def object_directory_path(instance, filename):
-    model_name = instance.content_type.model
-    object_id = instance.object_id
-    return f'{model_name}/{object_id}/{filename}'
 
 class Document(models.Model):
   
@@ -303,6 +305,7 @@ class Schedule(models.Model):
     saturday = models.CharField(null=True, blank=True)
     sunday = models.CharField(null=True, blank=True)
     unscheduled = models.BooleanField(default=False)
+    vacation = models.BooleanField(default=False)
 
     message = models.TextField(null=True, blank=True)
     request_pending = models.BooleanField(default=False)

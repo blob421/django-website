@@ -5,6 +5,7 @@ from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
 from django.conf import settings
+from .utility import calculate_days_scheduled
 
 def start():
  
@@ -37,6 +38,7 @@ def CheckWeekRanges():
                     
                     users = UserProfile.objects.all()
                     for user in users:
+                          calculate_days_scheduled(user)
                           Schedule.objects.create(user=user, week_range=week_range)
 
                     

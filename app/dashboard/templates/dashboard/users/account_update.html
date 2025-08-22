@@ -1,0 +1,39 @@
+{% extends 'dashboard/django_registration/base.html' %}
+  {% block extra_css %}
+  <style>
+    body, html {
+        background-color: rgb(140, 206, 239) !important;
+        color: white;
+        height: 100%;
+        overflow: hidden;
+    }
+    form {
+        color: rgb(255, 255, 255);
+      margin-top: 6%;
+      transform: scale(0.93);
+
+    }
+  </style>
+     {% endblock %}
+
+
+{% load crispy_forms_tags user_data %}
+{% block title %}Registering a new employee{% endblock %}
+{% block content %}
+<h1 style="
+text-align: center;
+
+margin-bottom: 2%;
+font-size: 30px;
+color: rgba(75, 75, 75, 0);">Personnal data</h1>
+{% row "justify-content-center" %}
+    {% col "col-md-4" %}
+       
+        {% crispy form %}
+    {% endcol %}
+{% endrow %}
+
+
+
+
+{% endblock %}

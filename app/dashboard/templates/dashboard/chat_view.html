@@ -1,6 +1,7 @@
  {% include 'dashboard/base.html' %}
 
 
+
 {% block content %}
  
 <div class="chat_frame"> 
@@ -40,12 +41,13 @@ async function update_messages() {
 
     const chatContainer = document.getElementById('chat');
     chatContainer.innerHTML = ''; // clear previous messages
-
+   
     for (var x = 0; x < data.length; x++ ){
-
+ 
             const row = data[x]
                chatContainer.innerHTML += '<div class="chat_bubble_container">' + 
-                    '<div class="chat_user">' + 
+                    
+                    '<div class="chat_user">' + `<img src="/dashboard/pic_picture/${row.pic_id}" id="chat_tbmnail">` +
                         row.user + 
                     '</div>' + 
                     '<div class="chat_bubbles">' + 

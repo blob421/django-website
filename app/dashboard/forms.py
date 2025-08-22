@@ -6,11 +6,39 @@ from django import forms
 
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
-from	crispy_forms.layout	import Submit
+from	crispy_forms.layout	import Submit, Button
 from	crispy_forms.helper	import FormHelper
-
+from .models import Users
 from django_registration.forms import RegistrationForm
+from django.contrib.auth.forms import PasswordChangeForm
 
+
+
+
+class ProfilePictureForm(ModelForm):
+     class Meta:
+          model = Document
+          fields = ['file']
+
+class ProfileUpdateForm(ModelForm):
+     class Meta:
+          model = Users
+          fields = ['email', 'street_address', 'phone']
+     def __init__(self, *args, **kwargs):
+          super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+          self.helper = FormHelper()
+          self.helper.add_input(Submit('submit', 'Update', css_class='btn btn-primary w-50 mt-4',))
+          self.helper.add_input(Button('back', "Back", css_class='btn btn-secondary  w-25 mt-4', 
+                                     onclick="window.history.back();"))
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Update', css_class='btn btn-primary w-50 mt-2',))
+        self.helper.add_input(Button('back', "Back", css_class='btn btn-secondary  w-25 mt-2', 
+                                     onclick="window.history.back();"))
+        
 
 class CustomRegistrationForm(RegistrationForm):
     class Meta:
@@ -24,7 +52,6 @@ class CustomRegistrationForm(RegistrationForm):
 
 
 
-from django import forms
 
 
 class MultipleFileInput(forms.ClearableFileInput):

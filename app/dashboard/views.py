@@ -1,23 +1,28 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView
-from django.contrib.auth.views import LogoutView, LoginView
+from django.contrib.auth.views import LogoutView, LoginView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages, Resource
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
+from .forms import ProfilePictureForm
+
 from django.utils import timezone
+import time
+import os
 from django.contrib.auth import get_user_model
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-from django.http import HttpResponse, JsonResponse, FileResponse
+from django.utils.http import http_date
+from django.http import HttpResponse, JsonResponse, FileResponse, HttpResponseForbidden
 from .utility import copy_message_data, days_of_the_week
 from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedView
 from django import forms
 from django.db.models import Q
 import json
-from .utility import get_stats_data, save_files, create_stats, save_stats
+from .utility import get_stats_data, save_files, create_stats, save_stats, save_profile_picture
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
 from django.utils.encoding import smart_str
@@ -29,10 +34,10 @@ from django.core.files.storage import default_storage
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie 
-from django.core.cache import cache
-
-user_model = get_user_model()
-allowed_roles_forms = ['dev']
+from django.core.cache import cache  
+  
+user_model = get_user_model()  
+allowed_roles_forms = ['dev']  
 allowed_roles_management = ['dev']
 
 
@@ -42,6 +47,75 @@ from django_registration.backends.one_step.views import RegistrationView
 class CustomRegistration(RegistrationView):
     template_name = 'dashboard/django_registration/registration_form.html'
     success_url = reverse_lazy('dashboard:home')
+
+
+class AccountView(LoginRequiredMixin, View):
+    template_name = 'dashboard/users/account_view.html'
+  
+    def get(self, request, pk):
+        form = ProfilePictureForm()
+        try:
+          picture = Document.objects.filter(object_id = self.request.user.userprofile.id).last()
+        except:
+            picture = False
+        print(picture)
+
+        employee = UserProfile.objects.get(id = pk, user = self.request.user)
+        cache_key = f'individual_stats{employee.id}'
+       
+        if cache.has_key(cache_key):
+            ctx = cache.get(cache_key)
+        else:
+            ctx = get_stats_data(employee)  
+            cache.set(cache_key, ctx, (24 * 60 * 60))
+
+        ctx['picture'] = picture
+        ctx['form'] = form
+        
+        return render(request, self.template_name, ctx)
+    
+    def post(self, request, pk):
+        form = FileFieldForm(request.POST, request.FILES)
+        employee = UserProfile.objects.get(id = pk, user = self.request.user)
+  
+        if not form.is_valid():
+            
+            cache_key = f'individual_stats{employee.id}'
+            picture = Document.objects.get(object_id = self.request.user.userprofile.id)
+            if cache.has_key(cache_key):
+                ctx = cache.get(cache_key)
+            else:
+                ctx = get_stats_data(employee)  
+                cache.set(cache_key, ctx, (24 * 60 * 60))
+
+            ctx['picture'] = picture
+            ctx['form'] = form
+            return render(request, self.template_name, ctx)
+    
+        file = self.request.FILES.get('file')
+        
+        save_profile_picture(self, file, employee)
+        return redirect(reverse('dashboard:user_account', args=[pk]))
+
+
+
+class AccountUpdate(LoginRequiredMixin, UpdateView):
+    template_name = 'dashboard/users/account_update.html'
+    model = user_model
+ 
+    def dispatch(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        if request.user.id == pk:
+
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('This is not your account')
+   
+        
+
+class PasswordChangeView(PasswordChangeView):
+      template_name = 'dashboard/users/password_update.html'
+      success_url = reverse_lazy('password_change_done')
 
 
 ########## Home #############
@@ -873,7 +947,8 @@ class ScheduleUpdate(ProtectedUpdate):
     template_name = 'dashboard/management/schedule_update.html'
     model = Schedule
     success_url = reverse_lazy('dashboard:schedule_manage')
-    fields =['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+    fields =['monday','tuesday','wednesday','thursday','friday','saturday','sunday', 
+             'unscheduled', 'vacation']
 
     def form_valid(self, form):
         form.instance.message = None
@@ -1038,7 +1113,12 @@ class TeamCompletedApprove(ProtectedView):
 class RessourcesView(View):
     template_name = "dashboard/management/ressources.html"
     def get(self,request):
-        resources = Resource.objects.all()
+
+        if self.request.user.userprofile.role.name in allowed_roles_management:
+            resources = Resource.objects.all()
+        else:
+            resources = Resource.objects.filter(management=False)
+
         ctx = {'resources':resources}
         return render(request, self.template_name, ctx)
     
@@ -1086,8 +1166,10 @@ class ChatView(LoginRequiredMixin, View):
     template = 'dashboard/chat_view.html'
     def get(self, request):
         form = ChatForm()
+
         ctx = {'form': form}
         return render(request, self.template, ctx)
+        
     
     def post(self, request):
         form = ChatForm(request.POST)
@@ -1158,8 +1240,14 @@ def ChatUpdate(request):
     for message in messages:
         text = message.message
         user = message.user.user.username
+        try:
+            pic = Document.objects.filter(object_id = message.user.id).last()   
+            pic_id = pic.id
+        except:
+            pic_id = 0
+   
         time = naturaltime(message.created_at)
-        timed_message = {'user':user, 'text':text,'time': time}
+        timed_message = {'user':user, 'text':text,'time': time, 'pic_id':pic_id}
         data.append(timed_message)
     return JsonResponse(data, safe=False)
 
@@ -1172,12 +1260,16 @@ def stream_file(request, pk):
     if content_type not in ['image/png', 'image/jpeg', 'image/jpg']:
     
   
-        return FileResponse(open(file_path, 'rb') , as_attachment=True, filename=file.file.name)
-    
+        response = FileResponse(open(file_path, 'rb') , as_attachment=True, filename=file.file.name)
+  
     else:
         
         with open(file_path, 'rb') as f:
-            return HttpResponse(f.read(), content_type=content_type)
+            response = HttpResponse(f.read(), content_type=content_type)
+            response['Cache-Control'] = 'public, max-age=86400'  # Cache for 1 day
+            response['Expires'] = http_date(time.time() + 86400)
+  
+    return response
 
 
 

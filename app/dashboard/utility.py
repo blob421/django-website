@@ -1,4 +1,4 @@
-from .models import UserProfile, Task, Team, Document, Stats
+from .models import UserProfile, Task, Team, Document, Stats, Schedule
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
 import plotly.graph_objs as go
@@ -6,11 +6,14 @@ from plotly.offline import plot
 from django.utils import timezone
 from django.core.files.storage import default_storage
 
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 ##### UTILITY ###############
 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
-
+          
 def save_stats(stats, late=False, urgent=False):
     stats.completed_tasks += 1
     stats.submission += 1
@@ -25,11 +28,57 @@ def create_stats(instance):
     stats = Stats.objects.create(content_object = instance, object_id=instance.id)  
     return stats    
 
+def save_profile_picture(self, file, user):
+        if file.size > 2 * 1024 * 1024:
+            return False
+        image = Image.open(file)
+
+        width, height = image.size
+        min_dim = min(width, height)
+
+        # Calculate crop box to center the square
+        left = (width - min_dim) // 2
+        top = (height - min_dim) // 2
+        right = left + min_dim
+        bottom = top + min_dim
+
+        # Crop the image to a centered square
+        image = image.crop((left, top, right, bottom))
+
+        # Optional: resize to a fixed square size (e.g., 300x300)
+        image = image.resize((300, 300), Image.Resampling.LANCZOS)
+
+        # Save to memory
+        image_io = BytesIO()
+        image_format = image.format if image.format else 'PNG'
+        image.save(image_io, format=image_format)
+
+        # Create Django file object
+        square_file = ContentFile(image_io.getvalue(), name=file.name)
+        file_name = square_file.name    
+        file_path = f'{user.__class__.__name__}/{user.id}/{file_name}'
+
+     
+          
+        if default_storage.exists(file_path):
+            file = Document.objects.get(file__icontains=file_name, object_id = user.id)
+            if file.owner == self.request.user.userprofile:
+                default_storage.delete(file_path)
+                
+                file.delete()
+
+        Document.objects.create(file = square_file, owner =self.request.user.userprofile,
+                                                          content_object = user)
+        return True
+
+
 
 def save_files(self, files, task):
     for f in files:
         file_name = f.name
-        file_path = f'task/{task.id}/{file_name}'
+        
+        file_path = f'{task.__class__.__name__}/{task.id}/{file_name}'
+
         if f.size > 2 * 1024 * 1024:
             return False
           
@@ -368,3 +417,26 @@ def get_stats_data(user_profile, page=None):
             'task_mean_time': round(safe_divide(task_mean_time, tasks.count()),1)
            
               }
+
+
+def calculate_days_scheduled(user):
+     last_sched = Schedule.objects.filter(user=user).last()
+     total_days = 0
+     if last_sched.unscheduled:
+          return
+     if last_sched.monday:
+          total_days += 1
+     if last_sched.tuesday:
+          total_days += 1
+     if last_sched.wednesday:
+          total_days += 1
+     if last_sched.thursday:
+          total_days += 1
+     if last_sched.friday:
+          total_days += 1
+     if last_sched.saturday:
+          total_days += 1
+     if last_sched.sunday:
+          total_days += 1
+        
+     Stats.objects.create(content_object=user, days_scheduled=total_days)

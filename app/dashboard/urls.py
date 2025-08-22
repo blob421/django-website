@@ -1,13 +1,18 @@
 from . import views
 from django.urls import path
-
+from .forms import CustomPasswordChangeForm, ProfileUpdateForm
 app_name = 'dashboard'
 urlpatterns = [
-
+    
+    ####### Users , Home#########
     path('home/', views.BillboardView.as_view(), name = 'home'),
     path('logout/', views.LogoutView.as_view(), name ='logout'),
     path('role_dispatch/', views.role_dispatch, name='role_dispatch'),
-
+    path('account/<int:pk>', views.AccountView.as_view(), name='user_account'),
+    path('account/update/<int:pk>', views.AccountUpdate.as_view(form_class=ProfileUpdateForm),
+     name='account_update'),
+    path('account/update/password/<int:pk>', views.PasswordChangeView.as_view(
+        form_class=CustomPasswordChangeForm), name="password_update"),
     ####### Recipients ########
 
     ####### Messages ##########

@@ -1120,6 +1120,20 @@ form button{
     color: #343333;
     
 }
+.user_account_div{
+    width: 15%;
+    height: 25%;
+    background-color: #696969;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-radius: 4px;
+}
 .general_text_container2{
     border: 2px solid rgb(156, 156, 156);
     width: 60vw;
