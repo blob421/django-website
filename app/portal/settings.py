@@ -156,6 +156,17 @@ class Dev(Configuration):
         },
     ]
 
+    # SESSIONS 
+    # Time in seconds (e.g., 2 hours = 7200 seconds)
+    SESSION_COOKIE_AGE = 7200
+
+    # Expire session when browser closes
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+    # Optional: Use database-backed sessions
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
+
 
     # Internationalization
     # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -194,6 +205,6 @@ class Prod(Dev):
             }
         }
     }
-    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+   
     
     SCHEDULE_DAY = values.PositiveIntegerValue()

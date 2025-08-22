@@ -6,6 +6,8 @@
 
 <div class="left_graph_panel">
     <div class="graph_btns_frame">
+               
+
     {% for n in ranges %}
         <div class="graph_left_btn_div">
         <a href="{% url 'dashboard:perf_team_detail' user.userprofile.team.id n %}">
@@ -31,6 +33,7 @@
 
     <div class="graph1">
         {{plot1|safe }}
+          
     </div>
   
 </div>
@@ -40,11 +43,12 @@
 
     <div class="graph2">
         {{ plot2|safe }}
+          
+           
     </div>
-  
+     
+   
 </div>
-
-
 
 </div>
 

@@ -74,6 +74,7 @@ class AccountView(LoginRequiredMixin, View):
         
         return render(request, self.template_name, ctx)
     
+    
     def post(self, request, pk):
         form = FileFieldForm(request.POST, request.FILES)
         employee = UserProfile.objects.get(id = pk, user = self.request.user)
@@ -127,12 +128,13 @@ class CustomLoginView(LoginView):
         context['form'] = self.get_form()
         return context
 
-@method_decorator([cache_page(60 * 60), vary_on_cookie], name='dispatch')
+#@method_decorator([cache_page(60 * 60), vary_on_cookie], name='dispatch')
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
     def get(self, request):
+        ctx = {'is_home':True}
 
-        return render(request, self.template)
+        return render(request, self.template, ctx)
 
 
 

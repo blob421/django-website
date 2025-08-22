@@ -12,7 +12,7 @@
                <img src="{% static 'avatar.png' %}" style="height: 100%;">
                 {% else %}
               <img src="{% url 'dashboard:pic_picture' picture.id %}"
-              height="100%">
+             style="height: 100%;">
                 {% endif %}
             </div>
             <div class="change_picture">
@@ -23,13 +23,13 @@
             </div>
         </div>
         <div class="update_profile">
-            <a href="{% url 'dashboard:account_update' user.id %}"> 
-               <button>Update profile</button> 
+            <a href="{% url 'dashboard:account_update' user.id %}" > 
+               <button class="update_profile_btn">Update profile</button> 
            </a>
         </div>
         <a href="{% url 'dashboard:password_update' user.id %}"> 
         <div class="change_password">
-             <button>Change password</button>
+             <button class="update_profile_btn">Change password</button>
         </div>
         </a>
     </div>
@@ -74,13 +74,22 @@
             {{stats.days_scheduled}}
         </div>
          <div class="account_block_centered">
-            
+            <div class="block_centered_title">
+              Urgent tasks succeeded
+            </div>
+            {{stats.total_urgent}}
         </div>
          <div class="account_block_centered">
-            
+             <div class="block_centered_title">
+              Mean completion time
+            </div>
+            {{task_mean_time}}h
         </div>
          <div class="account_block_centered">
-            
+             <div class="block_centered_title">
+              Days missed
+            </div>
+            {{stats.days_missed}}
         </div>
          <div class="account_block_centered">
             
@@ -101,7 +110,14 @@
     <form method="post" enctype="multipart/form-data">
      {% csrf_token %}
       {{form.file}}
-      <button type="submit" name="photo">Submit</button>
+      <div class="btn_sub_profile_ctn"> 
+      <button type="submit" name="photo" class="submit_pic_update">Submit</button>
+      </div>
+        <button class="x_btn_profile_pic"
+        onclick="document.getElementById('prof_pic_modal').style.display = 'none'">
+          X
+        </button>
+
     </form>
 
 </div>

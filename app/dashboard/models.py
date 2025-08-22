@@ -77,6 +77,7 @@ class Stats(models.Model):
 
     days_missed = models.PositiveIntegerField(default=0)
     days_scheduled = models.PositiveIntegerField(default=0)
+    logged = models.PositiveIntegerField(default=0)
     
     submission = models.PositiveIntegerField(default=0)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, null=True, blank=True)
@@ -315,7 +316,10 @@ class Schedule(models.Model):
             super().save(*args, **kwargs)"""
 
     
-
+class LogginRecord(models.Model):
+    schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 class WeekRange(models.Model):
     starting_day = models.DateTimeField()

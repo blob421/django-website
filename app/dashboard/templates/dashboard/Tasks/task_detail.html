@@ -81,7 +81,7 @@
                <div class="task_completed">
                 <div class="task_completed_flex"> 
 
-               <div class="subtask_name" onclick="getSubTaskForm('{{subtask.id}}')"> 
+               <div class="subtask_name" onclick="getSubTaskForm('{{subtask.id}}')" id="sub_name"> 
                {{subtask.name}} </div>
 
                     <a href="{% url 'dashboard:subtask_completed' task.id subtask.id %}"
@@ -161,7 +161,7 @@
              </button>
 
 
-              <button type="submit" class="add_subtask_modal_sub_btn" name="subtask">
+              <button type="submit" class="add_subtask_modal_sub_btn_update" name="subtask">
                    Update
                   </button>
              </div>
@@ -182,7 +182,7 @@
           {% for subtask in subtasks %}
           <div class="subtask_expanded_titles">{{subtask.name}}</div>
             <div class="info_bar">
-                 <div class="subtask_expand_user_div">User:{{subtask.user}}</div>
+                 <div class="subtask_expand_user_div">{{subtask.user}}</div>
                  <div class="subtask_expand_state_colorblock_green 
                  {% if not subtask.completed %} subtask_expand_state_colorblock_orange {% endif %}">
 
@@ -210,7 +210,7 @@
 
     <div class="general_medium_container" id="task_detail_text_middle">
       
-      <p class="general_text" >{{ task.description}} </p>
+      <p class="general_text" id="gen_text">{{ task.description}} </p>
       
     </div>
     <div class="right_file_panel_task_detail">
@@ -266,12 +266,14 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
               width: 40%;
               height: 25%;
               position: absolute;
-              display: none;
+              color: white;
               left: 50%;
               top: 50%;
-              border-radius: 15px;
+              display: none;
+              border-radius: 12px;
+              border: 2px solid grey;
               transform: translate(-45%,-50%);
-              background-color: rgb(155, 155, 155);            
+              background-color: rgba(61, 61, 61, 0.982);            
         
 
           ">
@@ -295,12 +297,13 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
               width: 30%;
               height: 70%;
               position: absolute;
-              display: none;
+              border: 2px solid rgb(57, 57, 57);
               left: 50%;
               top: 50%;
+              display: none;
               border-radius: 5px;
               transform: translate(-45%,-50%);
-              background-color: rgba(99, 99, 99, 0.91);
+               background-color: rgba(103, 103, 103, 0.982);       
             
              "> 
 
@@ -381,9 +384,8 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
 
 async function getSubTaskForm(id){
 
-  setVisible('hidden_subtask_update_form',
-  'middle_sub_task_expand','task_detail_text_middle','middle_sub_task_detail')
-
+  setVisibleDiv('hidden_subtask_update_form','middle_sub_task_expand','task_detail_text_middle','middle_sub_task_detail')
+  
    document.getElementById('update_sub_task_form').value = id
    document.getElementById('delete_btn_subtask').value = 'delete' + id
 
@@ -394,7 +396,7 @@ async function getSubTaskForm(id){
 }
 
 async function renderSubtask(id){
-  setVisible('middle_sub_task_detail','task_detail_text_middle','hidden_subtask_update_form','middle_sub_task_expand')
+  setVisibleDiv('middle_sub_task_detail','task_detail_text_middle','hidden_subtask_update_form','middle_sub_task_expand')
 
    const middle = document.getElementById('middle_sub_task_detail');
    middle.style.display='flex';

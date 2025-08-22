@@ -2,10 +2,20 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
-from dashboard.models import UserProfile, WeekRange, Schedule, Users
-
-
+from dashboard.models import UserProfile, WeekRange, Schedule, Users, LogginRecord
+from django.utils import timezone
+from django.contrib.auth.signals import user_logged_in
 user_model = get_user_model()
+
+
+@receiver(user_logged_in)
+def on_user_login(sender, request, user, **kwargs):
+    date = timezone.now()
+    target_week_range = WeekRange.objects.order_by('-starting_day')[3]                
+    last_schedule = Schedule.objects.get(user=user.userprofile, week_range=target_week_range)
+  
+    LogginRecord.objects.create(user=user.userprofile, timestamp = date, schedule=last_schedule)
+   
 
 @receiver(post_save, sender=user_model)
 def create_user_profile(sender, instance, created, **kwargs):

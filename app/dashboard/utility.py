@@ -419,9 +419,10 @@ def get_stats_data(user_profile, page=None):
               }
 
 
-def calculate_days_scheduled(user):
-     last_sched = Schedule.objects.filter(user=user).last()
+def calculate_days_scheduled(user,last_sched):
+   
      total_days = 0
+
      if last_sched.unscheduled:
           return
      if last_sched.monday:
@@ -438,5 +439,7 @@ def calculate_days_scheduled(user):
           total_days += 1
      if last_sched.sunday:
           total_days += 1
-        
+
+      
      Stats.objects.create(content_object=user, days_scheduled=total_days)
+     return total_days

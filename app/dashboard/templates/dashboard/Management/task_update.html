@@ -51,7 +51,7 @@
     <div class="task_form_btn_container">
       
         <button type="submit" name="send" class="btn-update-task-manage">Update</button>
-      <button type="button" class="btn-submit-task-manage" onclick="setVisible('confirm_delete_modal_manage')">
+      <button type="button" class="btn-submit-task-manage" onclick="setVisible(this,'confirm_delete_modal_manage')">
          Delete
       </button>
       
@@ -123,7 +123,7 @@
                   {% if files %}
                   {% for file in files %}
                   <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
-               <div class="file_div_task_detail">
+               <div class="file_div_task_detail_manage">
                   {{file.file_name}} 
                </div>
                </a>
