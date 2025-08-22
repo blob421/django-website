@@ -19,6 +19,7 @@ class Dev(Configuration):
     SCHEDULE_DAY = 1
 
     #Days
+    CHAT_RETENTION_DAYS = 60
     FILES_RETENTION_DAYS = 90
     
     LOGGING = {

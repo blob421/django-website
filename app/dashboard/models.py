@@ -155,6 +155,14 @@ class MessagesCopy(models.Model):
 
     def __str__(self):
         return self.title
+    class Meta:
+        indexes = [
+        
+            models.Index(fields=['user']),
+            models.Index(fields=['timestamp']),
+            models.Index(fields=['id']),
+        ]
+
 
 
 class ChatMessages(models.Model):
@@ -163,6 +171,12 @@ class ChatMessages(models.Model):
     message = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+            indexes = [
+                
+                models.Index(fields=['created_at']),
+            ]
 
 
 class Task(models.Model):
@@ -245,6 +259,7 @@ class Document(models.Model):
         return naturaltime(self.upload_time)
     
     indexes = [
+            models.Index(fields=['id']),
             models.Index(fields=['object_id']),
             models.Index(fields=['owner']),
             models.Index(fields=['upload_time']),
@@ -310,6 +325,13 @@ class Schedule(models.Model):
 
     message = models.TextField(null=True, blank=True)
     request_pending = models.BooleanField(default=False)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['week_range']),
+        ]
+
     """ def save(self, *args, **kwargs):
             if not self.end_date and self.start_date:
                 self.end_date = self.start_date + relativedelta(days=7)

@@ -16,12 +16,12 @@ admin.site.register(models.WeekRange)
 
 
 
-class ResourceAdmin(admin.ModelAdmin):
-    def get_model_perms(self, request):
+#class ResourceAdmin(admin.ModelAdmin):
+   # def get_model_perms(self, request):
      
-        return {}
+      #  return {}
 
-admin.site.register(models.ResourceCategory, ResourceAdmin)
+admin.site.register(models.ResourceCategory)
 
 
 class UserProfileInline(admin.StackedInline):  

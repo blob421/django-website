@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView
 from django.contrib.auth.views import LogoutView, LoginView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, ChatMessages, Resource
+from .models import Messages, UserProfile, Task, Team, ChatMessages, Resource, ResourceCategory
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
@@ -1114,13 +1114,25 @@ class TeamCompletedApprove(ProtectedView):
 class RessourcesView(View):
     template_name = "dashboard/management/ressources.html"
     def get(self,request):
-
-        if self.request.user.userprofile.role.name in allowed_roles_management:
-            resources = Resource.objects.all()
+        categories = ResourceCategory.objects.all()
+        if self.request.user.userprofile.role.name in allowed_roles_management:     
+           # cache_key = 'all_resources'
+           # if cache.has_key(cache_key):
+               #resources = cache.get(cache_key)
+            #else:
+            resources = Resource.objects.all().order_by('id')
+            #cache.set(cache_key, resources, (100 * 24 * 60 * 60))
         else:
+            #cache_key = 'limited_resources'
+           # if cache.has_key(cache_key):
+             #  resources = cache.get(cache_key)
+          
+           # else:
             resources = Resource.objects.filter(management=False)
+             #cache.set(cache_key, resources, (100 * 24 * 60 * 60))
+        
 
-        ctx = {'resources':resources}
+        ctx = {'resources':resources, 'categories':categories}
         return render(request, self.template_name, ctx)
     
     
@@ -1273,6 +1285,11 @@ def stream_file(request, pk):
     return response
 
 
+def getResource(request, pk):
+
+    resource = Resource.objects.get(id=pk)
+
+    return JsonResponse({'how':resource.how})
 
 def stream_completed_task_img(request, pk):
     pic = get_object_or_404(Task, id=pk)

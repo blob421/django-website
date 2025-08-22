@@ -10,8 +10,27 @@ async function getSubTask(id) {
   }
 }
 
+function setVisibleFlex(selected , show, hide= null, hide2 = null, hide3 = null){
+  
+  document.getElementById(show).style.display='flex';
+  const btn = document.querySelectorAll("button");
 
-function setVisible(selected ,show, hide= null, hide2 = null, hide3 = null){
+  btn.forEach(bt => bt.classList.remove('active'));
+  selected.classList.add('active');
+
+  if (hide3) {
+      document.getElementById(hide3).style.display='none';
+  }
+  if (hide2) {
+      document.getElementById(hide2).style.display='none';
+  }
+  if (hide) {
+      document.getElementById(hide).style.display= 'none';
+  }
+ }
+
+
+function setVisible(selected , show, hide= null, hide2 = null, hide3 = null){
   
   document.getElementById(show).style.display='block';
   const btn = document.querySelectorAll("button");

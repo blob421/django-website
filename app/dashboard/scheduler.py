@@ -1,6 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
-from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document
+from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document, ChatMessages
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
@@ -20,12 +20,16 @@ def start():
     if not BackgroundScheduler().get_jobs():
         scheduler = BackgroundScheduler()
         scheduler.add_jobstore(DjangoJobStore(), "default")
+
         scheduler.add_job(CheckWeekRanges, 'interval', hours=12, name='my_job', 
                            replace_existing=True)
-        scheduler.add_job(clear_pictures, 'interval', days=4, name='clear_pics',
+        scheduler.add_job(clear_pictures, 'interval', days=7, name='clear_pics',
                           replace_existing=True)
         
-        scheduler.add_job(clear_files, 'interval', days=5, name='clear_files',
+        scheduler.add_job(clear_files, 'interval', days=7, name='clear_files',
+                          replace_existing=True)
+        
+        scheduler.add_job(clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
                           replace_existing=True)
         
         register_events(scheduler)
@@ -50,7 +54,7 @@ def clear_pictures():
 def clear_files():
      try:
          files = Document.objects.filter(
-          upload_time__lte = timezone.now()-relativedelta(days=settings.FILE_RENTENTION_DAYS))
+          upload_time__lte = timezone.now()-relativedelta(days=settings.FILE_RETENTION_DAYS))
          
          logger.INFO(f'{files.count()} files deleted')
          files.delete()
@@ -58,7 +62,14 @@ def clear_files():
           raise('No files to delete')
           
 
-
+def clear_chat_msg():
+    try:
+        msgs = ChatMessages.objects.filter(
+          created_at__lte = timezone.now() - relativedelta(days=settings.CHAT_RETENTION_DAYS))
+        msgs.delete()
+    except:
+        raise('No chat messages to delete')
+     
 
 def CheckWeekRanges():
      

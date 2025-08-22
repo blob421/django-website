@@ -39,6 +39,7 @@ urlpatterns = [
          name='stream_completed_task_img'),
     path('file/<int:pk>/download', views.GetFile, name="get_file"),
     path('file/<int:pk>/task/delete/<int:manage>', views.DelFile, name='delete_file'),
+    path('resource/<int:pk>', views.getResource, name='get_resource'),
     ####### MANAGE ###########
     path('team/', views.TeamView.as_view(), name = 'team'),
     path('tasks/completed/<int:pk>/', views.TaskCompletedDetail.as_view(), name='task_completed_detail'),

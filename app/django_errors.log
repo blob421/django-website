@@ -10318,3 +10318,147 @@ Traceback (most recent call last):
     )
 dashboard.models.Document.DoesNotExist: Document matching query does not exist.
 "GET /dashboard/pic_picture/1 HTTP/1.1" 500 94464
+ERROR 2025-08-22 12:12:32,753 log 29644 30972 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:12:32,776 basehttp 29644 30972 "GET /dashboard/resource/3 HTTP/1.1" 500 82255
+ERROR 2025-08-22 12:12:56,994 log 29644 30972 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:12:57,017 basehttp 29644 30972 "GET /dashboard/resource/3 HTTP/1.1" 500 82255
+ERROR 2025-08-22 12:12:57,080 log 29644 16792 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:12:57,100 basehttp 29644 16792 "GET /dashboard/resource/3 HTTP/1.1" 500 82255
+ERROR 2025-08-22 12:13:02,063 log 29644 16792 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:13:02,082 basehttp 29644 16792 "GET /dashboard/resource/3 HTTP/1.1" 500 82255
+ERROR 2025-08-22 12:13:15,404 log 29644 16792 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:13:15,424 basehttp 29644 16792 "GET /dashboard/resource/3 HTTP/1.1" 500 82256
+ERROR 2025-08-22 12:13:57,588 log 29644 16792 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:13:57,608 basehttp 29644 16792 "GET /dashboard/resource/3 HTTP/1.1" 500 82255
+ERROR 2025-08-22 12:17:24,690 log 14896 13268 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:17:24,711 basehttp 14896 13268 "GET /dashboard/resource/3 HTTP/1.1" 500 82255
+ERROR 2025-08-22 12:17:32,929 log 14896 13268 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:17:32,950 basehttp 14896 13268 "GET /dashboard/resource/3 HTTP/1.1" 500 82490
+ERROR 2025-08-22 12:18:45,847 log 14896 13268 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:18:45,869 basehttp 14896 13268 "GET /dashboard/resource/3 HTTP/1.1" 500 82255
+ERROR 2025-08-22 12:19:14,396 log 26248 22848 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: getResource() got multiple values for argument 'pk'
+ERROR 2025-08-22 12:19:14,420 basehttp 26248 22848 "GET /dashboard/resource/3 HTTP/1.1" 500 82256
+ERROR 2025-08-22 12:19:42,229 log 31692 20764 Internal Server Error: /dashboard/resource/3
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1278, in getResource
+    return JsonResponse({'resource':resource})
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\http\response.py", line 751, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+  File "C:\Users\gabri\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\gabri\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\gabri\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\serializers\json.py", line 114, in default
+    return super().default(o)
+           ~~~~~~~~~~~~~~~^^^
+  File "C:\Users\gabri\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type Resource is not JSON serializable
+ERROR 2025-08-22 12:19:42,259 basehttp 31692 20764 "GET /dashboard/resource/3 HTTP/1.1" 500 112460
+ERROR 2025-08-22 15:11:37,121 log 30028 31600 Internal Server Error: /dashboard/team/ressources
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1118, in get
+    if self.request.user.userprofile.role.name in allowed_roles_management:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-22 15:11:37,145 basehttp 30028 31600 "GET /dashboard/team/ressources HTTP/1.1" 500 101225
+ERROR 2025-08-22 16:06:40,925 log 14 126498357328768 Internal Server Error: /dashboard/team/ressources
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/dashboard/views.py", line 1118, in get
+    if self.request.user.userprofile.role.name in allowed_roles_management:
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
