@@ -10462,3 +10462,139 @@ Traceback (most recent call last):
     return func(_wrapped, *args)
            ^^^^^^^^^^^^^^^^^^^^^
 AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 18:04:55,131 log 25784 23868 Internal Server Error: /dashboard/team/
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\protect.py", line 55, in dispatch
+    user_role = request.user.userprofile.role.name
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 18:04:55,133 basehttp 25784 23868 "GET /dashboard/team/ HTTP/1.1" 500 81604
+ERROR 2025-08-23 18:04:56,186 log 25784 23868 Internal Server Error: /dashboard/team/
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\protect.py", line 55, in dispatch
+    user_role = request.user.userprofile.role.name
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 18:04:56,188 basehttp 25784 23868 "GET /dashboard/team/ HTTP/1.1" 500 81604
+ERROR 2025-08-23 18:05:05,075 log 25784 23868 Internal Server Error: /dashboard/team/2/stats
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\decorators\vary.py", line 31, in _view_wrapper
+    response = func(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\protect.py", line 55, in dispatch
+    user_role = request.user.userprofile.role.name
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 18:05:05,077 basehttp 25784 23868 "GET /dashboard/team/2/stats HTTP/1.1" 500 103636
+ERROR 2025-08-23 18:05:05,845 log 25784 23868 Internal Server Error: /dashboard/team/
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\protect.py", line 55, in dispatch
+    user_role = request.user.userprofile.role.name
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 18:05:05,846 basehttp 25784 23868 "GET /dashboard/team/ HTTP/1.1" 500 82238
+ERROR 2025-08-23 18:05:06,655 log 25784 23868 Internal Server Error: /dashboard/team/
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\protect.py", line 55, in dispatch
+    user_role = request.user.userprofile.role.name
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 18:05:06,656 basehttp 25784 23868 "GET /dashboard/team/ HTTP/1.1" 500 82238
+ERROR 2025-08-23 18:05:11,938 log 25784 23868 Internal Server Error: /dashboard/team/
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\protect.py", line 55, in dispatch
+    user_role = request.user.userprofile.role.name
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 18:05:11,940 basehttp 25784 23868 "GET /dashboard/team/ HTTP/1.1" 500 82071
+ERROR 2025-08-23 19:47:01,438 log 25784 9744 Internal Server Error: /dashboard/team/
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\protect.py", line 55, in dispatch
+    user_role = request.user.userprofile.role.name
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 19:47:01,440 basehttp 25784 9744 "GET /dashboard/team/ HTTP/1.1" 500 81609
+ERROR 2025-08-23 19:47:02,575 log 25784 9744 Internal Server Error: /dashboard/team/
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\protect.py", line 55, in dispatch
+    user_role = request.user.userprofile.role.name
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
+ERROR 2025-08-23 19:47:02,576 basehttp 25784 9744 "GET /dashboard/team/ HTTP/1.1" 500 81609

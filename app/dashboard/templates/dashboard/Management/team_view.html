@@ -3,16 +3,18 @@
  {% block content %}
 
  <h1 class="team_title">{{user.userprofile.team.name}} management</h1>
- <div class="team_second_title">
- <button onclick="setVisible(this, 'team_tasks', 'team_all_task_list'); " id="toggle_manage">
-   Employee / Tasks
-</button>
- <button onclick="setVisible(this, 'team_all_task_list', 'team_tasks')" id="toggle_manage">
-   Task list
-</button>
- 
- </div>
-<div class="border_container"></div>
+
+<div class="border_container"> 
+      <div class="team_second_title">
+   <button onclick="setVisible(this, 'team_tasks', 'team_all_task_list'); " id="toggle_manage">
+      Employee / Tasks
+   </button>
+   <button onclick="setVisible(this, 'team_all_task_list', 'team_tasks')" id="toggle_manage">
+      Task list
+   </button>
+   
+   </div>
+</div>
  <div class="team_container1">
 
 

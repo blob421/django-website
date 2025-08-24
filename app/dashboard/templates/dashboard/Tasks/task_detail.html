@@ -249,11 +249,11 @@
           </div>
               <div class="add_file_modal_btn">
                     <button class="add_files_btn" 
- onclick="document.getElementById('add_file_modal_task_detail').style.display = 'flex'">Add files
+ onclick="document.getElementById('add_file_modal_task_detail').style.display = 'flex' ;scrollToTop()">Add files
 
                     </button>
                     <button class="add_files_btn" 
-onclick="document.getElementById('your_file_modal_task_detail').style.display = 'flex'">
+onclick="document.getElementById('your_file_modal_task_detail').style.display = 'flex'; scrollToTop()">
                     Delete
                   </button>
                   </div>
@@ -262,21 +262,7 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
 
 <!------------------------------FILE MODAL-------------------------------------->
 
-<div id="add_file_modal_task_detail" style="
-              width: 40%;
-              height: 25%;
-              position: absolute;
-              color: white;
-              left: 50%;
-              top: 50%;
-              display: none;
-              border-radius: 12px;
-              border: 2px solid grey;
-              transform: translate(-45%,-50%);
-              background-color: rgba(61, 61, 61, 0.982);            
-        
-
-          ">
+<div id="add_file_modal_task_detail">
 
           <form method="post" enctype="multipart/form-data" class="form_add_file_task_detail">
             {% csrf_token %}
@@ -293,19 +279,7 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
 
 <!---------------------------YOUR FILE MODAL -------------------------------->
 
-<div id="your_file_modal_task_detail" style="
-              width: 30%;
-              height: 70%;
-              position: absolute;
-              border: 2px solid rgb(57, 57, 57);
-              left: 50%;
-              top: 50%;
-              display: none;
-              border-radius: 5px;
-              transform: translate(-45%,-50%);
-               background-color: rgba(103, 103, 103, 0.982);       
-            
-             "> 
+<div id="your_file_modal_task_detail"> 
 
          <button class="x_btn_your_files"
         onclick="document.getElementById('your_file_modal_task_detail').style.display = 'none'">
@@ -331,19 +305,7 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
 
 <!-------------------------------SUBTASKS MENU---------------------------->
 
-<div id="subtask_modal_task_detail" style="
-              width: 40%;
-              height: 73%;
-              position: absolute;
-              color: white;
-              display: none;
-              left: 50%;
-              top: 50%;
-              border-radius: 15px;
-              transform: translate(-45%,-50%);
-              background-color: rgba(87, 87, 87, 0.967);
-            
-          ">
+<div id="subtask_modal_task_detail">
           
        <form method="post" class="form_add_subtask">
         {% csrf_token %}
@@ -417,6 +379,15 @@ async function renderSubtask(id){
       </div>
     `;
 
+  }
+
+
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // makes the scroll smooth
+    });
   }
 
 </script>

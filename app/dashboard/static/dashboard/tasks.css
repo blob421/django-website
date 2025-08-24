@@ -1,0 +1,894 @@
+/****************** TASKS ******************/
+.task_detail_outer_div{
+    display:flex;
+    border: 1px solid rgb(105, 105, 105);
+    position: absolute;
+    height: 85vh;
+    width: 90vw;
+    right: 2%;
+    top: 50%;
+    transform: translateY(-49%);
+}
+.flex_container_tasks{
+   /* border: orange solid 2px;*/
+    width: 100%;
+    height: 97vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    gap: 2%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-55%);
+     
+}
+
+.task_blocks1{
+    background-color: rgb(246, 246, 246);
+  border: 2px grey solid;
+ 
+
+}
+
+.task_block_container1{
+    overflow: auto;
+ border: 2.5px rgb(146, 146, 146) solid;
+     height: 77%;
+    width: 25%;
+    margin-top: 5%;
+    text-align: top;
+      background-color: rgb(246, 246, 246);
+      font-family: 'Times New Roman', Times, serif;
+      font-weight:lighter;
+       font-size: 15px;
+
+}   
+
+.task_blocks2_denied{
+         background-color: rgb(247, 184, 147);
+        border: 2px grey solid;
+         padding-left: 1%;
+
+}
+.task_blocks2_employee{
+      border: 2px grey solid;
+         padding-left: 1%;
+           background-color: rgb(241, 240, 240);
+}
+.task_title2_base{
+      position: sticky;
+  top: 0;
+  z-index: 100; 
+  padding: 10px;
+   
+  text-align: center;
+  background-color: rgb(162, 193, 222);
+   
+  
+}
+.task_block_container2{
+      overflow-y: scroll;
+    height: 77%;
+    width: 25%;
+    margin-top: 5%;
+   border: 2.5px grey solid;
+      background-color: rgb(246, 246, 246);
+       font-family: 'Times New Roman', Times, serif;
+        font-size: 15px;
+}
+.task_blocks_urgent:hover{
+    background-color: rgb(189, 211, 230);
+}
+.task_blocks1:hover{
+    background-color: rgb(239, 239, 239);
+}
+.task_blocks2:hover{
+    background-color: rgb(169, 169, 169);
+}
+.task_blocks3:hover{
+    background-color: rgb(219, 186, 161);
+}
+
+.task_blocks3{ 
+        border: 2px grey solid;
+        background-color: rgb(219, 201, 167);
+   
+}
+.task_block_container3{
+    z-index: 50;
+    height: 77%;
+  background-color: rgb(246, 246, 246);
+     width: 25%;
+    margin-top: 5%;
+    overflow-y: scroll;
+     border: 2.5px grey solid;
+     font-family: 'Times New Roman', Times, serif;
+     font-size: 15px;
+}
+.task_blocks_urgent{
+    background-color: rgb(198, 215, 236);
+  border: 2px grey solid;
+
+
+}
+.task_title3{
+    position: sticky;
+  top: 0;
+   background-color: rgb(162, 193, 222);
+  z-index: 100; 
+  padding: 10px;
+
+  text-align: center;
+}
+  
+
+.task_title1{
+      position: sticky;
+  top: 0;
+  background-color: rgb(162, 193, 222);
+  z-index: 100; 
+  padding: 10px;
+  text-align: center;
+}
+
+.flex_container_task_view{
+    border: 2px rgb(85, 85, 85) solid;
+  
+    padding-top: 10px;
+  
+    background-color: white;
+     padding: 3%;
+      padding-left: 5%;
+       border-radius: 4px;
+       position: relative;
+    left: 50%;
+    width: 80%;
+    transform: translateX(-50%);
+  
+}
+.title_task_view{
+    margin-top: 4%;
+     border: 2px rgb(85, 85, 85) solid;
+     position: relative;
+    background-color: white;
+    padding: 3%;
+    padding-left: 5%;
+    border-radius: 4px;
+    position: relative;
+    left: 50%;
+    width: 80%;
+    transform: translateX(-50%);
+    
+}
+
+.completion_note_task_submit{
+    
+    height: 83%;
+
+}
+.completion_note_title{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-bottom: 2%;
+
+}
+.message_update input{
+     padding: 1%;
+}
+.task_submit_button{
+    background-color: royalblue;
+    width: 15%;
+    border-radius: 4px;
+    position: fixed;
+    right: 0%;
+    
+    
+    color: white;
+}
+.task_submit_picture_input{
+     width: 85%;
+    
+     overflow-x: auto;
+   
+}
+.task_submit_inputs_container{
+    display: flex;
+   /* border: 2px solid black;*/
+    margin-top: 2%;
+    width: 90%;
+}
+.task_completed_btn_container{
+    margin-top: 10%;
+   /* border: 2px green solid;*/
+    height: 10%;
+
+}
+.task_detail_completed_btn2{
+
+ padding: 2%;
+ 
+   width: 90%;
+   left: 50%;
+   position: relative;
+   transform: translateX(-50%);
+   margin-top: 4%;
+ 
+
+    
+}
+.left_detail_pane_btns_div{
+    display: flex;
+    height: 10%;
+    width: 98%;
+    align-items: center;
+    justify-content: center;
+   
+
+ 
+
+}
+.task_detail_left_panel{
+     border: 2px rgb(62, 62, 62) solid;
+     margin-right: 2px;
+    background-color: rgb(174, 196, 215);
+    padding: 2px;
+    width: 18%;
+   
+}
+
+.general_medium_container{
+
+      border: 2px solid rgb(70, 70, 70);
+    width: 62%;
+    overflow: auto;
+    padding-top: 2%;
+    white-space: pre-wrap;
+    
+    background-color: rgb(241, 241, 241);
+    font-family: 'Times New Roman', Times, serif;
+   
+   
+}
+.recent_files_title{
+    text-align: center;
+}
+.right_file_panel_task_detail{
+    width:19%;
+    margin-left: 2px;
+      background-color: rgb(174, 196, 215);
+      border: 2px rgb(62, 62, 62) solid;
+}
+.task_detail_team_container{
+    border: 2px solid black;
+    height: 53%;
+    overflow-y: scroll;
+    background-color: rgb(100, 100, 100);
+    margin-top: 2%;
+    width: 90%;
+    left: 50%;
+    padding-top: 1%;
+    transform: translateX(-50%);
+    position: relative;
+
+}
+
+.subtask_update_form{
+    z-index: 100;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+
+}
+
+#delete_btn_subtask{
+    
+     border: 2px solid grey;
+   
+    width: 100%;
+}
+#delete_btn_subtask:hover{
+    background-color: rgb(177, 66, 66);
+    
+   
+
+}
+.confirm_deletion_text{
+    width: 50%;
+    padding-left: 4%;
+    padding-right: 2%;
+}
+.button_confirm_delete_div{
+    width: 47%;
+  
+ height: 40%;
+ padding-right: 4%;
+ 
+ 
+}
+.confirm_delete_modal_subtask_cont{
+   
+    left: 50%;
+    top: 0%;
+    position: relative;
+    width: 95%;
+    height: 85%;
+    display: flex;
+    align-items: center;
+    transform: translateX(-50%);
+}
+.btn_cancel_subtask_del{
+    height: 60%;
+    margin-top: 2%;
+    border: 2px solid grey;
+}
+.x_btn_middle_subtask_update{
+        top: 0%;
+    right: 0%;
+     
+/*   border: 2px solid red;*/
+    font-size: x-small;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.x_btn_update_subtask{
+   margin-right: 1%;
+  
+
+}
+.x_btn_middle_subtask_expand{
+       top: 0%;
+    right: 0%;
+
+    top: 0;
+    position: sticky;
+    width: 98%;
+    display: flex;
+    justify-content: end;
+   
+}
+.x_btn_middle_subtask_detail{
+
+   position: relative;
+
+    margin-top: 4%;
+   
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.subtask_user{
+    font-size: x-small;
+}
+.task_completed_flex{
+    display: flex;
+     gap: 8%;
+}
+.task_completed_flex:hover{
+  
+    cursor: pointer;
+}
+.middle_task_detail_description_div{
+    /*border: 2px solid rgb(232, 165, 89);*/
+    height: 35%;
+    flex-direction: column;
+    width: 90%;
+    background-color: #5a5a5a;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    
+
+}
+.subtask_detail_description_block{
+    border: 2px solid rgb(172, 172, 172);
+    height: 69%;
+    margin-top: 2%;
+    padding-top: 3%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    color: white;
+    padding-left: 1%;
+    background-color: #3b3b3b;
+    text-align: left;
+}
+.subtask_detail_middle_user{
+    display: flex;
+    justify-content: end;
+    color: white;
+}
+.subtask_detail_title{
+    text-align: center;
+    color: white;
+    font-size: x-large;
+}
+.subtask_detail_frame{
+  /*  border: 2px solid orange;*/
+    width: 90%;
+   
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+}
+.subtask_title_update{
+    font-size: larger;
+     text-align: center;
+ 
+    padding-bottom: 6%;
+    padding-top: 2%;
+    width: 98%;
+}
+.middle_sub_task_detail_update{
+            border: 2px solid rgb(70, 70, 70);
+    width: 62%;
+    overflow: auto;
+    padding-top: 1%;
+    background-color: rgba(34, 34, 34, 0.737);
+    display: none;
+    flex-direction: column;
+    font-family: 'Times New Roman', Times, serif;
+
+}
+.middle_sub_task_expand{
+             border: 2px solid rgb(70, 70, 70);
+    width: 62%;
+    overflow: auto;
+    padding-top: 1%;
+    background-color: rgba(34, 34, 34, 0.737);
+    display: none;
+    font-family: 'Times New Roman', Times, serif;
+
+   
+    font-size: smaller;
+
+    overflow-wrap: break-word;   
+    
+}
+.middle_sub_task_detail{
+         border: 2px solid rgb(70, 70, 70);
+    width: 62%;
+    overflow: auto;
+    padding-top: 1%;
+    padding-bottom: 6%;
+    background-color: rgba(34, 34, 34, 0.737);
+    display: none;
+    font-family: 'Times New Roman', Times, serif;
+    white-space: pre-wrap;
+   
+    font-size: smaller;
+
+    overflow-wrap: break-word;   
+    
+}
+.subtask_title{
+ 
+   text-align: center;
+    font-size: larger;
+    padding-bottom: 6%;
+    padding-top: 2%;
+    width: 96.5%;
+}
+.name_subtask_form_flex{
+    display: flex;
+    gap: 5%;
+    padding-bottom: 4%;
+    
+}
+.name_subtask_form_flex input{
+       background-color: #3b3b3b;
+        border: 2px solid rgb(172, 172, 172);
+        color: white;
+        width: 24vw;
+}
+.subtask_form_submit_div{
+  
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.add_subtask_modal_sub_btn{
+    width: 25%;
+    padding: 1.5%;
+    margin-right: 3.5%;
+    margin-top: 5%;
+    background-color: rgb(88, 112, 186);
+}
+.add_subtask_modal_sub_btn_update{
+width: 20%;
+    padding: 1%;
+    margin-right: 3.5%;
+    margin-top: 2%;
+    background-color: rgb(88, 112, 186);
+    border: 1px solid grey;
+
+}
+.add_subtask_modal_sub_btn_del{
+    
+       width: 20%;
+    padding: 1.2%;
+    margin-right: 3.5%;
+    margin-top: 1.8%;
+    border: 1px solid grey;
+}
+.add_subtask_modal_sub_btn_del:hover{
+  background-color: rgb(177, 66, 66);
+}
+.files_div_messages_detail{
+    border-top: 2px solid  rgb(85, 85, 85);
+ 
+   
+    z-index: 100;
+    bottom: 0%;
+   
+   
+}
+.image_icon_div_msg_detail{
+    width: 25%;
+}
+.file_name_div{
+    width: 75%;
+    position: relative;
+   padding-left: 2%;
+    color: white;
+}
+.file_div_msg_detail{
+    font-size: small;
+    display: flex;
+    margin: 5%;
+    background-color: #969696;
+    padding: 4%;
+    border-radius: 4px;
+     margin-top: 8%;
+      
+}
+
+.subtask_update_description textarea{
+    border: 2px solid rgb(172, 172, 172);
+    height: 100%;
+    margin-top: 2%;
+    padding-top: 2%;
+    padding-left: 1%;
+  /* border: 2px solid red;*/
+
+    color: white;
+    background-color: #3b3b3b;
+}
+
+.subtask_update_description{
+  /*  border: 2px solid green;*/
+    height: 59vh;
+    position: relative;
+}
+.form_add_subtask textarea{
+  height: 85%;
+  margin-top: 2%;
+
+}
+.form_add_subtask{
+    margin-left: 5.5%;
+    
+}
+#hidden_subtask_update_form{
+    display: none;
+    overflow:hidden;
+}
+.form_update_subtask textarea{
+  height: 50vh;
+  margin-top: 2%;
+
+ 
+
+}
+.form_update_subtask{
+     margin-left: 3.5%;
+      color: white;
+   
+      position: relative;
+      height: 94%;
+}
+.task_completed{
+  
+     position: relative;
+    background-color: rgb(65, 65, 65);
+   color: white;
+    padding: 5%;
+    font-size: smaller;
+   
+  
+
+}
+.team_ctn_button{
+    width: 50%;
+}
+.task_completed:hover{
+      background-color: #5a5a5a;
+}
+.subtask_name{
+   
+    width: 80%;
+}
+
+.indicator_subtask_yellow{
+    width: 10%;
+    background-color: rgb(255, 174, 0);
+    
+}
+.indicator_subtask_green{
+    width: 10%;
+    background-color: greenyellow;
+}
+.subtask_title_btn_div{
+    display: flex;
+  
+  
+    align-items: center;
+    gap: 1%;
+
+    width: 90%;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+    margin-top: 6%;
+
+}
+.button.active {
+  background-color: grey;
+}
+.team_btn_task_detail{
+    width: 45%;
+}
+.team_btn_task_detail.active{
+    background-color: #e5e5e5;
+    border: 0.5px solid black;
+    border-radius: 1px;
+    padding: 1%;
+}
+
+.subtask_btn_task_detail{
+    width: 45%;
+}
+.subtask_btn_task_detail.active{
+     background-color: #e5e5e5;
+    border: 0.5px solid black;
+    border-radius: 1px;
+    padding: 1.5%;
+    width: 55%;
+}
+.task_submit_form{
+
+  left: 50%;
+  width: 85%;
+  top: 50%;
+  height: 90%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  
+}
+
+.task_submit_form textarea{
+    height: 95%;
+    width: 99%;
+}
+/*****************************Modals*******************************/
+#add_file_modal_task_detail{
+ 
+              width: 40%;
+              height: 25%;
+              position: absolute;
+              color: white;
+              left: 50%;
+              top: 50%;
+              display: none;
+              border-radius: 12px;
+              border: 2px solid grey;
+              transform: translate(-45%,-50%);
+              background-color: rgba(61, 61, 61, 0.982);  
+
+}
+#your_file_modal_task_detail{
+              width: 30%;
+              height: 70%;
+              position: absolute;
+              border: 2px solid rgb(57, 57, 57);
+              left: 50%;
+              top: 50%;
+              display: none;
+              border-radius: 5px;
+              transform: translate(-45%,-50%);
+               background-color: rgba(103, 103, 103, 0.982);       
+            
+}
+#subtask_modal_task_detail{
+
+              width: 40%;
+              height: 73%;
+              position: absolute;
+              color: white;
+              display: none;
+              left: 50%;
+              top: 50%;
+              border-radius: 15px;
+              transform: translate(-45%,-50%);
+              background-color: rgba(87, 87, 87, 0.967);
+        
+}
+@media (max-width:900px){
+    .flex_container_tasks{
+   /* border: orange solid 2px;*/
+    
+    height: 97vh;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100vw;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+     
+}
+.task_block_container1{
+    overflow: auto;
+ border: 2.5px rgb(146, 146, 146) solid;
+     height: 35%;
+    width: 100%;
+    margin-top: 8%;
+    text-align: top;
+      background-color: rgb(246, 246, 246);
+      font-family: 'Times New Roman', Times, serif;
+      font-weight:lighter;
+       font-size: 15px;
+
+}   
+.task_block_container3{
+    z-index: 50;
+    height: 35%;
+  background-color: rgb(246, 246, 246);
+     width: 100%;
+    margin-top: 7%;
+    overflow-y: scroll;
+     border: 2.5px grey solid;
+     font-family: 'Times New Roman', Times, serif;
+     font-size: 15px;
+}
+.task_block_container2{
+      overflow-y: scroll;
+    height: 40%;
+    width: 100%;
+    margin-top: 7%;
+   border: 2.5px grey solid;
+      background-color: rgb(246, 246, 246);
+       font-family: 'Times New Roman', Times, serif;
+        font-size: 15px;
+}
+.top_visual_frame_task_list{
+    display: none;
+}
+.task_detail_outer_div{
+    display:block;
+    border: 1px solid rgb(105, 105, 105);
+    position: absolute;
+    height: 85vh;
+    width: 100vw;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-49%);
+}
+.task_detail_left_panel{
+     border: 2px rgb(62, 62, 62) solid;
+  
+    background-color: rgb(174, 196, 215);
+    
+    width: 100%;
+    display: block;
+   
+}
+.title_task_view{
+    margin-top: 4%;
+     border: 2px rgb(85, 85, 85) solid;
+ 
+    background-color: white;
+    padding: 3%;
+    padding-left: 5%;
+    border-radius: 4px;
+    position: relative;
+    left: 50%;
+    width: 80%;
+    transform: translateX(-50%);
+    
+}
+.flex_container_task_view{
+    border: 2px rgb(85, 85, 85) solid;
+  
+ 
+  
+    background-color: white;
+     padding: 3%;
+      padding-left: 5%;
+       border-radius: 4px;
+       position: relative;
+    left: 50%;
+   
+    width: 80%;
+    transform: translateX(-50%);
+  
+}
+.subtask_title_btn_div{
+    display: flex;
+
+    gap: 1%;
+
+    left: 50%;
+    
+    position: relative;
+    transform: translateX(-50%);
+    margin-top: 6%;
+
+}
+.task_detail_team_container{
+    border: 2px solid black;
+    height: 53%;
+    overflow-y: scroll;
+    background-color: rgb(100, 100, 100);
+    margin-top: 2%;
+    width: 90%;
+    left: 50%;
+    padding-top: 1%;
+    transform: translateX(-50%);
+    position: relative;
+
+}
+.general_medium_container{
+
+      border: 2px solid rgb(70, 70, 70);
+    width: 100%;
+    overflow: auto;
+    padding-top: 2%;
+    white-space: pre-wrap;
+    margin-right: 0;
+    background-color: rgb(241, 241, 241);
+    font-family: 'Times New Roman', Times, serif;
+   
+   
+}
+.middle_sub_task_detail{
+    width: 100%;
+    height: 70%;
+}
+.middle_sub_task_detail_update{
+    width: 100%;
+}
+.middle_sub_task_expand{
+    width: 100%;
+}
+.right_file_panel_task_detail{
+   
+    width:100%;
+    padding-bottom: 5%;
+}
+.recently_modified_files_detail{
+
+    height: 20%;
+}
+#add_file_modal_task_detail{
+ 
+              width: 80%;
+}
+
+#your_file_modal_task_detail{
+    width: 80%;
+    
+    
+}
+#subtask_modal_task_detail{
+
+              width: 80%;
+          padding-right: 7%;
+        
+}
+}

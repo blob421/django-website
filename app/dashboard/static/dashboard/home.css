@@ -1,0 +1,113 @@
+.visual_frame{
+    border: 1.5px rgba(84, 72, 55, 0.68) solid;
+    height: 80%;
+    width: 64%;
+    position: absolute;
+    left: 50%;
+    bottom: 1%;
+    transform: translate(-50%);
+    background-color: rgba(111, 93, 70, 0.6);
+}
+.general_text_container2{
+    border: 2px solid rgb(156, 156, 156);
+    width: 60vw;
+    position: absolute;
+    left: 50%;
+    bottom: 2.4%;
+    transform: translate(-50%);
+    height: 74vh;
+    overflow-y: scroll;
+   
+    text-justify: auto;
+    white-space: pre-wrap;
+    text-align:justify top;
+    transform-origin: top;
+    background-color: rgb(241, 241, 241);
+    font-family: 'Times New Roman', Times, serif;
+    
+    overflow-wrap: break-word;   
+
+}
+.general_text_billboard{
+    
+    top: -10%;
+  position: relative;
+    margin-right: 1%;
+    margin-left: 1%;
+            
+  overflow-wrap: break-word;    
+  text-align: left right;
+  
+  
+  overflow: hidden;   
+  font-size: 15px;
+    
+}
+
+
+.billboard_head{
+    text-align: center;
+    margin-top: 4%;
+    font-size: 30px;
+    color: #343333;
+    
+}
+@media(max-width:900px) {
+.general_text_container2{
+    border: 2px solid rgb(156, 156, 156);
+    width: 90vw;
+    position: absolute;
+    left: 50%;
+    bottom: 2.4%;
+    transform: translate(-50%);
+    height: 68vh;
+    overflow-y: scroll;
+   
+    text-justify: auto;
+    white-space: pre-wrap;
+    text-align:justify top;
+    transform-origin: top;
+    background-color: rgb(241, 241, 241);
+    font-family: 'Times New Roman', Times, serif;
+    
+    overflow-wrap: break-word;   
+
+}
+
+.visual_frame{
+    border: 1.5px rgba(84, 72, 55, 0.68) solid;
+    height: 80vh;
+    width: 97%;
+    position: absolute;
+    left: 50%;
+    bottom: 1%;
+    transform: translateX(-50%);
+    background-color: rgba(111, 93, 70, 0.6);
+}
+.general_text_billboard{
+    
+   
+  position: relative;
+    margin-right: 1%;
+    margin-left: 1%;
+            width: 90vw;
+  overflow-wrap: break-word;    
+  text-align: left right;
+  
+
+  
+  font-size: 15px;
+    
+}
+
+.billboard_head{
+    top: 9%;
+    position: fixed;
+    font-size: 30px;
+    color: #343333;
+    color: black;
+    left: 50%;
+    transform: translateX(-50%);
+    
+}
+}

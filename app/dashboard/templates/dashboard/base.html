@@ -4,13 +4,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
      {% load static %}
-     <link rel="stylesheet" href="{% static 'dashboard/msg_tasks.css' %}">
-     <link rel="stylesheet" href="{% static 'dashboard/management.css' %}">
-     <link rel="stylesheet" href="{% static 'dashboard/inbox_chat.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/home.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/messages.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/msg_main.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/tasks.css' %}">
+
+     <link rel="stylesheet" href="{% static 'dashboard/management/management.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/management/tasks.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/management/schedules.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/chat.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/inbox.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/charts.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/schedules.css' %}">
-    <link rel="stylesheet" href="{% static 'dashboard/account.css' %}">
-    <link rel="stylesheet" href="{% static 'dashboard/resources.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/account.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/resources.css' %}">
      <script src="{% static 'js/getSubtask.js' %}"></script>
     
      {% block extra_css %}
@@ -24,7 +31,98 @@
 -->
 
 <style>
- 
+  #question_mark{
+    
+ position: fixed; 
+ right: 0.5%; 
+ width: 2%;
+ bottom: 0.5%;
+ z-index: 10000;
+  }
+  .userprofile_nav{
+    background-color: #343333 !important;
+    color: white !important;
+    border-radius: 4px;
+    width: 7vw;
+    margin-left: -1.5%;
+    border: 2px solid grey;
+   
+    font-size: small;
+}
+html , body{
+    background-color: rgb(237, 228, 208);
+    overflow-y: hidden;
+    max-height: 100%;
+   
+
+}
+ @media (max-width:700px){
+    nav{
+    
+    display: flex;
+    position: absolute;
+    left:50%;
+    width: 97vw;
+    top:0%;
+    transform: translateX(-50%);
+    background-color: rgb(211, 211, 211);
+    z-index: 1000;
+  
+    
+}
+ #question_mark{
+    
+position: fixed; 
+ left: 0.5%; 
+ width: 4%;
+ bottom: 1.5%;
+ z-index: 10000
+  }
+.logout_btn{
+    padding: 5%;
+    height: 4vh;
+    border-radius: 1px;
+    background-color: #e4e1d8;
+    color: black;
+}
+
+.user_account_div{
+    width: 13%;
+    height: 6%;
+    background-color: #696969;
+    position: fixed;
+    top: 5%;
+   
+    right: 18%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-radius: 4px;
+}
+.userprofile_nav{
+    background-color: #343333 !important;
+    color: white !important;
+    border-radius: 4px;
+    width: 15vw;
+    top: 5vh;
+    margin-left: -1.5%;
+    right: 0%;
+    border: 2px solid grey;
+   position: fixed;
+    font-size: small;
+    z-index: 100;
+}
+html{
+    background-color: rgb(237, 228, 208);
+    overflow-y: hidden;
+    max-height: 100%;
+    max-width: 200%;
+   
+
+}
+}
+
 </style>
 </head>
 
@@ -56,12 +154,7 @@
 </div>
 {% load static %}
 <a href="{% url 'dashboard:ressources' %}">
- <img src= "{% static 'question_mark.png' %}" style="
- position: fixed; 
- right: 0.5%; 
- width: 2%;
- bottom: 0.5%;
- z-index: 10000;">
+ <img src= "{% static 'question_mark.png' %}" id="question_mark">
  </a>
  {% block content %}{% endblock %}
 
