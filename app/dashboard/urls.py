@@ -13,8 +13,7 @@ urlpatterns = [
      name='account_update'),
     path('account/update/password/<int:pk>', views.PasswordChangeView.as_view(
         form_class=CustomPasswordChangeForm), name="password_update"),
-    ####### Recipients ########
-
+ 
     ####### Messages ##########
     path('messages/reply/create/<int:recipient_id>', views.ReplyView.as_view(),
           name="message_reply"),
@@ -67,7 +66,12 @@ urlpatterns = [
     path('team/<int:pk>/stats', views.PerformanceView.as_view(), name = 'perf_team'),
     path('team/<int:pk>/stats/page/<int:page>', views.PerformanceView.as_view(),
          name='perf_team_detail'),
-   
+
+
+    ####### Milestones ########
+  
+    path('history/milestones', views.HistoryView.as_view(), name='history_view'),
+    path('team/vs_team', views.TeamVs.as_view(), name="team_vs"),
     
     #######PROJECTS ######
     path('projects', views.ProjectsView.as_view(), name='projects'),

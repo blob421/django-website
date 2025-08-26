@@ -200,6 +200,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     position: relative;
+     cursor: pointer;
 }
 .files_outer_div_update_manage{
    
@@ -239,6 +240,7 @@
     position: relative;
     transform: translateX(-50%);
     left: 50%;
+     cursor: pointer;
 
 }
 .left_bar_team_members_container{
@@ -271,7 +273,7 @@
 .task_modal_manage_btn{
     width: 10%;
     height:10%;
- 
+    cursor: pointer;
    
 }
 .second_text_container_management{
@@ -320,7 +322,7 @@
     top: 15%;
     width: 98%;
     height: 10%;
- 
+   cursor: pointer;
     background-color: rgb(192, 231, 204);
      padding: 2%;
      border-radius: 4px;
@@ -540,6 +542,7 @@ height: 51.2vh;
     color: white;
     border-radius: 5px;
    border: 2px solid rgb(162, 162, 162);
+    cursor: pointer;
 }
 #cancel_btn_task{
     width: 10vw;
@@ -548,6 +551,7 @@ height: 51.2vh;
       border-radius: 5px;
     color: white;
     background-color: #3b3b3b;
+     cursor: pointer;
 }
 #cancel_btn_task:hover{
  background-color: rgb(88, 123, 230);
@@ -583,11 +587,12 @@ height: 51.2vh;
 .btn-submit-task-manage{
   padding: 5%;
   width: 45%;
+   cursor: pointer;
     
 }
 .btn-update-task-manage{
   padding: 1%;
-
+   cursor: pointer;
     
     background-color: rgb(243, 243, 237);
     color: black;   
@@ -598,9 +603,11 @@ height: 51.2vh;
     padding: 4%;
     
     width: 17vw;
+     cursor: pointer;
 }
 .del-btn{
     margin-top: 5%;
+     cursor: pointer;
     height: 45%;
 
 }

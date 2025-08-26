@@ -360,3 +360,35 @@ class Resource(models.Model):
     management = models.BooleanField(null=True)
     def __str__(self):
         return self.what
+
+  
+class Milestone(models.Model):
+    name = models.CharField(max_length=25) 
+    date = models.DateField()
+    def __str__(self):
+        return self.name
+    @property
+    def timestamp(self):
+        return self.date.strftime('%B %d')
+    @property
+    def month(self):
+        return self.date.strftime('%B')
+    
+class Goal(models.Model):
+    name = models.CharField(null=True, unique=True)
+    accomplished = models.BooleanField(default=False)
+    type = models.ForeignKey('GoalType', on_delete=models.CASCADE)
+    value_type = models.ForeignKey('ValueType', on_delete=models.CASCADE)
+    value = models.PositiveIntegerField(null=True)
+    def __str__(self):
+        return self.name
+
+class GoalType(models.Model):
+    name = models.CharField()
+    def __str__(self):
+        return self.name
+    
+class ValueType(models.Model):
+    name= models.CharField()
+    def __str__(self):
+        return self.name

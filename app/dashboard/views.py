@@ -5,10 +5,11 @@ from django.contrib.auth.views import LogoutView, LoginView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages, Resource, ResourceCategory
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
+from .models import Milestone, Goal
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
-from .forms import ProfilePictureForm
-
+from .forms import ProfilePictureForm, GoalForm
+from django.conf import settings
 from django.utils import timezone
 import time
 from django.contrib.auth import get_user_model
@@ -22,12 +23,14 @@ from django import forms
 from django.db.models import Q
 import json
 from .utility import get_stats_data, save_files, create_stats, save_stats, save_profile_picture
+from .utility import calculate_milestones, get_team_graph, send_sms
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
 from django.utils.encoding import smart_str
 from collections import defaultdict
 import mimetypes
 from django.core.files.storage import default_storage
+
 
 ########## CONFIG ############
 from django.utils.decorators import method_decorator
@@ -125,13 +128,19 @@ class CustomLoginView(LoginView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.get_form()
+        context['company'] =  settings.COMPANY_NAME
         return context
 
-@method_decorator([cache_page(60 * 60), vary_on_cookie], name='dispatch')
+#@method_decorator([cache_page(60 * 60), vary_on_cookie], name='dispatch')
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
     def get(self, request):
-        ctx = {'is_home':True}
+        now = timezone.now()
+        tasks = Task.objects.filter(users__in=[self.request.user.userprofile])
+       
+        late = tasks.filter(due_date__lte=now).count()
+        
+        ctx = {'is_home':True, 'late':late}
 
         return render(request, self.template, ctx)
 
@@ -970,7 +979,10 @@ class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
     fields = ['message']
     success_url = reverse_lazy('dashboard:schedule_view')
     def form_valid(self, form):
+        schedule= self.get_object()
         form.instance.request_pending = True
+        send_sms(self.request.user.userprofile.team.team_lead.user.phone, 
+        f'{self.request.user.first_name} has requested a change of schedule for {schedule.week_range.starting_day.strftime('%B %d')}  - {schedule.week_range.end_day.strftime('%B %d')} :\n\n{form.instance.message}')
         return super().form_valid(form)
 
 
@@ -990,7 +1002,7 @@ class TeamView(ProtectedView):
         query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
         completed_task_count = Task.objects.filter(query).count()    
 
-    
+        print(self.request.user.userprofile.team.team_lead.user.phone)
         context = {'team': team_member , 'count':completed_task_count,'tasks':tasks,
                    'time':time}
         return render(request, self.template_name, context)
@@ -1172,6 +1184,59 @@ class PerformanceView(ProtectedView):
         return render(request, self.template_name, ctx)
 
 
+
+############# COMPANY HISTORY #####################################
+
+class HistoryView(LoginRequiredMixin, View):
+    template_name = "dashboard/history.html"
+    def get_context_data(self):
+        data = calculate_milestones()
+        now = timezone.now()
+        goals = Goal.objects.filter(accomplished=False)
+
+        return {
+            'months_set': list(data['months_set']),
+            'milestones': data['milestones'],
+            'milestones_dict': data['milestones_dict'],
+            'empty_count_dict': data['empty_count_dict'],
+            'dates_set': list(data['dates_set'])[:len(data['milestones'])],
+            'allowed_roles':allowed_roles_management,
+            'now':now,
+            'goals':goals,
+            'goal_form': GoalForm()
+        }
+     
+    def get(self, request):
+        ctx = self.get_context_data()
+        return render(request, self.template_name, ctx)
+    
+    def post(self, request):
+        goal_form = GoalForm(request.POST)
+        if 'del' in request.POST:
+            pk = request.POST.get('del')  
+            goal = Goal.objects.get(id=pk)
+            goal.delete()
+            return redirect(reverse('dashboard:history_view'))
+        
+        if not goal_form.is_valid():
+            ctx = self.get_context_data()
+            ctx['goal_form'] = goal_form
+              
+            return render(request, self.template_name, ctx)
+        
+        goal_form.save()
+        return redirect(reverse_lazy('dashboard:history_view'))
+
+
+
+########## VERSUS TEAM ##################################
+class TeamVs(LoginRequiredMixin, View):
+    template_name = 'dashboard/team_vs.html'
+    def get(self,request):
+        data = get_team_graph()
+        graph = data['graph']
+        ctx = {'graph':graph}
+        return render(request, self.template_name, ctx)
 
 ############# CHAT ####################################################
 

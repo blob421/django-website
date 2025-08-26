@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
 from django.conf import settings
 from django.core.files.storage import default_storage
-from .utility import calculate_days_scheduled
+from .utility import calculate_days_scheduled, check_milestones
 import logging
 
 logger = logging.getLogger(__name__)
@@ -31,9 +31,12 @@ def start():
         
         scheduler.add_job(clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
                           replace_existing=True)
+        scheduler.add_job(check_milestones, 'interval', minutes=1, name='milestones',
+                          replace_existing=True)
         
         register_events(scheduler)
         scheduler.start()
+        
 
 
 def clear_pictures():

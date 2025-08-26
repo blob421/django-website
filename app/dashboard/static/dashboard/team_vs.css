@@ -1,0 +1,21 @@
+
+
+.graph_cont_teamvs{
+    width: 80vw;
+     position: absolute;
+     left: 50%;
+     top: 50%;
+    transform: translate(-50%,-47%) scale(0.88);
+    border: 2px solid rgb(47, 47, 47);
+    padding: 1%;
+    border-radius: 12px;
+    background-color: rgb(255, 255, 255);
+}
+
+
+.team_vs_outer{
+
+ 
+
+    
+}

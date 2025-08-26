@@ -13,7 +13,13 @@
 
         {% cache 3600 welcome_section %}
        <div class="btn-container-msg">
-     <div class="messages_send_msg_btn"><a href="{% url 'dashboard:messages_create' %}"><button class="send_a_msg_btn">Send a message</button></a></div>
+        <div class="messages_send_msg_btn">
+            <a href="{% url 'dashboard:messages_create' %}">
+                <button class="send_a_msg_btn">
+                  Send a message
+                </button>
+              </a>
+          </div>
       <div class="messages_view_msg_btn"><a href="{% url 'dashboard:inbox' %}"><button class="view_a_msg_btn">See inbox</button></a></div>
       </div>
        {% endcache %}

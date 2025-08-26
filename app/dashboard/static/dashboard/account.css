@@ -33,6 +33,7 @@
     padding: 1%;
     padding-top: 2%;
     padding-bottom: 2%;
+     cursor: pointer;
    
 }
 .block_centered_title{
@@ -45,8 +46,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    
     justify-content: center;
-    box-shadow: inset 12px 0px 0px grey;
+    box-shadow: inset 6px 7px 0px rgb(119, 119, 119);
     
     
 }
@@ -56,6 +58,7 @@
     padding-bottom: 1%;
     background-color: rgb(228, 228, 228);
     border: 0.5px solid black;
+     cursor: pointer;
 }
 .account_block{
   height: 47%;
@@ -97,12 +100,13 @@ background-color: rgb(69, 73, 76);
 .upt_prof_btn{
     padding:1%;
     width: 100%;
-    
+     cursor: pointer;
 
 }
 .back_btn_crispy{
     height: 15%;
     background-color: brown;
+     cursor: pointer;
 }
 .x_btn_profile_pic{
     right: 1%;
@@ -114,6 +118,7 @@ background-color: rgb(69, 73, 76);
     display: flex;
     align-items: center;
     justify-content: center;
+     cursor: pointer;
 }
 .submit_pic_update{
     width: 40%;
@@ -125,6 +130,7 @@ background-color: rgb(69, 73, 76);
     display: flex;
     justify-content: end;
     width: 100%;
+     cursor: pointer;
 }
 .add_prof_pic_modal form{
   margin-top: 9%;

@@ -11,8 +11,17 @@
 <div class="date_range_title_top">
     ( {{schedules_ctx.start_month}} - {{schedules_ctx.end_month}} )
 </div>
+   
 </div>
-
+ {% if schedules_ctx.pending == 1 %}
+    <div class="request_pending_counter">
+      There is {{schedules_ctx.pending}} schedule to appeal
+    </div>
+    {% elif schedules_ctx.pending >= 1 %}
+    <div class="request_pending_counter">
+      There are {{schedules_ctx.pending}} schedules to appeal
+    </div>
+    {% endif %}
 <div class="schedule_outer_frame_management">
 
 

@@ -5,6 +5,7 @@
     padding-top: 10%;
     display: flex;
     justify-content: center;
+     cursor: pointer;
 }
 .resource_title_ctn{
     
@@ -25,6 +26,7 @@
    background-color: rgb(199, 199, 199);
    border: 1px solid black;
    padding: 1%;
+
 
 }
 .ressources_outer_div{
@@ -84,6 +86,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+     cursor: pointer;
 }
 .what_content_button{
    

@@ -1,0 +1,148 @@
+ {% extends 'dashboard/base.html' %}
+{% load user_data %}
+ {% block content %}
+<h1 style="left: 5%;
+top: -0.4%;
+position: fixed;
+font-size: 28px;">Milestones</h1>
+<div class="history_extreme_outer"> 
+<div class="history_outer">
+ 
+    <div class="history_left_pane">
+        <div class="timeline_title_outer"> 
+            <div class="timeline_title">Timeline
+               
+
+            </div>
+        </div>  
+
+        <div class="left_months_outer_history"> 
+            {% for month in months_set %}
+            <div class="left_months_history">
+             {{month}}
+            </div>
+     
+           
+            {% endfor %}
+               </div>
+    </div>
+    <div class="history_right_content" id="history_right_content">
+            <div class="top_timeline">
+                   {% for date in dates_set %}
+                   <div class="weeks_history">
+                      {{date}}
+                   </div>
+                       {% endfor %}
+            </div>
+            <div class="bottom_events">
+                
+                   
+                 {% for month in months_set %}
+                  <div class="month_row_history"> 
+                    {% for empty_milestone in empty_count_dict|get_item:month %}
+                    <div class="milestone_div_empty">
+                    </div>
+                    {% endfor %}
+                    {% for milestone in milestones_dict|get_item:month %}
+                    <div class="milestone_div {% if milestone.date.day == now.day %} 
+                    glowing_milestone {% endif %}">{{milestone.name}}
+                    </div>
+                    {% endfor %}
+                  </div>
+                     
+                       {% endfor %}
+            </div>
+
+
+    </div>
+                  
+   {% if user.userprofile.role.name in allowed_roles %}
+   
+  
+    <button onclick="setVisibleFlex(this, 'goal_modal')" class="history_right_btn">
+      Set goals</button>
+    
+     {% endif %}
+</div>
+            <div class="goals_modal_history" id="goal_modal">
+                  <div class="x_btn_goals" onclick="document.getElementById('goal_modal').style.display='none'">
+                    x</div>
+             
+                <div class="add_goals">
+                   <form method ="post" class="goals_form">
+                     {% csrf_token %}
+                 <div class="goal_form_name">
+                    {{goal_form.name.label_tag}}
+                     {{goal_form.name}}
+                     </div>
+                     <div class="goal_form_type">
+                        {{goal_form.type.label_tag}}
+                        {{goal_form.type}}
+                     </div>
+                      <div class="goal_form_value">
+                        {{goal_form.value.label_tag}}
+                         {{goal_form.value}}
+                         </div>
+                           <div class="goal_form_value_type">
+                            {{goal_form.value_type.label_tag}}
+                           {{goal_form.value_type}}
+                           </div>
+                     <input type="submit" class="submit_form_goal">
+                   </form>
+                </div>
+                 
+
+            </div>
+
+
+
+    <div class="bot_current_goals">
+        <div class="current_goals_title">
+            Goals
+        </div>
+        <div class="current_goals_content">
+           {% for goal in goals %}
+           {% if not user.userprofile.role.name in allowed_roles %}
+           <div class="pending_goals_div"> 
+
+           {{goal}} ({{goal.value}})
+
+           </div>
+               {% else %}
+              
+                  <div class="pending_goals_div" 
+                  onclick="document.getElementById('del_goal_modal').style.display ='block';
+                  document.getElementById('del_btn').value = '{{goal.id}}'"> 
+
+           {{goal}} ({{goal.value}})
+
+           </div>
+           {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<div id="del_goal_modal">
+   <div class="del_goal_text">
+   Delete goal ?
+   </div>
+   <form method="post" class="del_btn_goal">
+   {% csrf_token %}
+
+   <button name="del" id="del_btn" type="submit"> Delete</button>
+  </form>
+
+        <button class="x_btn_add_file"
+         onclick="document.getElementById('del_goal_modal').style.display = 'none'">
+          X
+        </button>
+         
+</div>
+
+ {% endblock %}

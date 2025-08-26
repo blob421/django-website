@@ -11,12 +11,8 @@
        {% endif %}
 
 
-       <div class="btn-container-msg-inbox">
-     <div class="messages_send_msg_btn_inbox">
-      
-      <a href="{% url 'dashboard:messages_create' %}">
-      
-        <button class="send_a_msg_btn_inbox">Send a message</button></a></div>
+            <div class="btn-container-msg">
+       <div class="messages_send_msg_btn"><a href="{% url 'dashboard:messages_create' %}"><button class="send_a_msg_btn">Send a message</button></a></div>
        <form id="myForm" method="post">
                {% csrf_token %}
         <!-- Hidden inputs will be added here -->

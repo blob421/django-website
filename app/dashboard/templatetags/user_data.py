@@ -14,6 +14,16 @@ def slicer(doc_id):
  return content_type[:5]
     
 @register.filter
+def getUserCount(task):
+  users = task.users.all()
+  count = 0
+  for user in users:
+    count += 1
+  return count
+
+
+
+@register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
 
@@ -46,13 +56,15 @@ def get_schedules(user, manage = False):
         
         schedules = Schedule.objects.filter(user__team = user.userprofile.team)
         last_month_schedules  = schedules.filter(query).order_by('id')
-  
+        pending =  last_month_schedules.filter(request_pending=True).count()
+      
         return {
             
                 'week_objects': weeks,
                 'schedules': last_month_schedules,
                 'start_month': starting_month,
                 'end_month': ending_month,
+                'pending':pending
              
                 }
 

@@ -45,6 +45,7 @@ border-radius: 2px;
 background-color: rgb(116, 116, 130);
 border: 1px solid black;
 height: 100%;
+cursor: pointer;
 
 }
 
@@ -198,30 +199,19 @@ height: 100%;
    
 }
 
-.send_a_msg_btn_inbox{
- padding-top: 10px;
-   padding-bottom: 10px;
-     width: 100%;
-       border: 1px solid black;
 
-}
-.send_a_msg_btn_inbox:hover{
-      background-color: rgb(225, 225, 225);
-}
-.messages_send_msg_btn_inbox{
- 
-    top: 0%;
-    width: 100%;
-}
+
+
 .delete_selected_messages{
       border: 1px solid black;
    margin-top: 10%;
     background-color: rgb(116, 116, 130);
     color: white;
     border-radius: 4px;
-    height: 50%;
-   padding-top: 10px;
-   padding-bottom: 10px;
+    height: 5%;
+    cursor: pointer;
+     
+
    width: 100%;
 }
 #myForm button{
@@ -232,17 +222,7 @@ height: 100%;
     
 }
 
-.btn-container-msg-inbox{
-         position: relative;
-     top: 50%;
-     transform: translateY(-50%);
-   
-     width: 10%;
-     left: 0.45%;
-     height: 25%;
-   
-     
-}
+
 .tickbox{
    width: 2.5%;
    height: 3vh;
@@ -289,26 +269,9 @@ height: 100%;
    padding-bottom: 10%;
    width: 100%;
 }
-.btn-container-msg-inbox{
-         position: absolute;
-     top: 15%;
-     left: 50%;
-     transform: translateX(-50%);
-   
-     width: 15%;
-     display: flex;
-     height: 10%;
-     align-items: center;
-     width: 60%;
-     gap: 20%;
-   
-     
-}
-.messages_send_msg_btn_inbox{
- 
 
-    width: 40%;
-}
+
+
 .title_container_inbox{
     width: 100vw;
 }

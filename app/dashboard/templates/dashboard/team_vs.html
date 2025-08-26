@@ -1,0 +1,11 @@
+ {% extends 'dashboard/base.html' %}
+{% load user_data %}
+ {% block content %}
+<div class="graph_cont_teamvs">
+
+
+<div class="team_vs_outer">
+    {{graph|safe}}
+</div>
+</div>
+ {% endblock %}

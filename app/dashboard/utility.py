@@ -1,19 +1,36 @@
-from .models import UserProfile, Task, Team, Document, Stats, Schedule
+from .models import UserProfile, Task, Team, Document, Stats, Milestone, Goal
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
 import plotly.graph_objs as go
 from plotly.offline import plot
 from django.utils import timezone
 from django.core.files.storage import default_storage
-
+from django.contrib.auth import get_user_model
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
+from twilio.rest import Client
+from django.conf import settings
+user_model = get_user_model()
 ##### UTILITY ###############
-
+import os 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
-          
+  
+def send_sms(phone_number, content):
+    user_phone = f'+1{phone_number}'
+   
+    account_sid = os.environ.get('TWILIO_ACCCOUNT_SID').strip("'\"")
+    auth_token = os.environ.get('TWILIO_AUTH_TOKEN').strip("'\"")
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+    messaging_service_sid=os.environ.get('TWILIO_MSG_SID').strip("'\""),
+    body=content,
+    to=user_phone
+    )
+    print(message.sid)
+
+
 def save_stats(stats, late=False, urgent=False):
     stats.completed_tasks += 1
     stats.submission += 1
@@ -443,3 +460,169 @@ def calculate_days_scheduled(user,last_sched):
       
      Stats.objects.create(content_object=user, days_scheduled=total_days)
      return total_days
+
+def calculate_milestones():
+        now = timezone.now().date()
+        first_user = user_model.objects.get(id=1)
+        first_date = first_user.assigned_on
+        milestones = Milestone.objects.all()
+ 
+        if (now - first_date).days <= 100:
+            time_gap = relativedelta(days=7)
+         
+        elif (now - first_date).days <= 365:
+            time_gap = relativedelta(month=1)
+           
+
+        months_set = []
+        
+        week = first_date 
+        while week <= now:
+                month_str = week.strftime('%B')       
+                if not month_str in months_set:
+                    months_set.append(month_str)
+                week += time_gap
+
+        dates_set = []
+        empty_count_dict = {}
+        milestones_dict = {}
+        last_month = None
+        iter = 0
+        empty_count_total = 0
+    
+        for month in months_set:
+           for m in milestones:       
+                milestones_dict[month] = [m for m in milestones if m.month == month]
+                dates_set.append(m.timestamp)
+
+           if iter == 0:
+               last_month = month
+               iter += 1
+               continue
+           
+           for n in milestones_dict[last_month]:
+                empty_count_dict[month] = empty_count_dict.get(month , 0) + 1 
+
+           empty_count_dict[month] += empty_count_total
+           empty_count_total += empty_count_dict[month]
+
+           for key, val in empty_count_dict.items():
+               empty_count_dict[key] = range(val)
+
+        return {'dates_set':dates_set, 'months_set':months_set, 'milestones':milestones,
+                'empty_count_dict':empty_count_dict, 'milestones_dict':milestones_dict}
+
+
+def check_milestones():
+
+    now = timezone.now()
+    goals = Goal.objects.filter(accomplished = False)
+    stats = Stats.objects.all()
+    
+    goals_dict = {}
+   
+
+    for goal in goals:
+
+        if goal.value_type == 'Days':
+     
+            time_range = now - relativedelta(days=goal.value)
+            stats = stats.filter(timestamp__lte = now, timestamp__gte=time_range)
+
+   
+        has_key = goals_dict.get(goal.type.name)
+        if not has_key:
+        
+
+            goals_dict[goal.type.name] = goal
+         
+            total_denied = 0
+            total_completed = 0
+            for stat in stats:
+                total_denied += stat.denied_tasks
+                total_completed += stat.completed_tasks
+   
+            if goal.type.name == 'No denied tasks':
+                if total_denied > 0 :
+                    continue
+                else:
+                    Milestone.objects.create(date=now.date(), 
+                                name=f'{goal.type.name}{goal.value}{goal.value_type}')
+            if goal.type.name == 'Tasks completed':
+          
+                if total_completed >= goal.value:
+                        goal.accomplished = True
+                        goal.save()
+                        Milestone.objects.create(date=now.date(), 
+                                name=f'{goal.type.name}({goal.value})')
+                else:
+                     continue
+            
+
+
+def get_team_graph():
+    
+        teams = Team.objects.all()
+        now = timezone.now()
+        three_months_ago = now - relativedelta(days=90)
+        team_list = []
+
+        fig1 = go.Figure()
+        color_list = ['lightblue','red', 'lightgreen']
+        n = 0
+        for team in teams:
+            team_list.append(team.name)
+            stats = Stats.objects.filter(timestamp__lte = now,
+                                            timestamp__gte=three_months_ago,
+                                        object_id=team.id).order_by('timestamp') 
+            
+            x_ticks = []
+            y_ticks = []
+            
+            total_late = 0
+            total_completed = 0
+            for stat in stats:
+                   total_completed += stat.completed_tasks
+                   total_late += stat.late_tasks
+                   y_ticks.append(round(safe_divide(total_late, total_completed),0))
+                   x_ticks.append(stat.timestamp)
+            print(total_completed)
+            print(total_late)
+
+            #graph_dict[team.name] = {'x_ticks':x_ticks, 'y_ticks':y_ticks}
+            
+        
+            
+
+            fig1.add_trace(go.Scatter(x=x_ticks, y=y_ticks, 
+                                              line=dict(color=color_list[n], width=4),
+                                              name=f'{team.name}',
+                                              mode='lines+markers'))
+            n+=1
+        
+        graph_title['text'] = 'Teams effiency'
+        graph_title['y'] = 0.95
+        fig1.update_layout(legend=dict(
+                            x=0.1,          
+                            y=1,           
+                            xanchor="center",
+                            yanchor="top"    
+                        ),
+                         margin=dict(b=70, l=20, r=50,t=70),
+                            title=graph_title,
+                            xaxis=dict(
+                                 
+                                        ticks="outside",      
+                                        ticklabelposition="outside",
+                                              
+                                    ),          
+                            yaxis=dict(range=[0, 100], ticksuffix='%    ',
+                                       ),
+                            plot_bgcolor="#C8C8C8",
+                            paper_bgcolor="#E3E3E3",
+                         
+                        )
+ 
+        plot_div1 = plot(fig1, output_type='div')
+        return {'graph':plot_div1}
+

@@ -13,9 +13,10 @@ admin.site.register(models.Task)
 admin.site.register(models.Schedule)
 admin.site.register(models.Team)
 admin.site.register(models.WeekRange)
-
-
-
+admin.site.register(models.Milestone)
+admin.site.register(models.Goal)
+admin.site.register(models.GoalType)
+admin.site.register(models.ValueType)
 #class ResourceAdmin(admin.ModelAdmin):
    # def get_model_perms(self, request):
      

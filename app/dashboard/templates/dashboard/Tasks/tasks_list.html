@@ -1,5 +1,5 @@
  {% include 'dashboard/base.html' %}
-
+{% load user_data static %}
  {% block content %}
  
  
@@ -14,19 +14,30 @@
 {% if task.due_date > time %}
  {% if not task.completed %}
  {% if not task.urgent %}
+ {% with task|getUserCount as count %}
 <a href="{% url 'dashboard:task_detail' task.id %}">
  <div class="task_blocks1">
-     <p class="task_title"> {{task.name}} </p>
-     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+    <div class="title_cont"> 
+          <div class="task_title">{{task.name}} 
+          </div>
+          <div class="task_people">
+             {{count}}
+              <img src="{% static 'team_icon12.png' %}" class="people_img">
+           
+         </div>
+    </div> 
+     <p class="task_due_date">Limit : {{task.due_date}}  </p>
  </div>
 </a>
+{% endwith %}
 {% else %}
 <a href="{% url 'dashboard:task_detail' task.id %}">
  <div class="task_blocks_urgent">
      <p class="task_title"> {{task.name}} </p>
-     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+     <p class="task_due_date">Due date : {{task.due_date}}  </p>
  </div>
 </a>
+
 {% endif %}
 {% endif %}
 {% endif %}
@@ -42,12 +53,23 @@
  {% if not task.denied %}
  {% if task.due_date < time %}
  {% if not task.completed %}
+ {% with task|getUserCount as count %}
  <a href="{% url 'dashboard:task_detail' task.id %}">
  <div class="task_blocks3">
-      <p class="task_title"> {{task.name}} </p>
-     <p class="task_due_date">Due date: {{task.due_date}}  </p>
+      <div class="title_cont"> 
+      <p class="task_title"> {{task.name}} 
+
+      </p>
+        <div class="task_people">
+             {{count}}
+              <img src="{% static 'team_icon12.png' %}" class="people_img">
+           
+         </div>
+      </div>
+     <p class="task_due_date">Limit : {{task.due_date}}  </p>
  </div>
  </a>
+ {% endwith %}
  {% endif %}
  {% endif %}
  {% endif %}

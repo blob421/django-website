@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSection, Document
+from .models import Goal
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from django import forms
@@ -209,3 +210,8 @@ class AddTaskChart(ModelForm):
                   self.fields['starting_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
                   self.fields['section'].queryset = ChartSection.objects.filter(chart = chart)
 
+
+class GoalForm(ModelForm):
+     class Meta:
+          model = Goal
+          fields = ['name', 'type', 'value', 'value_type']

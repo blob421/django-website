@@ -22,8 +22,9 @@
                     +</button> </a>
                     {% if chart.id %}
                     <div class="save_modify_chart_btn_div">  
-                       <button onclick="toggleGrid()"> Grid</button>
-                         <button onclick="SaveChart('{{chart.id}}')">Save</button> 
+                       <button onclick="toggleGrid()" class="grid_btn"> Grid</button>
+                         <button onclick="SaveChart('{{chart.id}}')" class="chart_save_btn">
+                          Save</button> 
                          <a href="{% url 'dashboard:chart_update' chart.id %}">
                          <button class="chart_modify_button">Modify</button></a>
                              
@@ -52,7 +53,7 @@
                     
                     {% if forloop.counter < 5 %}
                     <a href="{% url 'dashboard:chart_detail' chart.id %}">
-                     <button id="chart_btn_title{{chart.id}}"> 
+                     <button id="chart_btn_title{{chart.id}}" class="btn_title_chart"> 
                       {{chart.title}}</button></a>
                     {% if forloop.counter > 3 %}
                    

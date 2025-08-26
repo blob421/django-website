@@ -124,7 +124,9 @@
  
     
 }
-
+.management_tog_btn{
+    cursor: pointer;
+}
 #toggle_manage{
     background-color:#f0f0f0;
     border: 1px solid rgb(74, 74, 74);
@@ -190,14 +192,24 @@
     display: block;
     height: 100%;
 }
-
+.update_team_submit{
+    background-color: rgb(86, 86, 86);
+    width: 23%;
+    padding: 1%;
+    border-radius: 4px;
+    color: white;
+    margin-top: 3%;
+    position: absolute;
+    cursor: pointer;
+}
 .button_tasks_list {
 
     height: 7vh;
     width: 18vw;
     border: grey solid 2px;
      left: 50%;
-   
+     padding: 1%;
+   cursor: pointer;
  
 }
 .button_tasks_list:hover{
@@ -440,6 +452,7 @@ border: 2px solid grey;
     padding: 2%;
     border: 2px solid grey;
     color: white;
+     cursor: pointer;
 }
 .graph_stats_left_frame{
     border: 2px solid rgb(57, 57, 57);

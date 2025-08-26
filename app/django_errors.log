@@ -10598,3 +10598,1803 @@ Traceback (most recent call last):
     return func(_wrapped, *args)
 AttributeError: 'AnonymousUser' object has no attribute 'userprofile'
 ERROR 2025-08-23 19:47:02,576 basehttp 25784 9744 "GET /dashboard/team/ HTTP/1.1" 500 81609
+ERROR 2025-08-24 09:07:23,994 log 24944 9052 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django_redis\cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django_redis\cache.py", line 138, in has_key
+    return self.client.has_key(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django_redis\client\default.py", line 740, in has_key
+    raise ConnectionInterrupted(connection=client) from e
+django_redis.exceptions.ConnectionInterrupted: Redis ConnectionError: Error 10061 connecting to 127.0.0.1:6379. Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\decorators\debug.py", line 143, in sensitive_post_parameters_wrapper
+    return view(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\views.py", line 89, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\edit.py", line 151, in post
+    return self.form_valid(form)
+           ~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\views.py", line 108, in form_valid
+    auth_login(self.request, form.get_user())
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\__init__.py", line 187, in login
+    request.session.cycle_key()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\sessions\backends\base.py", line 432, in cycle_key
+    self.create()
+    ~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\sessions\backends\db.py", line 70, in create
+    self._session_key = self._get_new_session_key()
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\sessions\backends\base.py", line 196, in _get_new_session_key
+    if not self.exists(session_key):
+           ~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\sessions\backends\cached_db.py", line 77, in exists
+    and (self.cache_key_prefix + session_key) in self._cache
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\cache\backends\base.py", line 301, in __contains__
+    return self.has_key(key)
+           ~~~~~~~~~~~~^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\debug_toolbar\panels\cache.py", line 42, in wrapper
+    return panel._record_call(cache, name, original_method, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\debug_toolbar\panels\cache.py", line 151, in _record_call
+    value = original_method(*args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django_redis\cache.py", line 36, in _decorator
+    raise e.__cause__  # noqa: B904
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django_redis\client\default.py", line 738, in has_key
+    return client.exists(key) == 1
+           ~~~~~~~~~~~~~^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\redis\commands\core.py", line 1736, in exists
+    return self.execute_command("EXISTS", *names, keys=names)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\redis\client.py", line 621, in execute_command
+    return self._execute_command(*args, **options)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\redis\client.py", line 627, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\redis\utils.py", line 195, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\redis\connection.py", line 1533, in get_connection
+    connection.connect()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\redis\connection.py", line 380, in connect
+    self.connect_check_health(check_health=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\redis\connection.py", line 397, in connect_check_health
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to 127.0.0.1:6379. Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée.
+ERROR 2025-08-24 09:07:24,044 basehttp 24944 9052 "POST / HTTP/1.1" 500 237729
+ERROR 2025-08-24 09:55:13,264 log 28196 15892 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1190, in get
+    for week in range(100/7 % 0):
+                      ~~~~~~^~~
+ZeroDivisionError: float modulo by zero
+ERROR 2025-08-24 09:55:13,292 basehttp 28196 15892 "GET /dashboard/history/milestones HTTP/1.1" 500 102591
+ERROR 2025-08-24 09:55:33,653 log 30688 18528 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1190, in get
+    for week in range(int(100/7) % 0):
+                      ~~~~~~~~~~~^~~
+ZeroDivisionError: integer modulo by zero
+ERROR 2025-08-24 09:55:33,678 basehttp 30688 18528 "GET /dashboard/history/milestones HTTP/1.1" 500 102619
+ERROR 2025-08-24 09:57:07,202 log 28472 19420 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1190, in get
+    while week < first_date in range(int(100/7)):
+          ^^^^
+UnboundLocalError: cannot access local variable 'week' where it is not associated with a value
+ERROR 2025-08-24 09:57:07,229 basehttp 28472 19420 "GET /dashboard/history/milestones HTTP/1.1" 500 102870
+ERROR 2025-08-24 10:07:55,061 log 28848 17340 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1198, in get
+    week_list.append(week.strftime('%d','%m'))
+                     ~~~~~~~~~~~~~^^^^^^^^^^^
+TypeError: strftime() takes at most 1 argument (2 given)
+ERROR 2025-08-24 10:07:55,087 basehttp 28848 17340 "GET /dashboard/history/milestones HTTP/1.1" 500 102704
+ERROR 2025-08-24 10:13:54,902 log 17432 17836 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1200, in get
+    months_set.append(week.month)
+    ^^^^^^^^^^^^^^^^^
+AttributeError: 'set' object has no attribute 'append'
+ERROR 2025-08-24 10:13:54,929 basehttp 17432 17836 "GET /dashboard/history/milestones HTTP/1.1" 500 102878
+ERROR 2025-08-24 10:14:43,810 log 18284 12744 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1200, in get
+    months_set.add(week.stfrtime('%B'))
+                   ^^^^^^^^^^^^^
+AttributeError: 'datetime.date' object has no attribute 'stfrtime'. Did you mean: 'strftime'?
+ERROR 2025-08-24 10:14:43,839 basehttp 18284 12744 "GET /dashboard/history/milestones HTTP/1.1" 500 102980
+ERROR 2025-08-24 10:32:23,918 log 18924 28360 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1207, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+    ...<8 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 44: 'endblock', expected 'empty' or 'endfor'. Did you forget to register or load this tag?
+ERROR 2025-08-24 10:32:23,970 basehttp 18924 28360 "GET /dashboard/history/milestones HTTP/1.1" 500 225923
+ERROR 2025-08-24 10:42:40,293 log 3412 20028 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endfor'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1206, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 976, in do_if
+    nodelist = parser.parse(("endif",))
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+    ...<8 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 35: 'endfor', expected 'endif'. Did you forget to register or load this tag?
+ERROR 2025-08-24 10:42:40,351 basehttp 3412 20028 "GET /dashboard/history/milestones HTTP/1.1" 500 282977
+ERROR 2025-08-24 10:48:32,278 log 29648 10920 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1206, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+    ...<8 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 70: 'endblock', expected 'empty' or 'endfor'. Did you forget to register or load this tag?
+ERROR 2025-08-24 10:48:32,322 basehttp 29648 10920 "GET /dashboard/history/milestones HTTP/1.1" 500 231023
+ERROR 2025-08-24 10:48:54,847 log 29648 10920 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\smartif.py", line 180, in translate_token
+    op = OPERATORS[token]
+         ~~~~~~~~~^^^^^^^
+KeyError: '='
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1206, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 961, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+                ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 894, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\smartif.py", line 171, in __init__
+    mapped_tokens.append(self.translate_token(token))
+                         ~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\smartif.py", line 182, in translate_token
+    return self.create_var(token)
+           ~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 897, in create_var
+    return TemplateLiteral(self.template_parser.compile_filter(value), value)
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 710, in __init__
+    raise TemplateSyntaxError(
+    ...<2 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '=' from '='
+ERROR 2025-08-24 10:48:54,901 basehttp 29648 10920 "GET /dashboard/history/milestones HTTP/1.1" 500 312801
+ERROR 2025-08-24 11:07:16,703 log 19508 21480 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\smartif.py", line 180, in translate_token
+    op = OPERATORS[token]
+         ~~~~~~~~~^^^^^^^
+KeyError: '-'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1207, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 961, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+                ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 894, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\smartif.py", line 171, in __init__
+    mapped_tokens.append(self.translate_token(token))
+                         ~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\smartif.py", line 182, in translate_token
+    return self.create_var(token)
+           ~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 897, in create_var
+    return TemplateLiteral(self.template_parser.compile_filter(value), value)
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 710, in __init__
+    raise TemplateSyntaxError(
+    ...<2 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '-' from '-'
+ERROR 2025-08-24 11:07:16,761 basehttp 19508 21480 "GET /dashboard/history/milestones HTTP/1.1" 500 295211
+ERROR 2025-08-24 11:39:14,553 log 2340 21732 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1216, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 848, in do_for
+    raise TemplateSyntaxError(
+    ...<2 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: 'for' statements should use the format 'for x in y': for milestone in milestones_dict|get_item month
+ERROR 2025-08-24 11:39:14,597 basehttp 2340 21732 "GET /dashboard/history/milestones HTTP/1.1" 500 234373
+ERROR 2025-08-24 11:43:21,747 log 1052 9472 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1214, in get
+    'time_name':time_name, 'months_set':reverse(months_set), 'milestones':milestones,
+                                        ~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\urls\resolvers.py", line 751, in _reverse_with_prefix
+    possibilities = self.reverse_dict.getlist(lookup_view)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\datastructures.py", line 152, in getlist
+    return self._getlist(key, default, force_list=True)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\datastructures.py", line 137, in _getlist
+    values = super().__getitem__(key)
+TypeError: unhashable type: 'set'
+ERROR 2025-08-24 11:43:21,778 basehttp 1052 9472 "GET /dashboard/history/milestones HTTP/1.1" 500 130617
+ERROR 2025-08-24 11:52:51,981 log 12896 9660 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1209, in get
+    empty_count_dict[month] += 1
+    ~~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'July'
+ERROR 2025-08-24 11:52:52,006 basehttp 12896 9660 "GET /dashboard/history/milestones HTTP/1.1" 500 103740
+ERROR 2025-08-24 11:54:19,973 log 14916 16520 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1209, in get
+    empty_count_dict[month] += 1
+    ~~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'July'
+ERROR 2025-08-24 11:54:20,006 basehttp 14916 16520 "GET /dashboard/history/milestones HTTP/1.1" 500 103743
+ERROR 2025-08-24 11:55:39,532 log 1172 23036 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1218, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    values = list(values)
+TypeError: 'int' object is not iterable
+ERROR 2025-08-24 11:55:40,080 log 1172 29444 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1218, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    values = list(values)
+TypeError: 'int' object is not iterable
+ERROR 2025-08-24 11:55:40,125 basehttp 1172 29444 "GET /dashboard/history/milestones HTTP/1.1" 500 200388
+ERROR 2025-08-24 11:56:35,357 log 7916 1340 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1218, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    values = list(values)
+TypeError: 'int' object is not iterable
+ERROR 2025-08-24 11:56:35,400 basehttp 7916 1340 "GET /dashboard/history/milestones HTTP/1.1" 500 200388
+ERROR 2025-08-24 11:57:37,795 log 18808 17456 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1209, in get
+    empty_count_dict[month] = range((empty_count_dict.get(month , 0) + 1))
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+TypeError: unsupported operand type(s) for +: 'range' and 'int'
+ERROR 2025-08-24 11:57:37,822 basehttp 18808 17456 "GET /dashboard/history/milestones HTTP/1.1" 500 104183
+ERROR 2025-08-24 11:58:11,623 log 29548 22592 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1218, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    values = list(values)
+TypeError: 'int' object is not iterable
+ERROR 2025-08-24 11:58:11,668 basehttp 29548 22592 "GET /dashboard/history/milestones HTTP/1.1" 500 200388
+ERROR 2025-08-24 12:04:07,477 log 15524 27636 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    return render(request, self.template_name, ctx)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    values = list(values)
+TypeError: 'int' object is not iterable
+ERROR 2025-08-24 12:04:07,519 basehttp 15524 27636 "GET /dashboard/history/milestones HTTP/1.1" 500 201026
+ERROR 2025-08-24 12:05:29,749 log 17692 17492 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1217, in get
+    for key, val in empty_count_dict:
+        ^^^^^^^^
+ValueError: too many values to unpack (expected 2)
+ERROR 2025-08-24 12:05:29,776 basehttp 17692 17492 "GET /dashboard/history/milestones HTTP/1.1" 500 104361
+ERROR 2025-08-24 12:25:53,141 log 5188 21844 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1212, in get
+    dates_list.append(m.strftime('%B%d'))
+                      ^^^^^^^^^^
+AttributeError: 'Milestone' object has no attribute 'strftime'
+ERROR 2025-08-24 12:25:53,167 basehttp 5188 21844 "GET /dashboard/history/milestones HTTP/1.1" 500 104440
+ERROR 2025-08-24 12:26:43,102 log 20784 22460 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1222, in get
+    empty_count_dict[month] += empty_count_total
+    ~~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'August'
+ERROR 2025-08-24 12:26:43,130 basehttp 20784 22460 "GET /dashboard/history/milestones HTTP/1.1" 500 104332
+ERROR 2025-08-24 12:26:44,264 log 20784 22460 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1222, in get
+    empty_count_dict[month] += empty_count_total
+    ~~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'August'
+ERROR 2025-08-24 12:26:44,290 basehttp 20784 22460 "GET /dashboard/history/milestones HTTP/1.1" 500 104331
+ERROR 2025-08-24 12:27:25,049 log 26832 29240 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1211, in get
+    milestones_dict[month] = [m for m in milestones if m.month == month]
+                                                       ^^^^^^^
+AttributeError: 'Milestone' object has no attribute 'month'
+ERROR 2025-08-24 12:27:25,075 basehttp 26832 29240 "GET /dashboard/history/milestones HTTP/1.1" 500 104455
+ERROR 2025-08-24 12:33:50,286 log 31432 21152 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1233, in get
+    'dates_set':reverse(list(dates_set))}
+                ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\urls\resolvers.py", line 751, in _reverse_with_prefix
+    possibilities = self.reverse_dict.getlist(lookup_view)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\datastructures.py", line 152, in getlist
+    return self._getlist(key, default, force_list=True)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\datastructures.py", line 137, in _getlist
+    values = super().__getitem__(key)
+TypeError: unhashable type: 'list'
+ERROR 2025-08-24 12:33:50,316 basehttp 31432 21152 "GET /dashboard/history/milestones HTTP/1.1" 500 132259
+ERROR 2025-08-24 12:44:43,898 log 31728 23944 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1226, in get
+    empty_count_dict[key] = range(val)
+                            ~~~~~^^^^^
+TypeError: 'range' object cannot be interpreted as an integer
+ERROR 2025-08-24 12:44:43,925 basehttp 31728 23944 "GET /dashboard/history/milestones HTTP/1.1" 500 105498
+ERROR 2025-08-24 12:46:20,215 log 30784 14136 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1200, in get
+    months_set.add(week.strftime('%B'))
+    ^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'add'
+ERROR 2025-08-24 12:46:20,243 basehttp 30784 14136 "GET /dashboard/history/milestones HTTP/1.1" 500 102897
+ERROR 2025-08-24 12:47:36,538 log 10492 21748 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1200, in get
+    months_set.add(week.strftime('%B'))
+    ^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'add'
+ERROR 2025-08-24 12:47:36,565 basehttp 10492 21748 "GET /dashboard/history/milestones HTTP/1.1" 500 102897
+ERROR 2025-08-24 12:48:01,071 log 19084 9748 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1226, in get
+    empty_count_dict[key] = range(val)
+                            ~~~~~^^^^^
+TypeError: 'range' object cannot be interpreted as an integer
+ERROR 2025-08-24 12:48:01,098 basehttp 19084 9748 "GET /dashboard/history/milestones HTTP/1.1" 500 105503
+ERROR 2025-08-24 12:49:21,564 log 23748 7276 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1226, in get
+    empty_count_dict[key] = range(val)
+                            ~~~~~^^^^^
+TypeError: 'range' object cannot be interpreted as an integer
+ERROR 2025-08-24 12:49:21,592 basehttp 23748 7276 "GET /dashboard/history/milestones HTTP/1.1" 500 105497
+ERROR 2025-08-24 12:50:55,453 log 23744 24476 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1233, in get
+    'dates_set':date_list}
+                ^^^^^^^^^
+NameError: name 'date_list' is not defined
+ERROR 2025-08-24 12:50:55,486 basehttp 23744 24476 "GET /dashboard/history/milestones HTTP/1.1" 500 105058
+ERROR 2025-08-24 12:51:45,647 log 20068 30972 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1226, in get
+    empty_count_dict[key] = range(val)
+                            ~~~~~^^^^^
+TypeError: 'range' object cannot be interpreted as an integer
+ERROR 2025-08-24 12:51:45,674 basehttp 20068 30972 "GET /dashboard/history/milestones HTTP/1.1" 500 105401
+ERROR 2025-08-24 15:47:45,019 log 9748 20456 Internal Server Error: /dashboard/history/milestones
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\utils\deprecation.py", line 122, in __call__
+    response = self.process_response(request, response)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\middleware\clickjacking.py", line 27, in process_response
+    if response.get("X-Frame-Options") is not None:
+       ^^^^^^^^^^^^
+AttributeError: '__proxy__' object has no attribute 'get'
+ERROR 2025-08-24 15:47:45,043 basehttp 9748 20456 "POST /dashboard/history/milestones HTTP/1.1" 500 87568
+ERROR 2025-08-25 05:15:14,235 log 29964 22148 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 552, in get_team_graph
+    late_task_count += stat.late_tasks
+    ^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'late_task_count' where it is not associated with a value
+ERROR 2025-08-25 05:15:14,260 basehttp 29964 22148 "GET /dashboard/team/vs_team HTTP/1.1" 500 108169
+ERROR 2025-08-25 05:16:01,151 log 3872 6688 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 553, in get_team_graph
+    y_ticks.append(safe_divide(total_completed/total_late) * 100)
+                               ~~~~~~~~~~~~~~~^~~~~~~~~~~
+ZeroDivisionError: division by zero
+ERROR 2025-08-25 05:16:01,183 basehttp 3872 6688 "GET /dashboard/team/vs_team HTTP/1.1" 500 108066
+ERROR 2025-08-25 05:21:34,659 log 23764 13784 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 562, in get_team_graph
+    line=dict(color=color_list[n], width=4),
+                    ~~~~~~~~~~^^^
+IndexError: list index out of range
+ERROR 2025-08-25 05:21:34,692 basehttp 23764 13784 "GET /dashboard/team/vs_team HTTP/1.1" 500 112616
+ERROR 2025-08-25 05:21:35,454 log 23764 13784 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 562, in get_team_graph
+    line=dict(color=color_list[n], width=4),
+                    ~~~~~~~~~~^^^
+IndexError: list index out of range
+ERROR 2025-08-25 05:21:35,480 basehttp 23764 13784 "GET /dashboard/team/vs_team HTTP/1.1" 500 112615
+ERROR 2025-08-25 05:21:47,924 log 9784 24124 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 562, in get_team_graph
+    line=dict(color=color_list[n], width=4),
+                    ~~~~~~~~~~^^^
+IndexError: list index out of range
+ERROR 2025-08-25 05:21:47,952 basehttp 9784 24124 "GET /dashboard/team/vs_team HTTP/1.1" 500 112613
+ERROR 2025-08-25 05:27:41,272 log 27316 26464 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 568, in get_team_graph
+    fig1.update_layout(     legend=dict(
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                                x=0.1,
+                                ^^^^^^
+    ...<9 lines>...
+                        paper_bgcolor="lightgray",
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        )
+                        ^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\graph_objs\_figure.py", line 218, in update_layout
+    return super().update_layout(dict1, overwrite, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 1415, in update_layout
+    self.layout.update(dict1, overwrite=overwrite, **kwargs)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5195, in update
+    BaseFigure._perform_update(self, kwargs, overwrite=overwrite)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 3992, in _perform_update
+    plotly_obj[key] = val
+    ~~~~~~~~~~^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5967, in __setitem__
+    super(BaseLayoutHierarchyType, self).__setitem__(prop, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 4932, in __setitem__
+    self._set_prop(prop, value)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5276, in _set_prop
+    raise err
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5271, in _set_prop
+    val = validator.validate_coerce(val)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\_plotly_utils\basevalidators.py", line 1374, in validate_coerce
+    self.raise_invalid_val(v)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\_plotly_utils\basevalidators.py", line 298, in raise_invalid_val
+            raise ValueError(
+    ...<11 lines>...
+            )
+ValueError: 
+    Invalid value of type 'builtins.str' received for the 'plot_bgcolor' property of layout
+        Received value: '#FFECEC34'
+
+    The 'plot_bgcolor' property is a color and may be specified as:
+      - A hex string (e.g. '#ff0000')
+      - An rgb/rgba string (e.g. 'rgb(255,0,0)')
+      - An hsl/hsla string (e.g. 'hsl(0,100%,50%)')
+      - An hsv/hsva string (e.g. 'hsv(0,100%,100%)')
+      - A named CSS color: see https://plotly.com/python/css-colors/ for a list
+ERROR 2025-08-25 05:27:41,311 basehttp 27316 26464 "GET /dashboard/team/vs_team HTTP/1.1" 500 181218
+ERROR 2025-08-25 05:27:52,310 log 28328 26264 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 568, in get_team_graph
+    fig1.update_layout(     legend=dict(
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                                x=0.1,
+                                ^^^^^^
+    ...<9 lines>...
+                        paper_bgcolor="lightgray",
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        )
+                        ^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\graph_objs\_figure.py", line 218, in update_layout
+    return super().update_layout(dict1, overwrite, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 1415, in update_layout
+    self.layout.update(dict1, overwrite=overwrite, **kwargs)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5195, in update
+    BaseFigure._perform_update(self, kwargs, overwrite=overwrite)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 3992, in _perform_update
+    plotly_obj[key] = val
+    ~~~~~~~~~~^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5967, in __setitem__
+    super(BaseLayoutHierarchyType, self).__setitem__(prop, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 4932, in __setitem__
+    self._set_prop(prop, value)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5276, in _set_prop
+    raise err
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5271, in _set_prop
+    val = validator.validate_coerce(val)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\_plotly_utils\basevalidators.py", line 1374, in validate_coerce
+    self.raise_invalid_val(v)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\_plotly_utils\basevalidators.py", line 298, in raise_invalid_val
+            raise ValueError(
+    ...<11 lines>...
+            )
+ValueError: 
+    Invalid value of type 'builtins.str' received for the 'plot_bgcolor' property of layout
+        Received value: '#FFECEC00'
+
+    The 'plot_bgcolor' property is a color and may be specified as:
+      - A hex string (e.g. '#ff0000')
+      - An rgb/rgba string (e.g. 'rgb(255,0,0)')
+      - An hsl/hsla string (e.g. 'hsl(0,100%,50%)')
+      - An hsv/hsva string (e.g. 'hsv(0,100%,100%)')
+      - A named CSS color: see https://plotly.com/python/css-colors/ for a list
+ERROR 2025-08-25 05:27:52,353 basehttp 28328 26264 "GET /dashboard/team/vs_team HTTP/1.1" 500 181218
+ERROR 2025-08-25 05:28:31,384 log 25472 19780 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 568, in get_team_graph
+    fig1.update_layout(     legend=dict(
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                                x=0.1,
+                                ^^^^^^
+    ...<9 lines>...
+                        paper_bgcolor="lightgray",
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        )
+                        ^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\graph_objs\_figure.py", line 218, in update_layout
+    return super().update_layout(dict1, overwrite, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 1415, in update_layout
+    self.layout.update(dict1, overwrite=overwrite, **kwargs)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5195, in update
+    BaseFigure._perform_update(self, kwargs, overwrite=overwrite)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 3992, in _perform_update
+    plotly_obj[key] = val
+    ~~~~~~~~~~^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5967, in __setitem__
+    super(BaseLayoutHierarchyType, self).__setitem__(prop, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 4932, in __setitem__
+    self._set_prop(prop, value)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5276, in _set_prop
+    raise err
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\plotly\basedatatypes.py", line 5271, in _set_prop
+    val = validator.validate_coerce(val)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\_plotly_utils\basevalidators.py", line 1374, in validate_coerce
+    self.raise_invalid_val(v)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\_plotly_utils\basevalidators.py", line 298, in raise_invalid_val
+            raise ValueError(
+    ...<11 lines>...
+            )
+ValueError: 
+    Invalid value of type 'builtins.str' received for the 'plot_bgcolor' property of layout
+        Received value: 'none'
+
+    The 'plot_bgcolor' property is a color and may be specified as:
+      - A hex string (e.g. '#ff0000')
+      - An rgb/rgba string (e.g. 'rgb(255,0,0)')
+      - An hsl/hsla string (e.g. 'hsl(0,100%,50%)')
+      - An hsv/hsva string (e.g. 'hsv(0,100%,100%)')
+      - A named CSS color: see https://plotly.com/python/css-colors/ for a list
+ERROR 2025-08-25 05:28:31,426 basehttp 25472 19780 "GET /dashboard/team/vs_team HTTP/1.1" 500 181143
+ERROR 2025-08-25 05:51:28,630 log 21332 19508 Internal Server Error: /dashboard/team/vs_team
+Traceback (most recent call last):
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\.django\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\views.py", line 1224, in get
+    data = get_team_graph()
+  File "C:\Users\gabri\OneDrive\Bureau\Python\projects\django website\app\dashboard\utility.py", line 583, in get_team_graph
+    fig1.yaxis.range = (0, 100)
+    ^^^^^^^^^^
+AttributeError: 'Figure' object has no attribute 'yaxis'
+ERROR 2025-08-25 05:51:28,662 basehttp 21332 19508 "GET /dashboard/team/vs_team HTTP/1.1" 500 115048

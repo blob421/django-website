@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
      {% load static %}
+       <link rel="stylesheet" href="{% static 'dashboard/team_vs.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/home.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/messages.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/msg_main.css' %}">
@@ -17,7 +18,9 @@
      <link rel="stylesheet" href="{% static 'dashboard/charts.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/schedules.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/account.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/history.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/resources.css' %}">
+     
      <script src="{% static 'js/getSubtask.js' %}"></script>
     
      {% block extra_css %}
@@ -39,6 +42,15 @@
  bottom: 0.5%;
  z-index: 10000;
   }
+  .logout_btn{
+    cursor: pointer;
+  
+    
+  }
+  nav{
+    display: flex;
+    align-items: center;
+  }
   .userprofile_nav{
     background-color: #343333 !important;
     color: white !important;
@@ -46,8 +58,9 @@
     width: 7vw;
     margin-left: -1.5%;
     border: 2px solid grey;
+    border-top: 1px;
    
-    font-size: small;
+    font-size: x-small;
 }
 html , body{
     background-color: rgb(237, 228, 208);
@@ -84,6 +97,7 @@ position: fixed;
     border-radius: 1px;
     background-color: #e4e1d8;
     color: black;
+    
 }
 
 .user_account_div{
@@ -144,7 +158,7 @@ html{
   <a href="{% url 'dashboard:chat_view' %}">Chat</a>
   <form method="post" action='{% url "dashboard:logout" %}'>
     {% csrf_token %}
-  <input type="submit" value="Logout">
+  <input type="submit" value="Logout" class="logout_btn">
   {% if is_home %}
   <a href="{% url 'dashboard:user_account' user.id %}" class="userprofile_nav">User profile</a>
   {% endif %}
@@ -153,9 +167,11 @@ html{
 </nav>
 </div>
 {% load static %}
+
 <a href="{% url 'dashboard:ressources' %}">
  <img src= "{% static 'question_mark.png' %}" id="question_mark">
  </a>
+
  {% block content %}{% endblock %}
 
 </body> 

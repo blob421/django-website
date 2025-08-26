@@ -13,7 +13,7 @@
 }
 .chart_clear_btn{
   background-color: rgb(249, 144, 144);
-  
+   cursor: pointer;
   border: 1px solid black;
   border-radius: 1px; 
   margin-top: 17%;
@@ -26,8 +26,12 @@
   background-color: rgb(178, 213, 231);
   border: 1px solid grey;
   font-size: medium;
+  cursor: pointer;
 
 
+}
+.btn_title_chart{
+  cursor: pointer;
 }
 .plus_sign_button:hover{
   background-color: rgb(143, 179, 196);
@@ -205,14 +209,17 @@ background-color: rgb(133, 131, 131);
   background-color: rgb(219, 87, 87);
   height: 45%;
   margin-top: 3%;
+   cursor: pointer;
 }
 .del_btn_red:hover{
   background-color: rgb(228, 69, 69);
   height: 45%;
+   
 }
 .back_btn_chart_task{
   left: 0%;
   position: absolute;
+   cursor: pointer;
 }
 .chart_left_task_row{
    
@@ -442,6 +449,7 @@ background-color: rgb(133, 131, 131);
   border: 1px solid rgb(0, 0, 0);
   padding: 3%;
   background-color: rgb(244, 238, 238);
+   cursor: pointer;
   
 }
 .chart_dropdown_btn:hover{
@@ -465,6 +473,7 @@ background-color: rgb(133, 131, 131);
     padding-bottom: 2%;
     
 }
+
 .form_container_chart_update{
   border: 3px solid rgb(33, 33, 33);
      height: 85vh;
@@ -500,17 +509,40 @@ background-color: rgb(133, 131, 131);
   gap: 3%;
 }
 .chart_create_select_div{
-  margin-top: 1%;
-  margin-bottom: 1%;
-  /*border: 2px solid green;*/
-  height: 10%;
+  margin-top: 5%;
+  margin-bottom: 20%;
+
+  height: 20vh;
+  width: 23vw;
+
+}
+.chart_create_select_div_mod select{
+ margin-top: 3%;
+  width: 23vw;
+  margin-left: 6%;
+}
+.btn_submit_chart_task{
+    position: absolute;
+    right: 5%;
+    padding: 3%;
+    bottom: 3%;
+    width: 15vw;
+    cursor: pointer;
+    
+}
+.due_date_chart_create{
+    margin-top: 3%;
+}
+.flex_form_container_chart_task{
+    margin-top: 1%;
 }
 .add_section_div_chart{
   display:flex;
 /* border: 2px solid green;*/
   width: 100%;
   gap: 14.5%;
-  margin-left: 1%;
+  
+  margin-top: 1%;
 
   
 }
@@ -554,7 +586,8 @@ background-color: rgb(133, 131, 131);
 .title_chart_create_flex{
   display: flex;
   /*border: 2px solid orange;*/
-  
+   margin-top: 4%;
+   margin-bottom: 4%;
    gap: 12.5%;
    padding-bottom: 5%;
    
@@ -608,7 +641,7 @@ width: 100%;
 }
 
 .button_submit_new_section_form{
-
+  cursor: pointer;
   width: 50%;
   margin-top: 5%;
   padding:2%;
@@ -649,12 +682,19 @@ width: 100%;
 .chart_modify_button{
   position: relative;
   right: 0%;
+  cursor: pointer;
 }
-
+.chart_save_btn{
+  cursor: pointer;
+}
+.grid_btn{
+  cursor: pointer;
+}
 .save_modify_chart_btn_div{
   position: absolute;
   right: 2%;
   top: 1%;
+   cursor: pointer;
 }
 
 .chart_update_delete_btn{
@@ -665,7 +705,7 @@ width: 100%;
   transform: translateX(-50%);
   width: 20%;
   background-color: rgb(231, 136, 136);
-
+  cursor: pointer;
 
 }
 .button_chart_confirm_delete{
@@ -677,8 +717,10 @@ width: 100%;
 .btn-submit-chart_update{
   width: 59%;
   margin-bottom: 5%;
-  margin-top: 2%;
+  margin-top: 3%;
     left: 50%;
+    border: 2px solid black;
   position:absolute;
   transform: translateX(-50%);
+   cursor: pointer;
 }

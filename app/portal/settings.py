@@ -15,67 +15,16 @@ from configurations import Configuration
 from configurations import values
 
 class Dev(Configuration):
+  
 
+    #########################
     SCHEDULE_DAY = 1
-
+    COMPANY_NAME = "Roboco"
     #Days
     CHAT_RETENTION_DAYS = 60
     FILES_RETENTION_DAYS = 90
     
-    LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters':{
-         'require_debug_false':{
-            "()": "django.utils.log.RequireDebugFalse", 
-         },
-    },
-    'formatters':{
-        'verbose': {
-            "format":"{levelname} {asctime} {module} {process:d} {thread:d} {message}",
-            "style": "{",
-        },
 
-    },
-    'handlers': {
-        'console':{
-            "class": "logging.StreamHandler",
-            "stream": "ext://sys.stdout",
-            "formatter": "verbose",
-        },
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': 'django_errors.log',
-            'formatter': 'verbose',
-        },
-        'mail_admins': {
-            "level": "ERROR",
-            "class": "django.utils.log.AdminEmailHandler",
-            "filters": ['require_debug_false'],
-
-        },
-    },
-    'loggers': {
-        'django.request':{
-            'handlers': ['mail_admins'],
-            'level':'ERROR',
-            'propagate': True,
-
-        },
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    },
-     'root': {
-
-            'handlers': ['console'],
-            'level': 'DEBUG',
-
-        },
-  }
 
     ADMINS = [("Blob", os.environ.get('ADMIN_MAIL'))]
     SERVER_EMAIL = "server@example.com"
@@ -254,3 +203,62 @@ class Prod(Dev):
    
     
     SCHEDULE_DAY = values.PositiveIntegerValue()
+
+    LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters':{
+         'require_debug_false':{
+            "()": "django.utils.log.RequireDebugFalse", 
+         },
+    },
+    'formatters':{
+        'verbose': {
+            "format":"{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+
+    },
+    'handlers': {
+        'console':{
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout",
+            "formatter": "verbose",
+        },
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'django_errors.log',
+            'formatter': 'verbose',
+        },
+        'mail_admins': {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+            "filters": ['require_debug_false'],
+
+        },
+    },
+    'loggers': {
+        'django.request':{
+            'handlers': ['mail_admins'],
+            'level':'ERROR',
+            'propagate': True,
+
+        },
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+     'root': {
+
+            'handlers': ['console'],
+            'level': 'DEBUG',
+
+        },
+  }
+    #########TWILIO ##############
+    TWILIO_ACCCOUNT_SID = values.Value()
+    TWILIO_AUTH_TOKEN = values.Value()
+    TWILIO_MSG_SID = values.Value()
