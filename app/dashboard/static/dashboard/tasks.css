@@ -1,4 +1,20 @@
 /****************** TASKS ******************/
+.right_legend{
+    position: fixed;
+    right: 0%;
+    top: 50%;
+    background-color: #5a5a5a;
+    border-radius: 15px;
+    transform: translateY(-50%);
+    width: 4vw;
+    height: 30vh;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 .task_detail_outer_div{
     display:flex;
     border: 1px solid rgb(105, 105, 105);
@@ -26,10 +42,11 @@
 
 .task_blocks1{
     background-color: rgba(150, 218, 252, 0.75);
-   
+   display: flex;
   border: 1.5px grey solid;
   padding-left: 3%;
   margin-top: 1%;
+  height: 17vh;
   margin-left: 2%;
   border-radius: 4px;
   /*box-shadow: inset 7px 0px 1px rgb(118, 163, 208);*/
@@ -38,9 +55,11 @@
 }
 .task_blocks3{ 
          background-color: rgba(247, 187, 132, 0.817);
+   display: flex;
   border: 1.5px grey solid;
   padding-left: 3%;
   margin-top: 1%;
+  height: 17vh;
   margin-left: 2%;
   border-radius: 4px;
 }
@@ -147,10 +166,14 @@
 
 
 .task_blocks_urgent{
-    background-color: rgb(198, 215, 236);
-  border: 2px grey solid;
-
-
+    background-color: rgb(172, 203, 240);
+   display: flex;
+  border: 1.5px grey solid;
+  padding-left: 3%;
+  margin-top: 1%;
+  height: 17vh;
+  margin-left: 2%;
+  border-radius: 4px;
 }
 
   
@@ -203,12 +226,35 @@
   
 }
 .task_people{
-    display: flex;
+    
+   padding-top: 2%;
+   margin-top: 1vh;
+    right: 0%;
     align-items: center;
    gap: 0.35vw;
    font-size: small;
-  
+   height: 100%;
+ 
     width: 11%;
+  
+}
+#chart_img{
+    width: 85%;
+    margin-left: 15%;
+    
+    
+}
+.people_img_div{
+    display: flex;
+    align-items: center;
+    gap: 0.3vw;
+}
+.chart_icon_div{
+
+    height: 5vh;
+ 
+    margin-top: 2vh;
+    width: 90%;
   
 }
 .task_title{
@@ -639,15 +685,16 @@ width: 20%;
   
 }
 .title_cont{
+    
+    width: 90%;
     display: flex;
-   
-    height: 6vh;
+    flex-direction: column;
+    gap: 27%;
+    padding-top: 2%;
+  
     margin-top: 1vh;
 }
-.task_due_date{
-   
-  
-}
+
 .image_icon_div_msg_detail{
     width: 25%;
 }

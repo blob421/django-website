@@ -51,9 +51,16 @@
     <div class="task_form_btn_container">
       
         <button type="submit" name="send" class="btn-update-task-manage">Update</button>
-      <button type="button" class="btn-submit-task-manage" onclick="setVisible(this,'confirm_delete_modal_manage')">
-         Delete
+
+      <button type="button" class="btn-submit-task-manage" 
+      onclick="setVisible(this,'confirm_delete_modal_manage')">
+       Delete
       </button>
+
+      <button class="transfer_chart" type="button" 
+      onclick="document.getElementById('transfer_modal').style.display='block'">
+      To chart >
+     </button>
       
    </div>
    
@@ -63,6 +70,34 @@
 
  </div>
 
+ <div id="transfer_modal">
+   <div class="x_btn_transfer" 
+   onclick="document.getElementById('transfer_modal').style.display='none'">
+   X
+  </div>
+
+
+   <form method="post">
+    <div class="transfer_form">
+
+   
+      {% csrf_token %}
+         <div> 
+               <div class="chart_tranfer_input">
+                Chart :
+                {{ transfer_form.chart }}
+               </div>
+               <div class="section_tranfer_input">
+                  Section :
+               {{ transfer_form.section }}
+               </div>
+         </div>
+    </div>
+        <button type="submit" class="transfer_submit">Submit</button>
+   </form>
+  
+
+ </div>
  <!-----------------------------------Delete confirm modal--------------------------------->
 <div id="confirm_delete_modal_manage" style="width: 25vw;
                 height: 27vh;
@@ -221,6 +256,31 @@ async function renderSubtask(id){
 
   }
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const chartSelect = document.getElementById('id_chart');
+    const sectionSelect = document.getElementById('id_section');
+
+    chartSelect.addEventListener('change', async function () {
+        const chartId = this.value;
+
+        try {
+            const response = await fetch(`/dashboard/team/getSection/${chartId}`);
+            const data = await response.json();
+
+            sectionSelect.innerHTML = '';
+
+            for (const [id, name] of Object.entries(data)) {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = name;
+                sectionSelect.appendChild(option);
+            }
+        } catch (error) {
+            console.error('Error fetching sections:', error);
+        }
+    });
+});
 
 </script>
   {% endblock %}

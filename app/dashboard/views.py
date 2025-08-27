@@ -8,7 +8,7 @@ from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Docu
 from .models import Goal, Stats
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
-from .forms import ProfilePictureForm, GoalForm, StatsForm2, StatsForm
+from .forms import ProfilePictureForm, GoalForm, StatsForm2, StatsForm, TransferTaskForm
 from django.conf import settings
 from django.utils import timezone
 import time
@@ -600,10 +600,12 @@ class TaskUpdate(ProtectedUpdate):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         file_form = FileFieldForm()
+        transfer_form = TransferTaskForm(user=self.request.user.userprofile)
         subtasks = SubTask.objects.filter(task = self.object)
         files = Document.objects.filter(object_id = self.object.id)
         user_files = files.filter(owner= self.request.user.userprofile)
         context['subtasks'] = subtasks
+        context['transfer_form'] = transfer_form
         context['file_form'] = file_form
         context['files'] = files
         context['user_files'] = user_files
@@ -624,8 +626,25 @@ class TaskUpdate(ProtectedUpdate):
     def form_valid(self, form):
         response = super().form_valid(form)
         task = self.object
+      
         file_form = FileFieldForm(self.request.POST, self.request.FILES)
+        if self.request.POST.get('section'):
+
+            section_id = self.request.POST.get('section')
+            chart_id = self.request.POST.get('chart')
+    
+            if not section_id:
+            
+                    return redirect(reverse('dashboard:task_manage_update', args=task.id))
+            section = ChartSection.objects.get(id = section_id)
+            chart = Chart.objects.get(id=chart_id)
+            task.section = section
+            task.chart = chart
+            task.save()
+
         if file_form.is_valid():
+        
+                
             if self.request.POST.get('delete'):
         
                 Task.objects.get(id = task.id).delete()
@@ -1382,6 +1401,15 @@ def stream_file(request, pk):
             response['Expires'] = http_date(time.time() + 86400)
   
     return response
+
+def getSection(request, chart):
+    target_chart = Chart.objects.get(id=chart)
+    sections = ChartSection.objects.filter(chart=target_chart)
+    dict = {}
+  
+    for section in sections:
+        dict[section.id] = section.name
+    return JsonResponse(dict)
 
 
 def getResource(request, pk):

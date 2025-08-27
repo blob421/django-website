@@ -47,6 +47,7 @@ urlpatterns = [
     path('tasks/completed/approve/<int:pk>', views.TeamCompletedApprove.as_view(), 
          name = 'task_approve'),
     path('team/ressources', views.RessourcesView.as_view(), name="ressources"),
+    path('team/getSection/<int:chart>', views.getSection, name='get_section'),
 
 
 

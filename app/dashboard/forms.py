@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSection, Document
-from .models import Goal, Stats
+from .models import Goal, Stats, Chart, ChartSection
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from django import forms
@@ -182,8 +182,18 @@ class TaskCreate(ModelForm):
 
 class SubmitTask(forms.Form):
           completion_note = forms.CharField(widget=forms.Textarea)
-     
-          
+
+class TransferTaskForm(ModelForm):
+    class Meta:
+          model = Task
+          fields=['chart', 'section']
+    def __init__(self, *args, **kwargs):
+         userprofile = kwargs.pop('user', None)
+         super().__init__(*args, **kwargs)
+
+         self.fields['chart'].queryset = Chart.objects.filter(teams__in=[userprofile.team])
+         self.fields['section'].queryset = ChartSection.objects.none()
+   
     
 
 class DenyCompletedTask(ModelForm):

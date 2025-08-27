@@ -20,24 +20,63 @@
     <div class="title_cont"> 
           <div class="task_title">{{task.name}} 
           </div>
-          <div class="task_people">
+          <div class="due_date_cont"> 
+          <div class="task_due_date">Due date : {{task.due_date}}  </div>
+      </div>
+    </div> 
+    
+    
+      <div class="task_people">
+          <div class="people_img_div">
              {{count}}
+             
               <img src="{% static 'team_icon14.png' %}" class="people_img">
+                 </div>
+              {% if task.section %}
+             
+               <div class="chart_icon_div"> 
+               <img src="{% static 'chart_icon4.png' %}" id="chart_img">
+               </div>
+               {% endif %}
+               
+        
            
          </div>
-    </div> 
-     <p class="task_due_date">Due date : {{task.due_date}}  </p>
  </div>
 </a>
 {% endwith %}
 {% else %}
+ {% with task|getUserCount as count %}
 <a href="{% url 'dashboard:task_detail' task.id %}">
  <div class="task_blocks_urgent">
-     <p class="task_title"> {{task.name}} </p>
-     <p class="task_due_date">Due date : {{task.due_date}}  </p>
+       <div class="title_cont"> 
+          <div class="task_title">{{task.name}} 
+          </div>
+          <div class="due_date_cont"> 
+          <div class="task_due_date">Due date : {{task.due_date}}  </div>
+      </div>
+    </div> 
+    
+    
+      <div class="task_people">
+          <div class="people_img_div">
+             {{count}}
+             
+              <img src="{% static 'team_icon14.png' %}" class="people_img">
+                 </div>
+              {% if task.section %}
+             
+               <div class="chart_icon_div"> 
+               <img src="{% static 'chart_icon4.png' %}" id="chart_img">
+               </div>
+               {% endif %}
+               
+        
+           
+         </div>
  </div>
 </a>
-
+{% endwith %}
 {% endif %}
 {% endif %}
 {% endif %}
@@ -56,17 +95,31 @@
  {% with task|getUserCount as count %}
  <a href="{% url 'dashboard:task_detail' task.id %}">
  <div class="task_blocks3">
-      <div class="title_cont"> 
-      <p class="task_title"> {{task.name}} 
-
-      </p>
-        <div class="task_people">
-             {{count}}
-              <img src="{% static 'team_icon14.png' %}" class="people_img">
-           
-         </div>
+        <div class="title_cont"> 
+          <div class="task_title">{{task.name}} 
+          </div>
+          <div class="due_date_cont"> 
+          <div class="task_due_date">Due date : {{task.due_date}}  </div>
       </div>
-     <p class="task_due_date">Due date : {{task.due_date}}  </p>
+    </div> 
+        <div class="task_people">
+          <div class="people_img_div">
+             {{count}}
+             
+              <img src="{% static 'team_icon14.png' %}" class="people_img">
+                 </div>
+              {% if task.section %}
+             
+               <div class="chart_icon_div"> 
+               <img src="{% static 'chart_icon4.png' %}" id="chart_img">
+               </div>
+               {% endif %}
+               
+        
+           
+    
+      </div>
+  
  </div>
  </a>
  {% endwith %}
@@ -115,5 +168,10 @@
 </div>
 
  <div class="bot_visual_frame_task_list"></div>
+ <a href="{% url 'dashboard:projects' %}">
+ <div class="right_legend">
+  >
+ </div>
+  </a>
  {% endblock %}
 
