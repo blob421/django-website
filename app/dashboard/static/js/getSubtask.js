@@ -1,3 +1,4 @@
+
 async function getSubTask(id) {
   try{ 
    const response = await fetch(`/dashboard/tasks/subtask/${id}`);
@@ -64,3 +65,9 @@ function setVisibleDiv(show, hide= null, hide2 = null, hide3 = null){
       document.getElementById(hide).style.display= 'none';
   }
  }
+
+ 
+  function showText(){
+  document.getElementById('star_comment_modal').style.display = 'block';
+ 
+  }

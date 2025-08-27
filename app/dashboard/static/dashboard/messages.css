@@ -374,25 +374,7 @@ position: absolute;
     
 }
 
-.file_div_task_detail{
-    width: 90%;
-   color: white;
-    padding: 5%;
-    padding-left: 5%;
-   font-size: smaller;
-  display: inline-block;   
-  max-width: 100%;         
-  word-wrap: break-word;   
-  overflow-wrap: break-word;
-  margin-top: 1%;
-  left: 50%;
-  position: relative;
-  transform: translateX(-50%);
-    background-color: rgb(65, 65, 65);
-}
-.file_div_task_detail:hover{
-     background-color: #353535;
-}
+
 .recently_modified_files_detail{
      left: 50%;
        width: 90%;
@@ -415,18 +397,6 @@ position: absolute;
     display: flex;
     width: 100%;
      font-size: x-small;
-}
-.files_outer_div{
-    background-color: rgb(100, 100, 100);
-    height: 50%;
-    width: 90%;
-    left: 50%;
-    margin-top: 6%;
-    transform: translateX(-50%);
-    position: relative;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    border: 2px solid black;
 }
 
 .bottom_send_msg{

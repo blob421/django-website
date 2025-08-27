@@ -50,6 +50,8 @@ class UserProfile(models.Model):
     weekends = models.BooleanField(default=False)
     stats = GenericRelation('Stats')
     picture = GenericRelation('Document')
+
+
    
     class Meta:
 
@@ -83,6 +85,16 @@ class Stats(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, null=True, blank=True)
     object_id = models.PositiveBigIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
+
+    stars = models.PositiveIntegerField(default=0, null=True,blank=True)
+    star_note = models.TextField(null=True, blank=True)
+        
+    class Meta:
+        indexes = [
+            models.Index(fields=['object_id']),
+            models.Index(fields=['timestamp']),
+            models.Index(fields=['stars']),
+        ]
     
 
 class Team(models.Model):

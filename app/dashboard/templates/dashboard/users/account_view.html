@@ -91,8 +91,21 @@
             </div>
             {{stats.days_missed}}
         </div>
-         <div class="account_block_centered">
-            
+         <div class="account_block_centered_stars">
+             <div class="block_centered_title">
+              Stars
+            </div>
+              <div class="star_outer"> 
+           {% for star in stats.stars %}
+      
+         <img src="{% static 'star_icon3.png' %}" 
+         onclick="document.getElementById('star_text').innerHTML='{{star.star_note}}'; showText();" 
+         style="width: 20%;" id="star{{star.id}}"
+           data-hover="{% static 'star_icon_dark.png' %}"
+            data-original="{% static 'star_icon3.png' %}">
+      
+         {% endfor %}
+            </div>
         </div>
          <div class="account_block_centered">
        
@@ -125,6 +138,36 @@
 
  <div class="send_msg_back">
     <button onclick="window.history.back()" class="del_btn2" type="button">Back</button>
-
+  
 </div>
+
+
+
+<div id="star_comment_modal">
+  <div class="x_btn_stars" 
+  onclick="document.getElementById('star_comment_modal').style.display ='none'">
+    X
+  </div>
+
+  Your achievement
+ <p id="star_text"> </p>
+</div>
+<script>
+ 
+ 
+
+
+const images = document.querySelectorAll('[id^="star"]');
+
+images.forEach(img => {
+  img.addEventListener("mouseover", () => {
+    img.src = img.dataset.hover;
+  });
+
+  img.addEventListener("mouseout", () => {
+    img.src = img.dataset.original;
+  });
+});
+</script>
+
 {% endblock %}

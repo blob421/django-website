@@ -25,7 +25,7 @@ urlpatterns = [
     path('delete_report/<int:pk>', views.MessageDelete.as_view(), name = 'report_delete'),
     path('update_report/<int:pk>', views.MessageUpdate.as_view(), name = 'report_update'),
     ##########TASKS#########
-
+ 
     path('tasks/subtask/<int:pk>', views.FetchSubtask, name='fetch_subtask'),
     path('tasks/<int:task>/subtask/<int:pk>', views.SubtaskCompleted, name="subtask_completed"),
     path('tasks/', views.TasksList.as_view(), name = 'tasks_list'),
@@ -47,6 +47,8 @@ urlpatterns = [
     path('tasks/completed/approve/<int:pk>', views.TeamCompletedApprove.as_view(), 
          name = 'task_approve'),
     path('team/ressources', views.RessourcesView.as_view(), name="ressources"),
+
+
 
     ####### SCHEDULES ########
     path('schedules', views.ScheduleView.as_view(), name = 'schedule_view'),

@@ -38,6 +38,7 @@
 }
 .block_centered_title{
     padding: 5%;
+    text-align: center;
 }
 .account_block_centered{
    
@@ -51,6 +52,57 @@
     box-shadow: inset 6px 7px 0px rgb(119, 119, 119);
     
     
+}
+.account_block_centered_stars{
+     border: 2px solid rgb(70, 70, 70);
+    outline: 0.5px solid white;
+    justify-content: center;
+    align-items: center;
+    
+   padding-top: 5%;
+    box-shadow: inset 6px 7px 0px rgb(119, 119, 119);
+    
+}
+.star_outer{
+    padding-top: 2%;
+    width: 88%;
+    display: flex;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    }
+.x_btn_stars{
+    position: absolute;
+    top: 1%;
+    right: 3%;
+    background-color: grey;
+    border: 1px solid black;
+    color: white;
+    font-size: medium;
+    border-radius: 7px;
+    width: 6%;
+    cursor: pointer;
+}
+.x_btn_stars:hover{
+    background-color: #535353;
+}
+#star_comment_modal{
+    width: 30vw;
+    height: 55vh;
+    text-align: center;
+    padding-top: 3%;
+    display: none;
+    font-size: large;
+    background-color: rgb(233, 233, 233);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+   
+    border-radius:6px;
+    transform: translate(-50%,-50%);
+    border: 6px solid rgb(255, 196, 0);
+    outline: 3px solid #796558;
 }
 .btn_cng_pic{
     width: 95%;

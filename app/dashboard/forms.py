@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSection, Document
-from .models import Goal
+from .models import Goal, Stats
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from django import forms
@@ -215,3 +215,17 @@ class GoalForm(ModelForm):
      class Meta:
           model = Goal
           fields = ['name', 'type', 'value', 'value_type']
+
+class StatsForm(ModelForm):
+     class Meta:
+          model = Stats
+          fields = ['star_note']
+
+class StatsForm2(ModelForm):
+     class Meta:
+          model = Stats
+          fields = ['star_note']
+          widgets = {
+           
+            'star_note': forms.Textarea(attrs={'id': 'note'}),
+        }

@@ -306,7 +306,8 @@
     height: 16%;
     border: 1px solid black;
    
-     background-color: rgb(234, 234, 232);
+       border-right: 0px;
+       background-color: rgb(215, 215, 215);
      left: 50%;
      border-radius: 2px;
      position: relative;
@@ -317,12 +318,148 @@
 }
 .member_since{
      border: 1px solid black;
-       height: 15%;
+     border-right: 0px;
+       background-color: rgb(215, 215, 215);
+       height: 16%;
      display: flex;
      align-items: center;
      justify-content: center;
-       background-color: rgb(234, 234, 232);
+     
 }
+.empty_star{
+
+    width: 20%;
+    
+}
+
+.give_star_modal{
+      width: 30vw;
+    height: 55vh;
+    text-align: center;
+ display: none;
+   
+    font-size: large;
+    background-color: rgb(233, 233, 233);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+   
+    border-radius:6px;
+    transform: translate(-50%,-50%);
+    border: 6px solid rgb(255, 196, 0);
+    outline: 3px solid #796558;
+}
+.stars_div{
+    display: flex;
+   padding-top: 4%;
+   padding-bottom: 4%;
+    height: 10%;
+   
+    cursor: pointer;
+    border-bottom: 0px;
+}
+.star_note_text textarea{
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    height: 60%;
+    width: 75%;
+}
+#note{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 50%;
+    transform: translate(-50%,-50%);
+}
+.star_update_btn{
+    position: fixed;
+    bottom: 4%;
+    right: 3%;
+    width: 90%;
+    gap: 7%;
+    height: 12%;
+    border-radius: 2px;
+
+    display: flex;
+}
+.up_btn_star{
+  background-color: rgb(164, 190, 209);
+    border: 2px solid black;
+    cursor: pointer;
+   
+}
+.star_create_btn{
+  position: fixed;
+    bottom: 4%;
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 12%;
+    border-radius: 2px;
+
+  
+}
+.del_btn_star{
+    background-color: rgb(240, 131, 131);
+    border: 2px solid black;
+     width: 30%;
+    cursor: pointer;
+
+}
+.del_btn_star:hover{
+    background-color: rgb(194, 83, 83);
+  
+}
+.x_btn_star{
+    position: absolute;
+    right: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 2%;
+    width: 5%;
+    border:0.5px solid black;
+    border-radius: 5px;
+    
+    background-color: rgb(165, 200, 246);
+}
+
+.give_star_text{
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20%;
+}
+.star_submit{
+    position: absolute;
+    right:6%;
+    bottom: 3%;
+    width: 20%;
+}
+.star_submit input{
+    background-color: #b3c7e0;
+    padding: 6%;
+    width: 100%;
+}
+.stars_title{
+ 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16%;
+    border-radius: 2px;
+    box-shadow: inset 1px 1px 5px white;
+    padding-top: 2%;
+    border: 1px solid black;
+      border-right: 0px;
+    background-color: rgb(245, 198, 71);
+}
+
 .stats_div{
   
     height: 100%;

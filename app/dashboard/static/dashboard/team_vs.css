@@ -1,11 +1,11 @@
 
 
 .graph_cont_teamvs{
-    width: 80vw;
+    width: 69vw;
      position: absolute;
      left: 50%;
      top: 50%;
-    transform: translate(-50%,-47%) scale(0.88);
+    transform: translate(-50%,-47.5%) scale(0.96);
     border: 2px solid rgb(47, 47, 47);
     padding: 1%;
     border-radius: 12px;

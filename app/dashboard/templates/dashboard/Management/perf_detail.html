@@ -1,13 +1,36 @@
-{% include 'dashboard/base.html' %}
-
+{% extends 'dashboard/base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="perf_detail_extreme_frame"></div>
 <div class="perf_detail_outer_div"> 
 
       <div class="employee_div">
-         <div class="employee_name"> Employee : {{user.first_name}} {{user.last_name}}</div>
+         <div class="employee_name">
+          Employee : {{employee.user.first_name}} {{employee.user.last_name}}</div>
           <div class="member_since">Joined : {{user.assigned_on}}</div>
+          <div class="stars_title">Stars</div>
+          <div class="stars_div"> 
+          
+            {% for star in stats.stars %}
+             <img src="{% static 'star_icon3.png' %}" 
+         onclick="updateStar('{{star.star_note}}', '{{star.id}}')"
+         id="star{{star.id}}"
+           data-hover="{% static 'star_icon_dark.png' %}"
+            data-original="{% static 'star_icon3.png' %}">
+          {% endfor %}
+          {% if star_count < 5 %}
+        
+            
+            <img src="{% static 'star_icon_empty3.png' %}"
+            data-hover="{% static 'star_icon3.png' %}"
+            data-original="{% static 'star_icon_empty3.png' %}" class="empty_star"
+             id="empty" onclick="document.getElementById('star_modal').style.display='block'">
+           
+            {% endif %} 
+
+          </div>
+          
     </div>
    
       <div class="stats_div">
@@ -60,8 +83,92 @@
     
 
 
+<div class="give_star_modal" id="star_modal">
+
+    <div class="x_btn_stars" 
+  onclick="document.getElementById('star_modal').style.display ='none'">
+    X
+  </div>
 
 
+    <div class="give_star_text">
+    Give a star ?</div>
+    <div>
+
+    <form method="post">
+    {% csrf_token %}
+    <div class="star_note_text"> {{star_form.star_note}}  </div>
+    <div class="star_create_btn">
+    <button type="submit" name="create" class="up_btn_star">Submit</button>
+   </div>
+
+    </form>
+ </div>
+
+</div>
+
+
+
+
+<div id="star_comment_modal">
+  <div class="x_btn_stars" 
+  onclick="document.getElementById('star_comment_modal').style.display ='none'">
+    X
+  </div>
+
+  Achievement
+
+      <form method="post" class="star_update">
+        {% csrf_token %}
+     
+      {{form_update.star_note}}
+   
+    <div class="star_update_btn">
+    <button id="star_del_btn" type="submit" name="delete" class="del_btn_star">Delete</button>
+
+    <button type="submit" 
+    name="update" id="star_update_btn" class="up_btn_star">Update</button>
+    </div>
+     </form>
+
+ </div> 
  
+
+
+
+
+ <script>
+ function updateStar(text, id){
+  document.getElementById('star_comment_modal').style.display = 'block';
+  document.getElementById('star_update_btn').value = id
+  document.getElementById('star_del_btn').value = id
+  document.getElementById('note').value = text
+ }
+  const image = document.getElementById("empty");
+  if (image){
+      image.addEventListener("mouseover", () => {
+        image.src = image.dataset.hover;
+      });
+
+      image.addEventListener("mouseout", () => {
+        image.src = image.dataset.original;
+      });
+
+
+  }
+
+
+const images = document.querySelectorAll('[id^="star"]');
+
+images.forEach(img => {
+  img.addEventListener("mouseover", () => {
+    img.src = img.dataset.hover;
+  });
+
+  img.addEventListener("mouseout", () => {
+    img.src = img.dataset.original;
+  });
+});
+</script>
 
 {% endblock %}

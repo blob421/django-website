@@ -5,10 +5,10 @@ from django.contrib.auth.views import LogoutView, LoginView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages, Resource, ResourceCategory
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
-from .models import Milestone, Goal
+from .models import Goal, Stats
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
-from .forms import ProfilePictureForm, GoalForm
+from .forms import ProfilePictureForm, GoalForm, StatsForm2, StatsForm
 from django.conf import settings
 from django.utils import timezone
 import time
@@ -65,15 +65,16 @@ class AccountView(LoginRequiredMixin, View):
         employee = UserProfile.objects.get(id = pk, user = self.request.user)
         cache_key = f'individual_stats{employee.id}'
        
-        if cache.has_key(cache_key):
-            ctx = cache.get(cache_key)
-        else:
-            ctx = get_stats_data(employee)  
-            cache.set(cache_key, ctx, (24 * 60 * 60))
+       # if cache.has_key(cache_key):
+        #    ctx = cache.get(cache_key)
+       # else:
+        ctx = get_stats_data(employee)  
+        #    cache.set(cache_key, ctx, (24 * 60 * 60))
 
         ctx['picture'] = picture
         ctx['form'] = form
-        
+    
+      
         return render(request, self.template_name, ctx)
     
     
@@ -508,39 +509,37 @@ class TaskDetail(LoginRequiredMixin, View):
     template_name = 'dashboard/tasks/task_detail.html'
     time_threshold = timezone.now() - relativedelta(hours=24)
     context_object_name = 'task'
-    
-    def get(self, request, pk):
-        form = FileFieldForm()
-        subtask_form = SubTaskForm()
-
+    def get_context_data(self, pk):
         task = Task.objects.get(id = pk, users=self.request.user.userprofile)
         subtasks = SubTask.objects.filter(task=task).order_by('-id')
         user_files = Document.objects.filter(owner = self.request.user.userprofile, object_id=task.id)
         files = Document.objects.filter(object_id = task.id)      
-        old_files = files.filter(upload_time__lte=self.time_threshold)
-        recent_files = files.filter(upload_time__gte = self.time_threshold).order_by('-upload_time')
-
-        ctx = {'task': task, 'form':form, 'subtask_form':subtask_form, 'files': old_files, 
-               'recent_files':recent_files, 'user_files':user_files, 'subtasks':subtasks}
+     
+        user_subtasks = subtasks.filter(user = self.request.user.userprofile)
+        return {'task': task, 'user_files':user_files, 'subtasks':subtasks,
+               'user_subtasks':user_subtasks, 'files':files}
+    
+    def get(self, request, pk):
+        form = FileFieldForm()
+        subtask_form = SubTaskForm()
+        ctx = self.get_context_data(pk)
+        ctx['subtask_form'] = subtask_form
+        ctx['form'] = form
         return render(request, self.template_name, ctx)
     
     def post(self, request, pk):
        
-        task = Task.objects.get(id = pk, users=self.request.user.userprofile)
         subtask_form = SubTaskForm(request.POST)
         form = FileFieldForm(request.POST, request.FILES)
-        print(request.POST)
+        task = Task.objects.get(id = pk, users=self.request.user.userprofile)
         if request.FILES:
             if not form.is_valid():
-                subtasks = SubTask.objects.filter(task=task).order_by('-id')
-                user_files = Document.objects.filter(owner = self.request.user.userprofile, object_id=task.id)
-                files = Document.objects.filter(object_id = task.id)
-                time_threshold = timezone.now() - relativedelta(hours=24)
-                old_files = files.filter(upload_time__lte=time_threshold)
-                recent_files = files.filter(upload_time__gte = time_threshold).order_by('-upload_time')
-
-                ctx = {'task': task, 'form':form, 'subtask_form':subtask_form, 'files': old_files, 
-                'recent_files':recent_files, 'user_files':user_files, 'subtasks':subtasks}
+         
+                
+                ctx = self.get_context_data(pk)
+                ctx['subtask_form'] = subtask_form
+                ctx['form'] = form
+           
                 return render(request, self.template_name, ctx)
         
         
@@ -1149,21 +1148,56 @@ class RessourcesView(View):
     
     
 ############## TEAM STATS #####################################
-@method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
+#@method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
 class PerformanceDetail(ProtectedView):
     template_name = 'dashboard/management/perf_detail.html'
     def get(self, request, pk):
-
+     
         employee = UserProfile.objects.get(id = pk)
         cache_key = f'individual_stats{employee.id}'
-
-        if cache.has_key(cache_key):
-            ctx = cache.get(cache_key)
-        else:
-            ctx = get_stats_data(employee)  
-            cache.set(cache_key, ctx, (24 * 60 * 60))
-        
+ 
+       # if cache.has_key(cache_key):
+         #   ctx = cache.get(cache_key)
+     #   else:
+        ctx = get_stats_data(employee)  
+    #        cache.set(cache_key, ctx, (24 * 60 * 60))
+    
+        ctx['star_count'] = len(ctx['stats']['stars'])
+        ctx['star_form'] = StatsForm()
+        ctx['form_update'] = StatsForm2()
+        ctx['employee'] = employee
+     
         return render(request, self.template_name, ctx)
+    
+    def post(self, request, pk):
+        if request.POST.get('create'):
+            form = StatsForm(request.POST)
+            if form.is_valid():
+                employee = UserProfile.objects.get(id = pk)
+                unsaved_form = form.save(commit=False)
+                unsaved_form.stars += 1
+                unsaved_form.content_object = employee
+                unsaved_form.save()
+
+        if request.POST.get('update'):
+            form = StatsForm2(request.POST)
+            if form.is_valid:
+                id = request.POST.get('update')
+          
+                stat = Stats.objects.get(id=id)
+                stat.star_note = request.POST['star_note']
+                stat.save()
+
+        if request.POST.get('delete'):
+            form = StatsForm2(request.POST)
+            if form.is_valid:
+                id = request.POST.get('delete')
+                stat = Stats.objects.get(id=id)
+                stat.delete()
+
+        return redirect(reverse('dashboard:perf_detail', args=[pk]))
+
+
 
 
 @method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')

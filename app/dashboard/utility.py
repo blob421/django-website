@@ -143,7 +143,7 @@ def get_user_data(stats):
     total_submissions = 0
     days_missed = 0
     days_scheduled = 0
-    
+    stars = []
     for stat in stats:
 
         total_submissions += stat.submission  
@@ -153,11 +153,15 @@ def get_user_data(stats):
         total_completed += stat.completed_tasks
         days_missed += stat.days_missed
         days_scheduled += stat.days_scheduled
+        
+        if stat.star_note:
+            stars.append(stat)
+           
     
     return {'total_completed':total_completed, 'late_task_count':late_task_count,
                     'total_denied':total_denied,'total_urgent':total_urgent,
                     'total_submissions':total_submissions, 'days_missed':days_missed,
-                    'days_scheduled':days_scheduled}
+                    'days_scheduled':days_scheduled, 'stars':stars}
         
 
 
@@ -422,7 +426,7 @@ def get_stats_data(user_profile, page=None):
     denied_ratio = round(safe_divide(origin['total_denied'],  origin['total_submissions']), 1)
     late_ratio = round(safe_divide(origin['late_task_count'],  origin['total_completed']), 1)
     urgent_ratio = round(safe_divide(origin['total_urgent'], total_urgent_completed), 1)
- 
+   
     
          
     ranges = range(1, 5)
@@ -554,7 +558,7 @@ def check_milestones():
                         goal.accomplished = True
                         goal.save()
                         Milestone.objects.create(date=now.date(), 
-                                name=f'{goal.type.name}({goal.value})')
+                                name=f'{goal.type.name} ({goal.value})')
                 else:
                      continue
             
@@ -608,7 +612,7 @@ def get_team_graph():
                             xanchor="center",
                             yanchor="top"    
                         ),
-                         margin=dict(b=70, l=20, r=50,t=70),
+                         margin=dict(b=70, l=20, r=50,t=80),
                             title=graph_title,
                             xaxis=dict(
                                  

@@ -8,7 +8,10 @@
   
     <div class="task_detail_left_panel">
         <div class ="title_task_view">{{task.name}}</div>
-        <div class="flex_container_task_view">Due date:    {{task.due_date}} </div>
+        <div class="flex_container_task_view">
+          <div>Due date:</div>   
+          <div>{{task.due_date}}</div>
+         </div>
 
              
         <a href="{% url 'dashboard:task_submit' task.id %}">
@@ -74,9 +77,17 @@
              </div>
 
              <div id="subtask_container" class="task_detail_team_container"
-             >
-               {% for subtask in subtasks %}
-               {% if subtask.user == user.userprofile %}
+
+             > {% if not user_subtasks %}
+         
+             <div class="left_crt_subtask">Subtasks </div><button class="green_button_subtask_add" 
+             onclick="setVisible(this, 'subtask_modal_task_detail')">+</button>
+            
+
+                {% else %}
+               {% for subtask in user_subtasks %}
+                
+              
           
                <div class="task_completed">
                 <div class="task_completed_flex"> 
@@ -93,9 +104,9 @@
                 
                   </div> 
             
-                  {% endif %}
+                 
                 {% endfor %}
-          
+                {% endif %}
              
                
              </div>
@@ -216,28 +227,18 @@
     <div class="right_file_panel_task_detail">
              
          
-           <div class="recent_files_title"> Recent files</div> 
-           <div class="recently_modified_files_detail">
-               {% if recent_files %}
-                   {% for file in recent_files %}
-                    <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
-                  <div class="file_div_task_detail">
-                   <div> {{file.file_name}}   </div>
-                        <div class="time_and_delete_container_file">
-                        <div class="time_recent_file">({{file.time}})  </div>
-                             
-                        </div>
-                  </div>
-                  </a>
-                   {% endfor %}
-               {% endif %}
-           </div>
+           <div class="recent_files_title">Files</div> 
+           
             <div class="files_outer_div">
                     {% if files %}
                    {% for file in files %}
                     <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
                   <div class="file_div_task_detail">
                    {{file.file_name}} 
+                    <div class="time_and_delete_container_file">
+                        <div class="time_recent_file">({{file.time}})  </div>
+                             
+                        </div>
                   </div>
                   </a>
                    {% endfor %}
