@@ -17,6 +17,7 @@ admin.site.register(models.Milestone)
 admin.site.register(models.Goal)
 admin.site.register(models.GoalType)
 admin.site.register(models.ValueType)
+admin.site.register(models.Report)
 #class ResourceAdmin(admin.ModelAdmin):
    # def get_model_perms(self, request):
      

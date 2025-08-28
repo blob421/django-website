@@ -41,11 +41,15 @@
 
 <div class="bot_flex_form_container">
 
-<div>   {{file_form.file_field}}</div>
+<div>{{file_form.file_field}}</div>
+{% if file_form.errors %}
+     <div class="error_task_create_manage"> {{file_form.file_field.errors}}  </div>
+      {% endif %} 
+
 
     <div class="task_form_btn_container">
-        <input type="submit" name="send" value="Submit" class="btn_submit_manage_create_task">
-
+        <input type="submit" name="send" value="Submit" class="btn_submit_chart_task">
+ 
    </div>
 </div>
 

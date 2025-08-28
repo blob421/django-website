@@ -91,23 +91,31 @@ def save_profile_picture(self, file, user):
 
 
 def save_files(self, files, task):
+    
     for f in files:
         file_name = f.name
-        
-        file_path = f'{task.__class__.__name__}/{task.id}/{file_name}'
 
         if f.size > 2 * 1024 * 1024:
-            return False
-          
-        if default_storage.exists(file_path):
-            file = Document.objects.get(file__icontains=file_name, object_id = task.id)
-            if file.owner == self.request.user.userprofile:
-                default_storage.delete(file_path)
-                
-                file.delete()
+                return False
+        
+        if task:
+        
+            file_path = f'{task.__class__.__name__}/{task.id}/{file_name}'
 
-        Document.objects.create(file = f, owner =self.request.user.userprofile,
-                                                          content_object = task)
+    
+            
+            if default_storage.exists(file_path):
+                file = Document.objects.get(file__icontains=file_name, object_id = task.id)
+                if file.owner == self.request.user.userprofile:
+                    default_storage.delete(file_path)
+                    
+                    file.delete()
+
+            Document.objects.create(file = f, owner =self.request.user.userprofile,
+                                                            content_object = task)
+        else:
+            continue
+             
     return True
    
 

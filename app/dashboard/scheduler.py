@@ -1,6 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
-from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document, ChatMessages
+from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document
+from .models import Report, ChatMessages, Task
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
@@ -8,6 +9,13 @@ from django.conf import settings
 from django.core.files.storage import default_storage
 from .utility import calculate_days_scheduled, check_milestones
 import logging
+
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_JUSTIFY
+import os 
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +36,9 @@ def start():
         
         scheduler.add_job(clear_files, 'interval', days=7, name='clear_files',
                           replace_existing=True)
+        first_run = timezone.now().replace(hour=23, minute=55, second=0, microsecond=0) + relativedelta(days=1)
+        scheduler.add_job(generate_report, 'interval', days=1, name='gen_report',
+                          replace_existing=True, next_run_time=first_run)
         
         scheduler.add_job(clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
                           replace_existing=True)
@@ -36,7 +47,92 @@ def start():
         
         register_events(scheduler)
         scheduler.start()
-        
+
+
+def generate_report(team):
+    now = timezone.now()
+    data = get_report_stats(now)
+
+    output_dir = os.path.join(settings.BASE_DIR, 'media/reports/')
+    os.makedirs(output_dir, exist_ok=True)
+
+    filename = f"Report_{now.strftime('%Y-%m-%d')}.pdf"
+    full_path = os.path.join(output_dir, filename)
+
+    doc = SimpleDocTemplate(full_path, pagesize=A4, topMargin=15)
+    styles = getSampleStyleSheet()
+    story = []
+
+    # Custom styles
+    company_head = ParagraphStyle(name='TopHeader', 
+                        fontSize=14, alignment=0, spaceAfter=70, leftIndent=-55,)
+    header_style = ParagraphStyle(name='Header', fontSize=14, alignment=1, spaceAfter=40)
+    subheader_style = ParagraphStyle(name='SubHeader', fontSize=13, spaceAfter=55,alignment=1)
+    content_style = ParagraphStyle(name='content', fontSize=12, spaceAfter=15,alignment=0)
+    text_style = ParagraphStyle(name='content', fontSize=11, spaceAfter=60,alignment=0)
+    justified_style = ParagraphStyle(
+    name='Justified',
+    fontSize=10,
+    leading=14,
+    alignment=TA_JUSTIFY,
+    spaceAfter=10
+)
+    normal_style = styles['Normal']
+
+    # Top Header
+    story.append(Paragraph("Company X", company_head))
+    story.append(Paragraph(f"Team {team.name}'s report ({now.strftime('%Y-%m-%d')})", header_style))
+    story.append(Spacer(1, 20))
+
+    # Completed Tasks Section
+    story.append(Paragraph("Completed tasks:", subheader_style))
+
+    task_data = [["Task Name", "Status"]]
+    for task in data['completed_tasks']:
+        late = task.due_date - now
+        status = f"{abs(late.days)} days {'late' if late.days < 0 else 'in advance'}"
+        task_data.append([task.name, status])
+
+    task_table = Table(task_data, colWidths=[300, 100])
+    task_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('ALIGN', (1, 1), (-1, -1), 'RIGHT'),
+    ]))
+    story.append(task_table)
+    story.append(Spacer(1, 30))
+
+    # Reports Section
+    story.append(Paragraph("Reports:", subheader_style))
+
+    for report in data['reports']:
+        story.append(Paragraph(f"<b>{report.user} :</b>", content_style))
+      
+        for task in report.tasks.all():
+            story.append(Paragraph(f"• {task.name}", text_style))
+        story.append(Spacer(1, 10))
+  
+        story.append(Paragraph(report.content.replace('\n', '<br/>'), justified_style))
+        story.append(Spacer(1, 30))
+
+    doc.build(story)
+    logger.info('Daily report generated with success')
+  
+
+
+def get_report_stats(now):
+  
+     day_reports = Report.objects.filter(time__lte=now, time__gte=(now-relativedelta(day=1)))
+     stats = Stats.objects.filter(timestamp__lte=now, timestamp__gte=(now-relativedelta(day=1)))
+
+     completed_tasks = Task.objects.filter(completed=True, 
+                            submitted_at__lte=now, submitted_at__gte=now-relativedelta(day=1))
+     
+     return {'completed_tasks':completed_tasks, 'reports':day_reports}
+          
+
+
 
 
 def clear_pictures():

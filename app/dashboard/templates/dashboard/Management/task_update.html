@@ -48,6 +48,9 @@
 
   
        <div class="file_input_task_manage">   {{file_form.file_field}}</div>
+       {% if file_form.errors %}
+     <div class="file_error_update_task"> {{file_form.file_field.errors}}  </div>
+      {% endif %} 
     <div class="task_form_btn_container">
       
         <button type="submit" name="send" class="btn-update-task-manage">Update</button>
@@ -94,7 +97,7 @@
          </div>
     </div>
         <button type="submit" class="transfer_submit">Submit</button>
-   </form>
+
   
 
  </div>

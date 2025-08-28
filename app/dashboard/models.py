@@ -118,6 +118,7 @@ class Team(models.Model):
 
 
 ##### Objects #####
+
 class Messages(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender', 
@@ -195,7 +196,7 @@ class Task(models.Model):
         
         users = models.ManyToManyField(UserProfile, related_name='task_users')
         description = models.TextField()
-        name = models.CharField(max_length=50, unique=True)
+        name = models.CharField(max_length=36, unique=True)
         creation_date = models.DateTimeField(auto_now_add=True)
         starting_date = models.DateTimeField(null=True, blank=True)
         completion_time = models.FloatField(null=True, blank=True)
@@ -220,6 +221,7 @@ class Task(models.Model):
         
         denied = models.BooleanField(default=False)
         deny_reason = models.TextField(null=True, blank=True)
+        position = models.PositiveIntegerField(default=0)
 
         @property
         def week(self):
@@ -242,6 +244,14 @@ class Task(models.Model):
                 models.Index(fields=['id']),
                 models.Index(fields=['creation_date']),
             ]
+
+
+class Report(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    content = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    tasks = models.ManyToManyField(Task)
+
 
 
 class SubTask(models.Model):

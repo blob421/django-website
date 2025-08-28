@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSection, Document
-from .models import Goal, Stats, Chart, ChartSection
+from .models import Goal, Stats, Chart, ChartSection, Report
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from django import forms
@@ -219,6 +219,43 @@ class AddTaskChart(ModelForm):
                   self.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
                   self.fields['starting_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
                   self.fields['section'].queryset = ChartSection.objects.filter(chart = chart)
+
+class AddTask(ModelForm):
+     class Meta:
+          model= Task
+          fields= ['name', 'description', 'users', 'due_date', 'urgent']
+
+     def __init__(self, *args, **kwargs):
+
+                  super().__init__(*args, **kwargs)
+                  self.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+            
+                   
+class ReportForm(ModelForm):
+      class Meta:
+               
+          model = Report
+          fields = ['content', 'tasks']
+          def __init__(self, *args, **kwargs):
+               user = kwargs.pop('user')
+               super().__init__(*args,**kwargs)
+               tasks = Task.objects.filter(users__in= user)
+               self.fields['tasks'].queryset = tasks
+
+      
+class UpdateTask(ModelForm):
+     class Meta:
+          model = Task
+          fields = ['name', 'description', 'urgent', 'due_date', 'users', 'completed']
+     
+     def __init__(self, *args, **kwargs):
+          profile = kwargs.pop('user')
+          super().__init__(*args, **kwargs)
+
+          team = profile.team.name
+          team_users = UserProfile.objects.filter(team__name=team)  
+          self.fields['users'].queryset = team_users
+          self.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
 
 
 class GoalForm(ModelForm):

@@ -5,6 +5,15 @@ import mimetypes
 from django.utils.html import format_html
 
 register = template.Library()
+@register.filter
+def get_team(task):
+  team = task.users.all()
+  html = "<ul>"
+  for user in team:
+    html +=f"<li>{user.user.username}</li>"
+  html += "</ul>"
+  return format_html(html)
+    
 
 @register.filter
 def slicer(doc_id):
@@ -17,9 +26,11 @@ def slicer(doc_id):
 def getUserCount(task):
   users = task.users.all()
   count = 0
+  
   for user in users:
     count += 1
   return count
+
 
 
 

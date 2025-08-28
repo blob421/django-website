@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import View, UpdateView, DetailView, DeleteView
+from django.views.generic import View, UpdateView, DetailView, DeleteView, CreateView
 from django.contrib.auth.views import LogoutView, LoginView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Messages, UserProfile, Task, Team, ChatMessages, Resource, ResourceCategory
 from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
-from .models import Goal, Stats
+from .models import Goal, Stats, Report
 from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
 from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
-from .forms import ProfilePictureForm, GoalForm, StatsForm2, StatsForm, TransferTaskForm
+from .forms import ProfilePictureForm, GoalForm, StatsForm2, StatsForm, TransferTaskForm, AddTask
+from .forms import UpdateTask, ReportForm
 from django.conf import settings
 from django.utils import timezone
 import time
@@ -18,6 +19,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils.http import http_date
 from django.http import HttpResponse, JsonResponse, FileResponse, HttpResponseForbidden
 from .utility import copy_message_data, days_of_the_week
+from .scheduler import generate_report
 from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedView
 from django import forms
 from django.db.models import Q
@@ -30,7 +32,7 @@ from django.utils.encoding import smart_str
 from collections import defaultdict
 import mimetypes
 from django.core.files.storage import default_storage
-
+from django.db import transaction
 
 ########## CONFIG ############
 from django.utils.decorators import method_decorator
@@ -55,6 +57,11 @@ class AccountView(LoginRequiredMixin, View):
     template_name = 'dashboard/users/account_view.html'
   
     def get(self, request, pk):
+        team = self.request.user.userprofile.team
+        generate_report(team)
+
+
+
         form = ProfilePictureForm()
         try:
           picture = Document.objects.filter(object_id = self.request.user.userprofile.id).last()
@@ -463,30 +470,39 @@ class TaskManageCreate(ProtectedCreate):
     template_name = 'dashboard/management/task_create.html'
     success_url = reverse_lazy('dashboard:team')
     model = Task
-    fields = ['name','description','due_date','users','urgent']
+    fields = ['name','description','users','due_date','urgent']
 
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
-        return form
-    
+
     def get_context_data(self, **kwargs):
-        fileform = FileFieldForm()
         context = super().get_context_data(**kwargs)
-        context['file_form'] = fileform
+        context['file_form'] = FileFieldForm()
+        context['form'] = AddTask()
         return context
     
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        task = self.object
-        file_form = FileFieldForm(self.request.POST, self.request.FILES)
-        if file_form.is_valid():
-   
-            files = self.request.FILES.getlist('file_field')
-            save_files(self, files, task)
-            
+    def post(self, request):
+  
+        form = AddTask(request.POST)
+        file_form = FileFieldForm(request.POST, request.FILES)
+        files = request.FILES.getlist('file_field')
 
-        return response
+        if not file_form.is_valid() or not form.is_valid():
+            ctx = {'form':form, 'file_form':file_form}
+            return render(request, self.template_name, ctx)
+        
+        if files and not save_files(self, files, None):
+            file_form.add_error('file_field', 'Files must be less than 2MB')
+            ctx = {'form':form, 'file_form':file_form}
+            return render(request, self.template_name, ctx) 
+        
+        task = form.save(commit=False)
+        form.save()
+        users = form.cleaned_data['users']
+        task.users.set(users.all())
+
+
+        save_files(self, files, task)
+        return self.form_valid(form)
+
 
 
 class TasksList(LoginRequiredMixin, View):
@@ -590,23 +606,19 @@ class TaskUpdate(ProtectedUpdate):
     model = Task
     template_name = 'dashboard/management/task_update.html'
     fields = ['name', 'description', 'urgent', 'due_date', 'users', 'completed']
-    
-    
-    def get_success_url(self):
-        task_id = self.object.id
-        success_url = reverse('dashboard:task_manage_update', args=[task_id])
-        return success_url
+      
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        file_form = FileFieldForm()
-        transfer_form = TransferTaskForm(user=self.request.user.userprofile)
+    
         subtasks = SubTask.objects.filter(task = self.object)
         files = Document.objects.filter(object_id = self.object.id)
         user_files = files.filter(owner= self.request.user.userprofile)
+
+        context['form'] = UpdateTask(user=self.request.user.userprofile, instance=self.object)
         context['subtasks'] = subtasks
-        context['transfer_form'] = transfer_form
-        context['file_form'] = file_form
+        context['transfer_form'] = TransferTaskForm(user=self.request.user.userprofile)
+        context['file_form'] = FileFieldForm()
         context['files'] = files
         context['user_files'] = user_files
         context['task'] = self.object
@@ -614,25 +626,27 @@ class TaskUpdate(ProtectedUpdate):
         return context
     
 
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        profile = UserProfile.objects.get(id=self.request.user.id)
-        team = profile.team.name
-        team_users = UserProfile.objects.filter(team__name=team)  
-        form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
-        form.fields['users'].queryset = team_users
-        return form
-    
-    def form_valid(self, form):
-        response = super().form_valid(form)
+    def post(self,request, pk):
+        self.object = Task.objects.get(id=pk)
         task = self.object
-      
-        file_form = FileFieldForm(self.request.POST, self.request.FILES)
+        form = UpdateTask(request.POST, user=request.user.userprofile, instance=self.object)
+        file_form = FileFieldForm(request.POST, request.FILES)
+
+        if request.POST.get('delete'):
+            task.delete()
+            return redirect(reverse('dashboard:team'))
+
+        if not file_form.is_valid() or not form.is_valid():
+            ctx = self.get_context_data()
+            ctx['file_form'] = file_form
+            ctx['form'] = form
+            return render(request, self.template_name,ctx)
+
         if self.request.POST.get('section'):
 
             section_id = self.request.POST.get('section')
             chart_id = self.request.POST.get('chart')
-    
+
             if not section_id:
             
                     return redirect(reverse('dashboard:task_manage_update', args=task.id))
@@ -642,20 +656,24 @@ class TaskUpdate(ProtectedUpdate):
             task.chart = chart
             task.save()
 
-        if file_form.is_valid():
-        
-                
-            if self.request.POST.get('delete'):
-        
-                Task.objects.get(id = task.id).delete()
-                return redirect('dashboard:team')
-            
-   
-            files = self.request.FILES.getlist('file_field')
-      
+        if request.FILES.get('file_field'):
+            files = request.FILES.getlist('file_field')
+            if files and not save_files(self, files, None):
+                ctx = self.get_context_data()
+                file_form.add_error('file_field', 'Files must be less than 2MB')
+                ctx['file_form'] = file_form
+                return render(request, self.template_name, ctx) 
+       
             save_files(self, files, task)
+           
+        
+        form.save()
+        
+        return redirect(reverse('dashboard:team'))
+        
+    
 
-        return response
+
         
     
 class TaskDelete(ProtectedDelete):
@@ -740,40 +758,70 @@ class ChartCreate(ProtectedCreate):
 
 class ChartTaskCreate(ProtectedCreate):
     template_name = 'dashboard/projects/chart_task_create.html'
+    model= Task
+    fields= ['name', 'description', 'users', 'starting_date', 'due_date', 'section']
+        
     def get(self, request, pk):
         chart = Chart.objects.get(id = pk)
         form = AddTaskChart(chart=chart)
-        ctx = {'form':form}
+        file_form = FileFieldForm()
+        ctx = {'form':form, 'file_form':file_form}
         return render(request, self.template_name, ctx)
 
-    
-    
+
     def post(self, request, pk):
+
         chart = Chart.objects.get(id=pk)
         form = AddTaskChart(request.POST, chart=chart)
+        file_form = FileFieldForm(request.POST, request.FILES)
 
-        if not form.is_valid():
-            print('notvalid')
-            ctx = {'form':form}
+        if not form.is_valid() or not file_form.is_valid():
+            ctx = {'form': form, 'file_form': file_form}
             return render(request, self.template_name, ctx)
-    
-        chart = Chart.objects.get(id = pk)
+       
+        files = request.FILES.getlist('file_field')
+        if files and not save_files(self, files, None):
+            file_form.add_error('file_field', 'Files must be less than 2MB.')
+            ctx = {'form': form, 'file_form': file_form}
+            return render(request, self.template_name, ctx)
+
         saved_form = form.save(commit=False)
         saved_form.chart = chart
         saved_form.save()
         users = form.cleaned_data['users']
-        saved_form.users.set(users.all()) 
-        return redirect(reverse('dashboard:chart_detail', args=[pk]))
-        
+        saved_form.users.set(users.all())
+        save_files(self, files, saved_form)
+
+        return self.form_valid(form)
+       
+    def get_success_url(self):
+        pk = self.kwargs.get('pk')
+        return reverse_lazy('dashboard:chart_detail', args=[pk])
+    
+    def get_form(self, form_class=None):
+       
+        form = super().get_form(form_class)
+        form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        form.fields['starting_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})  
+        form.fields['section'].queryset = ChartSection.objects.filter(chart = self.object.chart) 
+        return form
+    
+
+
     
 
 class ChartTaskUpdate(ProtectedUpdate):
     model= Task
     fields= ['name', 'description', 'users', 'starting_date', 'due_date', 'section']
-    template_name = 'dashboard/projects/chart_task_create.html'
+    template_name = 'dashboard/projects/chart_task_update.html'
 
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        context['file_form'] =  FileFieldForm()
+        return context
     
     def get_form(self, form_class=None):
+       
         form = super().get_form(form_class)
         form.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
         form.fields['starting_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})  
@@ -783,6 +831,30 @@ class ChartTaskUpdate(ProtectedUpdate):
     def get_success_url(self):
         chart_id = self.object.chart.id
         return reverse('dashboard:chart_detail', kwargs={'pk': chart_id})
+    
+    def form_valid(self, form):
+        
+        task_id = self.kwargs['pk']
+        task = Task.objects.get(id=task_id)
+     
+        if self.request.FILES.get('file_field'):
+            file_form = FileFieldForm(self.request.POST, self.request.FILES)
+            files = self.request.FILES.getlist('file_field')
+            valid = save_files(self, files, task)
+
+            if not valid:
+                ctx = self.get_context_data()
+                file_form.add_error('file_field', 'File must be less than 2MB')
+                ctx['file_form'] = file_form
+                return render(self.request, self.template_name, ctx)
+            return redirect(self.get_success_url())
+            
+        if self.request.POST.get('delete'):
+                   
+            task.delete() 
+            return redirect(self.get_success_url())
+
+        return super().form_valid(form)
 
 
 
@@ -802,7 +874,7 @@ class ProjectsView(LoginRequiredMixin, View):
 class ChartDetail(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/projects/projects_view.html'
     def get(self,request, pk):
-
+        
         team = self.request.user.userprofile.team
         chart = Chart.objects.get(id = pk)
         day = chart.start_date.day
@@ -835,7 +907,7 @@ class ChartDetail(LoginRequiredMixin, DetailView):
             month_list = None
       
         sections = ChartSection.objects.filter(chart=chart)
-        tasks = Task.objects.filter(chart=chart)
+        tasks = Task.objects.filter(chart=chart).order_by('position')
      
         tasks_by_section = defaultdict(list)
         for task in tasks:
@@ -1020,10 +1092,12 @@ class TeamView(ProtectedView):
         query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
         completed_task_count = Task.objects.filter(query).count()    
 
-        print(self.request.user.userprofile.team.team_lead.user.phone)
         context = {'team': team_member , 'count':completed_task_count,'tasks':tasks,
                    'time':time}
         return render(request, self.template_name, context)
+    
+    def post(self, request):
+        return 
 
 
 
@@ -1452,5 +1526,66 @@ def DelFile(request, pk, manage=0):
         success_url = redirect(reverse('dashboard:task_detail', args=[task_id]))
     return success_url
 
+
+
 class Logout(LogoutView):
     template_name = 'dashboard/logout.html'
+
+
+class ReportView(LoginRequiredMixin, CreateView):
+    model = Report
+    fields = ['content', 'tasks']
+    success_url = reverse_lazy('dashboard:home')
+    template_name = 'dashboard/report.html'
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        user = self.request.user.userprofile
+        tasks = Task.objects.filter(users__in=[user]) 
+        form.fields['tasks'].queryset = tasks
+        return form
+    
+    def form_valid(self, form):
+        unsaved_form = form.save(commit=False)
+        unsaved_form.user = self.request.user.userprofile
+        return super().form_valid(form)
+
+
+
+
+
+
+
+def SwapTask(request, task_id, section_id, chart_id, prev, next):
+    section = ChartSection.objects.get(id=section_id)
+    tasks = Task.objects.filter(section = section).order_by('position')
+    target_task = tasks.filter(id=task_id).first()
+    
+    task_array = []
+    for task in tasks:
+        task_array.append(task.position)
+        
+    task_index = task_array.index(target_task.position)
+    
+
+    if prev == 'true' and not target_task.position == task_array[0]:
+        
+        previous_index = task_array[task_index - 1]
+       
+        prev_task = Task.objects.get(position=previous_index)
+
+        target_task.position, prev_task.position = prev_task.position, target_task.position
+        with transaction.atomic():
+            Task.objects.bulk_update([target_task, prev_task], ['position'])
+ 
+
+    if next == 'true' and not target_task.position == task_array[len(task_array) -1]:
+        next_index = task_array[task_index + 1]
+        next_task = Task.objects.get(position=next_index)
+            
+        target_task.position, next_task.position = next_task.position, target_task.position
+        with transaction.atomic():
+            Task.objects.bulk_update([target_task, next_task], ['position'])
+
+    return redirect(reverse('dashboard:chart_detail', args=[chart_id]))

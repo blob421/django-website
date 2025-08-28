@@ -225,11 +225,12 @@ background-color: rgb(133, 131, 131);
    
     border: 2px solid rgb(59, 59, 59);
     height: 2em;
+   display: flex;
+ 
     font-size: small;
       background-color: rgb(224, 224, 224);
       padding-bottom: 0.4em;
-      padding-left: 1.5%;
-     
+      padding-left: 1.5%;     
 }
 .chart_left_task_row_late{
   border: 2px solid rgb(59, 59, 59);
@@ -522,13 +523,50 @@ background-color: rgb(133, 131, 131);
   margin-left: 6%;
 }
 .btn_submit_chart_task{
-    position: absolute;
-    right: 5%;
-    padding: 3%;
-    bottom: 3%;
-    width: 15vw;
+   padding: 5%;
+     width: 45%;
+   background-color: rgb(145, 148, 154);
+   color: white;
+   border: 1px solid black;
+   border-radius: 2px;
+     cursor: pointer;
+}
+.btn_delete_chart_task{
+  padding: 5%;
+  width: 45%;
+  background-color: rgb(195, 88, 88);
+  color: white;
+    border: 1px solid black;
+   border-radius: 2px;
     cursor: pointer;
+}
+.btn_submit_chart_task:hover{
+  background-color: rgb(128, 130, 133);
+}
+.btn_delete_chart_task:hover{
+  background-color: rgb(182, 80, 80);
+}
+.chart_task_form_error{
+ 
+ right: 0%;
+ bottom: -2.5%;
+ position: absolute;
+ margin-right: 5%;
+  font-size: medium;
+  color: red;
+ 
+}
+.chart_task_up_btn_div{
+  position: absolute;
+    right: 0%;
+    display: flex;
+    padding: 3%;
+    justify-content: center;
+    gap: 4%;
+    bottom: 1%;
+    width: 20vw;
     
+   
 }
 .due_date_chart_create{
     margin-top: 3%;
@@ -723,4 +761,44 @@ width: 100%;
   position:absolute;
   transform: translateX(-50%);
    cursor: pointer;
+}
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.arrows_div{
+
+height: 100%;
+  opacity: 0;
+  
+
+  transform: translateX(10px);
+  pointer-events: none; 
+}
+
+.chart_left_task_row:hover .arrows_div {
+  animation: fadeInSlide 0.6s ease forwards;
+  pointer-events: auto;
+}
+
+.task_name_div{
+  width: 90%;
+  
+
+}
+#up_arrow{
+  display: flex;
+  justify-content: center;
+  color: rgb(130, 130, 130) !important;
+}
+#down_arrow{
+  display: flex;
+  justify-content: center;
+   color: rgb(130, 130, 130) !important;
 }

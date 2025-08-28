@@ -7,6 +7,7 @@ urlpatterns = [
     ####### Users , Home#########
     path('home/', views.BillboardView.as_view(), name = 'home'),
     path('logout/', views.LogoutView.as_view(), name ='logout'),
+    path('report/', views.ReportView.as_view(), name='report'),
     path('role_dispatch/', views.role_dispatch, name='role_dispatch'),
     path('account/<int:pk>', views.AccountView.as_view(), name='user_account'),
     path('account/update/<int:pk>', views.AccountUpdate.as_view(form_class=ProfileUpdateForm),
@@ -84,12 +85,14 @@ urlpatterns = [
     path('projects/chart/create/add_section/<int:pk>', views.AddSection.as_view(), name="add_section"),
     path('projects/chart/<int:pk>/create/task', views.ChartTaskCreate.as_view(),
           name='create_task_chart'),
-    path('projects/chart/task/<int:pk>/update', views.ChartTaskUpdate.as_view(), name='chart_task_update'),
+    path('projects/chart/<int:chart>/task/<int:pk>/update', views.ChartTaskUpdate.as_view(), name='chart_task_update'),
     path('projects/chart/<int:pk>/update', views.ChartUpdate.as_view(), name='chart_update'),
     path('projects/chart/sections/delete/<int:pk>', views.SectionDelete, name='sections_update'),
     path('projects/chart/<int:pk>/delete', views.ChartDelete.as_view(), name ='chart_delete'),
     path('projects/chart/<int:pk>/reset', views.ChartReset, name='reset_chart'),
     #path('projects/chart/save/<int:pk>', views.SaveChart, name='chart_save'),
+    path('projects/chart/<int:task_id>/<int:section_id>/<int:chart_id>/<str:prev>/<str:next>', 
+         views.SwapTask, name='swapTask'),
     ######CHAT##########
     path('chat', views.ChatView.as_view(), name='chat_view'),
     path('chat/update', views.ChatUpdate, name='chat_update'),

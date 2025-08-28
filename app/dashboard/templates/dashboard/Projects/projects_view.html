@@ -115,17 +115,41 @@
             </div>
             {% for section in sections %}
            
-           <div class="name_section_wrapper_chart">
-            <div class="chart_section_left_description_text">{{section.name}}  </div>
-            <div class="chart_section_left" id="section_left">
+      <div class="name_section_wrapper_chart">
+        <div class="chart_section_left_description_text">{{section.name}}  </div>
+         <div class="chart_section_left" id="section_left">
                    {% for task in tasks_by_section|get_item:section.id %}
             
-                       <a href="{% url 'dashboard:chart_task_update' task.id %}"> 
-                   <div class="chart_left_task_row 
+                      
+                   <div class="chart_left_task_row
                    {% if task.submitted_at > task.due_date %} chart_left_task_row_late 
                    {% endif %}
-                   " id="left_row">{{task.name}} </div>
-                       </a>
+                   " id="left_row{{task.id}}">
+
+                    <a href="{% url 'dashboard:chart_task_update' chart.id task.id %}" 
+                    class="task_name_div" id="task_name_div{{task.id}}">
+                      
+                     {{task.name}} 
+                  
+                      </a>
+
+               <div class="arrows_div">
+                    <a href="{% url 'dashboard:swapTask' task.id section.id chart.id 'true' 'false' %}">
+                         <div id="up_arrow">
+                           ▲
+                         </div>
+                    </a>
+
+                    <a href="{% url 'dashboard:swapTask' task.id section.id chart.id 'false' 'true' %}">
+                         <div id="down_arrow">▼
+                         </div>
+                    </a>
+
+
+              </div>
+                  
+       </div>
+                    
                 
                     {% endfor %}
 
@@ -380,5 +404,17 @@ async function LoadChart() {
 
   }
  
+
+document.querySelectorAll('[id^="left_row"]').forEach(row => {
+  const arrowsDiv = row.querySelector('.arrows_div');
+
+  row.addEventListener('mouseover', () => {
+    if (arrowsDiv) arrowsDiv.style.display = 'block';
+  });
+
+  row.addEventListener('mouseout', () => {
+    if (arrowsDiv) arrowsDiv.style.display = 'none';
+  });
+});
 </script>
   {% endblock %}

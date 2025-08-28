@@ -1,0 +1,37 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+
+<div class="outer_report">
+    
+    <div class="left_text">
+        <form method="post"> 
+        {% csrf_token %}
+        <div class="content_title">
+                Report :
+            </div>
+            <div class="content">
+            {{form.content}}
+
+            </div>
+
+    </div>
+    <div class="right_tasks">
+        <div class="tasks_title">
+                Join a task :
+            </div>
+            <div class="tasks">
+                {{form.tasks}}
+            </div>
+            <input type="submit" value="Submit" class="report_submit_btn">
+      </form>
+    </div>
+  
+</div>
+
+
+ <div class="send_msg_back">
+   <a href="{% url 'dashboard:home' %}"><button class="del_btn2" type="button">Back</button></a>
+
+ </div>
+ {% endblock %}

@@ -270,6 +270,20 @@
     top: 50%;
     transform: translate(-50%,-50%);
 }
+.error_task_create_manage{
+    position: absolute;
+    bottom: 0%;
+    color: red;
+    font-size: smaller
+;}
+.file_error_update_task{
+    position: absolute;
+    bottom: -2%;
+    margin-left: 15%;
+    color: red;
+    font-size: smaller;
+
+}
 .transfer_chart:hover{
       background-color: rgb(173, 207, 229);
   

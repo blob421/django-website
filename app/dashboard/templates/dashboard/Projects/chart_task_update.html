@@ -1,0 +1,106 @@
+ {% include 'dashboard/base.html' %}
+
+ {% block content %}
+ <div> 
+<form method="post" class="task_form_chart" enctype="multipart/form-data">
+
+<div class="form_container_create_task_chart">
+      {% csrf_token %}
+
+<div class="create_task_chart_name_div"> 
+   <div class="create_task_chart_name_label"> {{ form.name.label_tag }}</div>
+   <div class="form_margin" placeholder="text">{{form.name}}</div>
+</div>
+
+<div>  
+  <div class="form_margin"> {{form.description.label_tag}}</div>
+      <div class="task_create_chart_text_select"> 
+    <div class="description_task_form_chart"> {{form.description}} </div>
+      <div class="task_form_chart_select"> {{form.users}}</div>
+      </div>
+</div>
+
+
+<div class="flex_form_container_chart_task">
+ 
+   {{form.starting_date.label_tag}}
+   {{form.starting_date}}
+
+ <div>{{form.section.label_tag}}</div>
+    <div>{{form.section}}</div>
+
+
+   
+         <div>
+
+  
+     </div>
+    
+
+</div>
+<div class="due_date_chart_create">{{form.due_date.label_tag}}{{form.due_date}}
+        {% if file_form.errors %}
+     <div class="chart_task_form_error"> {{file_form.file_field.errors}}  </div>
+      {% endif %} </div> 
+    
+           <p>{{file_form.file_field}}  </p>
+
+
+    <div class="chart_task_up_btn_div">
+        
+        <input type="button" name="delete" value="Delete"
+        class="btn_delete_chart_task"
+        onclick="document.getElementById('confirm_delete_modal_manage').style.display='flex'">
+
+        <input type="submit" name="send" value="Submit" class="btn_submit_chart_task">
+                    
+    </div>
+
+
+                
+    <div id="confirm_delete_modal_manage" style="width: 25vw;
+                height: 27vh;
+                background-color: rgba(79, 79, 79, 0.686);
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                display: none;
+                border-radius: 8px;
+                color: white;
+                transform: translate(-50%,-50%);
+                ">
+
+                <div class="confirm_delete_modal_subtask_cont"> 
+                     <div class="confirm_deletion_text"> Confirm deletion  </div>
+                     <div class="button_confirm_delete_div"> 
+                    <button type="submit" name="delete" id="delete_btn_task"
+                    class="btn-submit-task-manage" value="1">
+                      Delete
+                    </button>
+
+                      <div> 
+                         <button type="button" id="cancel_btn_task"
+                            onclick="document.getElementById(
+                              'confirm_delete_modal_manage').style.display ='none'">
+                            Cancel
+                        </button>
+                      </div>
+                      </div>
+                 </div>
+</div>
+
+
+
+
+
+
+
+
+
+ </form>
+</div>
+  <div class="send_msg_back">
+   <button onclick="history.back()" class="del_btn2" type="button">Back</button></a>
+
+ </div>
+  {% endblock %}
