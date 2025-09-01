@@ -4,19 +4,35 @@
 
 
 
- <h1 class="team_title">{{user.userprofile.team.name}} management</h1>
+ <h1 class="team_title">
+   {% if user.userprofile.team.team_lead == user.userprofile %}
+   {{user.userprofile.team.name}} management
+   {% else %}
+    {{user.userprofile.team.name}}
+    {% endif %}
+  </h1> 
+
 
 <div class="border_container"> 
+    {% if user.userprofile.team.team_lead == user.userprofile %}
+     
       <div class="team_second_title">
-            <button onclick="setVisible(this, 'team_tasks', 'team_all_task_list')" 
+         {% if user.userprofile.team.team_lead == user.userprofile %}
+            <button onclick="setVisible(this, 'team_tasks', 'team_all_task_list', 'team_status');
+            document.getElementById('team_buttons').style.display='block'" 
             id="toggle_manage" class="management_tog_btn">
-               Employee / Tasks
+               Tasks
             </button>
-            <button onclick="setVisible(this, 'team_all_task_list', 'team_tasks')" 
+             <button onclick="setVisibleClass()" 
+            id="toggle_manage" class="management_tog_btn">
+               Statuses
+            </button>
+            <button onclick="setVisible(this, 'team_all_task_list', 'team_tasks', 'team_status');
+            document.getElementById('team_buttons').style.display='block'" 
             id="toggle_manage" class="management_tog_btn">
                Task list
             </button>
-
+            {% endif %}
      </div>
      <div class="nav_cont">
          
@@ -25,6 +41,7 @@
                <button class="scroll_not_manage" onclick="scrollRight('team_tasks')">▶</button>
                <button class="scroll_not_manage" onclick="reset('team_tasks', 'team_all_task_list')">Reset</button>
      </div>
+  
 </div>
  <div class="team_container1">
 
@@ -141,7 +158,7 @@
 </div> 
 
 
-<div class="team_management"> 
+<div class="team_management" id="team_buttons"> 
 
 
 
@@ -153,17 +170,17 @@
 
 <div class="btn-div3">
 <a href="{% url 'dashboard:team_completed' %}"> 
-<button class="button_tasks_list">Review tasks</button>
+<button class="button_tasks_list">Review tasks <span class="count_green">({{ count }})</span></button>
 </a>   
 </div>
-<div class="btn-div4">
-   ({{count}}) new tasks 
-</div>
+
+
+
 
 
 <div class="btn-div2">
 <a href="{% url 'dashboard:team_update' user.userprofile.team.id %}">
-<button type="button" class="button_tasks_list">Pin a message for the team</button>
+<button type="button" class="button_tasks_list">Pin a message</button>
 </a>
 </div>
 
@@ -178,8 +195,52 @@
 
 </div>
 
+<div class="btn_div_6">
+  
+      <button class="button_tasks_list"
+      onclick="setVisible(this, 'reports_modal')">View reports<span class="count_green"> 
+         ({{ unseen_reports }})</span></button>
+
 </div>
+
 </div>
+ {% endif %}
+
+
+ <div class="team_status_div 
+ {% if user.userprofile.team.team_lead == user.userprofile %} 
+ status_div_manage {% endif %}" id="team_status">
+   {% for user in team %}
+   {% with user.id|get_picture as id %}
+   <div class="team_member_bubbles">
+      <div class="username_div">
+       {{user.user.username}}
+
+       <div class="picture_cont">
+         <img src="{% url 'dashboard:pic_picture' id %}" class="pic">
+
+      </div>
+      </div>
+    
+      
+        <div class="active_task">
+         <img src="{% static 'task_icon.png' %}" style="width: 7%;"> {{user.active_task.name}}
+      </div>
+      <div class="status">
+         {{user.status}}
+      </div>
+      <div class="last_login">
+        Last login : {{user.user.last_login}}
+      </div>
+     
+   </div>
+   {% endwith %}
+   {% endfor %}
+      
+ </div>
+
+</div>
+
 
        <div id="info_modal_team">
          <div class="team_list_title">
@@ -202,86 +263,56 @@
          </div>
 
 
+<div id="reports_modal">
+    <div class="x_btn_reports" 
+     onclick="document.getElementById('reports_modal').style.display='none'">
+      X
+    </div>
+      {% for report in reports %}
+      {% if report.content_object.read %}
+    <a href="{% url 'dashboard:get_report' report.id %}" class="seen_report">
+     {{report.file_name}}
+
+    </a>
+    {% else %}
+       <a href="{% url 'dashboard:get_report' report.id %}" class="new_report">
+     {{report.file_name}}
+
+    </a>
+    {% endif %}
+ 
+      {% endfor %}
+</div>
+
+
+
 
 <script>
-function info(id){
- window.location.href=`/dashboard/projects/chart/${id}`
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-   const chart_icon = document.querySelectorAll('[id^=people]');  
-   const text_div = document.getElementById('text_team') 
-   
-   chart_icon.forEach(icon => {
-   const info = document.getElementById('info_modal_team');
-
-   icon.addEventListener('mouseenter', () => {
-        
-          const rect = icon.getBoundingClientRect();
-
-            //Set and calculate dimensions 
-            text_div.innerHTML= icon.dataset.member
-            info.style.visibility = 'hidden';
-            info.style.display = 'block';
-
-            let top = rect.bottom 
-            let left = rect.left + 20;
-        
-            const modalWidth = info.offsetWidth;
-            const modalHeight = info.offsetHeight;
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            if (left + modalWidth > viewportWidth) {
-               left = viewportWidth - modalWidth - 10;
-            }
-
-            const modalBottom = top + modalHeight;
-            const maxBottom = window.innerHeight;
-
-            if (modalBottom > maxBottom) {
-            top = rect.top - modalHeight - 10; // flip above
-            }
-            info.style.visibility = 'visible';
-          
-            // Apply position
-            info.style.position = 'absolute';
-            info.style.top = `${top}px`;
-            info.style.left = `${left}px`;
-            info.style.display = 'block';
-            });
-
-      icon.addEventListener('mouseout', () => {
-         info.style.display ='none';
-      });
-   });
+    setInfoBubble('chart_img', 'info_modal');
+    setTeamBubble();
 });
 
+function setVisibleClass() {
+   const div = document.getElementById("team_status");
+   const display = window.getComputedStyle(div).display;
+   const main = document.getElementById('team_tasks')
+   const list = document.getElementById('team_all_task_list')
+   const buttons = document.getElementById('team_buttons')
+   if (display === 'grid') {
+      div.style.display = 'none';
+      main.style.display = 'block'
+      list.style.display = 'none'
+      buttons.style.display = 'block'
+      
+   } else {
+      div.style.display = 'grid';
+      main.style.display= 'none'
+      list.style.display = 'none'
+      buttons.style.display = 'none'
 
-
-
-document.addEventListener('DOMContentLoaded', () => {
-   const chart_icon = document.querySelectorAll('[id^=chart_img]');
-   const info = document.getElementById('info_modal');
-   const text_div = document.getElementById('text_value') 
-   chart_icon.forEach(icon => {
-      text_div.innerText= icon.dataset.title
-      icon.addEventListener('mouseenter', () => {
-          const rect = icon.getBoundingClientRect();
-               info.style.position = 'absolute';
-               info.style.top = `${rect.bottom - 10}px`;
-               info.style.left = `${rect.left + 22}px`;
-    
-               info.style.display='flex';
-               info.innerText = title
-
-      });
-      icon.addEventListener('mouseout', () => {
-         info.style.display ='none';
-      });
-   });
-})
-
+   }
+}
 
  function scrollToBot(elem1, elem2) {
   const div1 = document.getElementById(elem1);

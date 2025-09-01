@@ -17,8 +17,13 @@
                     <div class="late_task_notice">You have {{late}} late task ! </div>
                     {% elif late > 1 %}
                     <div class="late_task_notice">You have {{late}} late tasks ! </div>
-
+             
                     {% endif %}
+                
+
+                <div class="billboard_ticket" style="background-color: rgb(221, 207, 173);">
+                    <a href="{% url 'dashboard:schedule_view' %}">Schedule</a>
+                 </div>
 
                 <div class="billboard_ticket" >
                   
@@ -44,5 +49,11 @@
      </p>
  </div>
 
+
+    <form method="post" class="status_cont">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Set status">
+    </form>
 
   {% endblock %}

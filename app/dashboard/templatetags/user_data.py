@@ -31,8 +31,13 @@ def getUserCount(task):
     count += 1
   return count
 
-
-
+@register.filter
+def get_picture(id):
+  
+    document = Document.objects.filter(owner_id = id, object_id=1).last()
+    if document:
+      return document.id
+    return 1
 
 @register.filter
 def get_item(dictionary, key):

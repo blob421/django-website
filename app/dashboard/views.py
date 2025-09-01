@@ -3,13 +3,19 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView, CreateView
 from django.contrib.auth.views import LogoutView, LoginView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Messages, UserProfile, Task, Team, ChatMessages, Resource, ResourceCategory
-from .models import MessagesCopy, Chart, ChartData, ChartSection, Schedule, Document,SubTask
-from .models import Goal, Stats, Report
-from .forms import MessageForm, RecipientForm, RecipientDelete, SubmitTask, DenyCompletedTask
-from .forms import ForwardMessages,ChatForm,AddTaskChart,LoginForm,SubTaskForm,FileFieldForm
-from .forms import ProfilePictureForm, GoalForm, StatsForm2, StatsForm, TransferTaskForm, AddTask
-from .forms import UpdateTask, ReportForm
+
+from .models import (Messages, UserProfile, Task, Team, ChatMessages, Resource, 
+                     ResourceCategory,MessagesCopy, Chart, ChartData, ChartSection, Schedule, 
+                    Goal, Stats, Report, DailyReport, Document, SubTask)
+
+from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask, 
+                    DenyCompletedTask, ForwardMessages,ChatForm,AddTaskChart,LoginForm,
+                    SubTaskForm,FileFieldForm, ProfilePictureForm, GoalForm, StatsForm2, 
+                    StatsForm, TransferTaskForm, AddTask, UpdateTask, ReportForm, StatusForm)
+
+from .utility import ( get_stats_data, save_files, create_stats, save_stats, 
+                      save_profile_picture, calculate_milestones, get_team_graph, send_sms)
+
 from django.conf import settings
 from django.utils import timezone
 import time
@@ -24,8 +30,7 @@ from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, Protecte
 from django import forms
 from django.db.models import Q
 import json
-from .utility import get_stats_data, save_files, create_stats, save_stats, save_profile_picture
-from .utility import calculate_milestones, get_team_graph, send_sms
+
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
 from django.utils.encoding import smart_str
@@ -139,18 +144,29 @@ class CustomLoginView(LoginView):
         context['company'] =  settings.COMPANY_NAME
         return context
 
-#@method_decorator([cache_page(60 * 60), vary_on_cookie], name='dispatch')
+
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
+    #@method_decorator([cache_page(60 * 60 * 5), vary_on_cookie], name='dispatch')
     def get(self, request):
         now = timezone.now()
         tasks = Task.objects.filter(users__in=[self.request.user.userprofile])
-       
+        form = StatusForm()
+        form.initial['status'] = request.user.userprofile.status
         late = tasks.filter(due_date__lte=now).count()
         
-        ctx = {'is_home':True, 'late':late}
+        ctx = {'is_home':True, 'late':late,'form':form}
 
         return render(request, self.template, ctx)
+    
+    def post(self, request):
+        form = StatusForm(request.POST)
+        if form.is_valid():
+            user = request.user.userprofile
+            status = form.cleaned_data['status']
+            user.status = status
+            user.save()
+        return redirect(reverse_lazy('dashboard:home'))
 
 
 
@@ -512,10 +528,14 @@ class TasksList(LoginRequiredMixin, View):
     def get(self, request):   
       
         tasks = Task.objects.filter(users=self.request.user.userprofile.id)
-       
+        user = request.user.userprofile
+        active = None
+        if user.active_task:
+            active = user.active_task.id
+
         time = timezone.now()
       
-        context = {'tasks': tasks, 'time': time}
+        context = {'tasks': tasks, 'time': time, 'active':active}
         return render(request, self.template_name, context)
 
 
@@ -1078,12 +1098,22 @@ class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
 
 ######### TEAM ############################################
 
-class TeamView(ProtectedView):
+class TeamView(LoginRequiredMixin, View):
     template_name='dashboard/Management/team_view.html'
     def get(self, request):
         time = timezone.now()
-      
-        team = Team.objects.get(team_lead = self.request.user.userprofile)
+  
+        team = self.request.user.userprofile.team
+        
+        all_reports = DailyReport.objects.filter(team=team)
+        unseen_reports = all_reports.filter(read=False).count()
+
+        reports_list = []
+        for rep in all_reports:
+            reports_list.append(Document.objects.get(object_id=rep.id))
+
+
+        team = self.request.user.userprofile.team
         team_member = UserProfile.objects.filter(team__name=team)
         team_name = team.name
         tasks = Task.objects.filter(
@@ -1091,9 +1121,9 @@ class TeamView(ProtectedView):
         
         query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
         completed_task_count = Task.objects.filter(query).count()    
-
+        
         context = {'team': team_member , 'count':completed_task_count,'tasks':tasks,
-                   'time':time}
+                   'time':time, 'reports':reports_list, 'unseen_reports':unseen_reports}
         return render(request, self.template_name, context)
     
     def post(self, request):
@@ -1241,9 +1271,9 @@ class RessourcesView(View):
     
     
 ############## TEAM STATS #####################################
-#@method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
 class PerformanceDetail(ProtectedView):
     template_name = 'dashboard/management/perf_detail.html'
+    #@method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
     def get(self, request, pk):
      
         employee = UserProfile.objects.get(id = pk)
@@ -1293,10 +1323,9 @@ class PerformanceDetail(ProtectedView):
 
 
 
-@method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
 class PerformanceView(ProtectedView):
     template_name = 'dashboard/management/perf_view.html'
-
+    @method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
     def get(self, request, pk, page=1):
      
         user_profile = UserProfile.objects.get(user = self.request.user)
@@ -1391,6 +1420,18 @@ class ChatView(LoginRequiredMixin, View):
 
 
 ############ FUNCTION VIEWS ################################
+
+def setActiveTask(request, pk):
+    task = Task.objects.get(id=pk)
+    user = request.user.userprofile
+    if user.active_task and user.active_task == task:
+        user.active_task = None
+    else:
+       user.active_task = task
+    user.save()
+    return redirect(reverse('dashboard:tasks_list'))
+
+
 
 def role_dispatch(request):
     user_profile = request.user.userprofile
@@ -1505,6 +1546,22 @@ def GetFile(request, pk):
     file_path = file.file.path
     file_name = file.file.name
 
+    with open(file_path, 'rb') as f:
+        response = HttpResponse(f.read(), content_type=mimetypes.guess_type(file_name)[0] or 'application/octet-stream')
+        response['Content-Disposition'] = f'attachment; filename="{smart_str(file_name)}"'
+        return response
+    
+def getReport(request, pk):
+   
+    report = get_object_or_404(Document, id=pk)
+    file_path = report.file.path
+    file_name = report.file.name
+
+    id =  report.object_id
+    daily_rep = DailyReport.objects.get(id=id)
+    daily_rep.read=True
+    daily_rep.save()
+    
     with open(file_path, 'rb') as f:
         response = HttpResponse(f.read(), content_type=mimetypes.guess_type(file_name)[0] or 'application/octet-stream')
         response['Content-Disposition'] = f'attachment; filename="{smart_str(file_name)}"'

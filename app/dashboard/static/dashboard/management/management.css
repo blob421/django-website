@@ -16,7 +16,7 @@
 }
 
 .team_container1{
-
+   background-color: #5e463e;
    
     height: 79vh;
     display: flex;
@@ -39,7 +39,7 @@
    
 }
 .scroll_not_manage{
-    background-color: #3b3b3b;
+    background-color: #4e4e4e;
     color: white;
 }
 .nav_arrows{
@@ -139,6 +139,7 @@
     
 }
 .management_tog_btn{
+  
     cursor: pointer;
 }
 #toggle_manage{
@@ -170,7 +171,7 @@
     position: fixed;
     top: 0.5%;
     left: 0.5%;
-  
+    
     font-size: medium;
 }
 .nav_cont{
@@ -269,6 +270,17 @@ justify-content: center;
         list-style-type: none;
 
 }
+.status_div_manage{
+      border: 2px solid black;
+    height: 90%;
+    background-color: aliceblue;
+    width: 90%;
+    position: relative;
+    left: 50%;
+    bottom: 0%;
+    transform: translateX(-50%);
+    display: none;
+}
 #info_modal{
     width: 10vw;
     height: 5vh;
@@ -293,17 +305,75 @@ justify-content: center;
 }
 .button_tasks_list {
 
-    height: 7vh;
+    height: 7.2vh;
     width: 16.3vw;
-    border: grey solid 2px;
+    border: rgb(179, 179, 179) solid 2px;
      left: 50%;
      border-radius: 2px;
-     padding: 1%;
+     
+     background-color: #515151;
+     color: white;
+     border-radius: 4px;
    cursor: pointer;
  
 }
+.new_report{
+    
+    background-color: rgb(140, 184, 219);
+    left: 50%;
+    width: 85%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    position: absolute;
+    border: 1.5px solid rgb(48, 48, 48);
+    transform: translateX(-50%);
+}
+.x_btn_reports{
+    position: fixed;
+    right: 3%;
+    background-color: white;
+    border-radius: 6px;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    width: 7.5%;
+    top: 2%;
+}
+.seen_report{
+   
+    background-color: rgb(189, 189, 189);
+     left: 50%;
+    width: 85%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    position: absolute;
+    border: 1.5px solid rgb(48, 48, 48);
+    transform: translateX(-50%);
+}
+#reports_modal{
+    padding-top: 4%;
+    background-color: #777777;
+    width: 25vw;
+    height: 70vh;
+    overflow-y: scroll;
+    border: 2px solid black;
+    position: absolute;
+    z-index: 1000;
+    display:none;
+    left: 50%;
+    top: 50%;
+    transform: translate(0%, -45%);
+}
 .button_tasks_list:hover{
-    background-color: rgb(175, 235, 219);
+    background-color: rgb(105, 105, 105);
+   
 }
 
 .btn-div{
@@ -323,6 +393,11 @@ justify-content: center;
 
 
 }
+.count_green{
+    color: aquamarine;
+ 
+
+}
 .btn-div3{
       display: flex;
   justify-content: center;   
@@ -332,14 +407,7 @@ justify-content: center;
 
 
 }
-.btn-div4{
-         display: flex;
-  justify-content: center;   
-  color: aquamarine;
 
-
-
-}
 .btn-div-5{
           display: flex;
   justify-content: center;   
