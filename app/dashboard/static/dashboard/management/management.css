@@ -109,6 +109,7 @@
       border: 2px rgb(45, 45, 45) solid;
    width: 20%;
    flex-shrink: 0;
+    display: flex;
    background-color: rgb(215, 243, 215);
    padding-left: 2px;
 }

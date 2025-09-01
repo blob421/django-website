@@ -65,28 +65,33 @@
 }
 .denied_text{
     font-weight:bold;
+    margin-top: 3%;
     font-size: smaller;
 }
 .task_blocks2_denied{
               background-color: #ecc4c4;
               box-shadow: inset 2px 2px 0px white;
               color: #5a5a5a;
-            border: 1.5px grey solid;
-            padding-left: 3%;
-            margin-top: 1%;
-            margin-left: 2%;
-            padding-right: 1%;
-            border-radius: 4px;
+                    display: flex;
+  border: 1.5px grey solid;
+  padding-left: 3%;
+  margin-top: 1%;
+
+  margin-left: 2%;
+  border-radius: 4px;
           
 }
 .task_blocks2_employee{
         background-color: rgba(239, 237, 237, 0.681);
-            border: 1.5px grey solid;
-            padding-left: 3%;
-            margin-top: 1%;
-            margin-left: 2%;
-            border-radius: 4px;
+           display: flex;
+  border: 1.5px grey solid;
+  padding-left: 3%;
+  margin-top: 1%;
+  height: 17vh;
+  margin-left: 2%;
+  border-radius: 4px;
 }
+
 
 .task_block_container1{
     overflow: auto;
