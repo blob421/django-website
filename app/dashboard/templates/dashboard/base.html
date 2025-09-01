@@ -9,6 +9,7 @@
      <link rel="stylesheet" href="{% static 'dashboard/messages.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/msg_main.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/tasks.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/team.css' %}">
 
      <link rel="stylesheet" href="{% static 'dashboard/management/management.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/management/tasks.css' %}">
@@ -20,9 +21,9 @@
      <link rel="stylesheet" href="{% static 'dashboard/account.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/history.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/resources.css' %}">
-          <link rel="stylesheet" href="{% static 'dashboard/reports.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/reports.css' %}">
 
-     
+     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
      <script src="{% static 'js/getSubtask.js' %}"></script>
     
      {% block extra_css %}
@@ -234,12 +235,9 @@ html{
   {% if new > 0 %}<div class="new_msg_count_div">{{new}}</div>{% endif %}
   <a href="{% url 'dashboard:tasks_list' %}">Tasks</a>
   <a href="{% url 'dashboard:projects' %}">Projects</a>
-  {% if user.userprofile == user.userprofile.team.team_lead %}
    
   <a href="{% url 'dashboard:team' %}">Team</a>
-  {% else %}
-  <a href="{% url 'dashboard:schedule_view' %}">Schedule</a>
-  {% endif %}
+
   <a href="{% url 'dashboard:chat_view' %}">Chat</a>
   <button onclick="setVisible(this,'shade_logout')">Logout</button> 
   {% if is_home %}

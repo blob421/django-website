@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
 from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document
-from .models import Report, ChatMessages, Task
+from .models import Report, ChatMessages, Task, DailyReport
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
@@ -117,6 +117,20 @@ def generate_report(team):
         story.append(Spacer(1, 30))
 
     doc.build(story)
+    path = f'reports/{filename}'
+    
+    last_rep = DailyReport.objects.all().last()
+    if not last_rep:
+          report = DailyReport.objects.create(team=team)
+          Document.objects.create(file = path, owner=team.team_lead,
+                                                                content_object = report)
+    else:
+        if not last_rep.timestamp.day == timezone.now().day:
+            
+            report = DailyReport.objects.create(team=team)
+            Document.objects.create(file = path, owner=team.team_lead,
+                                                                    content_object = report)
+    
     logger.info('Daily report generated with success')
   
 

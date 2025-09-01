@@ -1,3 +1,37 @@
+
+.status_cont{
+  right: 0%;
+  position: absolute;
+  width: 16vw;
+
+  background-color: #86775e;
+   text-align: center;
+   border: 1.5px solid black;
+   padding: 0.5%;
+   padding-top: 0%;
+   
+   color: white;
+}
+.status_cont input{
+  width: 80%;
+
+  border-radius: 5px;
+  height: 6vh;
+  cursor: pointer;
+ 
+ 
+}
+.status_cont textarea{
+  margin-top: 5%;
+  height: 50%;
+ 
+ 
+}
+.status_cont label{
+   font-size: medium;
+   background-color: #4a4949;
+   padding: 0.5%;
+}
 .visual_frame{
     border: 1.5px rgba(84, 72, 55, 0.68) solid;
     height: 80%;
@@ -42,11 +76,6 @@
  background-color: white;
  align-items: center;
  font-size: small;
-  
-
-
- 
-
   background-color: rgb(232, 232, 232);
    border: 2px solid grey;
   border: 1px solid black;

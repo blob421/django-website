@@ -1,6 +1,8 @@
 from . import views
 from django.urls import path
 from .forms import CustomPasswordChangeForm, ProfileUpdateForm
+from django.conf import settings
+from django.conf.urls.static import static
 app_name = 'dashboard'
 urlpatterns = [
     
@@ -26,7 +28,7 @@ urlpatterns = [
     path('delete_report/<int:pk>', views.MessageDelete.as_view(), name = 'report_delete'),
     path('update_report/<int:pk>', views.MessageUpdate.as_view(), name = 'report_update'),
     ##########TASKS#########
- 
+    path('tasks/<int:pk>/activate', views.setActiveTask, name='activate_task'),
     path('tasks/subtask/<int:pk>', views.FetchSubtask, name='fetch_subtask'),
     path('tasks/<int:task>/subtask/<int:pk>', views.SubtaskCompleted, name="subtask_completed"),
     path('tasks/', views.TasksList.as_view(), name = 'tasks_list'),
@@ -38,6 +40,7 @@ urlpatterns = [
     path('pic_picture_completed_task/<int:pk>', views.stream_completed_task_img, 
          name='stream_completed_task_img'),
     path('file/<int:pk>/download', views.GetFile, name="get_file"),
+    path('report/<int:pk>/download', views.getReport, name='get_report'),
     path('file/<int:pk>/task/delete/<int:manage>', views.DelFile, name='delete_file'),
     path('resource/<int:pk>', views.getResource, name='get_resource'),
     ####### MANAGE ###########
@@ -97,4 +100,4 @@ urlpatterns = [
     path('chat', views.ChatView.as_view(), name='chat_view'),
     path('chat/update', views.ChatUpdate, name='chat_update'),
 
-] 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

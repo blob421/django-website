@@ -238,11 +238,60 @@
     width: 11%;
   
 }
+.active_task_div{
+      background-color: #f1f1f1;
+    height: 15%;
+    height: 15%;
+    border-radius: 5%;
+    width: 60%;
+    margin-top: 14%;
+    margin-left: 17%;
+    
+    border: 1px solid black;
+
+
+}
+.activated_task_div{
+         background-color: #eac08f;
+    height: 15%;
+    border-radius: 5%;
+    width: 60%;
+    margin-top: 14%;
+    margin-left: 17%;
+    
+    border: 1px solid black;
+
+}
 #chart_img{
     width: 85%;
     margin-left: 15%;
     
     
+}
+#info_modal_task_list_chart{
+       width:18vw;
+    height: 2vh;
+    padding: 1vw;
+    align-items: center;
+    justify-content: center;
+    display: none;
+    border: 1px solid black;
+   z-index: 1000;
+   border-radius: 4px;
+    background-color: #e9e9e9;
+}
+#info_modal_task_list{
+
+    width: 6vw;
+    height: 2vh;
+    padding: 1vw;
+    align-items: center;
+    justify-content: center;
+    display: none;
+    border: 1px solid black;
+   z-index: 1000;
+   border-radius: 4px;
+    background-color: #e9e9e9;
 }
 .people_img_div{
     display: flex;
@@ -256,6 +305,13 @@
     margin-top: 2vh;
     width: 90%;
   
+}
+.chart_icon_div_inv{
+       height: 5vh;
+ 
+    margin-top: 2vh;
+    width: 90%;
+    visibility: hidden;
 }
 .task_title{
     width: 89%;

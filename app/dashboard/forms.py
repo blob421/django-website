@@ -276,3 +276,8 @@ class StatsForm2(ModelForm):
            
             'star_note': forms.Textarea(attrs={'id': 'note'}),
         }
+
+class StatusForm(ModelForm):
+     class Meta:
+          model = UserProfile
+          fields = ['status']

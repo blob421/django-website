@@ -50,6 +50,8 @@ class UserProfile(models.Model):
     weekends = models.BooleanField(default=False)
     stats = GenericRelation('Stats')
     picture = GenericRelation('Document')
+    active_task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
+    status = models.TextField(max_length=80, null=True, blank=True, default='No status')
 
 
    
@@ -66,6 +68,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
     
+    def save(self, *args, **kwargs):
+        if self.status == '':
+            self.status = 'No status' 
+        super().save(*args, **kwargs)
+        
 
 class Stats(models.Model):
   
@@ -251,7 +258,15 @@ class Report(models.Model):
     content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     tasks = models.ManyToManyField(Task)
+   
 
+
+
+class DailyReport(models.Model):
+    document = GenericRelation('Document')
+    timestamp = models.DateTimeField(auto_now=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    read = models.BooleanField(default=False)
 
 
 class SubTask(models.Model):
