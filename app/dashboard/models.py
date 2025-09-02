@@ -383,6 +383,12 @@ class LogginRecord(models.Model):
 class WeekRange(models.Model):
     starting_day = models.DateTimeField()
     end_day = models.DateTimeField()
+    @property
+    def end_month(self):
+        return self.end_day.strftime('%B')
+    @property
+    def start_month(self):
+        return self.starting_day.strftime('%B')
 
 
 class ResourceCategory(models.Model):

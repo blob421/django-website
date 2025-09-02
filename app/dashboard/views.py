@@ -1293,13 +1293,16 @@ class PerformanceDetail(ProtectedView):
         return render(request, self.template_name, ctx)
     
     def post(self, request, pk):
+        print(request)
         if request.POST.get('create'):
             form = StatsForm(request.POST)
             if form.is_valid():
+
                 employee = UserProfile.objects.get(id = pk)
                 unsaved_form = form.save(commit=False)
                 unsaved_form.stars += 1
                 unsaved_form.content_object = employee
+                print('hi')
                 unsaved_form.save()
 
         if request.POST.get('update'):

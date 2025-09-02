@@ -6,8 +6,13 @@
 <div class="title_container_schedule">
 <div class="schedule_title">Your schedule</div>
 <div class="schedule_time_range">
+{% if schedule %}
+( {{schedule.week_range.starting_day.day}} {{schedule.week_range.start_month}} - 
+{{schedule.week_range.end_day.day}} {{schedule.week_range.end_month }} )</div>
+{% else %}
 ( {{schedule.week_range.starting_day.day}} {{schedules_ctx.start_month}} - 
 {{schedule.week_range.end_day.day}} {{schedules_ctx.end_month}} )</div>
+{% endif %}
        
        {% if schedule %}
        <div class="schedule_button_div"> 
@@ -29,7 +34,7 @@
                 <a href="{% url 'dashboard:schedule_detail' schedule.id %}">
                 <button class="week_button
                  {% if schedule.request_pending %} week_button_pending
-            {% endif %}">Week {{forloop.counter}}</button>
+            {% endif %}">{{schedule.week_range.starting_day.day}}-{{schedule.week_range.end_day.day}}</button>
                 </a>
            </div>
            {% endfor %}

@@ -1,8 +1,9 @@
 from django import template
-from ..models import Schedule, WeekRange, Document
+from ..models import Schedule, WeekRange, Document, UserProfile
 from django.db.models import Q
 import mimetypes
 from django.utils.html import format_html
+from django.contrib.contenttypes.models import ContentType
 
 register = template.Library()
 @register.filter
@@ -33,8 +34,8 @@ def getUserCount(task):
 
 @register.filter
 def get_picture(id):
-  
-    document = Document.objects.filter(owner_id = id, object_id=1).last()
+    content_type = ContentType.objects.get_for_model(UserProfile)
+    document = Document.objects.filter(owner_id = id, content_type_id=content_type.id).last()
     if document:
       return document.id
     return 1

@@ -113,8 +113,11 @@ a:visited{
 }
 .link_divs_send_msg{
     margin-left: 4%;
-    border: 2px solid red;
+    background-color: #3b3b3b92;
     display: flex;
+    padding-left: 1%;
+    padding-right: 1%;
+    cursor: pointer;
     
 }
 .title_bar_send_msg input{

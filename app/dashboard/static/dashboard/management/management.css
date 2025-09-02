@@ -97,20 +97,22 @@
    width: 20%;
    display: flex;
    flex-shrink: 0;
-   background-color: white;
+    background-color: rgb(237, 238, 238);
    padding-left: 2px;
  
 }
 .tasks_units_blocks_completed:hover{
- background-color: rgb(199, 234, 199);
+ background-color: rgb(191, 225, 191);
 }
 .tasks_units_blocks_completed{
 
       border: 2px rgb(45, 45, 45) solid;
    width: 20%;
    flex-shrink: 0;
+   
     display: flex;
-   background-color: rgb(215, 243, 215);
+    background-color: rgb(209, 238, 209);
+
    padding-left: 2px;
 }
 .tasks_units_blocks_denied:hover{
@@ -123,12 +125,12 @@
    width: 20%;
    display: flex;
    flex-shrink: 0;
-    background-color: rgb(241, 206, 153);
+     background-color: rgb(237, 238, 238);
  
    padding-left: 2px;
 }
 .tasks_units_blocks:hover{
-    background-color: rgb(237, 237, 237);
+    background-color: rgb(234, 234, 233);
 }
 .team_title{
     position: fixed;
@@ -186,10 +188,13 @@
 .manage_all_task_list_name{
     width: 50%;
     margin-right: 2%;
+    background-color: #4a595f4f;
+    padding: 1%;
     
 }
 .manage_all_task_list_date{
     width: 50%;
+    padding: 1%;
 }
 .manage_all_task_list_name_title{
     width: 50%;
@@ -210,6 +215,7 @@
 .manage_all_task_list_date_late{
         width: 50%;
         background-color: rgb(235, 156, 156);
+        padding: 1%;
 }
 .link_management{
  
@@ -458,7 +464,7 @@ justify-content: center;
 }
 .employee_div{
     width: 30%;
-    background-color: #b3c7e0;
+    background-color: #d3d3d3;
     border: 2px solid black;
 }
 .employee_name{
@@ -466,7 +472,7 @@ justify-content: center;
     border: 1px solid black;
    
        border-right: 0px;
-       background-color: rgb(215, 215, 215);
+       background-color: rgba(73, 73, 73, 0.374);
      left: 50%;
      border-radius: 2px;
      position: relative;
@@ -505,15 +511,18 @@ justify-content: center;
    
     border-radius:6px;
     transform: translate(-50%,-50%);
-    border: 6px solid rgb(255, 196, 0);
-    outline: 3px solid #796558;
+    border: 6px solid rgb(140, 139, 136);
+    outline: 3px solid #2e2e2e;
 }
 .stars_div{
     display: flex;
-   padding-top: 4%;
+   padding-top: 9%;
    padding-bottom: 4%;
-    height: 10%;
-   
+    height: 9%;
+    width: 90%;
+   left: 50%;
+   transform: translateX(-50%);
+   position: relative;
     cursor: pointer;
     border-bottom: 0px;
 }
@@ -616,7 +625,7 @@ justify-content: center;
     padding-top: 2%;
     border: 1px solid black;
       border-right: 0px;
-    background-color: rgb(245, 198, 71);
+    background-color: rgb(223, 184, 79);
 }
 
 .stats_div{

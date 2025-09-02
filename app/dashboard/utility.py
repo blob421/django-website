@@ -517,8 +517,8 @@ def calculate_milestones():
 
            empty_count_dict[month] += empty_count_total
            empty_count_total += empty_count_dict[month]
-
-           for key, val in empty_count_dict.items():
+        
+        for key, val in empty_count_dict.items():
                empty_count_dict[key] = range(val)
 
         return {'dates_set':dates_set, 'months_set':months_set, 'milestones':milestones,
