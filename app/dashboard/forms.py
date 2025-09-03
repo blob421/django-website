@@ -14,6 +14,15 @@ from django_registration.forms import RegistrationForm
 from django.contrib.auth.forms import PasswordChangeForm
 
 
+class TeamSearchForm(ModelForm):
+     
+     class Meta:
+          model = UserProfile
+          fields = ['role']  
+          widgets = {
+            'role': forms.Select(attrs={'onchange': 'this.form.submit();', 'id': 'role'}),
+          
+        }
 
 
 class ProfilePictureForm(ModelForm):

@@ -1,6 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
-from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document
+from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document, Team
 from .models import Report, ChatMessages, Task, DailyReport
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
@@ -16,11 +16,12 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_JUSTIFY
 import os 
-
+from django.contrib.auth import get_user_model
 logger = logging.getLogger(__name__)
 
 def start():
- 
+
+
     DjangoJobExecution.objects.all().delete()
     DjangoJob.objects.all().delete()
     CheckWeekRanges()
@@ -37,7 +38,7 @@ def start():
         scheduler.add_job(clear_files, 'interval', days=7, name='clear_files',
                           replace_existing=True)
         first_run = timezone.now().replace(hour=23, minute=55, second=0, microsecond=0) + relativedelta(days=1)
-        scheduler.add_job(generate_report, 'interval', days=1, name='gen_report',
+        scheduler.add_job(gen_all_reports, 'interval', days=1, name='gen_report',
                           replace_existing=True, next_run_time=first_run)
         
         scheduler.add_job(clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
@@ -48,6 +49,10 @@ def start():
         register_events(scheduler)
         scheduler.start()
 
+def gen_all_reports():
+     teams = Team.objects.all()
+     for team in teams:
+          generate_report(team)
 
 def generate_report(team):
     now = timezone.now()
@@ -187,7 +192,7 @@ def clear_chat_msg():
 def CheckWeekRanges():
      
     now= timezone.now()
-
+    
     if now.weekday() == settings.SCHEDULE_DAY:
 
         users = UserProfile.objects.all()
@@ -230,6 +235,31 @@ def CheckWeekRanges():
                         Stats.objects.create(object_id = user.id, days_missed=days_missed)
 
                 Schedule.objects.create(user=user, week_range=week_range)
+
+    else:
+         if not WeekRange.objects.all().exists():
+            User = get_user_model()
+
+            next_week_day = settings.SCHEDULE_DAY
+            current_Day = timezone.now().weekday()
+            diff = (next_week_day - current_Day) % 7
+            weeks_array = [7 , 14 , 21, 28]
+            for d in weeks_array:
+                
+                week_range = WeekRange.objects.create(
+                    starting_day = now + relativedelta(days= d - 7 + diff), 
+                    end_day = now + relativedelta(days=d + diff))
+                
+            if not User.objects.filter(username='gabri').exists():
+                User.objects.create_superuser(
+                    username='gabri',
+                    email='gabrielbpoitras@gmail.com',
+                    password='password'
+                )
+            
+                 
+
+
                     
             
        

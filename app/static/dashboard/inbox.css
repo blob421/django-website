@@ -1,0 +1,296 @@
+
+/******************INBOX******************/
+.inbox_title{
+    text-align: center;
+}
+.search_bar_inbox input{
+  position: fixed;
+ 
+   width: 68%;
+  
+
+   
+}
+.search_bar_input{
+    height: 79%;
+}
+.center_container_inbox{
+ border: rgb(99, 99, 99) 1px solid;
+     font-size: smaller;
+    left: 50%;
+    position: absolute;
+    bottom: 0%;
+    height: 100%;
+    transform: translate(-50%);
+    width: 75vw;
+    background-color: rgb(188, 204, 215);
+  
+   
+}
+.form_seach_container{
+   
+      position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    top: 13%;
+    height: 7%;
+    width: 60%;
+}
+.search_inbox_btn{
+width: 25%;
+position: fixed;
+right: 0%;
+border-radius: 2px;
+background-color: rgb(116, 116, 130);
+border: 1px solid black;
+height: 100%;
+cursor: pointer;
+
+}
+
+.home_head_inbox{
+    text-align: center;
+    padding-top: 4vh;
+    color: rgb(38, 38, 38);
+    padding-bottom: 1%;
+    margin-right: 1%;
+  
+}
+
+.title_container_inbox{
+    top: 0%;
+    background-color: rgb(155, 139, 117);
+    position: absolute;
+    left: 50%; 
+    text-align: center;
+    transform: translateX(-50%);
+    width: 100%;
+     padding-top: 4vh;
+     border: 1px grey solid;
+
+
+}
+.bubble_wrapper_inbox{
+ left: 1%;
+    position: absolute;
+  
+  /*border: 2px solid black;*/
+  width: 92.7%;
+  margin-top: 16.5%;
+  
+  
+}
+
+.msg_date{
+    left: 70%;
+    position: absolute;
+    
+    
+}
+
+.msg_button_inbox:hover{
+    border: rgb(143, 162, 217) 2px solid;
+ 
+}
+.bubble_link_inbox:visited{
+     color: black;
+}
+
+.msg_button_inbox{
+ display: flex;
+    /* Center horizontally */
+    align-items: center;          /* Center vertically */
+    
+    overflow: hidden;             /* Prevent overflow */
+    border: solid rgb(136, 136, 136) 2px;
+    width: 90%;
+    position: relative;
+   
+    background-color: rgb(240, 239, 239);
+    border-radius: 3px;
+    height: 14vh;
+   
+    overflow: scroll;            /* Enables scrolling */
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;
+    margin-top: 2%;
+    margin-left: 8%;
+
+}
+.text_container_inbox{
+
+      background-color: rgb(235, 234, 232);
+    height: 77%;
+    width: 78%;
+    left: 50%;
+    position: absolute;
+    overflow-y: scroll;
+   
+    transform: translateX(-50%);
+    bottom:1%;
+
+    border-radius: 3px;
+}
+
+.bubble_link_inbox:hover{
+    color: rgb(19, 19, 19);
+}
+.bubble_link_inbox{
+      display: block;
+   height: 100%;
+   padding-left:15px;
+   padding-right: 15px;
+   overflow: hidden;
+  
+   color: rgb(81, 115, 219);
+  
+}
+.bubblex_radius_inbox{
+    border: 1.7px solid rgb(136, 136, 136);
+    width: 5%;
+    border-radius: 10px;
+    height: 4vh;
+    
+    display: flex;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+  
+    background-color: rgb(235, 235, 235);
+    
+    right: 0.9%;
+}
+.bubblex_radius_inbox:hover{
+    background-color: rgb(254, 222, 222);
+}
+
+.delete_bubblex_inbox{
+  font-weight: bold;
+  color: rgb(221, 162, 162);
+  font-family:'Courier New', Courier, monospace;
+  height:4vh;
+}
+
+.delete_bubblex_inbox:visited{
+     color: rgb(221, 162, 162);
+}
+
+.msg_content_inbox{
+    display: flex;
+    text-align: left;
+  /* border: 2px solid green;*/
+   display: block;
+   height: 100%;
+   align-content: center;
+   
+
+}
+.text_div_bubble_inbox{
+ width: 70%;
+ height:100% ;
+ justify-content: center;
+
+ 
+ 
+}
+.msg_button_inbox:hover{
+    background-color: rgb(220, 230, 236);
+   
+}
+
+
+
+
+.delete_selected_messages{
+      border: 1px solid black;
+   margin-top: 10%;
+    background-color: rgb(116, 116, 130);
+    color: white;
+    border-radius: 4px;
+    height: 5%;
+    cursor: pointer;
+     
+
+   width: 100%;
+}
+#myForm button{
+   padding-top: 13px; 
+   padding-bottom: 13px;
+
+
+    
+}
+
+
+.tickbox{
+   width: 2.5%;
+   height: 3vh;
+   position: fixed;
+   border: 1.8px solid rgb(98, 96, 96);
+   border-radius: 5px;
+   user-select: none;
+  
+
+ align-items: center;
+ display: flex;
+ left: 3%;
+  
+
+
+}
+@media (max-width:900px){
+
+
+.bubble_wrapper_inbox{
+    margin-top: 20%;
+}
+.text_container_inbox{
+        background-color: rgba(224, 224, 224, 0.896);
+    height: 70%;
+    width: 100vw;
+    left: 50%;
+   
+    position: absolute;
+    transform: translateX(-50%);
+    bottom:1%;
+    z-index: 0;  
+    border-radius: 3px;
+    
+}
+.delete_selected_messages{
+      border: 1px solid black;
+   margin-top: 0%;
+    background-color: rgb(116, 116, 130);
+    color: white;
+    border-radius: 4px;
+    height: 60%;
+   padding-top: 60%;
+   padding-bottom: 10%;
+   width: 100%;
+}
+
+
+
+.title_container_inbox{
+    width: 100vw;
+}
+.center_container_inbox{
+    width: 100vw;
+}
+.form_seach_container{
+    margin-top: -12%;
+    font-size: 16px;
+}
+.search_bar_input{
+    height: 60%;
+    font-size: 16px;
+}
+.search_inbox_btn{
+    height: 90%;
+    width: 35%;
+    margin-right: -16%;
+   
+}
+}
+

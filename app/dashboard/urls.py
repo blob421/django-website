@@ -1,8 +1,8 @@
 from . import views
 from django.urls import path
 from .forms import CustomPasswordChangeForm, ProfileUpdateForm
-from django.conf import settings
-from django.conf.urls.static import static
+
+
 app_name = 'dashboard'
 urlpatterns = [
     
@@ -100,4 +100,4 @@ urlpatterns = [
     path('chat', views.ChatView.as_view(), name='chat_view'),
     path('chat/update', views.ChatUpdate, name='chat_update'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 

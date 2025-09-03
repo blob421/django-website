@@ -1,0 +1,72 @@
+.outer_report{
+    width: 75vw;
+    height: 80vh;
+    border: 2px solid black;
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    display: flex;
+    transform: translate(-50%,-50%);
+    background-color: rgb(154, 154, 154);
+}
+.left_text{
+    width: 75%;
+   
+}
+.right_tasks{
+    width: 25%;
+    margin-right: 1%;
+   
+}
+.content_title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1%;
+    font-size: large;
+}
+.content{
+    height: 95%;
+    position: absolute;
+    width:75%;
+  
+
+}
+.content textarea{
+    height: 85%;
+    width: 95%;
+    margin-left: 2.5%;
+    margin-top: 2%;
+}
+.tasks{
+  
+    height: 50%;
+}
+.tasks select{
+    width: 96%;
+    height: 100%;
+    margin-top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+}
+.tasks_title{
+    padding-top: 5%;
+    display: flex;
+    justify-content: center;
+}
+.report_submit_btn{
+    margin-top: 25%;
+    padding: 4%;
+    width:12vw;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    bottom: 0%;
+   
+}
+select option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

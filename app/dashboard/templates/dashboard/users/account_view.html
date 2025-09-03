@@ -9,7 +9,7 @@
             <div class="picture_ctn">
                 {% if not picture %}
               
-               <img src="{% static 'avatar.png' %}" style="height: 100%;">
+               <img src="{% url 'dashboard:pic_picture' 1 %}" style="height: 100%;">
                 {% else %}
               <img src="{% url 'dashboard:pic_picture' picture.id %}"
              style="height: 100%;">

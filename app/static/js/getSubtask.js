@@ -1,3 +1,4 @@
+
 async function getSubTask(id) {
   try{ 
    const response = await fetch(`/dashboard/tasks/subtask/${id}`);
@@ -64,3 +65,86 @@ function setVisibleDiv(show, hide= null, hide2 = null, hide3 = null){
       document.getElementById(hide).style.display= 'none';
   }
  }
+
+ 
+  function showText(){
+  document.getElementById('star_comment_modal').style.display = 'block';
+ 
+  }
+
+function info(id){
+ window.location.href=`/dashboard/projects/chart/${id}`
+}
+
+function setInfoBubble(id, id2, text=null){
+       const chart_icon = document.querySelectorAll(`[id^=${id}]`);
+   const info = document.getElementById(`${id2}`);
+   const text_div = document.getElementById('text_value') 
+   chart_icon.forEach(icon => {
+      text_div.innerText= text
+      const title = icon.dataset.title || text;
+      icon.addEventListener('mouseenter', () => {
+          const rect = icon.getBoundingClientRect();
+               info.style.position = 'absolute';
+               info.style.top = `${rect.bottom - 10}px`;
+               info.style.left = `${rect.left + 32}px`;
+    
+               info.style.display='flex';
+               info.innerText = title
+
+      });
+      icon.addEventListener('mouseout', () => {
+         info.style.display ='none';
+      });
+   });
+}
+
+function setTeamBubble(){
+     const chart_icon = document.querySelectorAll('[id^=people]');  
+   const text_div = document.getElementById('text_team') 
+   
+   chart_icon.forEach(icon => {
+   const info = document.getElementById('info_modal_team');
+
+   icon.addEventListener('mouseenter', () => {
+        
+          const rect = icon.getBoundingClientRect();
+
+            //Set and calculate dimensions 
+            text_div.innerHTML= icon.dataset.member
+            info.style.visibility = 'hidden';
+            info.style.display = 'block';
+
+            let top = rect.bottom 
+            let left = rect.left + 20;
+        
+            const modalWidth = info.offsetWidth;
+            const modalHeight = info.offsetHeight;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            if (left + modalWidth > viewportWidth) {
+               left = viewportWidth - modalWidth - 10;
+            }
+
+            const modalBottom = top + modalHeight;
+            const maxBottom = window.innerHeight;
+
+            if (modalBottom > maxBottom) {
+            top = rect.top - modalHeight - 10; // flip above
+            }
+            info.style.visibility = 'visible';
+          
+            // Apply position
+            info.style.position = 'absolute';
+            info.style.top = `${top}px`;
+            info.style.left = `${left}px`;
+            info.style.display = 'block';
+            });
+
+      icon.addEventListener('mouseout', () => {
+         info.style.display ='none';
+      });
+   });
+}
+

@@ -598,8 +598,7 @@ def get_team_graph():
                    total_late += stat.late_tasks
                    y_ticks.append(round(safe_divide(total_late, total_completed),0))
                    x_ticks.append(stat.timestamp)
-            print(total_completed)
-            print(total_late)
+       
 
             #graph_dict[team.name] = {'x_ticks':x_ticks, 'y_ticks':y_ticks}
             

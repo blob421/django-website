@@ -614,22 +614,6 @@ justify-content: center;
     padding: 6%;
     width: 100%;
 }
-
-.select2-container{
-          transform: scale(0.8);
-       
-
-}
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #cbd8e5 !important;
-  color: #181818 !important;
-}
-
-#role{
-    z-index: 100;
-    width: 14vw;
-    height: 1vh;
-}
 .stars_title{
  
     display: flex;
@@ -643,24 +627,7 @@ justify-content: center;
       border-right: 0px;
     background-color: rgb(223, 184, 79);
 }
-.filter_form{
-    left: 13vw;
-    top: -6%;
-   
-    z-index: 1000;
-    position: absolute;
-    display: flex;
-    align-items: center;
-}
-.filter_clear{
 
-    background-color: rgb(88, 88, 88);
-    color: white !important;
-    padding: 0.5%;
-    font-size: 15px;
-    border: 1px solid black;
-    border-radius: 4px;
-}
 .stats_div{
   
     height: 100%;

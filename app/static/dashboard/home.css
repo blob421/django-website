@@ -1,0 +1,185 @@
+
+.status_cont{
+  right: 0%;
+  position: absolute;
+  width: 16vw;   
+
+  background-color: #86775e;
+   text-align: center;
+   border: 1.5px solid black;
+   padding: 0.5%;
+   padding-top: 0%;
+   
+   color: white;
+}
+.status_cont input{
+  width: 80%;
+
+  border-radius: 5px;
+  height: 6vh;
+  cursor: pointer;
+ 
+ 
+}
+.status_cont textarea{
+  margin-top: 5%;
+  height: 50%;
+ 
+ 
+}
+.status_cont label{
+   font-size: medium;
+   background-color: #4a4949;
+   padding: 0.5%;
+}
+.visual_frame{
+    border: 1.5px rgba(84, 72, 55, 0.68) solid;
+    height: 80%;
+    width: 64%;
+    position: absolute;
+    left: 50%;
+    bottom: 1%;
+    transform: translateX(-50%);
+    background-color: rgba(111, 93, 70, 0.6);
+}
+
+.team_vs_billboard{
+  
+ 
+
+  color: white !important;
+  display: flex;
+ 
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+  gap: 2%;
+  width: 93%;
+  justify-content: end;
+  
+ 
+   
+}
+.late_task_notice{
+  top: 0%;
+  position: absolute;
+  left: 3%;
+  color: rgb(251, 61, 61);
+  margin-top: -4%;
+  font-weight: bold;
+}
+.billboard_ticket{
+ height: 6vh;
+ padding-right: 2%;
+ padding-left: 2%;
+ display: flex;
+ background-color: white;
+ align-items: center;
+ font-size: small;
+  background-color: rgb(232, 232, 232);
+   border: 2px solid grey;
+  border: 1px solid black;
+}
+.general_text_container2{
+    border: 2px solid rgb(156, 156, 156);
+    width: 60vw;
+    position: absolute;
+    left: 50%;
+    bottom: 2.4%;
+    transform: translate(-50%);
+    height: 72vh;
+    overflow-y: scroll;
+   
+    text-justify: auto;
+    white-space: pre-wrap;
+    text-align:justify top;
+    transform-origin: top;
+    background-color: rgb(241, 241, 241);
+    font-family: 'Times New Roman', Times, serif;
+    
+    overflow-wrap: break-word;   
+
+}
+.general_text_billboard{
+    
+    top: -10%;
+  position: relative;
+    margin-right: 1%;
+    margin-left: 1%;
+            
+  overflow-wrap: break-word;    
+  text-align: left right;
+  
+  
+  overflow: hidden;   
+  font-size: 15px;
+    
+}
+
+
+.billboard_head{
+    text-align: center;
+    margin-top: 3%;
+    font-size: 30px;
+    color: #343333;
+    
+}
+@media(max-width:900px) {
+.general_text_container2{
+    border: 2px solid rgb(156, 156, 156);
+    width: 90vw;
+    position: absolute;
+    left: 50%;
+    bottom: 2.4%;
+    transform: translate(-50%);
+    height: 68vh;
+    overflow-y: scroll;
+   
+    text-justify: auto;
+    white-space: pre-wrap;
+    text-align:justify top;
+    transform-origin: top;
+    background-color: rgb(241, 241, 241);
+    font-family: 'Times New Roman', Times, serif;
+    
+    overflow-wrap: break-word;   
+
+}
+
+.visual_frame{
+    border: 1.5px rgba(84, 72, 55, 0.68) solid;
+    height: 80vh;
+    width: 97%;
+    position: absolute;
+    left: 50%;
+    bottom: 1%;
+    transform: translateX(-50%);
+    background-color: rgba(111, 93, 70, 0.6);
+}
+.general_text_billboard{
+    
+   
+  position: relative;
+    margin-right: 1%;
+    margin-left: 1%;
+            width: 90vw;
+  overflow-wrap: break-word;    
+  text-align: left right;
+  
+
+  
+  font-size: 15px;
+    
+}
+
+.billboard_head{
+    top: 9%;
+    position: fixed;
+    font-size: 30px;
+    color: #343333;
+    color: black;
+    left: 50%;
+    transform: translateX(-50%);
+    
+}
+}

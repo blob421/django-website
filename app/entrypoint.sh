@@ -11,7 +11,7 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata resource_cat_data.json
 python manage.py loaddata resource_data.json
-python manage.py start_scheduler 
 
 
+python manage.py start_scheduler &
 exec "$@"

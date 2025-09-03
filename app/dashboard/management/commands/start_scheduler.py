@@ -12,10 +12,10 @@ class Command(BaseCommand):
 
         content_type = ContentType.objects.get_for_model(UserProfile)
 
-        default_avatar = Document.objects.get(id=1)
+        default_avatar = Document.objects.filter(id=1).exists()
         
         if not default_avatar:
-            Document.objects.create(object_id=0, id=1,
+            Document.objects.create(object_id=0,
                 upload_time='2025-08-22 11:33:40.330439+00',
                 file='userprofile/0/avatar.png',
                 content_type= content_type)

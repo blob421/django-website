@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import View, UpdateView, DetailView, DeleteView, CreateView
 from django.contrib.auth.views import LogoutView, LoginView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.contrib.contenttypes.models import ContentType
 from .models import (Messages, UserProfile, Task, Team, ChatMessages, Resource, 
                      ResourceCategory,MessagesCopy, Chart, ChartData, ChartSection, Schedule, 
                     Goal, Stats, Report, DailyReport, Document, SubTask)
@@ -11,7 +11,8 @@ from .models import (Messages, UserProfile, Task, Team, ChatMessages, Resource,
 from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask, 
                     DenyCompletedTask, ForwardMessages,ChatForm,AddTaskChart,LoginForm,
                     SubTaskForm,FileFieldForm, ProfilePictureForm, GoalForm, StatsForm2, 
-                    StatsForm, TransferTaskForm, AddTask, UpdateTask, ReportForm, StatusForm)
+                    StatsForm, TransferTaskForm, AddTask, UpdateTask, ReportForm, StatusForm,
+                    TeamSearchForm)
 
 from .utility import ( get_stats_data, save_files, create_stats, save_stats, 
                       save_profile_picture, calculate_milestones, get_team_graph, send_sms)
@@ -66,15 +67,15 @@ class AccountView(LoginRequiredMixin, View):
         generate_report(team)
 
 
-
+        content_type = ContentType.objects.get_for_model(UserProfile)
         form = ProfilePictureForm()
         try:
-          picture = Document.objects.filter(object_id = self.request.user.userprofile.id).last()
+          picture = Document.objects.filter(object_id = self.request.user.userprofile.id, content_type_id = content_type.id).last()
         except:
-            picture = False
-        print(picture)
+            picture = None
+     
 
-        employee = UserProfile.objects.get(id = pk, user = self.request.user)
+        employee = UserProfile.objects.get(id = pk)
         cache_key = f'individual_stats{employee.id}'
        
        # if cache.has_key(cache_key):
@@ -92,7 +93,7 @@ class AccountView(LoginRequiredMixin, View):
     
     def post(self, request, pk):
         form = FileFieldForm(request.POST, request.FILES)
-        employee = UserProfile.objects.get(id = pk, user = self.request.user)
+        employee = UserProfile.objects.get(id = pk)
   
         if not form.is_valid():
             
@@ -1091,8 +1092,10 @@ class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         schedule= self.get_object()
         form.instance.request_pending = True
-        send_sms(self.request.user.userprofile.team.team_lead.user.phone, 
-        f'{self.request.user.first_name} has requested a change of schedule for {schedule.week_range.starting_day.strftime('%B %d')}  - {schedule.week_range.end_day.strftime('%B %d')} :\n\n{form.instance.message}')
+        send_sms(
+        self.request.user.userprofile.team.team_lead.user.phone,
+        f"{self.request.user.first_name} has requested a change of schedule for {schedule.week_range.starting_day.strftime('%B %d')} - {schedule.week_range.end_day.strftime('%B %d')}:\n\n{form.instance.message}"
+)
         return super().form_valid(form)
 
 
@@ -1101,20 +1104,25 @@ class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
 class TeamView(LoginRequiredMixin, View):
     template_name='dashboard/Management/team_view.html'
     def get(self, request):
+        form = TeamSearchForm(request.GET)
+            
         time = timezone.now()
-  
         team = self.request.user.userprofile.team
-        
+       
         all_reports = DailyReport.objects.filter(team=team)
         unseen_reports = all_reports.filter(read=False).count()
-
+        content_type = ContentType.objects.get_for_model(DailyReport)
         reports_list = []
         for rep in all_reports:
-            reports_list.append(Document.objects.get(object_id=rep.id))
+            reports_list.append(Document.objects.get(object_id=rep.id, content_type_id=content_type.id))
 
-
+       
         team = self.request.user.userprofile.team
         team_member = UserProfile.objects.filter(team__name=team)
+        if form.is_valid():
+            role = form.cleaned_data['role']
+            team_member = team_member.filter(role=role)
+
         team_name = team.name
         tasks = Task.objects.filter(
             users__team = team, completed=False).order_by('due_date').distinct()
@@ -1123,11 +1131,11 @@ class TeamView(LoginRequiredMixin, View):
         completed_task_count = Task.objects.filter(query).count()    
         
         context = {'team': team_member , 'count':completed_task_count,'tasks':tasks,
-                   'time':time, 'reports':reports_list, 'unseen_reports':unseen_reports}
+                   'time':time, 'reports':reports_list, 'unseen_reports':unseen_reports,
+                   'form':form}
         return render(request, self.template_name, context)
     
-    def post(self, request):
-        return 
+
 
 
 
@@ -1483,14 +1491,15 @@ def ChatUpdate(request):
 
     data = []
     profile = UserProfile.objects.get(id=request.user.id)
-
+    content_type = ContentType.objects.get_for_model(UserProfile)
     team = profile.team
     messages = ChatMessages.objects.filter(team= team).order_by('-created_at')[:50]
     for message in messages:
         text = message.message
         user = message.user.user.username
         try:
-            pic = Document.objects.filter(object_id = message.user.id).last()   
+            pic = Document.objects.filter(object_id = message.user.id, 
+                                          content_type_id=content_type.id).last()   
             pic_id = pic.id
         except:
             pic_id = 1
