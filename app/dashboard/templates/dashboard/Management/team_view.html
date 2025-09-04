@@ -64,9 +64,21 @@
              </div>
             
       </div>
+
+     
     
  
     </div>    
+     <div class="late_tasks_action" onclick="document.getElementById('late_tasks_modal').style.display='block'">
+        {% if late_tasks.count == 1 %}
+        <img src="{% static 'exclamation.png' %}" style="width: 13%;">
+        ({{late_tasks.count}}) late task
+        {% elif late_tasks.count > 1 %}
+         <img src="{% static 'exclamation.png' %}" style="width: 13%;">
+        ({{late_tasks.count}}) late tasks
+        
+        {% endif %}
+      </div>
                
 </div>
  <div class="team_container1">
@@ -156,8 +168,9 @@
                   onclick="info('{{task.chart.title}}')"
                   data-title="{{task.chart.title}}">
             </div>
+            
             {% endif %}
-
+          
          </div>
 </div>
 {% endwith %}
@@ -330,7 +343,22 @@
       {% endfor %}
 </div>
 
-
+<div class="late_tasks_modal" id="late_tasks_modal">
+  <div class="x_div_late">
+        <button class="x_btn_late" 
+        onclick="document.getElementById('late_tasks_modal').style.display='none'">
+          X
+        </button>
+  </div>
+   {% for task in late_tasks %}
+    <a href="{% url 'dashboard:task_manage_update' task.id %}"> 
+        <div class="late_task_unit_modal">
+        {{task.name}}
+         <p class="was_due"> Was due : {{task.due_date}}</p>
+        </div>
+    </a>
+   {% endfor %}
+</div>
 
 
 <script>

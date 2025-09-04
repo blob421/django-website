@@ -1128,11 +1128,12 @@ class TeamView(LoginRequiredMixin, View):
             users__team = team, completed=False).order_by('due_date').distinct()
         
         query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
-        completed_task_count = Task.objects.filter(query).count()    
+        completed_task_count = Task.objects.filter(query).count()  
+        late_tasks = tasks.filter(due_date__lte = time)  
         
         context = {'team': team_member , 'count':completed_task_count,'tasks':tasks,
                    'time':time, 'reports':reports_list, 'unseen_reports':unseen_reports,
-                   'form':form}
+                   'form':form, 'late_tasks':late_tasks}
         return render(request, self.template_name, context)
     
 

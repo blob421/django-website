@@ -11,15 +11,15 @@
 
  <h1 class="billboard_head">Billboard</h1>
  <div class = "visual_frame">
-      
-          <div class="team_vs_billboard">
-                    {% if late == 1 %}
+                     {% if late == 1 %}
                     <div class="late_task_notice">You have {{late}} late task ! </div>
                     {% elif late > 1 %}
                     <div class="late_task_notice">You have {{late}} late tasks ! </div>
              
                     {% endif %}
                 
+          <div class="team_vs_billboard">
+                   
 
                 <div class="billboard_ticket" style="background-color: rgb(221, 207, 173);">
                     <a href="{% url 'dashboard:schedule_view' %}">Schedule</a>
@@ -53,7 +53,7 @@
     <form method="post" class="status_cont">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="submit" value="Set status">
+        <input type="submit" value="Set status" style="cursor: pointer;">
     </form>
 
   {% endblock %}

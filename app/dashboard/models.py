@@ -51,7 +51,7 @@ class UserProfile(models.Model):
     stats = GenericRelation('Stats')
     picture = GenericRelation('Document')
     active_task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
-    status = models.TextField(max_length=80, null=True, blank=True, default='No status')
+    status = models.TextField(max_length=80, null=True, blank=True, default='No status yet')
 
 
    
@@ -70,7 +70,7 @@ class UserProfile(models.Model):
     
     def save(self, *args, **kwargs):
         if self.status == '':
-            self.status = 'No status' 
+            self.status = 'No status yet' 
         super().save(*args, **kwargs)
         
 

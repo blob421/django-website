@@ -2,19 +2,19 @@
 .status_cont{
   right: 0%;
   position: absolute;
-  width: 16vw;   
+  width: 14vw;   
 
-  background-color: #86775e;
-   text-align: center;
-   border: 1.5px solid black;
-   padding: 0.5%;
+  background-color: #dfdfdf00;
+  
+   border: 1.5px solid rgba(0, 0, 0, 0);
+   padding: 1%;
    padding-top: 0%;
    
    color: white;
 }
 .status_cont input{
-  width: 80%;
-
+  width: 70%;
+ border: 1px solid black;
   border-radius: 5px;
   height: 6vh;
   cursor: pointer;
@@ -61,11 +61,11 @@
    
 }
 .late_task_notice{
-  top: 0%;
+  top: 2%;
   position: absolute;
   left: 3%;
-  color: rgb(251, 61, 61);
-  margin-top: -4%;
+  color: rgb(242, 242, 242);
+  
   font-weight: bold;
 }
 .billboard_ticket{
