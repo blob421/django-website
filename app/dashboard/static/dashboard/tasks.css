@@ -17,12 +17,12 @@
 
 .task_detail_outer_div{
     display:flex;
-    border: 10px solid rgb(105, 105, 105);
+    border: 15px solid rgb(93, 89, 89);
     position: absolute;
     height: 85vh;
     width: 90vw;
     right: 2%;
-    background-color: #6f6f6f;
+    background-color: #5e5e5e;
     top: 50%;
     transform: translateY(-49.5%);
 }
@@ -284,7 +284,7 @@
 
 }
 .activated_task_div{
-         background-color: #b9e998;
+         background-color: #c6eaae;
     height: 15%;
     border-radius: 5%;
     width: 60%;
@@ -672,18 +672,57 @@
     width: 62%;
     overflow: auto;
     padding-top: 1%;
-    background-color: rgba(34, 34, 34, 0.737);
+    background-color: rgba(66, 66, 66, 0.737);
     display: none;
     flex-direction: column;
     font-family: 'Times New Roman', Times, serif;
 
+}
+.expand_icon{
+   position: absolute;
+  
+ cursor: pointer;
+ height: 100%;
+ background-color: #d1d1d1;
+ right: 3%;
+   
+}
+.file_title_man{
+        height: 12%;
+ background-color: #d1d1d1;   
+  position: sticky;
+    top: 0;
+   text-align: center;
+    justify-content: center;
+    padding-left: 4%;
+    margin-bottom: 3%;
+    display: flex;
+    align-items: center;
+}
+.file_title{
+    height: 6%;
+ background-color: #d1d1d1;   
+  position: sticky;
+    top: 0;
+   text-align: center;
+    justify-content: center;
+    padding-left: 4%;
+    margin-bottom: 3%;
+    display: flex;
+    align-items: center;
+}
+.expand_icon:hover{
+ 
+ background-color: #dcdcdc;
+
+   
 }
 .middle_sub_task_expand{
              border: 2px solid rgb(70, 70, 70);
     width: 62%;
     overflow: auto;
     padding-top: 1%;
-    background-color: rgba(34, 34, 34, 0.737);
+     background-color: rgba(66, 66, 66, 0.737);
     display: none;
     font-family: 'Times New Roman', Times, serif;
 
@@ -1006,7 +1045,7 @@ position: absolute;
    cursor: pointer;
 }
 .add_files_btn{
-    width: 46%;
+    width: 44%;
     padding: 2%;
     cursor: pointer;
 }
@@ -1056,7 +1095,7 @@ position: absolute;
 }
 .time_recent_file{
     font-size: x-small;
-  
+    color: rgb(200, 200, 200);
     margin-top: 2%;
 }
 .inner_right_panel_task_files{
@@ -1079,6 +1118,7 @@ position: absolute;
     align-items: center;
     justify-content: center;
     height: 10%;
+    gap: 2%;
     cursor: pointer;
 }
 .form_add_file_task_detail input{

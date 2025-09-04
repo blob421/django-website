@@ -1,5 +1,6 @@
  {% include 'dashboard/base.html' %}
  {% block content %}
+ {% load static %}
 
      
  <div class="top_visual_frame_task_list"></div>
@@ -227,16 +228,19 @@
     <div class="right_file_panel_task_detail">
              
          
-           <div class="recent_files_title">Files</div> 
+          
            
-            <div class="files_outer_div">
+            <div class="files_outer_div" id="file_div">
+              <div class="file_title"> Files
+              <img src="{% static 'expand.png' %}" class="expand_icon" onclick="expandFile('file_div', 'files_outer_div')">
+              </div>
                     {% if files %}
                    {% for file in files %}
                     <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
                   <div class="file_div_task_detail">
                    {{file.file_name}} 
                     <div class="time_and_delete_container_file">
-                        <div class="time_recent_file">({{file.time}})  </div>
+                        <div class="time_recent_file">{{file.owner}} ({{file.time}})  </div>
                              
                         </div>
                   </div>
@@ -250,7 +254,8 @@
           </div>
               <div class="add_file_modal_btn">
                     <button class="add_files_btn" 
- onclick="document.getElementById('add_file_modal_task_detail').style.display = 'flex' ;scrollToTop()">Add files
+ onclick="document.getElementById('add_file_modal_task_detail').style.display = 'flex' ;scrollToTop()">
+                    Add
 
                     </button>
                     <button class="add_files_btn" 
@@ -341,6 +346,9 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
  <div class="bot_visual_frame_task_list"></div>
 
 <script>
+
+
+
 function expand(){
   document.getElementById('task_title').style.display='none'
     document.getElementById('task_date').style.display='none'

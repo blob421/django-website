@@ -39,7 +39,7 @@ from collections import defaultdict
 import mimetypes
 from django.core.files.storage import default_storage
 from django.db import transaction
-
+from datetime import datetime
 ########## CONFIG ############
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -550,7 +550,7 @@ class TaskDetail(LoginRequiredMixin, View):
         task = Task.objects.get(id = pk, users=self.request.user.userprofile)
         subtasks = SubTask.objects.filter(task=task).order_by('-id')
         user_files = Document.objects.filter(owner = self.request.user.userprofile, object_id=task.id)
-        files = Document.objects.filter(object_id = task.id)      
+        files = Document.objects.filter(object_id = task.id).order_by('-upload_time')      
      
         user_subtasks = subtasks.filter(user = self.request.user.userprofile)
         return {'task': task, 'user_files':user_files, 'subtasks':subtasks,
@@ -638,7 +638,7 @@ class TaskUpdate(ProtectedUpdate):
 
         context['form'] = UpdateTask(user=self.request.user.userprofile, instance=self.object)
         context['subtasks'] = subtasks
-        context['transfer_form'] = TransferTaskForm(user=self.request.user.userprofile)
+        context['transfer_form'] = TransferTaskForm(user=self.request.user.userprofile, instance=self.get_object())
         context['file_form'] = FileFieldForm()
         context['files'] = files
         context['user_files'] = user_files
@@ -664,18 +664,29 @@ class TaskUpdate(ProtectedUpdate):
             return render(request, self.template_name,ctx)
 
         if self.request.POST.get('section'):
-
-            section_id = self.request.POST.get('section')
-            chart_id = self.request.POST.get('chart')
-
+        
+      
+            section_id = request.POST.get('section')
+            chart_id = request.POST.get('chart')
+            starting_date_str = request.POST.get('starting_date')
+            due_date_str = request.POST.get('due_date')
+            starting_date = datetime.strptime(starting_date_str, '%Y-%m-%dT%H:%M')
+            due_date = datetime.strptime(due_date_str, '%Y-%m-%dT%H:%M')
+            
             if not section_id:
             
-                    return redirect(reverse('dashboard:task_manage_update', args=task.id))
+                return redirect(reverse('dashboard:task_manage_update', args=[task.id]))
+    
             section = ChartSection.objects.get(id = section_id)
             chart = Chart.objects.get(id=chart_id)
             task.section = section
             task.chart = chart
+            
+            task.due_date = due_date
+            task.starting_date = starting_date
             task.save()
+            
+      
 
         if request.FILES.get('file_field'):
             files = request.FILES.getlist('file_field')
@@ -690,7 +701,7 @@ class TaskUpdate(ProtectedUpdate):
         
         form.save()
         
-        return redirect(reverse('dashboard:team'))
+        return redirect(reverse_lazy('dashboard:task_manage_update', args=[task.id]))
         
     
 

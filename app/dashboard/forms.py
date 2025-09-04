@@ -195,13 +195,15 @@ class SubmitTask(forms.Form):
 class TransferTaskForm(ModelForm):
     class Meta:
           model = Task
-          fields=['chart', 'section']
+          fields=['chart', 'section', 'starting_date', 'due_date']
     def __init__(self, *args, **kwargs):
          userprofile = kwargs.pop('user', None)
          super().__init__(*args, **kwargs)
-
+ 
          self.fields['chart'].queryset = Chart.objects.filter(teams__in=[userprofile.team])
          self.fields['section'].queryset = ChartSection.objects.none()
+         self.fields['starting_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+         self.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
    
     
 

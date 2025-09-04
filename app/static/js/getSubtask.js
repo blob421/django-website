@@ -31,9 +31,9 @@ function setVisibleFlex(selected , show, hide= null, hide2 = null, hide3 = null)
  }
 
 
-function setVisible(selected , show, hide= null, hide2 = null, hide3 = null){
-  
-  document.getElementById(show).style.display='block';
+function setVisible(selected , show, hide= null, hide2 = null, hide3 = null, type=null){
+  const display = type || 'block'
+  document.getElementById(show).style.display=display;
   const btn = document.querySelectorAll("button");
 
   btn.forEach(bt => bt.classList.remove('active'));

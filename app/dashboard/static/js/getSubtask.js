@@ -148,3 +148,31 @@ function setTeamBubble(){
    });
 }
 
+function expandFile(id, cla){
+
+  const div = document.getElementById(id)
+  const files = document.getElementsByClassName('file_div_task_detail')
+  const expanded = div.classList.contains('expanded')
+  
+  if (!expanded){
+      div.classList.add('files_outer_div_expanded');
+      div.classList.remove(cla);
+      
+     Array.from(files).forEach(file => {
+            file.style.paddingTop = '2%'
+           file.style.paddingBottom = '2%'
+      })
+     
+  }
+  else {
+      div.classList.add(cla);
+      div.classList.remove('files_outer_div_expanded');
+      
+
+      Array.from(files).forEach(file => {
+           file.style.paddingTop = '5%'
+           file.style.paddingBottom = '5%'
+      })
+  }
+     div.classList.toggle('expanded')
+}

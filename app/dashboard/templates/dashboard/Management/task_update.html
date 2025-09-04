@@ -1,5 +1,5 @@
- {% include 'dashboard/base.html' %}
-
+ {% extends 'dashboard/base.html' %}
+ {% load static %}
  {% block content %}
  {% if user.userprofile == user.userprofile.team.team_lead %}
  
@@ -59,11 +59,12 @@
       onclick="setVisible(this,'confirm_delete_modal_manage')">
        Delete
       </button>
-
+  {% if not task.chart %}
       <button class="transfer_chart" type="button" 
       onclick="document.getElementById('transfer_modal').style.display='block'">
       To chart >
      </button>
+    {% endif %}
       
    </div>
    
@@ -72,7 +73,7 @@
 
 
  </div>
-
+ 
  <div id="transfer_modal">
    <div class="x_btn_transfer" 
    onclick="document.getElementById('transfer_modal').style.display='none'">
@@ -93,6 +94,14 @@
                <div class="section_tranfer_input">
                   Section :
                {{ transfer_form.section }}
+               </div>
+              
+               <div class="date_field_transfer">Start:
+                {{ transfer_form.starting_date}}
+               </div>
+              
+                <div class="date_field_transfer2"> Due:
+                {{ transfer_form.due_date}}
                </div>
          </div>
     </div>
@@ -156,8 +165,17 @@
                 {% endfor %}
             
       </div>
-                 <div class="task_update_right_pane_title">Files </div>
-               <div class="files_outer_div_update_manage">
+               
+
+               <div class="files_outer_div_update_manage" id="file_outer_man">
+
+               <div class="file_title_man">Files
+                     <img src="{% static 'expand.png' %}" class="expand_icon" 
+                onclick="expandFile('file_outer_man', 'files_outer_div_update_manage')" 
+                style="height:25px;">
+                  
+                </div>
+
                   {% if files %}
                   {% for file in files %}
                   <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
@@ -284,6 +302,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+
 
 </script>
   {% endblock %}

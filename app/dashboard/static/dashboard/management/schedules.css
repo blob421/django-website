@@ -364,16 +364,7 @@ display: flex;
     display: flex;
     justify-content: end;
 }
-.file_div_task_detail_manage{
-    background-color: #3b3b3b;
-    color: white;
-    font-size: small;
-    
-    margin-top: 3%;
-      padding: 4%;
-    padding-left: 6%;
-  
-}
+
 .task_update_manage_right_subtask_div{
    /* border: 2px solid blue;*/
     width: 17vw;

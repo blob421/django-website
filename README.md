@@ -14,7 +14,7 @@ This is my django website , soon to become a full fledged management portal for 
 ![Alt text](https://i.imgur.com/bkzIXXW.png)
 ![ALt text](https://i.imgur.com/S0jArpr.png)
 ![ALt text](https://i.imgur.com/cRyhih3.png)
-![Alt text](https://i.imgur.com/RTNOdmw.png)
+![Alt text](https://i.imgur.com/R3tHQ94.png)
 ![Alt text](https://i.imgur.com/fHmLhLM.png)
 ![Alt text](https://i.imgur.com/t2Hl9hy.png)
 ![Alt text](https://i.imgur.com/octpsYj.png)
