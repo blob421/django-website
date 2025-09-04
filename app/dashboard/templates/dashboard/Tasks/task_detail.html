@@ -7,25 +7,26 @@
     
   
     <div class="task_detail_left_panel">
-        <div class ="title_task_view">{{task.name}}</div>
-        <div class="flex_container_task_view">
+        <div class ="title_task_view" id="task_title">{{task.name}}</div>
+        <div class="flex_container_task_view" id="task_date">
           <div>Due date:</div>   
           <div>{{task.due_date}}</div>
          </div>
 
              
         <a href="{% url 'dashboard:task_submit' task.id %}">
-        <button type="button" class="task_detail_completed_btn2">Mark as completed</button>
+        <button type="button" class="task_detail_completed_btn2" id="task_complete_btn">Mark as completed</button>
         </a>
           
          
 
         <div class="subtask_title_btn_div">
-        <button onclick="setVisible(this, 'team_subtasks', 'subtask_container', 'team_task_detail')"
+        <button onclick="setVisible(this, 'team_subtasks', 'subtask_container', 'team_task_detail'); expand()"
          class="team_btn_task_detail" >Team
 
         </button>
-        <button onclick="setVisible(this, 'subtask_container', 'team_subtasks', 'team_task_detail')"
+        <button onclick="setVisible(this, 'subtask_container', 'team_subtasks', 'team_task_detail');
+        reduce()"
         class="subtask_btn_task_detail"> You
 
          <a>
@@ -80,8 +81,7 @@
 
              > {% if not user_subtasks %}
          
-             <div class="left_crt_subtask">Subtasks </div><button class="green_button_subtask_add" 
-             onclick="setVisible(this, 'subtask_modal_task_detail')">No subtask yet</button>
+             <div class="left_crt_subtask">Subtasks </div>
             
 
                 {% else %}
@@ -220,8 +220,8 @@
 
 
     <div class="general_medium_container" id="task_detail_text_middle">
-      
-      <p class="general_text" id="gen_text">{{ task.description}} </p>
+      <div class="Task_description_title">Task description</div>
+      <p class="text_task_detail" id="gen_text">{{ task.description}} </p>
       
     </div>
     <div class="right_file_panel_task_detail">
@@ -341,8 +341,29 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
  <div class="bot_visual_frame_task_list"></div>
 
 <script>
+function expand(){
+  document.getElementById('task_title').style.display='none'
+    document.getElementById('task_date').style.display='none'
+
+     document.getElementById('task_complete_btn').style.display='none'
+     const team = document.getElementById('team_task_detail')
+     const team_div = document.getElementById('team_subtasks')
+     team_div.style.height = '85%'
+     team.style.height = '85%'
+
+}
+function reduce(){
+    document.getElementById('task_title').style.display='block'
+    document.getElementById('task_date').style.display='block'
+
+     document.getElementById('task_complete_btn').style.display='block'
+     const team = document.getElementById('team_task_detail')
+     const team_div = document.getElementById('team_subtasks')
+     team_div.style.height = '57%'
+       team.style.height = '57%'
 
 
+}
 
 
 async function getSubTaskForm(id){

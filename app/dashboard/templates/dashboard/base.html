@@ -37,6 +37,20 @@
 -->
 
 <style>
+  .go_to_active{
+    position: fixed;
+    right: 1%;
+    top: 2%;
+    background-color: #cce6be;
+    border: 1px solid black;
+    z-index: 1000;
+    padding: 0.5%;
+    display: flex;
+    align-items: center;
+    font-size: small;
+    border-radius: 6px;
+    
+  }
   #question_mark{
     
  position: fixed; 
@@ -282,10 +296,12 @@ html{
 </div>
 
 
+{% if user.userprofile.active_task %}
+<a href="{% url 'dashboard:task_detail' user.userprofile.active_task.id %}" class="go_to_active">
+  Active task
+</a>
 
-
-
-
+{% endif %}
  {% block content %}{% endblock %}
 
 </body> 

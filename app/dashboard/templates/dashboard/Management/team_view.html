@@ -21,7 +21,7 @@
 
 <div class="border_container"> 
     {% if user.userprofile.team.team_lead == user.userprofile %}
-     
+    <div class="top_buttons_container"> 
       <div class="team_second_title">
          {% if user.userprofile.team.team_lead == user.userprofile %}
             <button onclick="setVisible(this, 'team_tasks', 'team_all_task_list', 'team_status');
@@ -29,7 +29,7 @@
             id="toggle_manage" class="management_tog_btn">
                Tasks
             </button>
-             <button onclick="setVisibleClass()" 
+             <button onclick="setVisible(this, 'team_status', 'team_all_task_list', 'team_tasks', 'team_buttons', 'grid')" 
             id="toggle_manage" class="management_tog_btn">
                Statuses
             </button>
@@ -47,19 +47,26 @@
                <button class="scroll_not_manage" onclick="scrollRight('team_tasks')">▶</button>
                <button class="scroll_not_manage" onclick="reset('team_tasks', 'team_all_task_list')">Reset</button>
                    <div class="filter_form">
-              <div>
-                      <form method="get">
-                      {{form.role}}
-                    </form>
-                    
-              </div>
            
-              <a href="{% url 'dashboard:team' %}" class="filter_clear">Clear</a>
+           
+            
             
             </div>
 
      </div>
-          
+
+      <div class="filter_cont">
+              <form method="get">
+              {{form.role}}
+            </form>
+              <div>
+               <a href="{% url 'dashboard:team' %}" class="filter_clear">Clear</a>
+             </div>
+            
+      </div>
+    
+ 
+    </div>    
                
 </div>
  <div class="team_container1">
@@ -339,26 +346,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setTeamBubble();
 });
 
-function setVisibleClass() {
-   const div = document.getElementById("team_status");
-   const display = window.getComputedStyle(div).display;
-   const main = document.getElementById('team_tasks')
-   const list = document.getElementById('team_all_task_list')
-   const buttons = document.getElementById('team_buttons')
-   if (display === 'grid') {
-      div.style.display = 'none';
-      main.style.display = 'block'
-      list.style.display = 'none'
-      buttons.style.display = 'block'
-      
-   } else {
-      div.style.display = 'grid';
-      main.style.display= 'none'
-      list.style.display = 'none'
-      buttons.style.display = 'none'
-
-   }
-}
 
  function scrollToBot(elem1, elem2) {
   const div1 = document.getElementById(elem1);

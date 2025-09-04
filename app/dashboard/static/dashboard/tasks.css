@@ -17,13 +17,14 @@
 
 .task_detail_outer_div{
     display:flex;
-    border: 1px solid rgb(105, 105, 105);
+    border: 10px solid rgb(105, 105, 105);
     position: absolute;
     height: 85vh;
     width: 90vw;
-    right: 3%;
+    right: 2%;
+    background-color: #6f6f6f;
     top: 50%;
-    transform: translateY(-49%);
+    transform: translateY(-49.5%);
 }
 .flex_container_tasks{
    /* border: orange solid 2px;*/
@@ -155,6 +156,32 @@
       font-weight:lighter;
        font-size: 15px;
 }
+.text_task_detail{
+    top: -11%;
+  position: relative;
+    margin-right: 1%;
+    margin-left: 1%;
+            
+  overflow-wrap: break-word;    
+  text-align: left right;
+  
+  
+  overflow: hidden;   
+  font-size: 15px;
+    
+}
+
+.Task_description_title{
+    position: absolute;
+    top: 0%;
+    border: 2px solid rgb(110, 110, 110);
+    left: 50%;
+    padding: 0.1%;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    background-color: #aaaaaa00;
+    transform: translateX(-50%);
+}
 .task_blocks_urgent:hover{
     background-color: rgb(239, 239, 239);
 }
@@ -257,7 +284,7 @@
 
 }
 .activated_task_div{
-         background-color: #eac08f;
+         background-color: #b9e998;
     height: 15%;
     border-radius: 5%;
     width: 60%;
@@ -328,14 +355,14 @@
     border: 2px rgb(85, 85, 85) solid;
   
     padding-top: 10px;
-    font-size: smaller;
+    font-size: 14px;
     background-color: white;
      padding: 3%;
       padding-left: 5%;
        border-radius: 4px;
        position: relative;
     left: 50%;
-    width: 85%;
+    width: 80%;
     transform: translateX(-50%);
   
 }
@@ -349,8 +376,9 @@
     border-radius: 4px;
     position: relative;
     left: 50%;
-    font-size: smaller;
-    width: 85%;
+   
+    font-size: 15px;
+    width: 80%;
     transform: translateX(-50%);
     
 }
@@ -372,6 +400,9 @@
 }
 .mem_btn{
     cursor: pointer;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 2%;
 }
 .task_submit_button{
     background-color: rgb(75, 110, 215);
@@ -409,7 +440,7 @@
 
  padding: 2%;
    cursor: pointer;
-   width: 92%;
+   width: 90%;
    left: 50%;
    border-radius: 4px;
    background-color: aquamarine;
@@ -455,13 +486,15 @@
 }
 .recent_files_title{
  
-    background-color: #969696;
-    font-size: large;
+    background-color: #d3d3d3;
+    font-size: 17px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding-bottom: 2%;
-    border-bottom: 2px solid black;
+    padding-top: 1%;
+    border-bottom: 4px solid rgb(88, 88, 88);
+    
 }
 .right_file_panel_task_detail{
     width:20%;
@@ -859,10 +892,238 @@ width: 20%;
    
     width: 80%;
 }
+.subtask_expand_state_colorblock_green{
+    width: 25%;
+    background-color: rgb(55, 176, 55);
+    right: 0%;
+    border: 2px solid greenyellow;
+}
+.subtask_expand_state_colorblock_orange{
+    width: 25%;
+    border: 2px solid rgb(0, 145, 255);
+    right: 0%;
+      background-color: rgb(0, 174, 255);
+}
+.subtask_expand_user_div{
+    width: 75%;
+    font-size: large;
+    padding-left: 1%;
+   
+  
+    background-color: #ccc;
+}
+.expanded_subtask_div{
+    border: 5px solid rgb(155, 152, 152);
+    padding-top: 3%;
+    padding-left: 1%;
+    white-space: pre-wrap;
+    font-size: medium;
+    margin-left: 2%;
+    margin-bottom: 5%;
+    margin-right: 2%;
+    background-color: #5a5a5a;
+    color: white;
+}
+.expand_btn_subtask{
+    width: 45%;
+    font-size: small;
+    cursor: pointer;
+}
+.expand_btn_subtask.active{
+    background-color: #e5e5e5;
+    border: 0.5px solid black;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    border-radius: 2px;
+}
+.x_btn_add_subtask{
+        position: absolute;
+    right: 2%;
+    top: 4%;
+    border: 0.5px solid black;
+    font-size: small;
+    height: 6%;
+    width: 5.5%;
+    border-radius: 7px;
+      background-color: rgb(88, 112, 186);
+      color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.x_btn_add_subtask:hover{
 
+     background-color: rgb(221, 97, 97);;
+  
+}
+.x_btn_add_file{
+    position: absolute;
+    right: 1.2%;
+    top: 6%;
+    border: 0.5px solid black;
+    font-size: small;
+    height: 16%;
+    border-radius: 7px;
+     background-color: rgb(88, 112, 186);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+
+.x_btn_add_file:hover{
+      background-color: rgb(115, 143, 226);
+}
+.x_btn_your_files{
+position: absolute;
+    right: 1%;
+    top: 1.5%;
+    border: 0.5px solid black;
+     background-color: rgb(88, 112, 186);
+    
+    font-size: smaller;
+    padding: 2%;
+    height: 5.8%;
+    border-radius: 6px;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+}
+.x_btn_your_files:hover{
+    background-color: rgb(221, 97, 97);
+}
+.add_file_modal_sub_btn{
+    position: absolute;
+    bottom: 10%;
+    height: 22%;
+    right: 2%;
+    width: 20%;
+   background-color: rgb(88, 112, 186);
+   cursor: pointer;
+}
+.add_files_btn{
+    width: 46%;
+    padding: 2%;
+    cursor: pointer;
+}
+.your_files_div{
+    display: flex;
+ background-color: rgb(224, 217, 186);
+    justify-content: center;
+  
+    padding-bottom:5% ;
+    padding: 4%;
+  
+    
+}
+
+.your_files_div:hover{
+    background-color: rgb(211, 157, 157);
+}
+.your_files_container_modal{
+    width: 85%;
+    height: 80%;
+    background-color: #f0f0f0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    border:2px solid black;
+    
+    
+    overflow-y: scroll;
+    overflow-x: hidden;
+    
+}
+
+
+.recently_modified_files_detail{
+     left: 50%;
+       width: 90%;
+    height: 30%;
+    border: 2px solid black;
+     transform: translateX(-50%);
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+      margin-top: 2%;
+        background-color: rgb(100, 100, 100);
+    
+}
+.time_recent_file{
+    font-size: x-small;
+  
+    margin-top: 2%;
+}
+.inner_right_panel_task_files{
+    width: 88%;
+    height: 90%;
+    background-color: rgb(105, 105, 105);
+    left: 50%;
+    top: 50%;
+    position: relative;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    border: 2px rgb(24, 24, 24) solid;
+  
+    
+
+}
+.add_file_modal_btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+    cursor: pointer;
+}
+.form_add_file_task_detail input{
+   left: 0%;
+   position: absolute;
+  
+  margin-left: 3%;
+ 
+   top: 50%;
+   transform: translateY(-50%);
+  
+}
+#middle_sub_task_expand{
+   display: none;
+ 
+   
+}
+.subtask_expand_frame{
+    border: 2px solid orange;
+
+   
+}
+.subtask_expanded_titles{
+    text-align: center;
+    border: 4px solid rgb(59, 59, 59);
+    font-size: larger;
+    color: white;
+   
+    margin-top: 1%;
+    margin-left: 2%;
+    margin-right: 2%;
+    background-color: #3b3b3b;
+    padding-bottom: 1%;
+    padding-top: 1%;
+
+    
+}
+.time_and_delete_container_file{
+    display: flex;
+    width: 100%;
+     font-size: x-small;
+}
 .indicator_subtask_yellow{
-    width: 10%;
-    background-color: rgb(255, 174, 0);
+    width: 14%;
+    background-color: rgb(0, 174, 255);
     
 }
 .indicator_subtask_green{
@@ -936,8 +1197,8 @@ width: 20%;
               display: none;
               border-radius: 12px;
               border: 2px solid grey;
-              transform: translate(-45%,-50%);
-              background-color: rgba(61, 61, 61, 0.982);  
+              transform: translate(-45%,-65%);
+              background-color: rgba(79, 79, 79, 0.982);  
 
 }
 #your_file_modal_task_detail{
