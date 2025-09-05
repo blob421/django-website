@@ -408,6 +408,7 @@ class Resource(models.Model):
 class Milestone(models.Model):
     name = models.CharField(max_length=25) 
     date = models.DateField()
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.name
     @property

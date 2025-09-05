@@ -96,7 +96,7 @@
               Stars
             </div>
               <div class="star_outer"> 
-           {% for star in stats.stars %}
+           {% for star in stars %}
       
          <img src="{% static 'star_icon3.png' %}" 
          onclick="document.getElementById('star_text').innerHTML='{{star.star_note}}'; showText();" 

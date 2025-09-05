@@ -51,7 +51,8 @@ class Dev(Configuration):
 
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-
+    CELERY_RESULT_BACKEND =	"django-db"
+    CELERY_BROKER_URL =	"redis://127.0.0.1:6379/0"
     CACHES = {
         'default': {
             'BACKEND': 'django_redis.cache.RedisCache',
@@ -67,9 +68,11 @@ class Dev(Configuration):
     ALLOWED_HOSTS = [ '*' ]
 
    
+ 
     # Application definition
 
     INSTALLED_APPS = [
+        'django_celery_results',
         'debug_toolbar',
         'crispy_bootstrap5',
         'crispy_forms',
@@ -187,7 +190,9 @@ class Dev(Configuration):
 
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+   
 class Prod(Dev):
+    CELERY_BROKER_URL =	"redis://redis:6379/0"
     DEBUG = False
     ALLOWED_HOSTS = values.ListValue([])
     SECRET_KEY = values.SecretValue()

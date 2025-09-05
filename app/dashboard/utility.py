@@ -12,6 +12,10 @@ from django.core.files.base import ContentFile
 from twilio.rest import Client
 from django.conf import settings
 user_model = get_user_model()
+
+from celery	import shared_task
+
+
 ##### UTILITY ###############
 import os 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
@@ -151,7 +155,7 @@ def get_user_data(stats):
     total_submissions = 0
     days_missed = 0
     days_scheduled = 0
-    stars = []
+  
     for stat in stats:
 
         total_submissions += stat.submission  
@@ -162,14 +166,13 @@ def get_user_data(stats):
         days_missed += stat.days_missed
         days_scheduled += stat.days_scheduled
         
-        if stat.star_note:
-            stars.append(stat)
+        
            
     
     return {'total_completed':total_completed, 'late_task_count':late_task_count,
                     'total_denied':total_denied,'total_urgent':total_urgent,
                     'total_submissions':total_submissions, 'days_missed':days_missed,
-                    'days_scheduled':days_scheduled, 'stars':stars}
+                    'days_scheduled':days_scheduled}
         
 
 
@@ -229,10 +232,10 @@ graph_x_axis = dict(
                     )
 
 ########## Main stats fetching function for both views ##########
-
+@shared_task
 def get_stats_data(user_profile, page=None):
-    
-    now = timezone.now()
+    user_profile = UserProfile.objects.get(id=user_profile)
+    now = timezone.now( )
     three_months_ago = now - relativedelta(days=90)
     start_date = f"{three_months_ago.day} {three_months_ago.strftime('%B')}" 
     end_date = f"{now.day} {now.strftime('%B')}" 
@@ -256,7 +259,7 @@ def get_stats_data(user_profile, page=None):
         
        
 
-        users = None
+   
         plot_div1 = None
         plot_div2 = None
    
@@ -277,12 +280,11 @@ def get_stats_data(user_profile, page=None):
                  total_urgent_completed  += 1
       
         team = Team.objects.get(id = user_profile.team.id)
-        users = UserProfile.objects.filter(team=team)
+        
     
         stats = team.stats.filter(timestamp__lte = now,
                                          timestamp__gte=three_months_ago,
                                        ).order_by('timestamp')   
-        
 
 
 
@@ -437,11 +439,11 @@ def get_stats_data(user_profile, page=None):
    
     
          
-    ranges = range(1, 5)
+    ranges = [1, 2, 3, 4]
 
-    return {'stats':stats, 'denied_ratio': denied_ratio, 
+    return {'denied_ratio': denied_ratio, 
             'late_ratio':late_ratio, 'days_missed_ratio':days_missed_ratio, 
-            'urgent_ratio':urgent_ratio,  'users':users, 'plot1':plot_div1, 
+            'urgent_ratio':urgent_ratio, 'plot1':plot_div1, 
             'plot2':plot_div2, 'ranges':ranges, 'date_string':date_string,
             'task_mean_time': round(safe_divide(task_mean_time, tasks.count()),1)
            
@@ -473,11 +475,20 @@ def calculate_days_scheduled(user,last_sched):
      Stats.objects.create(content_object=user, days_scheduled=total_days)
      return total_days
 
-def calculate_milestones():
+@shared_task
+def calculate_milestones(team_id):
+        team = Team.objects.get(id=team_id)
         now = timezone.now().date()
-        first_user = user_model.objects.get(id=1)
-        first_date = first_user.assigned_on
-        milestones = Milestone.objects.all()
+        first_user = UserProfile.objects.filter(team=team).first()
+        first_date = first_user.user.assigned_on
+        milestones = Milestone.objects.filter(team=team)
+
+        milestones_dict_list = []
+        for milestone in milestones:
+             
+            milestones_dict_list.append({'name':milestone.name,
+                                            'date':milestone.date,
+                                            'team':milestone.team.name})
  
         if (now - first_date).days <= 100:
             time_gap = relativedelta(days=7)
@@ -504,7 +515,7 @@ def calculate_milestones():
     
         for month in months_set:
            for m in milestones:       
-                milestones_dict[month] = [m for m in milestones if m.month == month]
+                milestones_dict[month] = [m.name for m in milestones if m.month == month]
                 dates_set.append(m.timestamp)
 
            if iter == 0:
@@ -519,9 +530,9 @@ def calculate_milestones():
            empty_count_total += empty_count_dict[month]
         
         for key, val in empty_count_dict.items():
-               empty_count_dict[key] = range(val)
+               empty_count_dict[key] = val
 
-        return {'dates_set':dates_set, 'months_set':months_set, 'milestones':milestones,
+        return {'dates_set':dates_set, 'months_set':months_set, 'milestones':milestones_dict_list,
                 'empty_count_dict':empty_count_dict, 'milestones_dict':milestones_dict}
 
 

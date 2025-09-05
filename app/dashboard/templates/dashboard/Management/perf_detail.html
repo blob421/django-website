@@ -12,7 +12,7 @@
           <div class="stars_title">Stars :</div>
           <div class="stars_div"> 
           
-            {% for star in stats.stars %}
+            {% for star in stars %}
              <img src="{% static 'star_icon3.png' %}" 
          onclick="updateStar('{{star.star_note}}', '{{star.id}}')"
          id="star{{star.id}}"

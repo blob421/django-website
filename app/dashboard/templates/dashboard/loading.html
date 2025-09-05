@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+
+<body>
+    <p> 
+    Loading ...
+    </p>
+
+<script>
+  const celeryId = '{{ celery_id }}';
+  const objectId = '{{ object_id }}';
+  const objType = '{{type}}'
+  const arg = '{{arg}}'
+ document.addEventListener('DOMContentLoaded', () => {
+function checkStatus(){
+    fetch(`/dashboard/loading/ready/${celeryId}/${objType}/${objectId}/${arg}`).then(response => response.json()).then(data => {
+
+    if (data.ready === true){
+        window.location.href = data.url
+    }
+    else{
+         setTimeout(checkStatus, 4000);
+    }
+   
+
+   }).catch( error => {
+    console.log(error)
+   })
+   }
+   checkStatus();
+})
+</script>
+</body>

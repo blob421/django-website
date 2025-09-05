@@ -45,7 +45,9 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie 
 from django.core.cache import cache  
-  
+
+from celery.result import AsyncResult
+from portal.celery import app  
 user_model = get_user_model()  
 allowed_roles_forms = ['dev']  
 allowed_roles_management = ['dev']
@@ -78,12 +80,21 @@ class AccountView(LoginRequiredMixin, View):
         employee = UserProfile.objects.get(id = pk)
         cache_key = f'individual_stats{employee.id}'
        
-       # if cache.has_key(cache_key):
-        #    ctx = cache.get(cache_key)
-       # else:
-        ctx = get_stats_data(employee)  
-        #    cache.set(cache_key, ctx, (24 * 60 * 60))
-
+        if cache.has_key(cache_key):
+            ctx = cache.get(cache_key)
+        else:
+         
+            celery_result = get_stats_data.delay(employee.id)    
+           
+            return redirect(reverse('dashboard:loading', 
+                            args=[celery_result.id, 'profile', employee.id, 'None']))
+        
+        all_user_stats = employee.stats.filter().all()
+        stars = []
+        for stat in all_user_stats:
+               if stat.star_note:
+                    stars.append({'star_note':stat.star_note, 'id':stat.id})
+        ctx['stars'] = stars
         ctx['picture'] = picture
         ctx['form'] = form
     
@@ -154,7 +165,7 @@ class BillboardView(LoginRequiredMixin, View):
         tasks = Task.objects.filter(users__in=[self.request.user.userprofile])
         form = StatusForm()
         form.initial['status'] = request.user.userprofile.status
-        late = tasks.filter(due_date__lte=now).count()
+        late = tasks.filter(due_date__lte=now, completed=False).count()
         
         ctx = {'is_home':True, 'late':late,'form':form}
 
@@ -648,9 +659,8 @@ class TaskUpdate(ProtectedUpdate):
     
 
     def post(self,request, pk):
-        self.object = Task.objects.get(id=pk)
-        task = self.object
-        form = UpdateTask(request.POST, user=request.user.userprofile, instance=self.object)
+        task = Task.objects.get(id=pk)
+        form = UpdateTask(request.POST, user=request.user.userprofile, instance=task)
         file_form = FileFieldForm(request.POST, request.FILES)
 
         if request.POST.get('delete'):
@@ -661,7 +671,10 @@ class TaskUpdate(ProtectedUpdate):
             ctx = self.get_context_data()
             ctx['file_form'] = file_form
             ctx['form'] = form
+            
             return render(request, self.template_name,ctx)
+        
+      
 
         if self.request.POST.get('section'):
         
@@ -681,7 +694,7 @@ class TaskUpdate(ProtectedUpdate):
             chart = Chart.objects.get(id=chart_id)
             task.section = section
             task.chart = chart
-            
+          
             task.due_date = due_date
             task.starting_date = starting_date
             task.save()
@@ -698,7 +711,7 @@ class TaskUpdate(ProtectedUpdate):
        
             save_files(self, files, task)
            
-        
+      
         form.save()
         
         return redirect(reverse_lazy('dashboard:task_manage_update', args=[task.id]))
@@ -1298,14 +1311,25 @@ class PerformanceDetail(ProtectedView):
      
         employee = UserProfile.objects.get(id = pk)
         cache_key = f'individual_stats{employee.id}'
- 
-       # if cache.has_key(cache_key):
-         #   ctx = cache.get(cache_key)
-     #   else:
-        ctx = get_stats_data(employee)  
-    #        cache.set(cache_key, ctx, (24 * 60 * 60))
-    
-        ctx['star_count'] = len(ctx['stats']['stars'])
+      
+        if cache.has_key(cache_key):
+            ctx = cache.get(cache_key)
+
+        else:
+         
+            celery_result = get_stats_data.delay(employee.id)    
+           
+            return redirect(reverse('dashboard:loading', 
+                            args=[celery_result.id, 'user', employee.id, 'None']))
+        
+        stars = []
+        all_user_stats = employee.stats.filter().all()
+        for stat in all_user_stats:
+               if stat.star_note:
+                    stars.append({'star_note':stat.star_note, 'id':stat.id})
+
+        ctx['stars'] = stars
+        ctx['star_count'] = len(stars)
         ctx['star_form'] = StatsForm()
         ctx['form_update'] = StatsForm2()
         ctx['employee'] = employee
@@ -1344,22 +1368,64 @@ class PerformanceDetail(ProtectedView):
         return redirect(reverse('dashboard:perf_detail', args=[pk]))
 
 
+def Ready(request, celery_id, type, object_id, arg):
+    data = AsyncResult(celery_id)
+    url = 'None'
+    if data.ready():
+
+        if type == 'user':
+
+            url = f'/dashboard/team/user/{object_id}/stats'
+            cache_key = f'individual_stats{object_id}'
+            
+        if type == 'team':
+    
+            url = f'/dashboard/team/{object_id}/stats/page/{arg}'
+            cache_key = f'team_stats{object_id}_page{arg}'
+
+        if type == 'profile':
+            url = f'/dashboard/account/{object_id}'
+            cache_key = f'individual_stats{object_id}'
+
+        if type == 'milestones':
+            url = f'/dashboard/history/milestones/team/{object_id}'
+            cache_key = f'Milestones_team_{object_id}'
+
+        ctx = data.result
+        cache.set(cache_key, ctx, (24 * 60 * 60))
+        
+    return JsonResponse({'ready': data.ready(), 'url':url})
+
+
+
+class LoadingView(View):
+    def get(self, request, celery_id, type, object_id, arg):
+       ctx = {'celery_id': celery_id, 'type':type, 'object_id':object_id, 'arg':arg}
+       return render(request, 'dashboard/loading.html', ctx)
+
 
 
 class PerformanceView(ProtectedView):
     template_name = 'dashboard/management/perf_view.html'
-    @method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
+   # @method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
     def get(self, request, pk, page=1):
-     
-        user_profile = UserProfile.objects.get(user = self.request.user)
-        cache_key = f'team_stats{user_profile.team.id}_page{page}'
+        now = timezone.now()
 
+        user_profile = UserProfile.objects.get(user = self.request.user)
+        team = user_profile.team
+        cache_key = f'team_stats{user_profile.team.id}_page{page}'
+        users = UserProfile.objects.filter(team=team)
         if cache.has_key(cache_key):
             ctx = cache.get(cache_key)
+
         else:
-            ctx = get_stats_data(user_profile, page)
-            cache.set(cache_key, ctx, (24 * 60 * 60))
-        
+         
+            celery_result = get_stats_data.delay(user_profile.id, page)    
+           
+            return redirect(reverse('dashboard:loading', 
+                            args=[celery_result.id, 'team', user_profile.team.id, page]))
+      
+        ctx['users'] = users
         return render(request, self.template_name, ctx)
 
 
@@ -1369,15 +1435,28 @@ class PerformanceView(ProtectedView):
 class HistoryView(LoginRequiredMixin, View):
     template_name = "dashboard/history.html"
     def get_context_data(self):
-        data = calculate_milestones()
+    
         now = timezone.now()
         goals = Goal.objects.filter(accomplished=False)
+        team = self.request.user.userprofile.team
+
+        cache_key = f'Milestones_team_{team.id}'
+        if cache.get(cache_key):
+            data = cache.get(cache_key)
+
+        else:
+           
+            return None
+        
+        range_dict = {}
+        for key, value in data['empty_count_dict'].items():
+            range_dict[key] = range(value)
 
         return {
             'months_set': list(data['months_set']),
             'milestones': data['milestones'],
             'milestones_dict': data['milestones_dict'],
-            'empty_count_dict': data['empty_count_dict'],
+            'empty_count_dict': range_dict,
             'dates_set': list(data['dates_set'])[:len(data['milestones'])],
             'allowed_roles':allowed_roles_management,
             'now':now,
@@ -1385,11 +1464,16 @@ class HistoryView(LoginRequiredMixin, View):
             'goal_form': GoalForm()
         }
      
-    def get(self, request):
+    def get(self, request, pk):
         ctx = self.get_context_data()
+        if not ctx:
+            celery_task = calculate_milestones.delay(request.user.userprofile.team.id)
+            return redirect(reverse('dashboard:loading', 
+                args=[celery_task.id, 'milestones', request.user.userprofile.team.id, 'None']))
+
         return render(request, self.template_name, ctx)
     
-    def post(self, request):
+    def post(self, request, pk):
         goal_form = GoalForm(request.POST)
         if 'del' in request.POST:
             pk = request.POST.get('del')  

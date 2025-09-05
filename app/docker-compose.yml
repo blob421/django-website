@@ -49,6 +49,25 @@ services:
       
     restart: always
 
+  celery_worker:
+    build: .
+    command: celery -A portal worker -l DEBUG
+    depends_on:
+      - redis
+      - db
+    restart: always
+    environment:
+        - DJANGO_SETTINGS_MODULE=portal.settings
+        - DATABASE_URL=postgres://postgres:1246@db:5432/django-prod
+        - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+        - PYTHONPATH=/app
+        - DJANGO_CONFIGURATION=Prod
+        - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+        - DJANGO_SCHEDULE_DAY=2
+        - DJANGO_TWILIO_ACCCOUNT_SID=${TWILIO_ACCCOUNT_SID}
+        - DJANGO_TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+        - DJANGO_TWILIO_MSG_SID=${TWILIO_MSG_SID}
+
  
 
 volumes:

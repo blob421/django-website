@@ -7,7 +7,11 @@ app_name = 'dashboard'
 urlpatterns = [
     
     ####### Users , Home#########
-    
+    path('loading/<str:celery_id>/<str:type>/<int:object_id>/<str:arg>', 
+         views.LoadingView.as_view(), name= 'loading'),
+    path('loading/ready/<str:celery_id>/<str:type>/<int:object_id>/<str:arg>', 
+         views.Ready, name='ready'),
+         
     path('home/', views.BillboardView.as_view(), name = 'home'),
     path('logout/', views.LogoutView.as_view(), name ='logout'),
     path('report/', views.ReportView.as_view(), name='report'),
@@ -78,7 +82,7 @@ urlpatterns = [
 
     ####### Milestones ########
   
-    path('history/milestones', views.HistoryView.as_view(), name='history_view'),
+    path('history/milestones/team/<int:pk>', views.HistoryView.as_view(), name='history_view'),
     path('team/vs_team', views.TeamVs.as_view(), name="team_vs"),
     
     #######PROJECTS ######

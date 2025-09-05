@@ -34,7 +34,7 @@
               
              
                <div class="billboard_ticket"> 
-                  <a href="{% url 'dashboard:history_view' %}" class="milestone_text">
+                  <a href="{% url 'dashboard:history_view' user.userprofile.team.id %}" class="milestone_text">
                     Milestones
                   </a>
               </div>

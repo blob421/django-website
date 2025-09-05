@@ -354,7 +354,7 @@
     <a href="{% url 'dashboard:task_manage_update' task.id %}"> 
         <div class="late_task_unit_modal">
         {{task.name}}
-         <p class="was_due"> Was due : {{task.due_date}}</p>
+         <div class="was_due"> Was due : {{task.due_date}}</div>
         </div>
     </a>
    {% endfor %}

@@ -45,7 +45,7 @@ font-size: 28px;">Milestones</h1>
                     {% endfor %}
                     {% for milestone in milestones_dict|get_item:month %}
                     <div class="milestone_div {% if milestone.date.day == now.day %} 
-                    glowing_milestone {% endif %}">{{milestone.name}}
+                    glowing_milestone {% endif %}">{{milestone}}
                     </div>
                     {% endfor %}
                   </div>

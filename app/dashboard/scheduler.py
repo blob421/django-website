@@ -16,6 +16,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_JUSTIFY
 import os 
+
+from celery	import shared_task
 from django.contrib.auth import get_user_model
 logger = logging.getLogger(__name__)
 
@@ -24,13 +26,13 @@ def start():
 
     DjangoJobExecution.objects.all().delete()
     DjangoJob.objects.all().delete()
-    CheckWeekRanges()
+    CheckWeekRanges.delay()
 
     if not BackgroundScheduler().get_jobs():
         scheduler = BackgroundScheduler()
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
-        scheduler.add_job(CheckWeekRanges, 'interval', hours=12, name='my_job', 
+        scheduler.add_job(lambda: CheckWeekRanges.delay(), 'interval', hours=12, name='my_job', 
                            replace_existing=True)
         scheduler.add_job(clear_pictures, 'interval', days=7, name='clear_pics',
                           replace_existing=True)
@@ -43,7 +45,7 @@ def start():
         
         scheduler.add_job(clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
                           replace_existing=True)
-        scheduler.add_job(check_milestones, 'interval', minutes=1, name='milestones',
+        scheduler.add_job(check_milestones, 'interval', hours =1, name='milestones',
                           replace_existing=True)
         
         register_events(scheduler)
@@ -143,7 +145,7 @@ def generate_report(team):
 def get_report_stats(now):
   
      day_reports = Report.objects.filter(time__lte=now, time__gte=(now-relativedelta(day=1)))
-     stats = Stats.objects.filter(timestamp__lte=now, timestamp__gte=(now-relativedelta(day=1)))
+    # stats = Stats.objects.filter(timestamp__lte=now, timestamp__gte=(now-relativedelta(day=1)))
 
      completed_tasks = Task.objects.filter(completed=True, 
                             submitted_at__lte=now, submitted_at__gte=now-relativedelta(day=1))
@@ -188,7 +190,7 @@ def clear_chat_msg():
     except:
         raise('No chat messages to delete')
      
-
+@shared_task
 def CheckWeekRanges():
      
     now= timezone.now()

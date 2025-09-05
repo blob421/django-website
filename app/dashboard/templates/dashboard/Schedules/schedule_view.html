@@ -1,6 +1,15 @@
  {% include 'dashboard/base.html' %}
  {% load user_data %}
+  {% block extra_css %}
+<style>
+       
+    body, html{
+        background-color: rgb(226, 199, 175) !important;
+    }
+</style>
+{% endblock %}
  {% block content %}
+
  {% with user|get_schedules as schedules_ctx %}
  <div class="extreme_outer_div_schedule">
 <div class="title_container_schedule">

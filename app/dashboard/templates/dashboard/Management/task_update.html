@@ -74,6 +74,43 @@
 
  </div>
  
+
+ <!-----------------------------------Delete confirm modal--------------------------------->
+<div id="confirm_delete_modal_manage" style="width: 25vw;
+                height: 27vh;
+                background-color: rgba(79, 79, 79, 0.686);
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                display: none;
+                border-radius: 8px;
+                color: white;
+                transform: translate(-50%,-50%);
+                ">
+
+                <div class="confirm_delete_modal_subtask_cont"> 
+                     <div class="confirm_deletion_text"> Confirm deletion  </div>
+                     <div class="button_confirm_delete_div"> 
+                    <button type="submit" name="delete" id="delete_btn_task"
+                    class="btn-submit-task-manage" value="1">
+                      Delete
+                    </button>
+
+                      <div> 
+                         <button type="button" id="cancel_btn_task"
+                            onclick="document.getElementById(
+                              'confirm_delete_modal_manage').style.display ='none'">
+                            Cancel
+                        </button>
+                      </div>
+                      </div>
+                 </div>
+</div>
+
+
+ <!----------------------------------------------------------------------------------------->
+ </form>
+<!---------------------------------------TRANSFER FORM MODAL-------------------------------------------->
  <div id="transfer_modal">
    <div class="x_btn_transfer" 
    onclick="document.getElementById('transfer_modal').style.display='none'">
@@ -110,46 +147,12 @@
   
 
  </div>
- <!-----------------------------------Delete confirm modal--------------------------------->
-<div id="confirm_delete_modal_manage" style="width: 25vw;
-                height: 27vh;
-                background-color: rgba(79, 79, 79, 0.686);
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                display: none;
-                border-radius: 8px;
-                color: white;
-                transform: translate(-50%,-50%);
-                ">
-
-                <div class="confirm_delete_modal_subtask_cont"> 
-                     <div class="confirm_deletion_text"> Confirm deletion  </div>
-                     <div class="button_confirm_delete_div"> 
-                    <button type="submit" name="delete" id="delete_btn_task"
-                    class="btn-submit-task-manage" value="1">
-                      Delete
-                    </button>
-
-                      <div> 
-                         <button type="button" id="cancel_btn_task"
-                            onclick="document.getElementById(
-                              'confirm_delete_modal_manage').style.display ='none'">
-                            Cancel
-                        </button>
-                      </div>
-                      </div>
-                 </div>
-</div>
-
 
  <!----------------------------------------------------------------------------------------->
- </form>
-
-
 <div class="task_update_manage_right_subtask_div" id="right_task_detail_manage">
-      <div class="task_update_right_pane_title">Subtasks</div>
+     
       <div class="task_update_subtask_cont">
+         <div class="task_update_right_pane_title">Subtasks</div>
                 {% for subtask in subtasks %}
                  <div class="task_completed">
                 <div class="task_completed_flex"> 
@@ -181,7 +184,9 @@
                   <a class="file_link_task_detail" href="{% url 'dashboard:get_file' file.id %}">  
                <div class="file_div_task_detail_manage">
                   {{file.file_name}} 
+                  <div class="time_recent_file">{{file.owner}} ({{file.time}})  </div>
                </div>
+               
                </a>
                   {% endfor %}
                {% endif %}
@@ -189,7 +194,7 @@
                <div class="btn_div_task_manage_rightpanel" style="background-color: rgb(69, 69, 69);">
                                  <button class="add_files_btn_subtask_manage" 
 onclick="document.getElementById('your_file_modal_task_detail').style.display = 'flex'">
-                    Manage files
+                  Delete files
                   </button>
                </div>
 </div>
@@ -208,8 +213,8 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
 <!---------------------------YOUR FILE MODAL -------------------------------->
 
 <div id="your_file_modal_task_detail" style="
-              width: 30%;
-              height: 70%;
+              width: 36%;
+              height: 80%;
               position: absolute;
               display: none;
               left: 50%;
