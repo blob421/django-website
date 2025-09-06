@@ -32,25 +32,29 @@ def start():
         scheduler = BackgroundScheduler()
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
-        scheduler.add_job(lambda: CheckWeekRanges.delay(), 'interval', hours=12, name='my_job', 
+        scheduler.add_job(CheckWeekRanges.delay, 'interval', hours=12, name='my_job', 
                            replace_existing=True)
-        scheduler.add_job(clear_pictures, 'interval', days=7, name='clear_pics',
+        
+        scheduler.add_job(clear_pictures.delay, 'interval', days=7, name='clear_pics',
                           replace_existing=True)
         
-        scheduler.add_job(clear_files, 'interval', days=7, name='clear_files',
+        scheduler.add_job(clear_files.delay, 'interval', days=7, name='clear_files',
                           replace_existing=True)
+        
         first_run = timezone.now().replace(hour=23, minute=55, second=0, microsecond=0) + relativedelta(days=1)
-        scheduler.add_job(gen_all_reports, 'interval', days=1, name='gen_report',
+        scheduler.add_job(gen_all_reports.delay, 'interval', days=1, name='gen_report',
                           replace_existing=True, next_run_time=first_run)
         
-        scheduler.add_job(clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
+        scheduler.add_job(clear_chat_msg.delay, 'interval', days=7, name='clear_chat_msgs',
                           replace_existing=True)
-        scheduler.add_job(check_milestones, 'interval', hours =1, name='milestones',
+        
+        scheduler.add_job(check_milestones.delay, 'interval', hours =1, name='milestones',
                           replace_existing=True)
         
         register_events(scheduler)
         scheduler.start()
 
+@shared_task
 def gen_all_reports():
      teams = Team.objects.all()
      for team in teams:
@@ -155,7 +159,7 @@ def get_report_stats(now):
 
 
 
-
+@shared_task
 def clear_pictures():
      users = UserProfile.objects.all()
      for user in users:
@@ -170,7 +174,7 @@ def clear_pictures():
 
                picture.delete()
 
-
+@shared_task
 def clear_files():
      try:
          files = Document.objects.filter(
@@ -181,7 +185,7 @@ def clear_files():
      except:
           raise('No files to delete')
           
-
+@shared_task
 def clear_chat_msg():
     try:
         msgs = ChatMessages.objects.filter(

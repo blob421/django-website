@@ -14,7 +14,7 @@ from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask,
                     StatsForm, TransferTaskForm, AddTask, UpdateTask, ReportForm, StatusForm,
                     TeamSearchForm)
 
-from .utility import ( get_stats_data, save_files, create_stats, save_stats, 
+from .utility import (get_stats_data, save_files, create_stats, save_stats, 
                       save_profile_picture, calculate_milestones, get_team_graph, send_sms)
 
 from django.conf import settings
@@ -65,19 +65,18 @@ class AccountView(LoginRequiredMixin, View):
     template_name = 'dashboard/users/account_view.html'
   
     def get(self, request, pk):
-        team = self.request.user.userprofile.team
-        generate_report(team)
-
 
         content_type = ContentType.objects.get_for_model(UserProfile)
         form = ProfilePictureForm()
+
         try:
-          picture = Document.objects.filter(object_id = self.request.user.userprofile.id, content_type_id = content_type.id).last()
+          picture = Document.objects.filter(
+              object_id = self.request.user.userprofile.id, content_type_id = content_type.id).last()
         except:
             picture = None
      
 
-        employee = UserProfile.objects.get(id = pk)
+        employee = request.user.userprofile
         cache_key = f'individual_stats{employee.id}'
        
         if cache.has_key(cache_key):
@@ -94,6 +93,7 @@ class AccountView(LoginRequiredMixin, View):
         for stat in all_user_stats:
                if stat.star_note:
                     stars.append({'star_note':stat.star_note, 'id':stat.id})
+                    
         ctx['stars'] = stars
         ctx['picture'] = picture
         ctx['form'] = form
@@ -106,24 +106,29 @@ class AccountView(LoginRequiredMixin, View):
         form = FileFieldForm(request.POST, request.FILES)
         employee = UserProfile.objects.get(id = pk)
   
-        if not form.is_valid():
-            
+        if not form.is_valid():        
             cache_key = f'individual_stats{employee.id}'
             picture = Document.objects.get(object_id = self.request.user.userprofile.id)
+            
             if cache.has_key(cache_key):
                 ctx = cache.get(cache_key)
+
             else:
-                ctx = get_stats_data(employee)  
-                cache.set(cache_key, ctx, (24 * 60 * 60))
+                 celery_result = get_stats_data.delay(employee.id)    
+                 return redirect(reverse('dashboard:loading', 
+                            args=[celery_result.id, 'profile', employee.id, 'None']))
 
             ctx['picture'] = picture
             ctx['form'] = form
             return render(request, self.template_name, ctx)
     
-        file = self.request.FILES.get('file')
-        
-        save_profile_picture(self, file, employee)
-        return redirect(reverse('dashboard:user_account', args=[pk]))
+        uploaded_file = request.FILES['file']
+        relative_path = f'userprofile/{employee.id}/{uploaded_file.name}'
+
+        file_path = default_storage.save(relative_path, uploaded_file)
+        celery_task = save_profile_picture.delay(file_path, employee.id)
+    
+        return redirect(reverse('dashboard:loading', args=[celery_task.id, 'pillow', pk, 'None']))
 
 
 
@@ -159,7 +164,7 @@ class CustomLoginView(LoginView):
 
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
-    #@method_decorator([cache_page(60 * 60 * 5), vary_on_cookie], name='dispatch')
+    @method_decorator([cache_page(60 * 60 * 5), vary_on_cookie], name='dispatch')
     def get(self, request):
         now = timezone.now()
         tasks = Task.objects.filter(users__in=[self.request.user.userprofile])
@@ -233,11 +238,11 @@ class MessageDetail(LoginRequiredMixin, DetailView):
        report_id = self.kwargs['id']
     
        msg = Messages.objects.get(id=report_id, recipient=self.request.user.userprofile)
-    
-
        msg.new = False
        msg.save()
        return msg
+    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         documents = Document.objects.filter(object_id = self.object.id)
@@ -274,7 +279,8 @@ class MessageDetail(LoginRequiredMixin, DetailView):
 class MessageView(LoginRequiredMixin, View):
 
     template = 'dashboard/messages/messages_send.html'
-    def get(self, request):
+    def get_context_data(self):
+
         pk = self.request.user.id
         data = MessagesCopy.objects.filter(user_id=pk).order_by('-id')
 
@@ -285,57 +291,55 @@ class MessageView(LoginRequiredMixin, View):
 
         context = {'data': data, 'form': form, 'file_form': file_form, 'form_add':form_add, 
                    'form_del':form_del}
+        return context
+
+
+    def get(self, request):
+        context = self.get_context_data()
         return render(request, self.template, context)
        
 
     def post(self, request):
         user_profile = self.request.user.userprofile
         
-        if 'send' in request.POST:
-
+        if 'send' in request.POST:     
             file_form = FileFieldForm(request.POST, request.FILES)
-            form = MessageForm(request.POST, request.FILES or None, sender_id=self.request.user.id)
+            form = MessageForm(request.POST, 
+                               request.FILES or None, sender_id=self.request.user.id)
+            
             if not form.is_valid():
-                pk = self.request.user.id
-                data = MessagesCopy.objects.filter(user_id=pk)
-                context = {'data': data, 'form': form, 'file_form': file_form, 'form_add':form_add, 'form_del':form_del}
+                context = self.get_context_data()
+                context['file_form'] = file_form
+                context['form'] = form
+
                 return render(request, self.template, context)
             
         
             report = form.save(commit=False)
-        
-
             recipient = form.cleaned_data['recipient']
             report.user_id = request.user.id
             report.save()
+
+
             if request.FILES: 
                 files = self.request.FILES.getlist('file_field')
                 valid = save_files(self, files, report)
 
                 if not valid:
-                    pk = self.request.user.id
-                    form_add = RecipientForm(sender_id=self.request.user.id)
-                    form_del = RecipientDelete(sender_id=self.request.user.id)
-                    data = MessagesCopy.objects.filter(user_id=pk).order_by('-id')
-                    file_form.add_error('file_field',"Files must be below 2 MB")
-                    ctx = {'data': data, 'form': form, 'form_add':form_add, 
-                          'file_form': file_form, 'form_del':form_del}
+                    ctx = self.get_context_data()
                     return render(self.request, self.template, ctx)
                 
             report.recipient.set(recipient.all())
-
-
-            ##Making a copy for inbox
             copy_message_data(report , MessagesCopy)
             return redirect('dashboard:messages_create')  
+        
     
         if 'add' in request.POST:
             form_add = RecipientForm(request.POST, sender_id=self.request.user.id, 
                                                          instance = user_profile) 
             if not form_add.is_valid():
-                pk = self.request.user.id
-                data = MessagesCopy.objects.filter(user_id=pk)
-                context = {'data': data, 'form': form, 'form_add':form_add, 'form_del':form_del}
+                context = self.get_context_data()
+                context['form_add'] = form_add
                 return render(request, self.template, context)
             
             add = form_add.save(commit=False)
@@ -346,13 +350,13 @@ class MessageView(LoginRequiredMixin, View):
             add.recipients.set(combined_receivers)
             return redirect('dashboard:messages_create')  
         
+
         if 'delete' in request.POST:
             form_del = RecipientDelete(request.POST, sender_id=self.request.user.id, 
                                                      instance = user_profile)
             if not form_del.is_valid():
-                pk = self.request.user.id
-                data = MessagesCopy.objects.filter(user_id=pk)
-                context = {'data': data, 'form': form, 'form_add':form_add, 'form_del':form_del}
+                context = self.get_context_data()
+                context['form_del'] = form_del
                 return render(request, self.template, context)
             
             remove = form_del.save(commit=False)
@@ -1128,32 +1132,31 @@ class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
 class TeamView(LoginRequiredMixin, View):
     template_name='dashboard/Management/team_view.html'
     def get(self, request):
-        form = TeamSearchForm(request.GET)
-            
+        form = TeamSearchForm(request.GET)    
         time = timezone.now()
-        team = self.request.user.userprofile.team
+        team = request.user.userprofile.team
+        team_member = UserProfile.objects.filter(team__name=team.name)
+
+
+        tasks = Task.objects.filter(
+                         users__team = team, completed=False).order_by('due_date').distinct()
+        
+        query = Q(completed=True, submitted_by__team__name = team.name) & Q(approved_by__isnull=True)
+        completed_task_count = Task.objects.filter(query).count()  
+        late_tasks = tasks.filter(due_date__lte = time)
        
         all_reports = DailyReport.objects.filter(team=team)
         unseen_reports = all_reports.filter(read=False).count()
         content_type = ContentType.objects.get_for_model(DailyReport)
+
         reports_list = []
         for rep in all_reports:
-            reports_list.append(Document.objects.get(object_id=rep.id, content_type_id=content_type.id))
-
-       
-        team = self.request.user.userprofile.team
-        team_member = UserProfile.objects.filter(team__name=team)
+            reports_list.append(Document.objects.get(object_id=rep.id, 
+                                                     content_type_id=content_type.id))
+            
         if form.is_valid():
             role = form.cleaned_data['role']
             team_member = team_member.filter(role=role)
-
-        team_name = team.name
-        tasks = Task.objects.filter(
-            users__team = team, completed=False).order_by('due_date').distinct()
-        
-        query = Q(completed=True, submitted_by__team__name = team_name) & Q(approved_by__isnull=True)
-        completed_task_count = Task.objects.filter(query).count()  
-        late_tasks = tasks.filter(due_date__lte = time)  
         
         context = {'team': team_member , 'count':completed_task_count,'tasks':tasks,
                    'time':time, 'reports':reports_list, 'unseen_reports':unseen_reports,
@@ -1387,9 +1390,15 @@ def Ready(request, celery_id, type, object_id, arg):
             url = f'/dashboard/account/{object_id}'
             cache_key = f'individual_stats{object_id}'
 
+        if type == 'pillow':
+            url = f'/dashboard/account/{object_id}'
+            return JsonResponse({'ready': data.ready(), 'url':url})
+
         if type == 'milestones':
             url = f'/dashboard/history/milestones/team/{object_id}'
             cache_key = f'Milestones_team_{object_id}'
+
+        
 
         ctx = data.result
         cache.set(cache_key, ctx, (24 * 60 * 60))
@@ -1409,7 +1418,7 @@ class PerformanceView(ProtectedView):
     template_name = 'dashboard/management/perf_view.html'
    # @method_decorator([cache_page(60 * 60 * 24), vary_on_cookie], name='dispatch')
     def get(self, request, pk, page=1):
-        now = timezone.now()
+      
 
         user_profile = UserProfile.objects.get(user = self.request.user)
         team = user_profile.team
@@ -1584,26 +1593,52 @@ def FetchSubtask(request, pk):
 
  
 def ChatUpdate(request):
-
-    data = []
-    profile = UserProfile.objects.get(id=request.user.id)
-    content_type = ContentType.objects.get_for_model(UserProfile)
-    team = profile.team
-    messages = ChatMessages.objects.filter(team= team).order_by('-created_at')[:50]
-    for message in messages:
-        text = message.message
-        user = message.user.user.username
-        try:
-            pic = Document.objects.filter(object_id = message.user.id, 
-                                          content_type_id=content_type.id).last()   
-            pic_id = pic.id
-        except:
-            pic_id = 1
    
-        time = naturaltime(message.created_at)
-        timed_message = {'user':user, 'text':text,'time': time, 'pic_id':pic_id}
-        data.append(timed_message)
-    return JsonResponse(data, safe=False)
+    content_type = ContentType.objects.get_for_model(UserProfile)
+    team = request.user.userprofile.team
+    cache_key = f'chat_team_{team.id}'
+    data = cache.get(cache_key)
+
+    if data:
+        minus_10 = timezone.now() - relativedelta(second=10)
+        messages = ChatMessages.objects.filter(created_at__lte = minus_10).order_by('-created_at')
+        for message in messages:
+            text  = message.message
+            user = message.user.user.username
+            try:
+                pic = Document.objects.filter(object_id = message.user.id, 
+                                                content_type_id=content_type.id).last()   
+                pic_id = pic.id
+            except:
+                pic_id = 1
+            
+            time = naturaltime(message.created_at)
+            timed_message = {'user':user, 'text':text,'time': time, 'pic_id':pic_id}
+            data.append(timed_message)
+
+        cache.set(cache_key, data, 60 * 60)
+        return JsonResponse(data[messages.count():], safe=False)
+        
+    else:
+        data = []
+        messages = ChatMessages.objects.filter(team= team).order_by('-created_at')[:50]
+        for message in messages:
+            text = message.message
+            user = message.user.user.username
+            try:
+                pic = Document.objects.filter(object_id = message.user.id, 
+                                            content_type_id=content_type.id).last()   
+                pic_id = pic.id
+            except:
+                pic_id = 1
+        
+            time = naturaltime(message.created_at)
+            timed_message = {'user':user, 'text':text,'time': time, 'pic_id':pic_id}
+            data.append(timed_message)
+
+        cache.set(cache_key, data, 30)
+        return JsonResponse(data, safe=False)
+
 
 
 

@@ -1,4 +1,4 @@
-from .models import UserProfile, Task, Team, Document, Stats, Milestone, Goal
+from .models import UserProfile, Task, Team, Document, Stats, Milestone, Goal, ChatMessages
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
 import plotly.graph_objs as go
@@ -12,15 +12,18 @@ from django.core.files.base import ContentFile
 from twilio.rest import Client
 from django.conf import settings
 user_model = get_user_model()
-
+from django.contrib.humanize.templatetags.humanize import naturaltime
 from celery	import shared_task
-
-
+from django.contrib.contenttypes.models import ContentType
+from django.core.cache import cache  
 ##### UTILITY ###############
-import os 
+import os
+from django.core.files import File
+
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
-  
+
+
 def send_sms(phone_number, content):
     user_phone = f'+1{phone_number}'
    
@@ -49,8 +52,29 @@ def create_stats(instance):
     stats = Stats.objects.create(content_object = instance, object_id=instance.id)  
     return stats    
 
-def save_profile_picture(self, file, user):
-        if file.size > 2 * 1024 * 1024:
+@shared_task
+def save_profile_picture(file_path, user_id):
+
+    content_type = ContentType.objects.get_for_model(UserProfile)
+    photos_exists = Document.objects.filter(content_type_id= content_type.id, owner_id = user_id).exists()
+    
+    if photos_exists:
+        photos = Document.objects.filter(content_type_id= content_type.id, owner_id = user_id)
+        for photo in photos:
+            file = photo.file.path
+            if os.path.exists(file):
+                default_storage.delete(file)
+                photo.delete()
+
+    user = UserProfile.objects.get(id=user_id)
+    full_path = os.path.join(settings.BASE_DIR, 'media', file_path)
+
+  
+    with open(full_path, 'rb') as file:
+        file.seek(0, os.SEEK_END)
+        size = file.tell()
+        file.seek(0)
+        if size > 2 * 1024 * 1024:
             return False
         image = Image.open(file)
 
@@ -75,23 +99,16 @@ def save_profile_picture(self, file, user):
         image.save(image_io, format=image_format)
 
         # Create Django file object
-        square_file = ContentFile(image_io.getvalue(), name=file.name)
-        file_name = square_file.name    
-        file_path = f'{user.__class__.__name__}/{user.id}/{file_name}'
+        
+        django_file = File(image_io, name=os.path.basename(full_path))       
 
-     
-          
-        if default_storage.exists(file_path):
-            file = Document.objects.get(file__icontains=file_name, object_id = user.id)
-            if file.owner == self.request.user.userprofile:
-                default_storage.delete(file_path)
-                
-                file.delete()
+        Document.objects.create(file = django_file, owner_id =user_id,
+                                     content_type_id = content_type.id, object_id = user.id)
 
-        Document.objects.create(file = square_file, owner =self.request.user.userprofile,
-                                                          content_object = user)
-        return True
-
+    if os.path.exists(full_path):
+            default_storage.delete(full_path)
+        
+    
 
 
 def save_files(self, files, task):
@@ -535,9 +552,8 @@ def calculate_milestones(team_id):
         return {'dates_set':dates_set, 'months_set':months_set, 'milestones':milestones_dict_list,
                 'empty_count_dict':empty_count_dict, 'milestones_dict':milestones_dict}
 
-
+@shared_task
 def check_milestones():
-
     now = timezone.now()
     goals = Goal.objects.filter(accomplished = False)
     stats = Stats.objects.all()

@@ -1,10 +1,52 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    html, body{
+        background-color: aliceblue;
+    }
+    .loading_cont{
+   top: 50%;
+      left: 50%;
+      width: 14%;
+      color:rgb(45, 45, 45);
+      transform: translate(-50%,-100%);
+      position:absolute;
+    }
+    .progress-container {
+      width: 90%;
+      height: 20px;
+   
+      background-color: #eee;
+      border-radius: 1px;
+      overflow: hidden;
+    }
 
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #4789d5;
+      animation: fillBar 1s linear forwards infinite;
+    }
 
+    @keyframes fillBar {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+  </style>
+</head>
 <body>
-    <p> 
-    Loading ...
-    </p>
+    <div class="loading_cont">
+
+    <h1>Loading ...</h1>
+  <div class="progress-container">
+    
+    <div class="progress-bar"></div>
+  </div>
+    </div>
+
+
 
 <script>
   const celeryId = '{{ celery_id }}';
@@ -19,7 +61,7 @@ function checkStatus(){
         window.location.href = data.url
     }
     else{
-         setTimeout(checkStatus, 4000);
+         setTimeout(checkStatus, 2000);
     }
    
 
@@ -31,3 +73,4 @@ function checkStatus(){
 })
 </script>
 </body>
+</html>
