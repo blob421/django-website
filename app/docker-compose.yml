@@ -9,6 +9,9 @@ services:
     command: gunicorn portal.wsgi:application --bind 0.0.0.0:8000 
     volumes: ##Delete later 
       - .:/app
+      
+      - static_data:/app/static
+      - media_data:/app/media
     ports:
       - "8000:8000"
     depends_on:
@@ -25,8 +28,46 @@ services:
       - DJANGO_TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - DJANGO_TWILIO_MSG_SID=${TWILIO_MSG_SID}
     restart: always
+
+  web2:
+    build: 
+        context: .
+        
+    working_dir: /app
+    command: gunicorn portal.wsgi:application --bind 0.0.0.0:9000
+    volumes: ##Delete later 
+      - .:/app
+       
+      - static_data:/app/static
+      - media_data:/app/media
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=portal.settings
+      - DATABASE_URL=postgres://postgres:1246@db:5432/django-prod
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - PYTHONPATH=/app
+      - DJANGO_CONFIGURATION=Prod
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+      - DJANGO_SCHEDULE_DAY=2
+      - DJANGO_TWILIO_ACCCOUNT_SID=${TWILIO_ACCCOUNT_SID}
+      - DJANGO_TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - DJANGO_TWILIO_MSG_SID=${TWILIO_MSG_SID}
+    restart: always
     
-    
+  
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+       - static_data:/static:ro
+       - media_data:/media:ro
+       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web
     
   db:
     image: postgres:17
@@ -89,4 +130,6 @@ services:
 
 volumes:
     pgdata:
-  
+
+    static_data:
+    media_data:

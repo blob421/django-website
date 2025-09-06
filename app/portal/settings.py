@@ -89,7 +89,7 @@ class Dev(Configuration):
     CRISPY_TEMPLATE_PACK = "bootstrap5"
 
     MIDDLEWARE = [
-        'whitenoise.middleware.WhiteNoiseMiddleware',
+        #'whitenoise.middleware.WhiteNoiseMiddleware',
         'debug_toolbar.middleware.DebugToolbarMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
