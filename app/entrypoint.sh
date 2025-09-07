@@ -13,5 +13,4 @@ python manage.py loaddata resource_cat_data.json
 python manage.py loaddata resource_data.json
 
 
-
 exec "$@"

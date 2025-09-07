@@ -16,17 +16,9 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      - DJANGO_SETTINGS_MODULE=portal.settings
-      - DATABASE_URL=postgres://postgres:1246@db:5432/django-prod
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-      - PYTHONPATH=/app
-      - DJANGO_CONFIGURATION=Prod
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-      - DJANGO_SCHEDULE_DAY=2
-      - DJANGO_TWILIO_ACCCOUNT_SID=${TWILIO_ACCCOUNT_SID}
-      - DJANGO_TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-      - DJANGO_TWILIO_MSG_SID=${TWILIO_MSG_SID}
+  
+    env_file:
+      - .env
     restart: always
 
   web2:
@@ -44,17 +36,8 @@ services:
       - "9000:9000"
     depends_on:
       - db
-    environment:
-      - DJANGO_SETTINGS_MODULE=portal.settings
-      - DATABASE_URL=postgres://postgres:1246@db:5432/django-prod
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-      - PYTHONPATH=/app
-      - DJANGO_CONFIGURATION=Prod
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-      - DJANGO_SCHEDULE_DAY=2
-      - DJANGO_TWILIO_ACCCOUNT_SID=${TWILIO_ACCCOUNT_SID}
-      - DJANGO_TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-      - DJANGO_TWILIO_MSG_SID=${TWILIO_MSG_SID}
+    env_file:
+      - .env
     restart: always
     
   
@@ -71,17 +54,15 @@ services:
     
   db:
     image: postgres:17
-    environment:
-      POSTGRES_DB: django-prod
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1246
-      
+   
     ports:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
     restart: always
+    env_file:
+      - .env
 
   redis:
     image: redis:7
@@ -97,34 +78,17 @@ services:
       - redis
       - db
     restart: always
-    environment:
-        - DJANGO_SETTINGS_MODULE=portal.settings
-        - DATABASE_URL=postgres://postgres:1246@db:5432/django-prod
-        - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-        - PYTHONPATH=/app
-        - DJANGO_CONFIGURATION=Prod
-        - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-        - DJANGO_SCHEDULE_DAY=2
-        - DJANGO_TWILIO_ACCCOUNT_SID=${TWILIO_ACCCOUNT_SID}
-        - DJANGO_TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-        - DJANGO_TWILIO_MSG_SID=${TWILIO_MSG_SID}
+    env_file:
+      - .env
+        
   ap_scheduler:
      build: .
      command : python manage.py start_scheduler
      depends_on:
-      - db
+         - db
      restart: always
-     environment:
-        - DJANGO_SETTINGS_MODULE=portal.settings
-        - DATABASE_URL=postgres://postgres:1246@db:5432/django-prod
-        - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-        - PYTHONPATH=/app
-        - DJANGO_CONFIGURATION=Prod
-        - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-        - DJANGO_SCHEDULE_DAY=2
-        - DJANGO_TWILIO_ACCCOUNT_SID=${TWILIO_ACCCOUNT_SID}
-        - DJANGO_TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-        - DJANGO_TWILIO_MSG_SID=${TWILIO_MSG_SID}
+     env_file:
+        - .env
   
  
 

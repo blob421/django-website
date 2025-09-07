@@ -18,7 +18,7 @@
 
 <div class="chat_form_div">
     <div>
-   <form class="chat_form_msg" method="post">
+   <form class="chat_form_msg" method="post" id="chat_form">
     {% csrf_token %}
     {{form.message}}
     </div>
@@ -31,7 +31,6 @@
    </form>
 
   
-</div>
 {% endblock %}
 
 
@@ -40,14 +39,18 @@
 
 async function update_messages() {
 
+
+    
     try { 
-    const response = await fetch("{% url 'dashboard:chat_update' %}")
+    const response = await fetch(`/dashboard/chat/update/`)
     const data = await response.json()
     console.log(data);
+    
+    last = data[0]['id']
 
     const chatContainer = document.getElementById('chat');
     chatContainer.innerHTML = ''; // clear previous messages
-   
+    
     for (var x = 0; x < data.length; x++ ){
  
             const row = data[x]
@@ -78,8 +81,20 @@ async function update_messages() {
 
     
 }
-document.addEventListener("DOMContentLoaded", function() {
-    update_messages(); // or whichever function is trying to access chatcontent
+
+document.addEventListener("DOMContentLoaded", function () {
+    update_messages();
+   const form = document.querySelector('#chat_form');
+   const button = document.querySelector('.send_button_chat');
+  if (button) {
+    button.disabled = true;
+    setTimeout(() => {
+      button.disabled = false;
+    }, 2000);
+    form.addEventListener('submit', function () {
+    button.disabled = true;
+  });
+  }
 });
 
 

@@ -103,6 +103,6 @@ urlpatterns = [
          views.SwapTask, name='swapTask'),
     ######CHAT##########
     path('chat', views.ChatView.as_view(), name='chat_view'),
-    path('chat/update', views.ChatUpdate, name='chat_update'),
+    path('chat/update/', views.ChatUpdate, name='chat_update'),
 
 ] 

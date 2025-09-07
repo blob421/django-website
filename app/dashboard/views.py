@@ -1516,7 +1516,6 @@ class ChatView(LoginRequiredMixin, View):
     template = 'dashboard/chat_view.html'
     def get(self, request):
         form = ChatForm()
-
         ctx = {'form': form}
         return render(request, self.template, ctx)
         
@@ -1593,18 +1592,22 @@ def FetchSubtask(request, pk):
 
  
 def ChatUpdate(request):
-   
+
     content_type = ContentType.objects.get_for_model(UserProfile)
     team = request.user.userprofile.team
     cache_key = f'chat_team_{team.id}'
     data = cache.get(cache_key)
 
+    
     if data:
-        minus_10 = timezone.now() - relativedelta(second=10)
-        messages = ChatMessages.objects.filter(created_at__lte = minus_10).order_by('-created_at')
+        new_msg_list=[]
+
+        last_seen = data[0]['id']
+        messages = ChatMessages.objects.filter(id__gt = last_seen).order_by('-created_at')
         for message in messages:
             text  = message.message
             user = message.user.user.username
+            id = message.id
             try:
                 pic = Document.objects.filter(object_id = message.user.id, 
                                                 content_type_id=content_type.id).last()   
@@ -1613,11 +1616,13 @@ def ChatUpdate(request):
                 pic_id = 1
             
             time = naturaltime(message.created_at)
-            timed_message = {'user':user, 'text':text,'time': time, 'pic_id':pic_id}
-            data.append(timed_message)
+            timed_message = {'id':id, 'user':user, 'text':text,'time': time, 'pic_id':pic_id}
+            new_msg_list.append(timed_message)
 
-        cache.set(cache_key, data, 60 * 60)
-        return JsonResponse(data[messages.count():], safe=False)
+        new_msg_list.extend(data)
+
+        cache.set(cache_key, new_msg_list[:50], 60 * 60)
+        return JsonResponse(new_msg_list[:50], safe=False)
         
     else:
         data = []
@@ -1625,6 +1630,7 @@ def ChatUpdate(request):
         for message in messages:
             text = message.message
             user = message.user.user.username
+            id = message.id
             try:
                 pic = Document.objects.filter(object_id = message.user.id, 
                                             content_type_id=content_type.id).last()   
@@ -1633,7 +1639,7 @@ def ChatUpdate(request):
                 pic_id = 1
         
             time = naturaltime(message.created_at)
-            timed_message = {'user':user, 'text':text,'time': time, 'pic_id':pic_id}
+            timed_message = {'id':id,'user':user, 'text':text,'time': time, 'pic_id':pic_id}
             data.append(timed_message)
 
         cache.set(cache_key, data, 30)
