@@ -72,11 +72,15 @@ class Dev(Configuration):
     # Application definition
 
     INSTALLED_APPS = [
+        'corsheaders',
+        "rest_framework.authtoken",
+        'rest_framework',
         'django_celery_results',
         'debug_toolbar',
         'crispy_bootstrap5',
         'crispy_forms',
         'django_apscheduler',
+        'api.apps.ApiConfig',
         'dashboard.apps.DashboardConfig',
         'django.contrib.admin',
         'django.contrib.auth',
@@ -90,6 +94,7 @@ class Dev(Configuration):
 
     MIDDLEWARE = [
         #'whitenoise.middleware.WhiteNoiseMiddleware',
+        'corsheaders.middleware.CorsMiddleware',
         'debug_toolbar.middleware.DebugToolbarMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -99,7 +104,7 @@ class Dev(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
-
+    CORS_ALLOW_ALL_ORIGINS = True
     ROOT_URLCONF = 'portal.urls'
 
     TEMPLATES = [
@@ -154,6 +159,32 @@ class Dev(Configuration):
         },
     ]
 
+    REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+
+    ],
+        "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated"
+    ],
+    
+   # "DEFAULT_THROTTLE_CLASSES": [
+        #    "blog.api.throttling.AnonSustainedThrottle",
+        #    "blog.api.throttling.AnonBurstThrottle",
+         #   "blog.api.throttling.UserSustainedThrottle",
+         #   "blog.api.throttling.UserBurstThrottle",
+       # ],
+    #"DEFAULT_THROTTLE_RATES": {
+    #        "anon_sustained": "500/day",
+     #       "anon_burst": "10/minute",
+      #      "user_sustained": "5000/day",
+      #      "user_burst": "100/minute",
+      #  },
+
+     }
     # SESSIONS 
     # Time in seconds (e.g., 2 hours = 7200 seconds)
     SESSION_COOKIE_AGE = 7200

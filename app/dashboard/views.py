@@ -126,6 +126,7 @@ class AccountView(LoginRequiredMixin, View):
         relative_path = f'userprofile/{employee.id}/{uploaded_file.name}'
 
         file_path = default_storage.save(relative_path, uploaded_file)
+        print(file_path)
         celery_task = save_profile_picture.delay(file_path, employee.id)
     
         return redirect(reverse('dashboard:loading', args=[celery_task.id, 'pillow', pk, 'None']))
