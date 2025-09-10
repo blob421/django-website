@@ -18,6 +18,7 @@ urlpatterns = [
      path('checkAuth/', views.checkAuth.as_view({'get': 'get'}), name='checkAuth'),
      path("home/", views.Homeview.as_view({'get': 'retrieve'}), name="home"),
      path('upload/', views.ImageUploadView.as_view(), name='upload'),
+     path('loading/<str:celery_id>/', views.Ready, name='ready'),
     # path('messages/unread', views.UnreadMessages.as_view(), name='unread_count'),
      path('profile/', views.UserProfileViewSet.as_view({'get':'retrieve'})),
      path("",	include(router.urls)),

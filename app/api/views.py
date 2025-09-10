@@ -13,6 +13,8 @@ from rest_framework.views import APIView
 from dashboard.utility import save_profile_picture
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
+from celery.result import AsyncResult
+
 
 class ImageUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -28,8 +30,9 @@ class ImageUploadView(APIView):
         relative_path = f'userprofile/{user.id}/{image.name}'
 
         file_path = default_storage.save(relative_path, image)
-        save_profile_picture(file_path, user.id)
-        return Response({'message': 'Image received'})
+        celery_task = save_profile_picture.delay(file_path, user.id)
+        
+        return JsonResponse({'message': celery_task.id})
 
 
 def user_response(data, request):
@@ -146,3 +149,8 @@ class UserProfileViewSet(viewsets.ViewSet):
         user_profile = request.user.userprofile
         serializer = UserprofileSerializer(instance=user_profile)
         return user_response(serializer.data, request)
+    
+def Ready(request, celery_id):
+    data = AsyncResult(celery_id) 
+    print(celery_id)
+    return JsonResponse({'ready': data.ready()})
