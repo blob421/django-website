@@ -3,7 +3,7 @@ from rest_framework.response import	Response
 from rest_framework	import	generics, viewsets
 from  .serializers import (TeamMessageSerializer, MessagesSerializer, TaskSerialier, 
                            UserprofileSerializer, TeamSerializer)
-from  dashboard.models import Team, Messages, Task, UserProfile, Document
+from  dashboard.models import Team, Messages, Task, UserProfile, Document, ChatMessages
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -15,7 +15,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
 from celery.result import AsyncResult
 from django.core.cache import cache  
-
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 class ImageUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -34,6 +34,9 @@ class ImageUploadView(APIView):
         celery_task = save_profile_picture.delay(file_path, user.id)
         
         return JsonResponse({'message': celery_task.id})
+
+
+
 
 
 def user_response(data, request):
@@ -202,3 +205,75 @@ class Ready(viewsets.ViewSet):
                 cache.set(cache_key, data.result, 60 * 60 * 24)
     
         return JsonResponse({'ready': data.ready()})
+    
+
+class SaveMessage(viewsets.ViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        message = request.data['message']
+      
+        user = request.user.userprofile
+        ChatMessages.objects.create(user=user, message=message, team=user.team)
+        return JsonResponse({'message':'received'})
+
+
+
+class ChatViewSet(viewsets.ViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+     
+        content_type = ContentType.objects.get_for_model(UserProfile)
+        team = request.user.userprofile.team
+        cache_key = f'chat_team_{team.id}'
+        data = cache.get(cache_key)
+    
+        if data:
+            new_msg_list=[]
+
+            last_seen = data[0]['id']
+            messages = ChatMessages.objects.filter(id__gt = last_seen).order_by('-created_at')
+            for message in messages:
+                text  = message.message
+                user = message.user.user.username
+                id = message.id
+                try:
+                    pic = Document.objects.filter(object_id = message.user.id, 
+                                                    content_type_id=content_type.id).last()   
+                    pic_path = pic.file.name
+                except:
+                    pic_path = 'userprofile/0/avatar.png'
+                
+                time = message.created_at
+               
+                timed_message = {'id':id, 'user':user, 'text':text,'time': time, 'pic_path':pic_path}
+                new_msg_list.append(timed_message)
+
+            new_msg_list.extend(data)
+
+            cache.set(cache_key, new_msg_list[:50], 60 * 60)
+            return JsonResponse(new_msg_list[:50], safe=False)
+            
+        else:
+            data = []
+            messages = ChatMessages.objects.filter(team= team).order_by('-created_at')[:50]
+            for message in messages:
+                text = message.message
+                user = message.user.user.username
+                id = message.id
+                try:
+                    pic = Document.objects.filter(object_id = message.user.id, 
+                                                content_type_id=content_type.id).last()   
+                    pic_path = pic.file.name
+                except:
+                    pic_path = 'userprofile/0/avatar.png'
+            
+                time = message.created_at
+                
+                timed_message = {'id':id,'user':user, 'text':text,'time': time, 'pic_path':pic_path}
+                data.append(timed_message)
+
+            cache.set(cache_key, data, 30)
+            
+            return JsonResponse(data, safe=False)

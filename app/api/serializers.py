@@ -1,6 +1,10 @@
 from rest_framework import serializers
-
+from datetime import datetime
 from dashboard.models import UserProfile, Team, Messages, Task, Document
+from django.contrib.contenttypes.models import ContentType
+
+
+
 
 class UserprofileSerializer(serializers.ModelSerializer):
     picture = serializers.SerializerMethodField()
@@ -10,7 +14,10 @@ class UserprofileSerializer(serializers.ModelSerializer):
         fields =    '__all__'
 
     def get_picture(self, obj):
-        document = Document.objects.filter(object_id=obj.id).last()
+        up_content_type = ContentType.objects.get_for_model(UserProfile).id
+
+        document = Document.objects.filter(object_id=obj.id, 
+                                           content_type_id=up_content_type).last()
         return document.file.name if document else None
     
 class TeamMessageSerializer(serializers.ModelSerializer):
@@ -18,8 +25,29 @@ class TeamMessageSerializer(serializers.ModelSerializer):
         model = Team
         fields = ['pinned_msg']
 
-class TeamSerializer(serializers.Serializer):
-    active_task = serializers.CharField(source='active_task.name')
+
+class TeamSerializer(serializers.ModelSerializer):
+    active_task = serializers.CharField(source='active_task.name',read_only=True, allow_null=True)
+    username = serializers.SerializerMethodField()
+    picture = serializers.SerializerMethodField()
+    last_login = serializers.SerializerMethodField()
+
+    def get_username(self, obj):
+        user = UserProfile.objects.get(id = obj.id)
+        return user.user.username
+    
+    def get_picture(self, obj):
+        up_content_type = ContentType.objects.get_for_model(UserProfile).id
+        document = Document.objects.filter(object_id=obj.id, 
+                                           content_type_id=up_content_type).last()
+        return document.file.name if document else 'userprofile/0/avatar.png'
+    
+    def get_last_login(self, obj):
+        user = UserProfile.objects.get(id = obj.id)
+        last_login = user.user.last_login 
+        return last_login.strftime('%Y-%m-%d %H:%M') if last_login else None
+    
+    
     class Meta:
         model = UserProfile
         fields = '__all__'

@@ -2,7 +2,10 @@
 
 
 {% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
 <style>
+    
     html{
         background-color: rgb(128, 107, 88) !important;
     }
@@ -36,6 +39,7 @@
 
 <script>
 
+dayjs.extend(window.dayjs_plugin_relativeTime);
 
 async function update_messages() {
 
@@ -56,7 +60,7 @@ async function update_messages() {
             const row = data[x]
                chatContainer.innerHTML += '<div class="chat_bubble_container">' + 
                     
-                    '<div class="chat_user">' + `<img src="/dashboard/pic_picture/${row.pic_id}" id="chat_tbmnail">` +
+                    '<div class="chat_user">' + `<img src="/media/${row.pic_path}" id="chat_tbmnail">` +
                         row.user + 
                     '</div>' + 
                     '<div class="chat_bubbles">' + 
@@ -66,7 +70,7 @@ async function update_messages() {
                         '<div class="bubble_timeleft">' + 
                         '</div>' + 
                         '<div class="chat_bubble_time">'+ 
-                        '('+row.time+')'+ 
+                        '('+dayjs(row.time).fromNow()+')'+ 
                         '</div>' + 
                     '</div>' +
                  '</div>';
