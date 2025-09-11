@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 from configurations import Configuration
 from configurations import values
-
+from datetime import timedelta
 class Dev(Configuration):
   
 
@@ -158,7 +158,9 @@ class Dev(Configuration):
             'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
         },
     ]
-
+    SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+}
     REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",

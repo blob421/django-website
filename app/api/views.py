@@ -10,10 +10,11 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
-from dashboard.utility import save_profile_picture
+from dashboard.utility import save_profile_picture, get_stats_data
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
 from celery.result import AsyncResult
+from django.core.cache import cache  
 
 
 class ImageUploadView(APIView):
@@ -40,10 +41,32 @@ def user_response(data, request):
         'user': {
             'id': request.user.id,
             'username': request.user.username,
+
         },
         'data': data
     })
 
+def stats_response(data, request, celery_id, stars, stats):
+        stats2= None
+        if stats:
+            stats2 = stats['stats']
+    
+        return Response({
+        'user': {
+            'id': request.user.id,
+            'username': request.user.username,
+            'joined': request.user.date_joined.strftime("%Y-%m-%d %H:%M"),
+            'team': request.user.userprofile.team.name,
+            'last_login': request.user.last_login.strftime("%Y-%m-%d %H:%M"),
+        },
+        'data': data,
+        'stars':stars,
+        'stats':stats,
+        'stats2':stats2,
+       
+        'celery':celery_id
+
+    })
 
 class checkAuth(viewsets.ViewSet):
     authentication_classes = [JWTAuthentication]
@@ -138,6 +161,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return user_response(serializer.data, request)
 
+
 class UserProfileViewSet(viewsets.ViewSet):
     permission_classes  = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
@@ -145,12 +169,36 @@ class UserProfileViewSet(viewsets.ViewSet):
     queryset = UserProfile.objects.all()
 
     def retrieve(self, request, *args, **kwargs):
-    
+        
         user_profile = request.user.userprofile
+        cache_key = f'individual_stats{user_profile.id}'
+        stars = []
+        all_user_stats = user_profile.stats.all()
+        for stat in all_user_stats:
+               if stat.star_note:
+                    stars.append({'star_note':stat.star_note, 'id':stat.id})
+
+        if cache.has_key(cache_key):
+            celery_result= None
+            stats = cache.get(cache_key)
+        else:
+         
+            celery_result = get_stats_data.delay(user_profile.id).id 
+            stats = None
+
         serializer = UserprofileSerializer(instance=user_profile)
-        return user_response(serializer.data, request)
+        return stats_response(serializer.data, request, celery_result,stars, stats)
     
-def Ready(request, celery_id):
-    data = AsyncResult(celery_id) 
-    print(celery_id)
-    return JsonResponse({'ready': data.ready()})
+
+class Ready(viewsets.ViewSet):
+    permission_classes  = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    def get(self, request, celery_id, photo):
+        data = AsyncResult(celery_id) 
+        if data.ready():
+            if photo== 'false':
+                user = request.user.userprofile
+                cache_key = f'individual_stats{user.id}'
+                cache.set(cache_key, data.result, 60 * 60 * 24)
+    
+        return JsonResponse({'ready': data.ready()})

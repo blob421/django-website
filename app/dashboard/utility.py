@@ -262,12 +262,14 @@ def get_stats_data(user_profile, page=None):
     task_mean_time = 0
     total_urgent_completed = 0
     tasks_time_total = 0
-
+    
     ########## FOR USERS ###########
     if not page:
-       
-        all_user_stats = user_profile.stats.filter().all()
+        
+        all_user_stats = user_profile.stats.all()
+    
         stats = get_user_data(all_user_stats)
+       
         tasks = Task.objects.filter(users__in=[user_profile])
 
         for task in tasks:
@@ -443,7 +445,7 @@ def get_stats_data(user_profile, page=None):
 
     ##### PROCEEDS FOR BOTH ######
     if page:
-     
+        stats = None
         origin = data
     else:
         origin = stats
@@ -458,7 +460,7 @@ def get_stats_data(user_profile, page=None):
          
     ranges = [1, 2, 3, 4]
 
-    return {'denied_ratio': denied_ratio, 
+    return {'denied_ratio': denied_ratio, 'stats': origin,
             'late_ratio':late_ratio, 'days_missed_ratio':days_missed_ratio, 
             'urgent_ratio':urgent_ratio, 'plot1':plot_div1, 
             'plot2':plot_div2, 'ranges':ranges, 'date_string':date_string,

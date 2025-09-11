@@ -114,7 +114,7 @@ class AccountView(LoginRequiredMixin, View):
                 ctx = cache.get(cache_key)
 
             else:
-                 celery_result = get_stats_data.delay(employee.id)    
+                 celery_result = get_stats_data(employee.id)    
                  return redirect(reverse('dashboard:loading', 
                             args=[celery_result.id, 'profile', employee.id, 'None']))
 
@@ -1337,6 +1337,7 @@ class PerformanceDetail(ProtectedView):
         ctx['star_form'] = StatsForm()
         ctx['form_update'] = StatsForm2()
         ctx['employee'] = employee
+        
      
         return render(request, self.template_name, ctx)
     
