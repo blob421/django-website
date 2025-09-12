@@ -3,14 +3,16 @@ from rest_framework.response import	Response
 from rest_framework	import	generics, viewsets
 from  .serializers import (TeamMessageSerializer, MessagesSerializer, TaskSerialier, 
                            UserprofileSerializer, TeamSerializer)
-from  dashboard.models import Team, Messages, Task, UserProfile, Document, ChatMessages
+from  dashboard.models import (Team, Messages, Task, UserProfile, Document, ChatMessages, 
+                               MessagesCopy)
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
-from dashboard.utility import save_profile_picture, get_stats_data
+from dashboard.utility import save_profile_picture, get_stats_data, copy_message_data
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
 from celery.result import AsyncResult
@@ -36,7 +38,25 @@ class ImageUploadView(APIView):
         return JsonResponse({'message': celery_task.id})
 
 
+def contacts_response(data, request):
+  
+    user = request.user.userprofile
+    combined_qs = UserProfile.objects.filter(
+               Q(team=user.team) | Q(user__in=user.recipients.all())
+               ).distinct()
+      
+    recipients = combined_qs.exclude(id=user.id)
 
+    return Response({
+        'user': {
+            'id': request.user.id,
+            'username': request.user.username,
+
+        },
+        'data': data,
+        'contacts': [{'id':recipient.id, 'username':recipient.user.username} for recipient in recipients]
+
+    })
 
 
 def user_response(data, request):
@@ -116,8 +136,42 @@ class MessageViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         message = self.get_object()  
         serializer = self.get_serializer(message)
-        return user_response(serializer.data, request)
+        return contacts_response(serializer.data, request)
     
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        if data.get('forwarded') == 'false':
+            recipient = UserProfile.objects.get(id=data.get('recipient'))
+            new_message = Messages(
+                content=data.get('content'),
+                title=data.get('title'),
+                user=request.user
+            )
+            new_message.save()
+            new_message.recipient.set([recipient])
+            copy_message_data(new_message, MessagesCopy)
+
+        else:
+            recipient_id = data.get('recipient')
+            recipient = UserProfile.objects.get(id=recipient_id)
+            message_id = data.get('message_id')
+            message = MessagesCopy.objects.get(id=message_id)
+            documents = Document.objects.filter(object_id = message.id)
+
+            forwarded_msg = Messages(user=message.user, title=message.title,
+                    content=message.content, task= message.task, forwarded=True, 
+                    forwarded_by=request.user.userprofile, timestamp=message.timestamp)
+            forwarded_msg.save()
+            
+
+            forwarded_msg.documents.set(documents.all())
+            forwarded_msg.recipient.set([recipient])
+            
+
+        return Response({'status': 'Message created'}, 200)
+ 
+
+
     def list(self , request):
         term = request.GET.get('term')
         queryset = self.get_queryset()
@@ -277,3 +331,4 @@ class ChatViewSet(viewsets.ViewSet):
             cache.set(cache_key, data, 30)
             
             return JsonResponse(data, safe=False)
+        

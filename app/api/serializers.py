@@ -54,9 +54,15 @@ class TeamSerializer(serializers.ModelSerializer):
 
 class MessagesSerializer(serializers.ModelSerializer):
     sender = serializers.CharField(source='user.username', read_only=True)
+    documents = serializers.SerializerMethodField()
     class Meta:
         model = Messages
         fields = '__all__'
+
+    def get_documents(self, obj):
+        docs = Document.objects.filter(object_id = obj.id)
+        return [{'path': doc.file.name, 'name':doc.file_name, 'id':doc.id} for doc in docs]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
