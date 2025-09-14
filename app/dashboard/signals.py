@@ -2,7 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
-from dashboard.models import UserProfile, WeekRange, Schedule, Users, LogginRecord
+from dashboard.models import UserProfile, WeekRange, Schedule, Users, LogginRecord, Messages
 from django.utils import timezone
 from django.contrib.auth.signals import user_logged_in
 user_model = get_user_model()

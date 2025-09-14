@@ -62,6 +62,14 @@ class Dev(Configuration):
             }
         }
     }
+    CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
 
@@ -72,6 +80,7 @@ class Dev(Configuration):
     # Application definition
 
     INSTALLED_APPS = [
+        'channels',
         'corsheaders',
         "rest_framework.authtoken",
         'rest_framework',
@@ -104,7 +113,7 @@ class Dev(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
-    CORS_ALLOW_ALL_ORIGINS = True
+    #CORS_ALLOW_ALL_ORIGINS = True
     ROOT_URLCONF = 'portal.urls'
 
     TEMPLATES = [
@@ -124,7 +133,7 @@ class Dev(Configuration):
     ]
 
     WSGI_APPLICATION = 'portal.wsgi.application'
-
+    ASGI_APPLICATION = 'portal.asgi.application'
     # Database
     # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -238,7 +247,14 @@ class Prod(Dev):
             }
         }
     }
-   
+    CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+    }
     
     SCHEDULE_DAY = values.PositiveIntegerValue()
 

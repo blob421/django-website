@@ -333,7 +333,9 @@
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
-    border: 2px solid black;
+  
+    
+
 }
 .files_outer_div_expanded{
  background-color: rgb(100, 100, 100);
@@ -390,7 +392,7 @@
     width: 90%;
    color: white;
     padding: 5%;
-    padding-left: 5%;
+    padding-left: 17%;
    
    font-size: small;
   display: inline-block;   

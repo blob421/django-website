@@ -62,3 +62,12 @@
 
  </div>
 {% endblock %}
+
+<script>
+  const inputs = document.querySelectorAll('.dayfield')
+  inputs.forEach(input=>{
+      Inputmask("99-99").mask(input);
+  })
+  
+
+</script>

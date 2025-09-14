@@ -11,7 +11,7 @@
         <div class ="title_task_view" id="task_title">{{task.name}}</div>
         <div class="flex_container_task_view" id="task_date">
           <div>Due date:</div>   
-          <div>{{task.due_date}}</div>
+          <div class="date_text">{{task.due_date}}</div>
          </div>
 
              
@@ -31,7 +31,7 @@
         class="subtask_btn_task_detail"> You
 
          <a>
-          <button class="subtask_add_btn" onclick="setVisible(this, 'subtask_modal_task_detail')">
+          <button class="subtask_add_btn" onclick="setVisibleFlex(this, 'subtask_modal_task_detail')">
                    +
           </button>
               
@@ -164,7 +164,7 @@
 
 
 <!---------------------->
-
+           
 
               <button onclick="document.getElementById
               ('confirm_delete_modal_subtask').style.display='flex';" 
@@ -315,7 +315,7 @@ onclick="document.getElementById('your_file_modal_task_detail').style.display = 
           
        <form method="post" class="form_add_subtask">
         {% csrf_token %}
-              <div class="subtask_title">New subtask</div>
+            
               <div class="name_subtask_form_flex">
                 {{subtask_form.name.label_tag}} 
                 {{subtask_form.name}}

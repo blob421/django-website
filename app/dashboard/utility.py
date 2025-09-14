@@ -19,10 +19,45 @@ from django.core.cache import cache
 ##### UTILITY ###############
 import os
 from django.core.files import File
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
-
+def notify(object, type):
+        channel_layer = get_channel_layer()
+        recipients = object.recipient.all()
+     
+        if type == 'message':
+            for user in recipients:
+                print(f"Sending to group user_{user.id}")
+            
+                async_to_sync(channel_layer.group_send)(
+                    f"user_{user.id}",
+                    {
+                        'type': type,
+                        'message': {
+                                'id': object.id,
+                                'title': object.title,
+                                'content': object.content,
+                                'sender': object.user.username
+                                }
+                    }
+                )
+        if type == 'late_notice':
+             team_lead_id = object.team.team_lead.id 
+             async_to_sync(channel_layer.group_send)(
+                    f"user_{team_lead_id}",
+                    {
+                        'type': type,
+                        'message': {
+                                'content': f"""{object.user.username} was supposed to be there
+                                  15 minutes ago but still hasn't logged in """
+                                
+                              
+                                }
+                    }
+                )
 
 def send_sms(phone_number, content):
     user_phone = f'+1{phone_number}'
@@ -141,6 +176,7 @@ def save_files(self, files, task):
    
 
 def copy_message_data(source, target_model):
+        
     copy = target_model(
         id=source.id,
         user=source.user,
@@ -152,7 +188,13 @@ def copy_message_data(source, target_model):
     )
     copy.save()
     copy.recipient.set(source.recipient.all())
-    copy.documents.set(source.documents.all())
+    for doc in source.documents.all():
+        Document.objects.create(
+        file=doc.file,
+        owner=doc.owner,
+        file_name=doc.file_name,
+        content_object=copy  
+    )
     return copy
 
 

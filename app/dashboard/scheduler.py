@@ -1,21 +1,24 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
 from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document, Team
-from .models import Report, ChatMessages, Task, DailyReport
+from .models import Report, ChatMessages, Task, DailyReport, Alerts
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
 from django.conf import settings
 from django.core.files.storage import default_storage
-from .utility import calculate_days_scheduled, check_milestones
+from .utility import calculate_days_scheduled, check_milestones, notify
 import logging
-
+from dateutil.relativedelta import relativedelta
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_JUSTIFY
 import os 
+import datetime
+from functools import partial
+
 
 from celery	import shared_task
 from django.contrib.auth import get_user_model
@@ -53,6 +56,56 @@ def start():
         
         register_events(scheduler)
         scheduler.start()
+
+
+def was_logged_in(employee):
+     now = timezone.now()
+     if employee.user.last_login < now - relativedelta(minutes=15):
+          notify(employee, 'late_notice')
+          
+          
+@shared_task
+def register_login_check(employee):
+    scheduler = BackgroundScheduler()
+    target_week_range = WeekRange.objects.order_by('-starting_day')[3]
+    schedule = Schedule.objects.get(user=employee, week_range=target_week_range)
+    hours = [
+    schedule.sunday.split('-')[0],     
+    schedule.monday.split('-')[0],
+    schedule.tuesday.split('-')[0],
+    schedule.wednesday.split('-')[0],
+    schedule.thursday.split('-')[0],
+    schedule.friday.split('-')[0],
+    schedule.saturday.split('-')[0],
+    schedule.sunday.split('-')[0],
+    schedule.monday.split('-')[0],
+    schedule.tuesday.split('-')[0],
+    schedule.wednesday.split('-')[0],
+    schedule.thursday.split('-')[0],
+    schedule.friday.split('-')[0],
+    schedule.saturday.split('-')[0],
+   
+    ]
+
+    starting_day = target_week_range.starting_day
+    starting_day_day = starting_day.weekday()
+
+    x = 0 
+    
+    for hour in hours[starting_day_day:]:
+        
+        run_date =datetime(starting_day.year, starting_day.month, starting_day.day, 
+                           int(hour), 0)
+        if x < 7:
+    
+            scheduler.add_job(partial(was_logged_in, employee),  'date', run_date)
+            starting_day += relativedelta(days=1)
+            x += 1
+        else:
+             return
+
+     
+
 
 @shared_task
 def gen_all_reports():

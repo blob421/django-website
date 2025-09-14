@@ -12,10 +12,11 @@ from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask,
                     DenyCompletedTask, ForwardMessages,ChatForm,AddTaskChart,LoginForm,
                     SubTaskForm,FileFieldForm, ProfilePictureForm, GoalForm, StatsForm2, 
                     StatsForm, TransferTaskForm, AddTask, UpdateTask, ReportForm, StatusForm,
-                    TeamSearchForm)
+                    TeamSearchForm, ScheduleForm)
 
 from .utility import (get_stats_data, save_files, create_stats, save_stats, 
-                      save_profile_picture, calculate_milestones, get_team_graph, send_sms)
+                      save_profile_picture, calculate_milestones, get_team_graph, send_sms,
+                      )
 
 from django.conf import settings
 from django.utils import timezone
@@ -26,7 +27,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils.http import http_date
 from django.http import HttpResponse, JsonResponse, FileResponse, HttpResponseForbidden
 from .utility import copy_message_data, days_of_the_week
-from .scheduler import generate_report
+from .scheduler import generate_report, register_login_check
 from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedView
 from django import forms
 from django.db.models import Q
@@ -165,7 +166,7 @@ class CustomLoginView(LoginView):
 
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
-    @method_decorator([cache_page(60 * 60 * 5), vary_on_cookie], name='dispatch')
+  
     def get(self, request):
         now = timezone.now()
         tasks = Task.objects.filter(users__in=[self.request.user.userprofile])
@@ -325,7 +326,7 @@ class MessageView(LoginRequiredMixin, View):
             if request.FILES: 
                 files = self.request.FILES.getlist('file_field')
                 valid = save_files(self, files, report)
-
+                
                 if not valid:
                     ctx = self.get_context_data()
                     return render(self.request, self.template, ctx)
@@ -544,7 +545,7 @@ class TasksList(LoginRequiredMixin, View):
 
     def get(self, request):   
       
-        tasks = Task.objects.filter(users=self.request.user.userprofile.id)
+        tasks = Task.objects.filter(users=self.request.user.userprofile.id, approved_by = None)
         user = request.user.userprofile
         active = None
         if user.active_task:
@@ -595,7 +596,7 @@ class TaskDetail(LoginRequiredMixin, View):
            
                 return render(request, self.template_name, ctx)
         
-        
+          
             files = self.request.FILES.getlist('file_field')
             save_files(self, files, task)
                
@@ -643,9 +644,9 @@ class TaskUpdate(ProtectedUpdate):
     model = Task
     template_name = 'dashboard/management/task_update.html'
     fields = ['name', 'description', 'urgent', 'due_date', 'users', 'completed']
-      
     
     def get_context_data(self, **kwargs):
+        self.object = self.get_object()  
         context = super().get_context_data(**kwargs)
     
         subtasks = SubTask.objects.filter(task = self.object)
@@ -654,7 +655,7 @@ class TaskUpdate(ProtectedUpdate):
 
         context['form'] = UpdateTask(user=self.request.user.userprofile, instance=self.object)
         context['subtasks'] = subtasks
-        context['transfer_form'] = TransferTaskForm(user=self.request.user.userprofile, instance=self.get_object())
+        context['transfer_form'] = TransferTaskForm(user=self.request.user.userprofile, instance=self.object)
         context['file_form'] = FileFieldForm()
         context['files'] = files
         context['user_files'] = user_files
@@ -667,18 +668,26 @@ class TaskUpdate(ProtectedUpdate):
         task = Task.objects.get(id=pk)
         form = UpdateTask(request.POST, user=request.user.userprofile, instance=task)
         file_form = FileFieldForm(request.POST, request.FILES)
-
+        print(request.POST)
         if request.POST.get('delete'):
             task.delete()
             return redirect(reverse('dashboard:team'))
-
-        if not file_form.is_valid() or not form.is_valid():
+        
+        if not file_form.is_valid() and request.FILES.get('file_field'):
+        
             ctx = self.get_context_data()
             ctx['file_form'] = file_form
             ctx['form'] = form
             
             return render(request, self.template_name,ctx)
         
+        if not form.is_valid() and self.request.POST.get('description'):
+           
+            ctx = self.get_context_data()
+            ctx['file_form'] = file_form
+            ctx['form'] = form
+            
+            return render(request, self.template_name,ctx)
       
 
         if self.request.POST.get('section'):
@@ -703,7 +712,8 @@ class TaskUpdate(ProtectedUpdate):
             task.due_date = due_date
             task.starting_date = starting_date
             task.save()
-            
+            return redirect(reverse_lazy('dashboard:task_manage_update', args=[task.id]))
+
       
 
         if request.FILES.get('file_field'):
@@ -1099,10 +1109,17 @@ class ScheduleUpdate(ProtectedUpdate):
     success_url = reverse_lazy('dashboard:schedule_manage')
     fields =['monday','tuesday','wednesday','thursday','friday','saturday','sunday', 
              'unscheduled', 'vacation']
+    
+    
+    def get_form(self, form_class=None):
+        return ScheduleForm(instance=self.get_object())
 
     def form_valid(self, form):
         form.instance.message = None
         form.instance.request_pending = False
+        form.instance.user= self.request.user
+        self.object = form.save()
+        register_login_check.delay(self.object.user)
         return super().form_valid(form)
 
 
@@ -1613,12 +1630,12 @@ def ChatUpdate(request):
             try:
                 pic = Document.objects.filter(object_id = message.user.id, 
                                                 content_type_id=content_type.id).last()   
-                pic_id = pic.id
+                pic_path = pic.file.name
             except:
-                pic_id = 1
+                 pic_path = 'userprofile/0/avatar.png'
             
             time = naturaltime(message.created_at)
-            timed_message = {'id':id, 'user':user, 'text':text,'time': time, 'pic_id':pic_id}
+            timed_message = {'id':id, 'user':user, 'text':text,'time': time, 'pic_path':pic_path}
             new_msg_list.append(timed_message)
 
         new_msg_list.extend(data)
@@ -1636,12 +1653,12 @@ def ChatUpdate(request):
             try:
                 pic = Document.objects.filter(object_id = message.user.id, 
                                             content_type_id=content_type.id).last()   
-                pic_id = pic.id
+                pic_path = pic.file.name
             except:
-                pic_id = 1
+                pic_path = 'userprofile/0/avatar.png'
         
             time = naturaltime(message.created_at)
-            timed_message = {'id':id,'user':user, 'text':text,'time': time, 'pic_id':pic_id}
+            timed_message = {'id':id,'user':user, 'text':text,'time': time, 'pic_path':pic_path}
             data.append(timed_message)
 
         cache.set(cache_key, data, 30)

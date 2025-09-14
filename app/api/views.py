@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework.response import	Response
 from rest_framework	import	generics, viewsets
 from  .serializers import (TeamMessageSerializer, MessagesSerializer, TaskSerialier, 
-                           UserprofileSerializer, TeamSerializer)
+                           UserprofileSerializer, TeamSerializer, SubTaskSerializer)
 from  dashboard.models import (Team, Messages, Task, UserProfile, Document, ChatMessages, 
-                               MessagesCopy)
+                               MessagesCopy, SubTask)
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -12,12 +12,43 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
-from dashboard.utility import save_profile_picture, get_stats_data, copy_message_data
+from dashboard.utility import (save_profile_picture, get_stats_data, copy_message_data, 
+                               save_files, notify)
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
 from celery.result import AsyncResult
 from django.core.cache import cache  
 from django.contrib.humanize.templatetags.humanize import naturaltime
+
+
+class ActivateTask(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, pk):
+        task = Task.objects.get(id=pk)
+        user = request.user.userprofile
+        if user.active_task and user.active_task == task:
+            user.active_task = None
+        else:
+            user.active_task = task
+        user.save()
+        return JsonResponse({'message':'activated'})
+
+class FileUploadView(APIView):
+    parser_classes = [MultiPartParser]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, pk):
+        
+    
+        file = request.FILES.get('file')
+        
+        
+        task = Task.objects.get(id=pk)
+        save_files(self, [file], task)
+       
+        return JsonResponse({'message': 'saved'})
+
 
 class ImageUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -60,10 +91,16 @@ def contacts_response(data, request):
 
 
 def user_response(data, request):
+    active_task = request.user.userprofile.active_task
+    if active_task:
+        active = active_task.id
+    else :
+        active = None
     return Response({
         'user': {
             'id': request.user.id,
             'username': request.user.username,
+            'active_task' :  active
 
         },
         'data': data
@@ -90,6 +127,18 @@ def stats_response(data, request, celery_id, stars, stats):
         'celery':celery_id
 
     })
+
+
+def SubtaskCompleted(request, pk):
+    subtask = SubTask.objects.get(id = pk)
+    if subtask.completed:
+        subtask.completed= False
+        
+    else:
+        subtask.completed = True
+    subtask.save()
+    return JsonResponse({'message': 'changed'})
+
 
 class checkAuth(viewsets.ViewSet):
     authentication_classes = [JWTAuthentication]
@@ -150,6 +199,7 @@ class MessageViewSet(viewsets.ModelViewSet):
             new_message.save()
             new_message.recipient.set([recipient])
             copy_message_data(new_message, MessagesCopy)
+            notify(new_message)
 
         else:
             recipient_id = data.get('recipient')
@@ -198,6 +248,29 @@ class MessageViewSet(viewsets.ModelViewSet):
         count  = Messages.objects.filter(recipient=request.user.userprofile, new=True).count()
         return JsonResponse({'count': count})"""
 
+class SubtaskViewSet(viewsets.ModelViewSet):
+    permission_classes  = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    serializer_class = SubTaskSerializer
+    queryset = SubTask.objects.all()
+
+    def create(self , request, pk):
+        data = request.data
+        task = Task.objects.get(id=pk)
+
+        SubTask.objects.create(task=task, description=data.get('description'), name= data.get('title'),
+                               user=request.user.userprofile)
+
+        return JsonResponse({'message': 'created'})
+    
+    def update(self, request, pk):
+        data = request.data
+        subtask = SubTask.objects.get(id=pk)
+        subtask.description = data.get('description')
+        subtask.name = data.get('name')
+        subtask.save()
+        return JsonResponse({'message':'updated'})
+
 
 class TaskViewSet(viewsets.ModelViewSet):
     permission_classes  = [IsAuthenticated]
@@ -213,7 +286,8 @@ class TaskViewSet(viewsets.ModelViewSet):
     
     def list(self , request):
         queryset = self.get_queryset()
-        queryset = queryset.filter(users__in=[request.user.userprofile]).order_by('due_date')
+        queryset = queryset.filter(
+            users__in=[request.user.userprofile], completed=False).order_by('due_date')
 
         serializer = self.get_serializer(queryset, many=True)
         return user_response(serializer.data, request)
@@ -331,4 +405,14 @@ class ChatViewSet(viewsets.ViewSet):
             cache.set(cache_key, data, 30)
             
             return JsonResponse(data, safe=False)
+        
+class RegisterPush(APIView):
+    def post(self, request):
+        token = request.data.get('expoPushToken')
+        if not userprofile.push_token:
+            userprofile = request.user.userprofile
+            userprofile.push_token = token
+            userprofile.save()
+            return JsonResponse({'message': 'token saved'})
+
         

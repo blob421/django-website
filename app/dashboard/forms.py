@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSection, Document
-from .models import Goal, Stats, Chart, ChartSection, Report
+from .models import Goal, Stats, Chart, ChartSection, Report, Schedule
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from django import forms
@@ -12,6 +12,38 @@ from	crispy_forms.helper	import FormHelper
 from .models import Users
 from django_registration.forms import RegistrationForm
 from django.contrib.auth.forms import PasswordChangeForm
+
+class ScheduleForm(ModelForm):
+     class Meta:
+          model = Schedule
+          fields =['monday','tuesday','wednesday','thursday','friday','saturday','sunday', 
+             'unscheduled', 'vacation']
+          
+     def __init__(self, *args, **kwargs):
+          super(ScheduleForm, self).__init__(*args, **kwargs)
+
+          self.fields['monday'] = forms.RegexField(regex=r'^\d{2}-\d{2}$',
+          error_messages={'invalid': 'Enter time in format XX-XX (e.g., 12-17)'}, 
+          widget=forms.TextInput(attrs={'class': 'dayfield'}))
+
+          self.fields['tuesday'] = forms.RegexField(regex=r'^\d{2}-\d{2}$',
+          error_messages={'invalid': 'Enter time in format XX-XX (e.g., 12-17)'}, 
+          widget=forms.TextInput(attrs={'class': 'dayfield'}))
+          self.fields['wednesday'] = forms.RegexField(regex=r'^\d{2}-\d{2}$',
+          error_messages={'invalid': 'Enter time in format XX-XX (e.g., 12-17)'}, 
+          widget=forms.TextInput(attrs={'class': 'dayfield'}))
+          self.fields['thursday'] = forms.RegexField(regex=r'^\d{2}-\d{2}$',
+          error_messages={'invalid': 'Enter time in format XX-XX (e.g., 12-17)'}, 
+          widget=forms.TextInput(attrs={'class': 'dayfield'}))
+          self.fields['friday'] = forms.RegexField(regex=r'^\d{2}-\d{2}$',
+          error_messages={'invalid': 'Enter time in format XX-XX (e.g., 12-17)'}, 
+          widget=forms.TextInput(attrs={'class': 'dayfield'}))
+          self.fields['saturday'] = forms.RegexField(regex=r'^\d{2}-\d{2}$',
+          error_messages={'invalid': 'Enter time in format XX-XX (e.g., 12-17)'}, 
+          widget=forms.TextInput(attrs={'class': 'dayfield'}))
+          self.fields['sunday'] = forms.RegexField(regex=r'^\d{2}-\d{2}$',
+          error_messages={'invalid': 'Enter time in format XX-XX (e.g., 12-17)'}, 
+          widget=forms.TextInput(attrs={'class': 'dayfield'}))
 
 
 class TeamSearchForm(ModelForm):

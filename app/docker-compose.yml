@@ -6,7 +6,7 @@ services:
         context: .
         
     working_dir: /app
-    command: gunicorn portal.wsgi:application --bind 0.0.0.0:8000 
+    command:  uvicorn portal.asgi:application --host 0.0.0.0 --port 8000
     volumes: ##Delete later 
       - .:/app
       
@@ -26,7 +26,7 @@ services:
         context: .
         
     working_dir: /app
-    command: gunicorn portal.wsgi:application --bind 0.0.0.0:9000
+    command: uvicorn portal.asgi:application --host 0.0.0.0 --port 9000
     volumes: ##Delete later 
       - .:/app
        
@@ -77,6 +77,11 @@ services:
     depends_on:
       - redis
       - db
+    volumes:
+      - .:/app
+      - static_data:/app/static
+      - media_data:/app/media
+      
     restart: always
     env_file:
       - .env

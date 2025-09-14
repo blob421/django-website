@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from datetime import datetime
-from dashboard.models import UserProfile, Team, Messages, Task, Document
+from dashboard.models import (UserProfile, Team, MessagesCopy, Messages, Task, Document, 
+                              SubTask)
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -58,9 +59,11 @@ class MessagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Messages
         fields = '__all__'
-
+  
     def get_documents(self, obj):
-        docs = Document.objects.filter(object_id = obj.id)
+        
+        
+        docs = obj.documents.all()
         return [{'path': doc.file.name, 'name':doc.file_name, 'id':doc.id} for doc in docs]
 
     def __init__(self, *args, **kwargs):
@@ -70,6 +73,8 @@ class MessagesSerializer(serializers.ModelSerializer):
             format="%Y-%m-%d %H:%M",read_only=True)
 
 class TaskSerialier(serializers.ModelSerializer):
+    documents = serializers.SerializerMethodField()
+    subtasks = serializers.SerializerMethodField()
     class Meta:
         model = Task
         fields = '__all__'
@@ -79,3 +84,19 @@ class TaskSerialier(serializers.ModelSerializer):
 
         self.fields['due_date'] = serializers.DateTimeField(
             format="%Y-%m-%d %H:%M",read_only=True)
+        
+    def get_subtasks(self, obj):
+        subtasks = SubTask.objects.filter(task=obj).order_by('id')
+        return [{'id': sub.id, 'name':sub.name, 'completed':sub.completed ,'description':sub.description,
+                 'user':sub.user.user.username} for sub in subtasks]
+
+    def get_documents(self, obj):
+
+        docs = obj.documents.all()
+        return [{'path': doc.file.name, 'name':doc.file_name, 'id':doc.id, 
+                 'owner':doc.owner.user.username, 'time':doc.upload_time} for doc in docs]
+    
+class SubTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubTask
+        fields = '__all__'

@@ -17,11 +17,11 @@
 
 .task_detail_outer_div{
     display:flex;
-    border: 15px solid rgb(93, 89, 89);
+    border: 5px solid rgb(93, 89, 89);
     position: absolute;
     height: 85vh;
-    width: 90vw;
-    right: 2%;
+    width: 88vw;
+    right: 2.5%;
     background-color: #5e5e5e;
     top: 50%;
     transform: translateY(-49.5%);
@@ -40,14 +40,18 @@
     transform: translate(-50%,-55%);
      
 }
-
+.left_cont{
+    padding-top: 3%; padding-bottom: 6%; display: flex; flex-direction: column;
+    gap:1.1rem; 
+}
 .task_blocks1{
-    background-color: rgba(150, 218, 252, 0.75);
-   display: flex;
+    background-color: rgba(150, 218, 252, 0.75); 
+   display: flex; flex-direction: column;
+
   border: 1.5px grey solid;
-  padding-left: 3%;
+  padding-left: 1.5%;
   margin-top: 1%;
-  height: 17vh;
+  
   margin-left: 2%;
   border-radius: 4px;
   /*box-shadow: inset 7px 0px 1px rgb(118, 163, 208);*/
@@ -56,39 +60,45 @@
 }
 .task_blocks3{ 
          background-color: rgba(247, 187, 132, 0.817);
-   display: flex;
+    
+   display: flex; flex-direction: column;
+
   border: 1.5px grey solid;
-  padding-left: 3%;
+  padding-left: 1.5%;
   margin-top: 1%;
-  height: 17vh;
+  
   margin-left: 2%;
   border-radius: 4px;
 }
 .denied_text{
     font-weight:bold;
     margin-top: 3%;
+    padding-left: 0.5%;
+    width:20vw;
+    padding-bottom: 3%;
     font-size: smaller;
 }
 .task_blocks2_denied{
     background-color: #ecc4c4;
     box-shadow: inset 2px 2px 0px white;
-    color: #5a5a5a;
-  display: flex;
-  border: 1.5px grey solid;
-  padding-left: 3%;
-  margin-top: 1%;
+   display: flex; flex-direction: column;
 
+  border: 1.5px grey solid;
+  padding-left: 1.5%;
+  margin-top: 1%;
+  
   margin-left: 2%;
   border-radius: 4px;
           
 }
 .task_blocks2_employee{
         background-color: rgba(239, 237, 237, 0.681);
-           display: flex;
+   display: flex; flex-direction: column;
+
   border: 1.5px grey solid;
-  padding-left: 3%;
+  padding-left: 1.5%;
   margin-top: 1%;
-  height: 17vh;
+  
   margin-left: 2%;
   border-radius: 4px;
 }
@@ -199,11 +209,12 @@
 
 .task_blocks_urgent{
     background-color: rgb(172, 203, 240);
-   display: flex;
+   display: flex; flex-direction: column;
+
   border: 1.5px grey solid;
-  padding-left: 3%;
+  padding-left: 1.5%;
   margin-top: 1%;
-  height: 17vh;
+  
   margin-left: 2%;
   border-radius: 4px;
 }
@@ -257,48 +268,50 @@
    
   
 }
-.task_people{
-    
-   padding-top: 2%;
-   margin-top: 1vh;
-    right: 0%;
-    align-items: center;
-   gap: 0.35vw;
-   font-size: small;
-   height: 100%;
- 
-    width: 11%;
-  
+.activate_wraper{
+    width: 11%; border: 2px solid;
+}
+.date_activate_div{
+  display: flex; padding:0%; width:99%; justify-content: flex-end;
+}
+.title_people_div{
+    display: flex;align-items: center;  padding-left: 1%; width:99.5%; 
+    padding-top: 4%;
+}
+
+
+.chart_icon{
+    width: 80%; 
+}
+.bot_activate_div{
+    width:100%; flex-direction: row; 
+    padding-bottom: 1%; padding-top: 0.5%; padding-left: 1%;
+    display: flex; 
+}
+.bot_div_denied{
+     width:100%; flex-direction: row; 
+    padding-bottom: 2%; padding-left: 1%;
+    display: flex; align-items: flex-end;
+}
+.task_due_date{
+  padding-bottom: 5%; width:20vw
+}
+.square_end_div{
+    display: flex; flex-direction: row; justify-content: flex-end; width: 6vw;
+    margin-right: 1.5%;
 }
 .active_task_div{
       background-color: #f1f1f1;
-    height: 15%;
-    height: 15%;
-    border-radius: 5%;
-    width: 60%;
-    margin-top: 14%;
-    margin-left: 17%;
     
-    border: 1px solid black;
+    height:3vh; border-radius: 5%; width: 10%; width:45%;margin-top: 1.9vh;
+    margin-right: 3%; border:1px solid black;
 
 
 }
 .activated_task_div{
-         background-color: #c6eaae;
-    height: 15%;
-    border-radius: 5%;
-    width: 60%;
-    margin-top: 14%;
-    margin-left: 17%;
-    
-    border: 1px solid black;
+    background-color: #c6eaae;    height:3vh; border-radius: 5%; width: 10%; width:55%;margin-top: 3%;
+    margin-right: 0.5%; border:1px solid black;
 
-}
-#chart_img{
-    width: 85%;
-    margin-left: 15%;
-    
-    
 }
 #info_modal_task_list_chart{
        width:18vw;
@@ -326,36 +339,32 @@
     background-color: #e9e9e9;
 }
 .people_img_div{
-    display: flex;
-    align-items: center;
-    gap: 0.3vw;
+     
 }
 .chart_icon_div{
 
-    height: 5vh;
- 
-    margin-top: 2vh;
-    width: 90%;
+width:10%; justify-content: flex-end; display: flex; flex-direction: row; margin-right: -0.75%;
+
   
 }
 .chart_icon_div_inv{
-       height: 5vh;
- 
-    margin-top: 2vh;
-    width: 90%;
-    visibility: hidden;
+
+    visibility: hidden; width:10%; justify-content: flex-end; display: flex; flex-direction: row;
 }
 .task_title{
-    width: 89%;
-    display: flex;
-     padding-top: 1%;
-    align-items: center;
+    width: 90%;
+   
+   
+   
+}
+.img_chart{
+     display: flex; flex-direction: row; width: 10%; 
 }
 .flex_container_task_view{
     border: 2px rgb(85, 85, 85) solid;
   
     padding-top: 10px;
-    font-size: 14px;
+    font-size: 15px;
     background-color: white;
      padding: 3%;
       padding-left: 5%;
@@ -365,6 +374,10 @@
     width: 80%;
     transform: translateX(-50%);
   
+}
+.date_text{
+    font-size: 15px;
+    margin-top: 1%;
 }
 .title_task_view{
     margin-top: 2%;
@@ -443,7 +456,7 @@
    width: 90%;
    left: 50%;
    border-radius: 4px;
-   background-color: aquamarine;
+   background-color: rgb(138, 231, 200);
    position: relative;
    transform: translateX(-50%);
    margin-top: 2%;
@@ -465,21 +478,21 @@
 .task_detail_left_panel{
      border: 2px rgb(62, 62, 62) solid;
      margin-right: -1px;
-    background-color: rgb(174, 196, 215);
+    background-color: rgb(148, 150, 152);
     padding: 2px;
-    width: 20%;
+    width: 21%;
    
 }
 
 .general_medium_container{
 
       border: 2px solid rgb(70, 70, 70);
-    width: 62%;
+    width: 56%;
     overflow: auto;
     padding-top: 2%;
     white-space: pre-wrap;
-    
-    background-color: rgb(241, 241, 241);
+    display:block;
+     background-color: rgb(238, 238, 238);
     font-family: 'Times New Roman', Times, serif;
    
    
@@ -497,14 +510,14 @@
     
 }
 .right_file_panel_task_detail{
-    width:20%;
+    width:22%;
     margin-left: -1px;
-      background-color: rgb(174, 196, 215);
+      background-color: rgb(148, 150, 152);
       border: 2px rgb(62, 62, 62) solid;
 }
 .task_detail_team_container{
-    border: 2px solid black;
-    height: 57%;
+    border: 1px solid rgb(70, 70, 70);
+    height: 53%;
     overflow-y: scroll;
     background-color: rgb(100, 100, 100);
     margin-top: 4%;
@@ -579,8 +592,15 @@
     justify-content: end;
 }
 .x_btn_update_subtask{
-   margin-right: 1%;
+    margin-top: 1%;
+   margin-right: 1.5%;
    cursor: pointer;
+    padding-bottom:0.35%;
+    padding-top: 0.35%;
+    background-color: rgb(202, 103, 103);
+    border:1px solid black;
+    color:white;
+    border-radius: 4px;
 
 }
 .x_btn_middle_subtask_expand{
@@ -669,15 +689,29 @@
 }
 .middle_sub_task_detail_update{
             border: 2px solid rgb(70, 70, 70);
-    width: 62%;
+    width: 56%;
     overflow: auto;
     padding-top: 1%;
-    background-color: rgba(66, 66, 66, 0.737);
+    
+    background-color: rgb(238, 238, 238);
+   
     display: none;
     flex-direction: column;
     font-family: 'Times New Roman', Times, serif;
 
 }
+.subtask_update_description textarea{
+    border: 1.5px solid rgb(81, 81, 81);
+    height: 100%;
+    margin-top: 2%;
+    padding-top: 2%;
+    padding-left: 1%;
+  /* border: 2px solid red;*/
+
+   
+     background-color: #dfdfdf
+}
+
 .expand_icon{
    position: absolute;
   
@@ -690,9 +724,10 @@
 
 .file_title{
     height: 6%;
- background-color: #d1d1d1;   
+ background-color: #dad9d9;   
   position: sticky;
     top: 0;
+    padding:1.5%;
    text-align: center;
     justify-content: center;
     padding-left: 4%;
@@ -708,7 +743,7 @@
 }
 .middle_sub_task_expand{
              border: 2px solid rgb(70, 70, 70);
-    width: 62%;
+    width: 56%;
     overflow: auto;
     padding-top: 1%;
      background-color: rgba(66, 66, 66, 0.737);
@@ -723,7 +758,7 @@
 }
 .middle_sub_task_detail{
          border: 2px solid rgb(70, 70, 70);
-    width: 62%;
+    width: 56%;
     overflow: auto;
     padding-top: 1%;
     padding-bottom: 6%;
@@ -742,7 +777,7 @@
  
    text-align: center;
     font-size: larger;
-    padding-bottom: 6%;
+    padding-bottom: 3%;
     padding-top: 2%;
     width: 96.5%;
 }
@@ -752,11 +787,21 @@
     padding-bottom: 4%;
     
 }
+.form_add_subtask textarea{
+  height: 95%;
+  margin-top: 3%;
+  background-color: rgb(238, 238,238);
+
+}
 .name_subtask_form_flex input{
-       background-color: #3b3b3b;
-        border: 2px solid rgb(172, 172, 172);
-        color: white;
+          background-color: rgb(238, 238,238);
+        border: 1.5px solid rgb(81, 81, 81);
+
         width: 24vw;
+}
+
+.name_subtask_form_flex textarea{
+     background-color: #e8e8e8;
 }
 .subtask_form_submit_div{
   
@@ -769,17 +814,36 @@
     padding: 1.5%;
     margin-right: 3.5%;
      cursor: pointer;
+     color:black;
     margin-top: 3%;
-    background-color: rgb(88, 112, 186);
+    background-color: rgb(232, 231, 230);
+    border-radius: 3px;
+    border:1px solid black;
+   
+}
+.add_subtask_modal_sub_btn:hover{
+  
+    background-color: rgb(209, 212, 218);
+   
 }
 .add_subtask_modal_sub_btn_update{
 width: 20%;
     padding: 1%;
+    margin-top: 6%;
     margin-right: 3.5%;
-    margin-top: 2.3%;
+  
      cursor: pointer;
-    background-color: rgb(88, 112, 186);
+     color:black;
+    background-color: rgb(225, 225, 225);
     border: 1px solid grey;
+    border:1px solid black;
+    border-radius: 3px;
+
+}
+.add_subtask_modal_sub_btn_update:hover{
+
+    background-color: rgb(215, 213, 213);
+  
 
 }
 .add_subtask_modal_sub_btn_del{
@@ -787,11 +851,12 @@ width: 20%;
        width: 20%;
     padding: 1.2%;
     margin-right: 3.5%;
-    margin-top: 2.1%;
+   margin-top: 5.9%;
     border: 1px solid grey;
+     border-radius: 3px;
 }
 .add_subtask_modal_sub_btn_del:hover{
-  background-color: rgb(177, 66, 66);
+  background-color: rgb(61, 61, 61);
 }
 .files_div_messages_detail{
     border-top: 2px solid  rgb(85, 85, 85);
@@ -803,7 +868,7 @@ width: 20%;
    
 }
 .people_img{
-    position: relative;
+    position: relative; margin-top: 1%;
     height: 2.5vh;
   
 }
@@ -855,30 +920,13 @@ width: 20%;
     background-color: rgb(178, 178, 178);
 
 }
-.subtask_update_description textarea{
-    border: 2px solid rgb(172, 172, 172);
-    height: 100%;
-    margin-top: 2%;
-    padding-top: 2%;
-    padding-left: 1%;
-  /* border: 2px solid red;*/
 
-    color: white;
-    background-color: #3b3b3b;
-}
 
-.subtask_update_description{
-  /*  border: 2px solid green;*/
-    height: 59vh;
-    position: relative;
-}
-.form_add_subtask textarea{
-  height: 85%;
-  margin-top: 2%;
-
-}
 .form_add_subtask{
     margin-left: 5.5%;
+      margin-top: 9.5%;
+      height: 100%;
+
     
 }
 #hidden_subtask_update_form{
@@ -886,18 +934,21 @@ width: 20%;
     overflow:hidden;
 }
 .form_update_subtask textarea{
-  height: 50vh;
+  height: 40vh;
   margin-top: 2%;
-
+  
  
 
 }
 .form_update_subtask{
-     margin-left: 3.5%;
-      color: white;
-   
+     margin-left: 8.5%;
+     margin-top: 5% ;
+
+    margin-right: 6%;
       position: relative;
-      height: 94%;
+      height: 50vh;
+    
+
 }
 .task_completed{
   
@@ -966,14 +1017,17 @@ width: 20%;
 }
 .x_btn_add_subtask{
         position: absolute;
-    right: 2%;
-    top: 4%;
+    right: 1.5%;
+    top: 3%;
+    padding:2.4%;
     border: 0.5px solid black;
-    font-size: small;
-    height: 6%;
-    width: 5.5%;
-    border-radius: 7px;
-      background-color: rgb(88, 112, 186);
+    font-size: x-small;
+    height: 5%;
+   
+    width: 5.2%;
+   
+    border-radius: 4px;
+     background-color: rgb(202, 103, 103);
       color: white;
     display: flex;
     align-items: center;
@@ -982,7 +1036,7 @@ width: 20%;
 }
 .x_btn_add_subtask:hover{
 
-     background-color: rgb(221, 97, 97);;
+     background-color: rgb(221, 97, 97);
   
 }
 .x_btn_add_file{
@@ -1037,6 +1091,7 @@ position: absolute;
     width: 44%;
     padding: 2%;
     cursor: pointer;
+    
 }
 .your_files_div{
     display: flex;
@@ -1155,7 +1210,7 @@ position: absolute;
 .indicator_subtask_yellow{
     width: 10%;
     border-radius: 1px;
-    background-color: rgb(0, 174, 255);
+    background-color: rgb(242, 181, 38);
     
 }
 .indicator_subtask_green{
@@ -1249,15 +1304,17 @@ position: absolute;
 #subtask_modal_task_detail{
 
               width: 40%;
-              height: 73%;
+              height: 67%;
               position: absolute;
               color: white;
               display: none;
               left: 50%;
               top: 50%;
-              border-radius: 15px;
+              border-radius: 4px;
               transform: translate(-45%,-50%);
-              background-color: rgba(87, 87, 87, 0.967);
+              background-color: rgba(148, 148, 148, 0.967);
+              border:2px solid rgb(70, 70, 70);
+            
         
 }
 @media (max-width:900px){

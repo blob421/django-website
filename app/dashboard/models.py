@@ -52,7 +52,8 @@ class UserProfile(models.Model):
     picture = GenericRelation('Document')
     active_task = models.ForeignKey('Task', on_delete=models.CASCADE, null=True, blank=True)
     status = models.TextField(max_length=80, null=True, blank=True, default='No status yet')
-
+    
+    push_token = models.CharField(null=True, blank=True)
 
    
     class Meta:
@@ -395,6 +396,16 @@ class ResourceCategory(models.Model):
     name = models.CharField()
     def __str__(self):
         return self.name
+    
+class Alerts(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.CharField()
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True, related_name='alert_user')
+    recipient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='alert_rec')
+    seen = models.BooleanField(default=False)
+
+
 
 class Resource(models.Model):
     what = models.CharField()
