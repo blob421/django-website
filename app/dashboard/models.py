@@ -22,6 +22,7 @@ class Users(AbstractUser):
     phone = models.CharField(max_length=12, blank=True)
     assigned_on = models.DateField(auto_now_add=True)
     notes = models.TextField(blank=True)
+    username = models.CharField(max_length=21, unique=True)
 
     def __str__(self):
         return self.username   

@@ -1110,17 +1110,36 @@ class ScheduleUpdate(ProtectedUpdate):
     fields =['monday','tuesday','wednesday','thursday','friday','saturday','sunday', 
              'unscheduled', 'vacation']
     
+    def get(self, request, pk):
+        form = ScheduleForm(instance=self.get_object())
+        return render(request, self.template_name, {'form':form})
     
-    def get_form(self, form_class=None):
-        return ScheduleForm(instance=self.get_object())
+    def post(self, request,pk, *args, **kwargs):
+        schedule = self.get_object()
+        form = ScheduleForm(request.POST, instance=self.get_object())
+        if not form.is_valid():
+            
+            return render(request, self.template_name, {'form':form})
+        
 
-    def form_valid(self, form):
-        form.instance.message = None
-        form.instance.request_pending = False
-        form.instance.user= self.request.user
-        self.object = form.save()
-        register_login_check.delay(self.object.user)
-        return super().form_valid(form)
+        schedule.monday = request.POST.get('monday', '')
+        schedule.tuesday = request.POST.get('tuesday', '')
+        schedule.wednesday = request.POST.get('wednesday', '')
+        schedule.thursday = request.POST.get('thursday', '')
+        schedule.friday = request.POST.get('friday', '')
+        schedule.saturday = request.POST.get('saturday', '')
+        schedule.sunday = request.POST.get('sunday', '')
+        schedule.unscheduled = 'unscheduled' in request.POST
+        schedule.vacation = 'vacation' in request.POST
+        schedule.message = None
+        schedule.request_pending = False
+        schedule.user = request.user.userprofile
+       
+        schedule.save()
+        register_login_check.delay(schedule.user.id, schedule.week_range.id)
+
+        return redirect(self.success_url)
+    
 
 
 class AvailabilityForm(ProtectedUpdate):

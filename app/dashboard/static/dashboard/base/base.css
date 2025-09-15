@@ -137,6 +137,7 @@ html , body{
     height:60vh;
     overflow-y: hidden;
     z-index: 1000;
+    pointer-events: none;
     position: fixed;
     background-color: #34333300;
     right:1%;
@@ -145,11 +146,11 @@ html , body{
 
 .notifBubble{
   background-color: rgba(243, 243, 243, 0.888); border-radius: 5px; border:2px solid black;
-padding: 3%; margin-bottom: 1%; position: relative;
+padding: 3%; margin-bottom: 1%; position: relative; pointer-events: auto;
 }
 .x_btn_notif{
   justify-content: center; display: flex; height:4%; width:6%;
-  font-size: medium; align-items: center; border: 0px;
+  font-size: medium; align-items: center; border: 0px; pointer-events: auto;
   
   position:absolute; right:3%; top:12%;
 

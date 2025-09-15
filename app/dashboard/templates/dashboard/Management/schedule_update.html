@@ -3,7 +3,7 @@
 
 
     <div class="schedule_update_outer_div">
-
+<div class="update_form"> 
     <form method="POST">
       {% csrf_token %}
       <div class="monday">  
@@ -45,8 +45,15 @@
       <input type="submit" class="schedule_update_button" value="Confirm">
 
     </form>
+</div>
+<div class="sched_update_error">
+             {% if form.errors %}
+            {{form.errors}}
+            {% endif %}
+    </div>
 
     </div>
+    
   {% if schedule.message %}
     <div class="schedule_update_message">
 
@@ -66,7 +73,7 @@
 <script>
   const inputs = document.querySelectorAll('.dayfield')
   inputs.forEach(input=>{
-      Inputmask("99-99").mask(input);
+      Inputmask("99:99-99:99").mask(input);
   })
   
 

@@ -17,8 +17,9 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_JUSTIFY
 import os 
 import datetime
-from functools import partial
 
+import re
+from .scheduler_process import scheduler
 
 from celery	import shared_task
 from django.contrib.auth import get_user_model
@@ -31,9 +32,9 @@ def start():
     DjangoJob.objects.all().delete()
     CheckWeekRanges.delay()
 
-    if not BackgroundScheduler().get_jobs():
-        scheduler = BackgroundScheduler()
-        scheduler.add_jobstore(DjangoJobStore(), "default")
+    if not scheduler.get_jobs():
+     
+
 
         scheduler.add_job(CheckWeekRanges.delay, 'interval', hours=12, name='my_job', 
                            replace_existing=True)
@@ -55,19 +56,23 @@ def start():
                           replace_existing=True)
         
         register_events(scheduler)
-        scheduler.start()
+     
 
 
 def was_logged_in(employee):
      now = timezone.now()
+
      if employee.user.last_login < now - relativedelta(minutes=15):
           notify(employee, 'late_notice')
           
           
 @shared_task
-def register_login_check(employee):
-    scheduler = BackgroundScheduler()
-    target_week_range = WeekRange.objects.order_by('-starting_day')[3]
+def register_login_check(employee_id, week_range_id):
+  
+
+    employee = UserProfile.objects.get(id=employee_id)
+  
+    target_week_range = WeekRange.objects.get(id=week_range_id)
     schedule = Schedule.objects.get(user=employee, week_range=target_week_range)
     hours = [
     schedule.sunday.split('-')[0],     
@@ -93,18 +98,48 @@ def register_login_check(employee):
     x = 0 
     
     for hour in hours[starting_day_day:]:
+        parsed = parse_start_time(hour)
+        x += 1
+        if x < 8:
+            if parsed:
+                h, minutes = parsed
+         
+                run_date =datetime.datetime(starting_day.year, starting_day.month, starting_day.day, 
+                                int(h), int(minutes + 30))
+                
+            
+                scheduler.add_job(func=was_logged_in,
+                                    trigger='date',
+                                    run_date=run_date,
+                                    args=(employee,),
+                                    id=f"login_check_{employee.id}_{run_date.isoformat()}",
+                                    replace_existing=True,
+                                    jobstore='default')
+                
+                starting_day += relativedelta(days=1)
+            
+            else:
+                print(f"Skipping invalid time format: {hour}")
+
+   
+                
         
-        run_date =datetime(starting_day.year, starting_day.month, starting_day.day, 
-                           int(hour), 0)
-        if x < 7:
-    
-            scheduler.add_job(partial(was_logged_in, employee),  'date', run_date)
-            starting_day += relativedelta(days=1)
-            x += 1
-        else:
-             return
 
      
+
+
+def parse_start_time(time_range):
+    if not time_range or not isinstance(time_range, str):
+        return None
+    match = re.match(r'^(\d{2}):(\d{2})$', time_range)
+    if match:
+        h = time_range.split(':')[0]
+        m = time_range.split(':')[1]
+        try:
+            return int(h), int(m)
+        except ValueError:
+            return None
+    return None
 
 
 @shared_task
@@ -298,7 +333,7 @@ def CheckWeekRanges():
     else:
          if not WeekRange.objects.all().exists():
             User = get_user_model()
-
+            users = UserProfile.objects.all()
             next_week_day = settings.SCHEDULE_DAY
             current_Day = timezone.now().weekday()
             diff = (next_week_day - current_Day) % 7
@@ -308,6 +343,9 @@ def CheckWeekRanges():
                 week_range = WeekRange.objects.create(
                     starting_day = now + relativedelta(days= d - 7 + diff), 
                     end_day = now + relativedelta(days=d + diff))
+                
+                for user in users:
+                        Schedule.objects.create(user=user, week_range=week_range)
                 
             if not User.objects.filter(username='gabri').exists():
                 User.objects.create_superuser(

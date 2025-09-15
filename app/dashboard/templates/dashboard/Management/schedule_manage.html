@@ -28,90 +28,82 @@
     <div class="schedule_left_panel">
 
             <div class="schedule_users_title_manage">
-             Users
+             Weeks
 
             </div>
-           {% for user in users %}
+                  
+                   
+             {% for week in schedules_ctx.week_objects %}
+        
            <div class="schedule_user_div">
-            
-                <p class="schedule_user_text">{{user.user.username}} </p>
+             {{week.starting_day.day}}-{{week.end_day.day}}
+              
               
            </div>
            {% endfor %}
+           
 
     </div>
-
+   
 
     <div class="schedule_right_area_management">
             
-           <div class="schedule_top_row_management">
-                     
-                     <div class="schedule_availability_title">
-                         Availability
-
-
-                     </div>
-                     {% for week in schedules_ctx.week_objects %}
-                     <div class="schedule_week_title_top_management">
-                        {{week.starting_day.day}}-{{week.end_day.day}}
+           <div class="schedule_week_title_top_management">
+                  
+                       {% for user in users %}
+                     <div class="schedule_top_div">
+                        {{ user.user.username}}
                      </div>
 
                      {% endfor %}
            </div>
          
-
+     <div class="right_panel">
+        
            {% for user in users %}
           
-           <div class="schedules_user_rows">
-                    
-                        <a href="{% url 'dashboard:availability' user.id %}" 
-                        class="schedule_user_availability"> 
-                        {% if user.availability %}
-                        <div>Week : {{user.availability}}  </div>
-                        Weekends : {{user.weekends}}
-                        {% endif %}
-                       </a>
+           <div class="user_col">
+                  
                
                      {% for schedule in schedules_ctx.schedules %}
                      {% if schedule.user == user %}
                      {% if schedule.monday or schedule.tuesday or schedule.wednesday or schedule.thursday or schedule.friday or schedule.friday or schedule.saturday or schedule.sunday %}
-                     <a href="{% url 'dashboard:schedule_update' schedule.id %}" 
-                     class="schedule_container_management {% if schedule.message %} 
-                     schedule_container_management_ammend{% endif %}">
+                     <a href="{% url 'dashboard:schedule_update' schedule.id %}">
                         <div class="day_separator"> 
-                               <div class="schedule_day_left">
-                                                             
-                                      <div class="justified_day">Mon: {{schedule.monday|default:"--"}}  </div>
-                                       <div class="justified_day">
-
-                                       Wed: {{schedule.wednesday|default:"--"}}
-                                  </div>
-                                   
-                                 <div class="justified_day">
-                                       Fri: {{schedule.friday|default:"--"}}  
-                                 </div>
-                                      <div class="justified_day">
-                                     Sun: {{schedule.sunday|default:"--"}}  
-                                 </div>
-                                   
-                              </div>
-                              <div class="schedule_day_right">
-                                   <div class="justified_day">
+                            
+                                        <div>                  
+                                    Mon: {{schedule.monday|default:"--"}} 
+                                      </div>    
+                                      <div>    
                                     Tue: {{schedule.tuesday|default:"--"}}
-                                     
-                                  </div>
-                                   <div class="justified_day">
-                                     Thu: {{schedule.thursday|default:"--"}}
-                                   </div>
-                                 
-                                    <div class="justified_day">
-                                  
+                                    </div>    
+                                    <div>    
+                                       Wed: {{schedule.wednesday|default:"--"}}
+                                    </div>    
+                                    <div>    
+                                    Thu: {{schedule.thursday|default:"--"}}
+                                     </div>    
+                                     <div>    
+                                       Fri: {{schedule.friday|default:"--"}}  
+                                   </div>    
+                                   <div>    
                                       Sat: {{schedule.saturday|default:"--"}}
+                                      </div>   
+                                      <div>     
+                                     Sun: {{schedule.sunday|default:"--"}}  
+                                      </div>   
                                      
-                                    </div>
+                              
+                                    
+                                
+                                 
+                             
+                                  
+                              
+                                     
+                                  
                                    
-                              </div>
-
+                             
                             
                          </div>
                     </a>   
@@ -137,9 +129,9 @@
                       {% else %}
 
                        <a href="{% url 'dashboard:schedule_update' schedule.id %}" 
-                                              class="schedule_add_schedule_cont">
+                                             >
                           <div class="schedule_add_text"> 
-                          Add + 
+                           <p class="add_text">Add + </p>
                          </div>
                        </a>   
                  
@@ -153,7 +145,7 @@
            
        
        {% endfor %}
-   
+       </div>
     </div>
 
   
