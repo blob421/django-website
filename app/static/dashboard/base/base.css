@@ -134,15 +134,42 @@ html , body{
 
 .notif_div{
     width:20vw;
-    height:70vh;
+    height:60vh;
+    overflow-y: hidden;
     z-index: 1000;
+    pointer-events: none;
     position: fixed;
-    background-color: #343333;
-    right:2%;
+    background-color: #34333300;
+    right:1%;
     top:2%;
 }
 
+.notifBubble{
+  background-color: rgba(243, 243, 243, 0.888); border-radius: 5px; border:2px solid black;
+padding: 3%; margin-bottom: 1%; position: relative; pointer-events: auto;
+}
+.x_btn_notif{
+  justify-content: center; display: flex; height:4%; width:6%;
+  font-size: medium; align-items: center; border: 0px; pointer-events: auto;
+  z-index: 100000;
+  position:absolute; right:3%; top:12%;
 
+}
+.notif_header{
+  display: flex; flex-direction: row; height:7vh
+}
+.notif_content{
+  height:8vh; display: -webkit-box; background-color: #e8e8e8; margin-top: 3%;
+  -webkit-line-clamp: 2;    
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.right_header_notif{
+  padding-left: 3%;
+}
+.from_text_notif{
+  font-size: smaller; font-weight: bold;
+}
  @media (max-width:700px){
     nav{
     

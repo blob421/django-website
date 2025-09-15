@@ -199,7 +199,7 @@ class MessageViewSet(viewsets.ModelViewSet):
             new_message.save()
             new_message.recipient.set([recipient])
             copy_message_data(new_message, MessagesCopy)
-            notify(new_message)
+            notify.delay(new_message.id, 'message')
 
         else:
             recipient_id = data.get('recipient')

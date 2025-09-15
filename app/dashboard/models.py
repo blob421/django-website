@@ -436,6 +436,7 @@ class Goal(models.Model):
     type = models.ForeignKey('GoalType', on_delete=models.CASCADE)
     value_type = models.ForeignKey('ValueType', on_delete=models.CASCADE)
     value = models.PositiveIntegerField(null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
     def __str__(self):
         return self.name
 

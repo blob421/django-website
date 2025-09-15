@@ -1,4 +1,5 @@
-from .models import UserProfile, Task, Team, Document, Stats, Milestone, Goal, ChatMessages
+from .models import (UserProfile, Task, Team, Document, Stats, Milestone, Goal, ChatMessages,
+                     Messages)
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
 import plotly.graph_objs as go
@@ -24,40 +25,98 @@ from channels.layers import get_channel_layer
 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
+@shared_task
 def notify(object, type):
         channel_layer = get_channel_layer()
-        recipients = object.recipient.all()
-     
+        
+      
         if type == 'message':
+            message = Messages.objects.get(id=object)
+            recipients = message.recipient.all()
             for user in recipients:
-                print(f"Sending to group user_{user.id}")
-            
+           
                 async_to_sync(channel_layer.group_send)(
                     f"user_{user.id}",
                     {
                         'type': type,
                         'message': {
-                                'id': object.id,
-                                'title': object.title,
-                                'content': object.content,
-                                'sender': object.user.username
+                                'id': message.id,
+                                'title': message.title,
+                                'content': message.content,
+                                'sender': message.user.username
                                 }
                     }
                 )
         if type == 'late_notice':
-             team_lead_id = object.team.team_lead.id 
+             employee = UserProfile.objects.get(id=object)
+             team_lead_id = employee.team.team_lead.id 
              async_to_sync(channel_layer.group_send)(
                     f"user_{team_lead_id}",
                     {
                         'type': type,
                         'message': {
-                                'content': f"""{object.user.username} was supposed to be there
-                                  15 minutes ago but still hasn't logged in """
+                                'content': f"""{employee.user.username} was supposed to be there
+                                  30 minutes ago but still hasn't logged in """,
+                                'id': f'late_notice{team_lead_id}{employee.id}'
+
                                 
                               
                                 }
                     }
                 )
+        if type == 'star':
+             employee = UserProfile.objects.get(id=object)
+             async_to_sync(channel_layer.group_send)(
+                    f"user_{employee.id}",
+                    {
+                        'type': type,
+                        'message': {
+                                'id': employee.id,
+                                'star_id': f'star{employee.id}'
+    
+                                }
+                    }
+                )
+             
+        if type == 'milestone':
+             goal = Goal.objects.filter(id=object)
+             team = goal.team
+             users = UserProfile.objects.filter(team= team)
+             for user in users:
+                async_to_sync(channel_layer.group_send)(
+                        f"user_{user.id}",
+                        {
+                            'type': type,
+                            'message': {
+                                    'id': f'milestone{team.id}',
+                                    'team':team.name,
+                                    'name':goal.name,
+                                    'type':goal.type,
+                                    'value':goal.value
+
+                                    }
+                        }
+                    )
+        if type == 'task_submit':
+             task = Task.objects.get(id=object)
+             team_lead_id = task.submitted_by.team.team_lead.id
+             async_to_sync(channel_layer.group_send)(
+                    f"user_{team_lead_id}",
+                    {
+                        'type': type,
+                        'message': {
+                                'name': task.name,
+                                'id': f'task_submit{object.id}',
+                                'task_id': task.id
+
+                                }
+                    }
+                )
+
+       
+             
+
+
 
 def send_sms(phone_number, content):
     user_phone = f'+1{phone_number}'
@@ -638,6 +697,7 @@ def check_milestones():
                         goal.save()
                         Milestone.objects.create(date=now.date(), 
                                 name=f'{goal.type.name} ({goal.value})')
+                        notify.delay(goal.id, 'milestone')
                 else:
                      continue
             

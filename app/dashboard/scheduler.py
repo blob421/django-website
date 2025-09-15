@@ -17,13 +17,31 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_JUSTIFY
 import os 
 import datetime
-
+from functools import partial
 import re
 from .scheduler_process import scheduler
 
 from celery	import shared_task
 from django.contrib.auth import get_user_model
 logger = logging.getLogger(__name__)
+
+def trigger_milestone_check():
+    check_milestones.delay()
+
+def trigger_CheckWeekRanges():
+    CheckWeekRanges.delay()
+
+def trigger_clear_pictures():
+    clear_pictures.delay()
+
+def trigger_clear_files():
+    clear_files.delay()
+
+def trigger_gen_all_reports():
+    gen_all_reports.delay()
+
+def trigger_clear_chat_msg():
+    clear_chat_msg.delay()
 
 def start():
 
@@ -36,23 +54,23 @@ def start():
      
 
 
-        scheduler.add_job(CheckWeekRanges.delay, 'interval', hours=12, name='my_job', 
+        scheduler.add_job(trigger_CheckWeekRanges, 'interval', hours=12, name='my_job', 
                            replace_existing=True)
         
-        scheduler.add_job(clear_pictures.delay, 'interval', days=7, name='clear_pics',
+        scheduler.add_job(trigger_clear_pictures, 'interval', days=7, name='clear_pics',
                           replace_existing=True)
         
-        scheduler.add_job(clear_files.delay, 'interval', days=7, name='clear_files',
+        scheduler.add_job(trigger_clear_files, 'interval', days=7, name='clear_files',
                           replace_existing=True)
         
         first_run = timezone.now().replace(hour=23, minute=55, second=0, microsecond=0) + relativedelta(days=1)
-        scheduler.add_job(gen_all_reports.delay, 'interval', days=1, name='gen_report',
+        scheduler.add_job(trigger_gen_all_reports, 'interval', days=1, name='gen_report',
                           replace_existing=True, next_run_time=first_run)
         
-        scheduler.add_job(clear_chat_msg.delay, 'interval', days=7, name='clear_chat_msgs',
+        scheduler.add_job(trigger_clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
                           replace_existing=True)
         
-        scheduler.add_job(check_milestones.delay, 'interval', hours =1, name='milestones',
+        scheduler.add_job(trigger_milestone_check, 'interval', hours =1, name='milestones',
                           replace_existing=True)
         
         register_events(scheduler)
@@ -63,7 +81,7 @@ def was_logged_in(employee):
      now = timezone.now()
 
      if employee.user.last_login < now - relativedelta(minutes=15):
-          notify(employee, 'late_notice')
+          notify(employee.id, 'late_notice')
           
           
 @shared_task

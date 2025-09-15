@@ -101,8 +101,29 @@
 <!--------------------------------NOTIF MODAL---------------------------------------->
 
 <div class="notif_div" id=notif>
-  
-  
+    <div id="notifBubble${data.message.id}" class="notifBubble">
+         
+      <button class="x_btn_notif" onclick="document.getElementById(
+        'notifBubble${data.message.id}').style.display='none'">X 
+      </button> 
+      <a href="/dashboard/tasks/completed/${data.message.task_id}/">
+
+     
+      <div class="notif_header_task">
+        <img src="{% static 'task_icon.png' %}" style="width:12%; padding-right: 2.3vw;">
+         Task completed
+      </div>
+         
+      <div class="notif_content_mile">
+          <div style="padding-bottom: 2.5%; padding-top: 2.5%; text-align: center;">
+           
+          </div>
+           ${data.message.name}
+      </div>
+      
+      
+    </div>
+       </a>
 </div>
 
 <!------------------------------------------------------------------------------------>
@@ -121,12 +142,16 @@ socket.onmessage = (event) => {
 
     if (data.type == 'message'){
 
+
       notif.innerHTML += 
-    `<div id="notifBubble${data.message.id}" class="notifBubble">
+    `
+    <div id="notifBubble${data.message.id}" class="notifBubble">
          
       <button class="x_btn_notif" onclick="document.getElementById(
         'notifBubble${data.message.id}').style.display='none'">X 
       </button> 
+
+      <a href="report_detail/${data.message.id}/">
       <div class="notif_header">
           <img src="{% static 'msg_icon.png' %}" style="width:20%">
           <div class="right_header_notif">
@@ -145,14 +170,101 @@ socket.onmessage = (event) => {
       </div>
       
       
+    </div>
+    </a>`
+
+    }
+    else if (data.type === 'late_notice'){
+      ` <div id="notifBubble${data.message.id}" class="notifBubble">
+         
+      <button class="x_btn_notif" onclick="document.getElementById(
+        'notifBubble${data.message.id}').style.display='none'">X 
+      </button> 
+      <div class="notif_header_late">
+         Late notice
+      </div>
+         
+      <div class="notif_content_late">
+          ${data.message.content}
+      </div>
+      
+      
     </div>`
+    }
+     else if (data.type === 'star'){
+      `  <div id="notifBubble${data.message.starid}" class="notifBubble">
+         
+      <button class="x_btn_notif" onclick="document.getElementById(
+        'notifBubble${data.message.starid}').style.display='none'">X 
+      </button> 
+      <a href="/dashboard/account/${data.message.id}">
 
+   
+      <div class="notif_header_late">
+        <img src="{% static 'star_icon3.png' %}" style="width:12%; padding-right: 4.1vw;">
+         New star
+      </div>
+         
+      <div class="notif_content_late">
+          You have been awarded a star , go check it out !
+      </div>
+      
+      
+    </div>
+       </a>`
+    }
+    else if (data.type === 'milestone') {
+          ` <div id="notifBubble${data.message.id}" class="notifBubble">
+         
+      <button class="x_btn_notif" onclick="document.getElementById(
+        'notifBubble${data.message.id}').style.display='none'">X 
+      </button> 
+      <a href="/dashboard/account/1">
+
+   
+      <div class="notif_header_late">
+        <img src="{% static 'trophee.png' %}" style="width:12%; padding-right: 2.7vw;">
+         New milestone
+      </div>
+         
+      <div class="notif_content_mile">
+          <div style="padding-bottom: 2.5%; padding-top: 2.5%; text-align: center;">
+            ${data.message.name}
+          </div>
+           ${data.message.type} (${data.message.value})
+      </div>
+      
+      
+    </div>
+       </a>`
+    }
+    else if (type === 'task_submit'){
+          ` <div id="notifBubble${data.message.id}" class="notifBubble">
+         
+      <button class="x_btn_notif" onclick="document.getElementById(
+        'notifBubble${data.message.id}').style.display='none'">X 
+      </button> 
+      <a href="/dashboard/tasks/completed/${data.message.task_id}/">
+
+   
+      <div class="notif_header_task">
+        <img src="{% static 'task_icon.png' %}" style="width:12%; padding-right: 2.3vw;">
+         Task completed
+      </div>
+         
+      <div class="notif_content_mile">
+          <div style="padding-bottom: 2.5%; padding-top: 2.5%; text-align: center;">
+           
+          </div>
+           ${data.message.name}
+      </div>
+      
+      
+    </div>
+       </a>`
     }
 
     }
-
-
-    
 
 };
 

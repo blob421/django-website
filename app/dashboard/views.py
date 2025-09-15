@@ -16,7 +16,7 @@ from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask,
 
 from .utility import (get_stats_data, save_files, create_stats, save_stats, 
                       save_profile_picture, calculate_milestones, get_team_graph, send_sms,
-                      )
+                      notify)
 
 from django.conf import settings
 from django.utils import timezone
@@ -332,6 +332,7 @@ class MessageView(LoginRequiredMixin, View):
                     return render(self.request, self.template, ctx)
                 
             report.recipient.set(recipient.all())
+            notify.delay(report.id, 'message')
             copy_message_data(report , MessagesCopy)
             return redirect('dashboard:messages_create')  
         
@@ -446,7 +447,9 @@ class MessageForward(LoginRequiredMixin, View):
         forwarded_msg = Messages(user=message.user, title=message.title,
                   content=message.content, task= message.task, forwarded=True, 
                   forwarded_by=self.request.user.userprofile, timestamp=message.timestamp)
+       
         forwarded_msg.save()
+        notify.delay(forwarded_msg.id, 'message')
         
 
         forwarded_msg.documents.set(documents.all())
@@ -482,6 +485,7 @@ class ReplyView(LoginRequiredMixin, View):
         message = form.save(commit=False)
         message.user_id = request.user.id
         message.save()
+      
 
         if request.FILES:
             files = request.FILES.getlist('file_field')
@@ -494,6 +498,7 @@ class ReplyView(LoginRequiredMixin, View):
         recipient = UserProfile.objects.filter(id = recipient_id)
         message.recipient.set(recipient.all())
         copy_message_data(message , MessagesCopy)
+        notify.delay(message.id, 'message')
         return redirect('dashboard:messages')  
 
 
@@ -783,6 +788,7 @@ class TaskSubmit(LoginRequiredMixin, View):
         task.submitted_at = timezone.now()
         task.completion_time = round(((((timezone.now()-task.creation_date).total_seconds())/60)/60), 2)
         task.save() 
+        notify.delay(task.id, 'task_submit')
        
         return redirect(self.success_url)
     
@@ -1387,8 +1393,9 @@ class PerformanceDetail(ProtectedView):
                 unsaved_form = form.save(commit=False)
                 unsaved_form.stars += 1
                 unsaved_form.content_object = employee
-                print('hi')
                 unsaved_form.save()
+                notify.delay(employee.id, 'star')
+
 
         if request.POST.get('update'):
             form = StatsForm2(request.POST)
@@ -1484,7 +1491,7 @@ class HistoryView(LoginRequiredMixin, View):
     def get_context_data(self):
     
         now = timezone.now()
-        goals = Goal.objects.filter(accomplished=False)
+        goals = Goal.objects.filter(accomplished=False, team = self.request.user.userprofile.team)
         team = self.request.user.userprofile.team
 
         cache_key = f'Milestones_team_{team.id}'

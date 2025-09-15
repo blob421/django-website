@@ -27,11 +27,40 @@ class MyConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({'echo': data}))
 
     async def message(self, event):
-       print("message_saved triggered")
-       print(event['message'])
        await self.send(text_data=json.dumps({
       
         'message': event['message'],
         'type':event['type']
     }))
-
+       
+    async def late_notice(self, event):
+        await self.send(text_data=json.dumps({
+            
+                'message': event['message'],
+                'type':event['type']
+            
+            }))
+        
+    async def star(self, event):
+        await self.send(text_data=json.dumps({
+            
+                'message': event['message'],
+                'type':event['type']
+            
+            }))
+        
+    async def milestone(self, event):
+        await self.send(text_data=json.dumps({
+            
+                'message': event['message'],
+                'type':event['type']
+            
+            }))
+        
+    async def task_submit(self, event):
+         await self.send(text_data=json.dumps({
+            
+                'message': event['message'],
+                'type':event['type']
+            
+            }))
