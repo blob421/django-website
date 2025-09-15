@@ -101,29 +101,7 @@
 <!--------------------------------NOTIF MODAL---------------------------------------->
 
 <div class="notif_div" id=notif>
-    <div id="notifBubble${data.message.id}" class="notifBubble">
-         
-      <button class="x_btn_notif" onclick="document.getElementById(
-        'notifBubble${data.message.id}').style.display='none'">X 
-      </button> 
-      <a href="/dashboard/tasks/completed/${data.message.task_id}/">
-
-     
-      <div class="notif_header_task">
-        <img src="{% static 'task_icon.png' %}" style="width:12%; padding-right: 2.3vw;">
-         Task completed
-      </div>
-         
-      <div class="notif_content_mile">
-          <div style="padding-bottom: 2.5%; padding-top: 2.5%; text-align: center;">
-           
-          </div>
-           ${data.message.name}
-      </div>
-      
-      
-    </div>
-       </a>
+ 
 </div>
 
 <!------------------------------------------------------------------------------------>

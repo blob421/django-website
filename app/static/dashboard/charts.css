@@ -93,19 +93,13 @@ background-color: rgb(133, 131, 131);
    width: 5%;
 
 }
-.chart_dates{
- display: flex;
- padding-left: 25.9vw;
- border: 3px solid rgb(32, 32, 32);
- border-bottom: rgba(0, 0, 0, 0);
- background-color:aliceblue;
-   flex-wrap: wrap; 
-}
+
 .one_date_container{
  
   border: 1px solid rgb(105, 105, 105);
   border-bottom: rgba(245, 245, 220, 0);
   text-align: center;
+
 }
 .charts_container{
 
@@ -132,12 +126,26 @@ background-color: rgb(133, 131, 131);
 }
 .chart_right_pane{
    /*border: 2px solid purple;*/
-   display: grid;
-  grid-auto-flow: column; /* stacks items horizontally */
+  display: block;
   
   overflow-x: scroll;
     
 
+}
+.chart_dates{
+ display: flex;
+ border: 3px solid rgb(237, 26, 26);
+ border-bottom: rgba(0, 0, 0, 0);
+ background-color:aliceblue;
+
+   flex-direction: row;
+   white-space: nowrap;
+   height:1vh;
+}
+.right_chart_wrapper{
+  display: grid;
+  grid-auto-flow: column; /* stacks items horizontally */
+  display: flex;
 }
 .chart_left_title{
     border: 2px solid black;
@@ -352,36 +360,11 @@ background-color: rgb(133, 131, 131);
    background-color: rgb(222, 222, 222);
 }
 
-.chart_col_right_52{
-  width: 12.9px;
-   
-    background-color: aliceblue;
-}
-.chart_col_right_50{
-  width: 23.2px;
-   
-    background-color: aliceblue;
-}
-.chart_col_right_46{
-  width: 16.5px;
-   
-    background-color: aliceblue;
-}
-.chart_col_right_37{
-  width: 21px;
-   
-    background-color: aliceblue;
-}
-.chart_col_right_32{
-  width: 25px;
-   
+.chart_col_right{
+    flex: 0 0 auto;  
     background-color: aliceblue;
 }
 
-.chart_col_right_21{
-  width: 30px;
-   background-color: aliceblue;
-}
 
 @media (max-width:1024px){
 .chart_col_right_52{

@@ -708,14 +708,16 @@ class TaskUpdate(ProtectedUpdate):
             if not section_id:
             
                 return redirect(reverse('dashboard:task_manage_update', args=[task.id]))
-    
+ 
             section = ChartSection.objects.get(id = section_id)
             chart = Chart.objects.get(id=chart_id)
+            last_task = Task.objects.filter(chart=chart).order_by('-position').first()
             task.section = section
             task.chart = chart
           
             task.due_date = due_date
             task.starting_date = starting_date
+            task.position = last_task.position + 1
             task.save()
             return redirect(reverse_lazy('dashboard:task_manage_update', args=[task.id]))
 
@@ -836,8 +838,10 @@ class ChartTaskCreate(ProtectedCreate):
 
 
     def post(self, request, pk):
-
+      
         chart = Chart.objects.get(id=pk)
+        last_task = Task.objects.filter(chart=chart).order_by('-position').first()
+        print(last_task.position)
         form = AddTaskChart(request.POST, chart=chart)
         file_form = FileFieldForm(request.POST, request.FILES)
 
@@ -850,9 +854,10 @@ class ChartTaskCreate(ProtectedCreate):
             file_form.add_error('file_field', 'Files must be less than 2MB.')
             ctx = {'form': form, 'file_form': file_form}
             return render(request, self.template_name, ctx)
-
+       
         saved_form = form.save(commit=False)
         saved_form.chart = chart
+        saved_form.position = last_task.position + 1
         saved_form.save()
         users = form.cleaned_data['users']
         saved_form.users.set(users.all())

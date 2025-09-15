@@ -10,7 +10,7 @@ This is my django website , a dynamic web portal made for production teams.
 ![Alt text](https://i.imgur.com/hMOfsAu.png)
 ![Alt text](https://i.imgur.com/AAy7ItJ.png)
 ![Alt text](https://i.imgur.com/74Rm6xh.png)
-![Alt text](https://i.imgur.com/SNXPkil.png)
+![Alt text](https://i.imgur.com/Ki3Z0mk.png)
 ![Alt text](https://i.imgur.com/bkzIXXW.png)
 ![Alt text](https://i.imgur.com/nkEjstE.png)
 ![ALt text](https://i.imgur.com/S0jArpr.png)

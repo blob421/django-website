@@ -1,5 +1,12 @@
  {% include 'dashboard/base.html' %}
 {% load user_data %}
+{% block extra_css %}
+<style>
+  body{
+    overflow: hidden;
+  }
+</style>
+{% endblock %}
  {% block content %}
 
 
@@ -53,7 +60,7 @@
                     
                     {% if forloop.counter < 5 %}
                     <a href="{% url 'dashboard:chart_detail' chart.id %}">
-                     <button id="chart_btn_title{{chart.id}}" class="btn_title_chart"> 
+                     <button id="chart_btn_title{{chart.id}}" class="btn_title_chart" onclick="toggleButtons(this)"> 
                       {{chart.title}}</button></a>
                     {% if forloop.counter > 3 %}
                    
@@ -81,25 +88,8 @@
              </div>
      </div>
 </div>
-     <div class="chart_dates"> 
-             {% if not months_list %}
-             {% for month in chart.months %}
-             
-             <div class="one_date_container" id="months_cont"> 
-      
-            {{month}} 
-             </div>
-             {% endfor %}
-             {% else %}
-              {% for month in months_list %}
-               <div class="one_date_container" id="months_cont"> 
-      
-            {{month}} 
-             </div>
-             {% endfor %}
-              {% endif %}
-     </div>
- <div class="charts_container">
+    
+ <div class="charts_container" id="charts_container">
 
      <div class="left_left_pane">
 
@@ -111,7 +101,7 @@
 
      <div class="chart_left_pane"> 
             <div class="chart_left_title">
-             Topic / Tasks
+             Tasks
             </div>
             {% for section in sections %}
            
@@ -169,7 +159,7 @@
                        {% if not sections %}
                        <a href="{% url 'dashboard:add_section' chart.id %}">
                              
-                      <div class="left_pane_add_task"> Add a section +
+                      <div class="left_pane_add_task_section"> Add a section +
 
                       </div> </a>
                       {% endif %}
@@ -187,8 +177,26 @@
      </div>
        
      <div class="chart_right_pane">
-        
-            
+          <div class="chart_dates"> 
+             {% if not months_list %}
+             {% for month in chart.months %}
+             
+             <div class="one_date_container" id="months_cont"> 
+      
+            {{month}} 
+             </div>
+             {% endfor %}
+             {% else %}
+              {% for month in months_list %}
+               <div class="one_date_container" id="months_cont"> 
+      
+            {{month}} 
+             </div>
+             {% endfor %}
+              {% endif %}
+          </div>
+
+        <div class="right_chart_wrapper">
             <div class="right_row_description">
                
                    <div class="right_row_description_top_row"> 
@@ -207,46 +215,35 @@
                    </div>
                     {% endfor %}
             </div>
-            {% if week_int < 21 %}
-                {% with col_class="chart_col_right_21" %}
+            
+      
+                {% with col_class="chart_col_right" %}
                   {% include "dashboard/projects/chart_body.html" %}
                 {% endwith %}
-            {% elif week_int < 32 %}
-                {% with col_class="chart_col_right_32" %}
-                                   {% include "dashboard/projects/chart_body.html" %}
-                {% endwith %}
-              {% elif week_int < 37 %}
-                {% with col_class="chart_col_right_37" %}
-                                  {% include "dashboard/projects/chart_body.html" %}                       
-                {% endwith %}
-                  {% elif week_int < 46 %}
-                {% with col_class="chart_col_right_46" %}
-                                  {% include "dashboard/projects/chart_body.html" %}
-                {% endwith %}
-                  {% elif week_int < 50 %}
-                {% with col_class="chart_col_right_50" %}
-                                  {% include "dashboard/projects/chart_body.html" %}
-                {% endwith %}
-                  {% else %}
-                {% with col_class="chart_col_right_52" %}
-                                  {% include "dashboard/projects/chart_body.html" %}
-                {% endwith %}
-              {% endif %}
-          
+
          
 
 
 
 
      </div>
- 
+   </div>
  </div>
 
 <script>
+const chartStartDate = new Date('{{ chart.start_date|date:"Y-m-d" }}');
+const now = new Date();
 
-const chart_id = '{{chart.id}}'
-const btn = document.getElementById('chart_btn_title'+chart_id)
-btn.style.backgroundColor ='rgb(223, 254, 254)'
+// Calculate difference in weeks
+const diffInMs = now - chartStartDate;
+const diffInWeeks = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 7));
+
+const pxPerWeek = 26; // e.g., each week column is 50px wide
+const offsetPx = diffInWeeks * pxPerWeek;
+
+const container = document.getElementById('charts_container');
+container.scrollLeft = offsetPx + 50;
+
 
 
 
@@ -359,6 +356,11 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+
+const id = '{{chart.id}}'
+const active_btn_id = "chart_btn_title"+ id
+const active_button = document.getElementById(active_btn_id)
+active_button.classList.toggle('active')
 
 document.addEventListener('DOMContentLoaded', LoadChart());
 
