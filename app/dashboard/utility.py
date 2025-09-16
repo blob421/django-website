@@ -79,7 +79,7 @@ def notify(object, type):
                 )
              
         if type == 'milestone':
-             goal = Goal.objects.filter(id=object)
+             goal = Goal.objects.get(id=object)
              team = goal.team
              users = UserProfile.objects.filter(team= team)
              for user in users:
@@ -91,7 +91,7 @@ def notify(object, type):
                                     'id': f'milestone{team.id}',
                                     'team':team.name,
                                     'name':goal.name,
-                                    'type':goal.type,
+                                    'type':goal.type.name,
                                     'value':goal.value
 
                                     }
@@ -112,6 +112,33 @@ def notify(object, type):
                                 }
                     }
                 )
+        if type == 'login':
+             user = UserProfile.objects.get(id=object)
+             if user.active_task:
+                  active_task = user.active_task.name
+                  active_task_id = user.active_task.id
+             else:
+                  active_task = None
+                  active_task_id = None
+             
+             team_lead_id = user.team.team_lead.id
+             async_to_sync(channel_layer.group_send)(
+                    f"user_{team_lead_id}",
+                    {
+                        'type': type,
+                        'message': {
+                                'username': user.user.username,
+                                'id': f'loggin{object}',
+                                'user_id': object,
+                                'task_name': active_task,
+                                'active_task': active_task_id
+
+                                
+
+                                }
+                    }
+                )
+
 
        
              
@@ -689,14 +716,15 @@ def check_milestones():
                     continue
                 else:
                     Milestone.objects.create(date=now.date(), 
-                                name=f'{goal.type.name}{goal.value}{goal.value_type}')
+                                name=f'{goal.type.name}{goal.value}{goal.value_type}', 
+                                team=goal.team)
             if goal.type.name == 'Tasks completed':
           
                 if total_completed >= goal.value:
                         goal.accomplished = True
                         goal.save()
                         Milestone.objects.create(date=now.date(), 
-                                name=f'{goal.type.name} ({goal.value})')
+                                name=f'{goal.type.name} ({goal.value})', team=goal.team)
                         notify.delay(goal.id, 'milestone')
                 else:
                      continue

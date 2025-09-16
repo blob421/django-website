@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
 from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document, Team
-from .models import Report, ChatMessages, Task, DailyReport, Alerts
+from .models import Report, ChatMessages, Task, DailyReport
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
@@ -25,22 +25,22 @@ from celery	import shared_task
 from django.contrib.auth import get_user_model
 logger = logging.getLogger(__name__)
 
-def trigger_milestone_check():
+def trigger_milestone_check(*args, **kwargs):
     check_milestones.delay()
 
-def trigger_CheckWeekRanges():
+def trigger_CheckWeekRanges(*args, **kwargs):
     CheckWeekRanges.delay()
 
-def trigger_clear_pictures():
+def trigger_clear_pictures(*args, **kwargs):
     clear_pictures.delay()
 
-def trigger_clear_files():
+def trigger_clear_files(*args, **kwargs):
     clear_files.delay()
 
-def trigger_gen_all_reports():
+def trigger_gen_all_reports(*args, **kwargs):
     gen_all_reports.delay()
 
-def trigger_clear_chat_msg():
+def trigger_clear_chat_msg(*args, **kwargs):
     clear_chat_msg.delay()
 
 def start():
@@ -70,7 +70,7 @@ def start():
         scheduler.add_job(trigger_clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
                           replace_existing=True)
         
-        scheduler.add_job(trigger_milestone_check, 'interval', hours =1, name='milestones',
+        scheduler.add_job(trigger_milestone_check, 'interval', minutes =1, name='milestones',
                           replace_existing=True)
         
         register_events(scheduler)
@@ -302,7 +302,7 @@ def clear_chat_msg():
      
 @shared_task
 def CheckWeekRanges():
-     
+    last_range  = WeekRange.objects.last()     
     now= timezone.now()
     
     if now.weekday() == settings.SCHEDULE_DAY:
@@ -323,7 +323,7 @@ def CheckWeekRanges():
         
         if last_range.end_day.day != (now + relativedelta(days=28)).day:
 
-            last_range  = WeekRange.objects.last()     
+            
             week_range = WeekRange.objects.create(starting_day = now + relativedelta(days=21),
                                     end_day = now + relativedelta(days=28))  
                    

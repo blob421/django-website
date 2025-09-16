@@ -1,7 +1,7 @@
 
 {% extends 'dashboard/base.html' %}
 
-
+{% load static %}
 
 
  {% load user_data %}
@@ -56,4 +56,76 @@
         <input type="submit" value="Set status" style="cursor: pointer;">
     </form>
 
-  {% endblock %}
+{% if user.userprofile.team.team_lead == user.userprofile %}
+<img src="{% static 'gear_icon.png' %}" class="gear_icon" style="width: 2%; position: fixed;
+right: 3%; bottom: 0.5%; opacity: 0.7; cursor: pointer; border-radius: 3px;" onclick="showOptions()">
+{% endif %}
+
+
+
+<!------------------------------------OPTION MODAL----------------------------------------->
+<div id="options_overlay">
+  <div class="options_cont">
+    <button class="x_btn_options" onclick="document.getElementById(
+      'options_overlay').style.display='none'">X</button>
+      <div class="title1">
+        Notifications
+      </div>
+      <form method="POST" action="{% url 'dashboard:options' %}">
+      {% csrf_token %}
+
+      
+      <div class="title1_content">
+          <div class="option">
+                    Login notifications 
+                    <input type="checkbox" name="login" value="True" 
+                    {% if options.login %}checked{% endif %}>
+
+                   
+            </div>
+             <div class="option">
+                   Monitor attendance
+                    <input type="checkbox" name="late" value="True" 
+                    {% if options.late %}checked{% endif %}>
+
+
+             </div>
+
+   
+
+      </div>
+      <div class="title1">
+        Display
+      </div>
+      <div class="title1_content">
+            <div class="option">
+                   Help icon
+                    <input type="checkbox" name="help" value="True" 
+                    {% if options.help %}checked{% endif %}>
+
+
+             </div>
+              <div class="option">
+                   Active task shortcut
+                    <input type="checkbox" name="active_task" value="True" 
+                    {% if options.active_task %}checked{% endif %}>
+
+
+             </div>
+      </div>
+         <button type="submit" class="options_savebtn">Save</button>
+       </form>
+  </div>
+  
+</div>
+<!----------------------------------------------------------------------------------------->
+
+
+
+<script>
+   function showOptions(){
+    document.getElementById('options_overlay').style.display='block'
+   } 
+</script>
+
+{% endblock %}

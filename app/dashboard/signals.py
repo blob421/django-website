@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from dashboard.models import UserProfile, WeekRange, Schedule, Users, LogginRecord, Messages
 from django.utils import timezone
 from django.contrib.auth.signals import user_logged_in
+from .utility import notify
 user_model = get_user_model()
 
 
@@ -13,9 +14,9 @@ def on_user_login(sender, request, user, **kwargs):
     date = timezone.now()
     target_week_range = WeekRange.objects.order_by('-starting_day')[3]                
     last_schedule = Schedule.objects.get(user=user.userprofile, week_range=target_week_range)
-  
+    notify.delay(user.userprofile.id, 'login')
     LogginRecord.objects.create(user=user.userprofile, timestamp = date, schedule=last_schedule)
-   
+    
 
 @receiver(post_save, sender=user_model)
 def create_user_profile(sender, instance, created, **kwargs):

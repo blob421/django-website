@@ -398,14 +398,14 @@ class ResourceCategory(models.Model):
     def __str__(self):
         return self.name
     
-class Alerts(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
-    content = models.CharField()
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, blank=True)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True, related_name='alert_user')
-    recipient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='alert_rec')
-    seen = models.BooleanField(default=False)
 
+class Options(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    login = models.BooleanField(default=True)
+    late = models.BooleanField(default=True)
+    help = models.BooleanField(default=True)
+    active_task = models.BooleanField(default=True)
+   
 
 
 class Resource(models.Model):

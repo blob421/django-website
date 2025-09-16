@@ -163,15 +163,30 @@ padding: 3%; margin-bottom: 1%; position: relative; pointer-events: auto;
    display: flex; flex-direction: row; height:4vh; align-items: center; font-weight: bold;
    font-size: 15px;
 } 
+.notif_header_late{
+    display: flex; flex-direction: row; height:4vh; align-items: center; font-weight: bold;
+   font-size: 15px; margin-left: 2vw;
+}
 .notif_content{
   height:8vh; display: -webkit-box; background-color: #e8e8e8; margin-top: 3%;
   -webkit-line-clamp: 2;    
   -webkit-box-orient: vertical;
   overflow: hidden; 
 }
+.notif_content_login{
+   height:5vh;  background-color: #e8e8e8; margin-top: 3%; padding-bottom: 2vh;
+   align-items: center; display: flex; gap: 2%; justify-content: center;
+}
+.top_login{
+  display: flex; flex-direction: row; padding-bottom: 1%;
+}
+.notif_header_login{
+  display: flex; justify-content: center;
+}
 .notif_content_late{
   height:9vh;  background-color: #e8e8e8; margin-top: 3%; padding-bottom: 2vh;
 }
+
 .notif_header_task{
   display: flex; flex-direction: row; height:4vh; align-items: center; font-weight: bold;
    font-size: 15px; 
@@ -185,6 +200,36 @@ padding: 3%; margin-bottom: 1%; position: relative; pointer-events: auto;
 }
 .from_text_notif{
   font-size: smaller; font-weight: bold;
+}
+.x_btn_options{
+  position: absolute; right: 1%; top: 2%; background-color: rgb(202, 103, 103);
+  border: 1px solid black; border-radius: 2px; color: white; padding-bottom: 0.25%;
+  padding-top: 0.25%; cursor: pointer;
+}
+.options_savebtn{
+  position: absolute;
+  bottom: 2%; height: 8%; width: 10%; right: 3%; cursor: pointer;
+}
+.gear_icon:hover{
+  background-color: #afaeae;
+}
+#options_overlay{
+  width: 100vw; height: 100vh; z-index: 1000; position: absolute; left: 50%; top: 50%;
+  background-color: #191919c4; transform: translate(-50%,-50%);
+}
+.options_cont{
+  width: 70vw; height: 90vh; position: absolute; left: 50%; top: 50%; 
+  background-color: #e4e4e4fb; transform: translate(-50%,-50%);
+}
+.title1{
+  text-align: center; border-bottom: 1px solid black; padding: 1%;
+}
+.title1_content{
+  padding: 3%; display: grid; grid-template-columns: repeat(auto-fit, max(200px));
+  border: 1px solid black; gap: 5%; justify-content: center;
+}
+.option{
+  border: 1px solid black; padding: 1%; justify-content: center; display: flex; gap: 2%;
 }
  @media (max-width:700px){
     nav{

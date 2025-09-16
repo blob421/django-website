@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from .models import (Messages, UserProfile, Task, Team, ChatMessages, Resource, 
                      ResourceCategory,MessagesCopy, Chart, ChartData, ChartSection, Schedule, 
-                    Goal, Stats, Report, DailyReport, Document, SubTask)
+                    Goal, Stats, Report, DailyReport, Document, SubTask, Options)
 
 from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask, 
                     DenyCompletedTask, ForwardMessages,ChatForm,AddTaskChart,LoginForm,
@@ -1809,10 +1809,6 @@ class ReportView(LoginRequiredMixin, CreateView):
 
 
 
-
-
-
-
 def SwapTask(request, task_id, section_id, chart_id, prev, next):
     section = ChartSection.objects.get(id=section_id)
     tasks = Task.objects.filter(section = section).order_by('position')
@@ -1845,3 +1841,25 @@ def SwapTask(request, task_id, section_id, chart_id, prev, next):
             Task.objects.bulk_update([target_task, next_task], ['position'])
 
     return redirect(reverse('dashboard:chart_detail', args=[chart_id]))
+
+
+def setOptions(request):
+    options, _ = Options.objects.get_or_create(id = request.user.userprofile.id)
+    if request.method == 'POST':
+        login = request.POST.get('login')
+        late = request.POST.get('late')
+        help = request.POST.get('help')
+        active = request.POST.get('active_task')
+
+        options.login = login == "True"
+        options.late = late == "True"
+        options.help = help == "True"
+        options.active_task = active == "True"
+
+        options.save()
+        
+    return redirect(reverse('dashboard:home'))
+    
+ 
+        
+

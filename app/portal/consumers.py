@@ -64,3 +64,11 @@ class MyConsumer(AsyncWebsocketConsumer):
                 'type':event['type']
             
             }))
+         
+    async def login(self, event):
+         await self.send(text_data=json.dumps({
+            
+                'message': event['message'],
+                'type':event['type']
+            
+            }))

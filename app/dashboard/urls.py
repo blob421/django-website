@@ -7,6 +7,7 @@ app_name = 'dashboard'
 urlpatterns = [
     
     ####### Users , Home#########
+    path('options/', views.setOptions, name='options'),
     path('loading/<str:celery_id>/<str:type>/<int:object_id>/<str:arg>', 
          views.LoadingView.as_view(), name= 'loading'),
     path('loading/ready/<str:celery_id>/<str:type>/<int:object_id>/<str:arg>', 
