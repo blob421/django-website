@@ -167,6 +167,12 @@ padding: 3%; margin-bottom: 1%; position: relative; pointer-events: auto;
     display: flex; flex-direction: row; height:4vh; align-items: center; font-weight: bold;
    font-size: 15px; margin-left: 2vw;
 }
+.notif_header_report{
+      height:8vh;  background-color: #e8e8e8; padding-top: 2%; margin-top: 2%; 
+      padding-bottom: 2vh; align-items: center;  justify-content: center; display: flex; 
+      padding-left: 6%;
+ 
+}
 .notif_content{
   height:8vh; display: -webkit-box; background-color: #e8e8e8; margin-top: 3%;
   -webkit-line-clamp: 2;    
@@ -179,6 +185,9 @@ padding: 3%; margin-bottom: 1%; position: relative; pointer-events: auto;
 }
 .top_login{
   display: flex; flex-direction: row; padding-bottom: 1%;
+}
+.top_report{
+    display: flex; flex-direction: row; padding-bottom: 1; align-items: center;
 }
 .notif_header_login{
   display: flex; justify-content: center;
@@ -215,7 +224,7 @@ padding: 3%; margin-bottom: 1%; position: relative; pointer-events: auto;
 }
 #options_overlay{
   width: 100vw; height: 100vh; z-index: 1000; position: absolute; left: 50%; top: 50%;
-  background-color: #191919c4; transform: translate(-50%,-50%);
+  background-color: #191919c4; transform: translate(-50%,-50%); display: none;
 }
 .options_cont{
   width: 70vw; height: 90vh; position: absolute; left: 50%; top: 50%; 

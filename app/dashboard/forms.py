@@ -294,7 +294,9 @@ class UpdateTask(ModelForm):
 class GoalForm(ModelForm):
      class Meta:
           model = Goal
-          fields = ['name', 'type', 'value', 'value_type']
+          fields = ['name', 'type', 'value', 'accomplished']
+
+
 
 class StatsForm(ModelForm):
      class Meta:

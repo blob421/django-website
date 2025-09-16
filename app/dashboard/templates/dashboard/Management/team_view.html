@@ -134,7 +134,7 @@
           
             {% if task.section %}
             
-            <div class="chart_icon_div"> 
+            <div class="chart_icon_div_man"> 
             <img src="{% static 'chart_icon4.png' %}" id="chart_img{{task.id}}" class="chart_img"
                   onclick="info('{{task.chart.id}}')"
                    data-title="{{task.chart.title}}">
@@ -163,7 +163,7 @@
            
             {% if task.section %}
             
-            <div class="chart_icon_div"> 
+            <div class="chart_icon_div_man"> 
             <img src="{% static 'chart_icon4.png' %}" id="chart_img{{task.id}}" class="chart_img"
                   onclick="info('{{task.chart.title}}')"
                   data-title="{{task.chart.title}}">
@@ -192,7 +192,7 @@
           
             {% if task.section %}
             
-            <div class="chart_icon_div"> 
+            <div class="chart_icon_div_man"> 
             <img src="{% static 'chart_icon4.png' %}" id="chart_img{{task.id}}" class="chart_img"
                   onclick="info('{{task.chart.id}}')"
                    data-title="{{task.chart.title}}">
@@ -257,7 +257,7 @@
 <div class="btn_div_6">
   
       <button class="button_tasks_list"
-      onclick="setVisible(this, 'reports_modal')">View reports<span class="count_green"> 
+      onclick="setVisibleFlex(this, 'reports_modal')">View reports<span class="count_green"> 
          ({{ unseen_reports }})</span></button>
 
 </div>
@@ -328,7 +328,7 @@
       X
     </div>
       {% for report in reports %}
-      {% if report.content_object.read %}
+      {% if report.read %}
     <a href="{% url 'dashboard:get_report' report.id %}" class="seen_report">
      {{report.file_name}}
 

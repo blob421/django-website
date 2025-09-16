@@ -104,7 +104,23 @@
 
 <!--------------------------------NOTIF MODAL---------------------------------------->
 
-<div class="notif_div" id=notif></div>
+<div class="notif_div" id=notif>
+   <div id="notifBubble${data.message.id}" class="notifBubble">
+         
+      <button class="x_btn_notif" onclick="document.getElementById(
+        'notifBubble${data.message.id}').style.display='none'">X 
+      </button> 
+          <div class="top_report">
+           <img src="{% static 'exclamation.png' %}" style="width:15%; padding-right: 2.1vw;">
+            Missing report
+          </div>
+      <div class="notif_header_report">
+
+          It seems like gabri did not make any report this week .
+      </div>
+     
+    </div>
+</div>
 
 
 <script>
@@ -280,6 +296,26 @@ socket.onmessage = (event) => {
         <a href="/dashboard/tasks/update/${data.message.active_task}/">${task_name}</a>
       
       </div>
+    </div>`
+    }
+    else if (data.type === 'report'){
+
+     notif.innerHTML += 
+        `  <div id="notifBubble${data.message.id}" class="notifBubble">
+         
+      <button class="x_btn_notif" onclick="document.getElementById(
+        'notifBubble${data.message.id}').style.display='none'">X 
+      </button> 
+          <div class="top_login">
+           <img src="{% static 'exclamation.png' %}" style="width:15%; padding-right: 3vw;">
+            Missing report
+          </div>
+      <div class="notif_header_login">
+
+          It seems like <a href="/dashboard/team/user/${data.message.user_id}/stats">${data.message.username}</a>
+          did not make any report this week .
+      </div>
+     
     </div>`
     }
 

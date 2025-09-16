@@ -8,7 +8,9 @@ font-size: 28px;">Milestones</h1>
 <div class="history_extreme_outer"> 
 <div class="history_outer">
  
-    <div class="history_left_pane">
+
+    <div class="history_right_content" id="history_right_content">
+          <div class="history_left_pane">
         <div class="timeline_title_outer"> 
             <div class="timeline_title">Timeline
                
@@ -26,7 +28,14 @@ font-size: 28px;">Milestones</h1>
             {% endfor %}
                </div>
     </div>
-    <div class="history_right_content" id="history_right_content">
+
+
+
+
+
+            <div class="right_content_wrapper">
+
+         
             <div class="top_timeline">
                    {% for date in dates_set %}
                    <div class="weeks_history">
@@ -34,11 +43,11 @@ font-size: 28px;">Milestones</h1>
                    </div>
                        {% endfor %}
             </div>
-            <div class="bottom_events">
+            <div class="bottom_events" id="bottom_events">
                 
                    
                  {% for month in months_set %}
-                  <div class="month_row_history"> 
+                  <div class="month_row_history" id="months_row{{forloop.counter}}"> 
                     {% for empty_milestone in empty_count_dict|get_item:month %}
                     <div class="milestone_div_empty">
                     </div>
@@ -55,7 +64,7 @@ font-size: 28px;">Milestones</h1>
 
 
     </div>
-                  
+             </div>        
    {% if user.userprofile.role.name in allowed_roles %}
    
   
@@ -75,6 +84,13 @@ font-size: 28px;">Milestones</h1>
                     {{goal_form.name.label_tag}}
                      {{goal_form.name}}
                      </div>
+
+                      <div>
+                            {{goal_form.accomplished.label_tag}}
+                            {{goal_form.accomplished}}
+                           </div>
+
+                        ---------------------
                      <div class="goal_form_type">
                         {{goal_form.type.label_tag}}
                         {{goal_form.type}}
@@ -87,6 +103,8 @@ font-size: 28px;">Milestones</h1>
                             {{goal_form.value_type.label_tag}}
                            {{goal_form.value_type}}
                            </div>
+                          
+                          
                      <input type="submit" class="submit_form_goal">
                    </form>
                 </div>
@@ -103,18 +121,20 @@ font-size: 28px;">Milestones</h1>
         <div class="current_goals_content">
            {% for goal in goals %}
            {% if not user.userprofile.role.name in allowed_roles %}
-           <div class="pending_goals_div"> 
-
-           {{goal}} ({{goal.value}})
+           <div class="pending_goals_div {% if goal.failed %} pending_failed_div {% endif %}"
+           id="pending{{goal.id}}" data-title="{{goal.type.description}}" data-value="{{goal.value}}"> 
+               {{goal}}
+          
 
            </div>
                {% else %}
               
-                  <div class="pending_goals_div" 
+                  <div class="pending_goals_div {% if goal.failed %} pending_failed_div {% endif %}"
+                   id="pending{{goal.id}}" data-title="{{goal.type.description}}" data-value="{{goal.value}}" 
                   onclick="document.getElementById('del_goal_modal').style.display ='block';
                   document.getElementById('del_btn').value = '{{goal.id}}'"> 
 
-           {{goal}} ({{goal.value}})
+           {{goal}}
 
            </div>
            {% endif %}
@@ -145,4 +165,88 @@ font-size: 28px;">Milestones</h1>
          
 </div>
 
+
+<div id="info_bubble">
+  <div id="value_bubble">
+
+  </div>
+  
+
+
+</div>
+
+
+
+<script>
+function setdetailBubble() {
+  const chart_icon = document.querySelectorAll('.pending_goals_div');  
+  
+  const text_value = document.getElementById('value_bubble'); 
+  const info = document.getElementById('info_bubble');
+ 
+  chart_icon.forEach(icon => {
+    icon.addEventListener('mouseenter', () => {
+      const rect = icon.getBoundingClientRect();
+      const title = icon.dataset.title;
+      const value = icon.dataset.value;
+      
+      
+      text_value.innerText = value + " " + title
+      info.style.display = 'flex';
+
+      let top = rect.bottom;
+      let left = rect.left + 20;
+
+      const modalWidth = info.offsetWidth;
+      const modalHeight = info.offsetHeight;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      if (left + modalWidth > viewportWidth) {
+        left = viewportWidth - modalWidth - 10;
+      }
+      if (top + modalHeight > viewportHeight) {
+        top = rect.top - modalHeight - 10;
+      }
+
+      info.style.position = 'absolute';
+      info.style.top = `${top}px`;
+      info.style.left = `${left}px`;
+    });
+
+    icon.addEventListener('mouseleave', () => {
+      info.style.display = 'none';
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', setdetailBubble);
+
+
+
+
+    const input = document.getElementById('id_value')
+
+      Inputmask("9999").mask(input);
+
+
+
+
+const n_of_milestone = '{{milestones_count}}'
+const months_count = '{{months_count}}'
+const pxPerMS = 119; 
+const pxPerMonth = 64.08
+const offsetPx = (n_of_milestone -7) * pxPerMS;
+const offsetMonth = (months_count - 6) * pxPerMonth;
+
+const container = document.getElementById('history_right_content');
+container.scrollLeft = offsetPx;
+container.scrollTop = offsetMonth;
+
+const months_row = document.querySelectorAll('[id^="months_row"]')
+months_row.forEach(row=>{
+  row.style.width=`${(pxPerMS * n_of_milestone)}px`
+  
+})
+</script>
  {% endblock %}

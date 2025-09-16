@@ -71,15 +71,19 @@
   border-radius: 4px;
 }
 .denied_text{
-    font-weight:bold;
-    margin-top: 3%;
-    padding-left: 0.5%;
+  
+    margin-top: 1%;
+ 
     width:20vw;
+    color: rgb(0, 0, 0);
     padding-bottom: 3%;
-    font-size: smaller;
+    font-size: 14px;
+    background-color: rgb(242, 186, 183);
+
+    padding: 2%;
 }
 .task_blocks2_denied{
-    background-color: #ecc4c4;
+    background-color: #f1eeeefc;
     box-shadow: inset 2px 2px 0px white;
    display: flex; flex-direction: column;
 
@@ -303,14 +307,14 @@
 .active_task_div{
       background-color: #f1f1f1;
     
-    height:3vh; border-radius: 5%; width: 10%; width:45%;margin-top: 1.9vh;
+    height:3vh; border-radius: 15%; width:45%;margin-top: 1.9vh;
     margin-right: 3%; border:1px solid black;
 
 
 }
 .activated_task_div{
-    background-color: #c6eaae;    height:3vh; border-radius: 5%; width: 10%; width:55%;margin-top: 3%;
-    margin-right: 0.5%; border:1px solid black;
+    background-color: #c1f7d0; height:2vh; border-radius: 15%; width: 10%; width:45%;margin-top: 1.9vh;
+    margin-right: 3%; border:1px solid black;
 
 }
 #info_modal_task_list_chart{

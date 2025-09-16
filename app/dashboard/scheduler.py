@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
 from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document, Team
-from .models import Report, ChatMessages, Task, DailyReport
+from .models import Report, ChatMessages, Task, DailyReport, Messages
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
@@ -81,6 +81,7 @@ def was_logged_in(employee):
      now = timezone.now()
 
      if employee.user.last_login < now - relativedelta(minutes=15):
+          Stats.objects.create(late=True)
           notify(employee.id, 'late_notice')
           
           
@@ -328,11 +329,18 @@ def CheckWeekRanges():
                                     end_day = now + relativedelta(days=28))  
                    
             target_week_range = WeekRange.objects.order_by('-starting_day')[3]
-
-
+    
             for user in users:
-
+                reports = Report.objects.filter(user=user, 
+                                                time__gte=target_week_range.starting_day,
+                                                time__lte=target_week_range.end_day).count()
+                if reports == 0:
+                    notify.delay(user.id, 'report')
+                    Stats.objects.create(report_not_done=1, content_object=user, 
+                                         team=user.team)
+               
                 last_schedule = Schedule.objects.get(user=user, week_range=target_week_range)
+
                 total_days = calculate_days_scheduled(user, last_schedule)         
                 logs = LogginRecord.objects.filter(schedule = last_schedule)
                 days_list = set()
@@ -348,6 +356,36 @@ def CheckWeekRanges():
 
                 Schedule.objects.create(user=user, week_range=week_range)
 
+
+            teams = Team.objects.all()
+            target_week_range = WeekRange.objects.order_by('-starting_day')[4]
+            
+            for team in teams:
+                    failing_users = []
+                    stats = Stats.objects.filter(timestamp__gte=target_week_range.starting_day,
+                                                 timestamp__lte=target_week_range.end_day,
+                                                 team=team, report_not_done=1)
+                    if stats.exists():
+                         for stat in stats:
+                              failing_users.append(stat.content_object.user.username)
+                            
+                    if len(failing_users) > 0 :
+                        
+                        Messages.objects.create(recipient=team.team_lead, 
+                        content=f""" This week has ended and the new schedules are out ! 
+                                    Here is the list everyone that did not do their report this week:
+                                    {failing_users}""", title=f'Weekly report of {target_week_range.starting_day}-{target_week_range.end_day}')
+                        
+                    if len(failing_users) == 0 :
+            
+                        Messages.objects.create(recipient=team.team_lead, 
+                        content=f""" This week has ended and the new schedules are out ! 
+                                    
+                                    {failing_users}""", title=f'Weekly report of {target_week_range.starting_day}-{target_week_range.end_day}')
+
+
+
+        
     else:
          if not WeekRange.objects.all().exists():
             User = get_user_model()

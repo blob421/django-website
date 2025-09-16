@@ -72,3 +72,12 @@ class MyConsumer(AsyncWebsocketConsumer):
                 'type':event['type']
             
             }))
+         
+    async def report(self, event):
+         await self.send(text_data=json.dumps({
+            
+                'message': event['message'],
+                'type':event['type']
+            
+            }))
+

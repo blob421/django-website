@@ -94,9 +94,12 @@ class Stats(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, null=True, blank=True)
     object_id = models.PositiveBigIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
+    late = models.BooleanField(null=True, blank = True)
+    report_not_done = models.PositiveIntegerField(default=0)
 
     stars = models.PositiveIntegerField(default=0, null=True,blank=True)
     star_note = models.TextField(null=True, blank=True)
+    team = models.ForeignKey('Team', on_delete=models.CASCADE, null=True, blank=True)
         
     class Meta:
         indexes = [
@@ -359,7 +362,7 @@ class Schedule(models.Model):
     friday = models.CharField(null=True, blank=True)
     saturday = models.CharField(null=True, blank=True)
     sunday = models.CharField(null=True, blank=True)
-    unscheduled = models.BooleanField(default=False)
+    unscheduled = models.BooleanField(default=True)
     vacation = models.BooleanField(default=False)
 
     message = models.TextField(null=True, blank=True)
@@ -431,20 +434,27 @@ class Milestone(models.Model):
         return self.date.strftime('%B')
     
 class Goal(models.Model):
-    name = models.CharField(null=True, unique=True)
+    name = models.CharField(null=True, unique=True, max_length=24)
     accomplished = models.BooleanField(default=False)
-    type = models.ForeignKey('GoalType', on_delete=models.CASCADE)
-    value_type = models.ForeignKey('ValueType', on_delete=models.CASCADE)
-    value = models.PositiveIntegerField(null=True)
+    failed = models.BooleanField(default=False)
+    failed_at = models.DateTimeField(null=True, blank=True)
+    type = models.ForeignKey('GoalType', on_delete=models.CASCADE, null=True, blank=True)
+    
+    value = models.PositiveIntegerField(null=True, blank=True)
+    #time_limit = models.DateTimeField(null=True, blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
+  
     def __str__(self):
         return self.name
 
 class GoalType(models.Model):
     name = models.CharField()
+    description= models.CharField(null=True, blank=True)
+    value_type = models.ForeignKey('ValueType', on_delete=models.CASCADE, null=True)
+
     def __str__(self):
         return self.name
-    
+
 class ValueType(models.Model):
     name= models.CharField()
     def __str__(self):

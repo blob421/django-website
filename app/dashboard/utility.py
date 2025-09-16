@@ -1,5 +1,5 @@
 from .models import (UserProfile, Task, Team, Document, Stats, Milestone, Goal, ChatMessages,
-                     Messages)
+                     Messages, Schedule, WeekRange, Report)
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
 import plotly.graph_objs as go
@@ -22,6 +22,7 @@ import os
 from django.core.files import File
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from dateutil.relativedelta import relativedelta
 
 days_of_the_week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
@@ -138,6 +139,25 @@ def notify(object, type):
                                 }
                     }
                 )
+        if type == 'report':
+             user = UserProfile.objects.get(id=object)
+             team_lead_id = user.team.team_lead.id
+             async_to_sync(channel_layer.group_send)(
+                    f"user_{team_lead_id}",
+                    {
+                        'type': type,
+                        'message': {
+                                'username': user.user.username,
+                                'id': f'report{object}',
+                                'user_id': object,
+
+
+                                }
+                    }
+                )
+           
+                 
+                    
 
 
        
@@ -682,52 +702,168 @@ def calculate_milestones(team_id):
         return {'dates_set':dates_set, 'months_set':months_set, 'milestones':milestones_dict_list,
                 'empty_count_dict':empty_count_dict, 'milestones_dict':milestones_dict}
 
+
+def trigger_check_milestones_day(goal_id, *args, **kwargs):
+     check_milestones_day.delay(goal_id)
+
+
+@shared_task 
+def check_milestones_day(goal_id):
+    now = timezone.now()
+    goal = Goal.objects.get(id=goal_id)
+    time_range = now - relativedelta(days=goal.value)
+    stats = Stats.filter(timestamp__lte = now, timestamp__gte=time_range)
+
+    total_completed = 0
+    total_late_tasks = 0
+    total_denied = 0
+    
+    for stat in stats:
+        total_completed += stat.completed_tasks
+        total_late += stat.late_tasks
+        total_denied += stat.denied_task
+
+    if 'Efficiency > 75% (days)' in goal.type.name:
+        if (total_late_tasks / total_completed) < 0.75:
+            goal.failed = True
+            goal.failed_at = now
+
+        else:
+            goal.accomplished = True
+            Milestone.objects.create(date=now.date(), 
+            name=f'Efficiency over 75% for {goal.value} days', team=goal.team)
+            notify.delay(goal.id, 'milestone')
+            
+    if 'Efficiency > 90% (days)' in goal.type.name:
+        if (total_late_tasks / total_completed) < 0.90:
+            goal.failed = True
+            goal.failed_at = now
+
+        else:
+            goal.accomplished = True
+            Milestone.objects.create(date=now.date(), 
+            name=f'Efficiency over 75% for {goal.value} days', team=goal.team)
+            notify.delay(goal.id, 'milestone')
+         
+                    
+
+    if 'Everyone on time (days)' in goal.type.name: 
+        if total_late > goal.value:
+            goal.failed = True
+            goal.failed_at = now
+
+        else:
+            goal.accomplished = True
+            Milestone.objects.create(date=now.date(), 
+                        name=f'Everyone on time for {goal.value} days', team=goal.team)
+            notify.delay(goal.id, 'milestone')
+           
+
+    if  'No task denied (days)' in goal.type.name:
+        if total_denied == 0 :
+            goal.accomplished = True
+            Milestone.objects.create(date=now.date(), 
+                        name=f'No task denied for {goal.value} days', 
+                        team=goal.team)
+            notify.delay(goal.id, 'milestone')
+            
+        else:
+             goal.failed = True
+             goal.failed_at = now
+  
+    if 'No late tasks (days)' in goal.type.name:
+         if total_late > 0 :
+              goal.failed = True
+              goal.failed_at = now
+         else:
+            goal.accomplished = True
+            Milestone.objects.create(date=now.date(), 
+                        name=f'No late tasks for {goal.value} days', 
+                        team=goal.team)
+            notify.delay(goal.id, 'milestone')
+
+    if 'All reports done (days)' in goal.type.name:
+        start_date = now - relativedelta(days=goal.value)
+        missed_reports = 0
+        stats = Stats.objects.filter(timestamp__gte =  start_date)
+        for stat in stats:
+             if stat.report_not_done:
+                  missed_reports += 1
+         
+        if missed_reports == 0:
+            goal.accomplished = True
+            Milestone.objects.create(date=now.date(), 
+                            name=f'All reports done for {goal.value} days', 
+                            team=goal.team)
+            notify.delay(goal.id, 'milestone')
+        else:
+             goal.failed = True
+             goal.failed_at = now
+                
+
+    goal.save()
+                    
+
+
 @shared_task
 def check_milestones():
     now = timezone.now()
-    goals = Goal.objects.filter(accomplished = False)
+    goals = Goal.objects.filter(accomplished = False, failed=False)
     stats = Stats.objects.all()
+    failed = Goal.objects.filter(failed = True)
     
-    goals_dict = {}
-   
+    for failed_goal in failed:
+         if now > failed_goal.failed_at + relativedelta(days=2):
+              failed_goal.delete()
+
+
+    total_stars = 0
+    total_completed = 0
+    for stat in stats:
+        total_completed += stat.completed_tasks    
+        if stat.stars:
+            total_stars += 1
+
 
     for goal in goals:
-
-        if goal.value_type == 'Days':
-     
-            time_range = now - relativedelta(days=goal.value)
-            stats = stats.filter(timestamp__lte = now, timestamp__gte=time_range)
-
-   
-        has_key = goals_dict.get(goal.type.name)
-        if not has_key:
-        
-
-            goals_dict[goal.type.name] = goal
-         
-            total_denied = 0
-            total_completed = 0
-            for stat in stats:
-                total_denied += stat.denied_tasks
-                total_completed += stat.completed_tasks
-   
-            if goal.type.name == 'No denied tasks':
-                if total_denied > 0 :
-                    continue
-                else:
-                    Milestone.objects.create(date=now.date(), 
-                                name=f'{goal.type.name}{goal.value}{goal.value_type}', 
-                                team=goal.team)
-            if goal.type.name == 'Tasks completed':
-          
+        if goal.type.value_type != 'Days':
+            ok = False
+       
+            if 'Tasks completed' in goal.type.name:
                 if total_completed >= goal.value:
-                        goal.accomplished = True
-                        goal.save()
-                        Milestone.objects.create(date=now.date(), 
-                                name=f'{goal.type.name} ({goal.value})', team=goal.team)
-                        notify.delay(goal.id, 'milestone')
-                else:
-                     continue
+                    goal.accomplished = True
+                    Milestone.objects.create(date=now.date(), 
+                                name=f'{goal.value} tasks completed', team=goal.team)
+                    ok = True
+
+ 
+            if 'Stars awarded (num)' in goal.type.name:
+                if total_stars >= goal.value:
+                    goal.accomplished = True
+                    Milestone.objects.create(date=now.date(), 
+                                name=f'{goal.value} stars awarded', 
+                                team=goal.team)
+                    ok = True
+                
+              
+            if ok:
+                goal.save()
+                notify.delay(goal.id, 'milestone')
+        continue
+                    
+                
+                    
+                        
+        
+                 
+          
+            
+                 
+                 
+                 
+           
+                 
+                 
             
 
 

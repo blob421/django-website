@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from .models import (Messages, UserProfile, Task, Team, ChatMessages, Resource, 
                      ResourceCategory,MessagesCopy, Chart, ChartData, ChartSection, Schedule, 
-                    Goal, Stats, Report, DailyReport, Document, SubTask, Options)
+                    Goal, Stats, Report, DailyReport, Document, SubTask, Options, Milestone)
 
 from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask, 
                     DenyCompletedTask, ForwardMessages,ChatForm,AddTaskChart,LoginForm,
@@ -26,12 +26,14 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from django.utils.http import http_date
 from django.http import HttpResponse, JsonResponse, FileResponse, HttpResponseForbidden
-from .utility import copy_message_data, days_of_the_week
+from .utility import copy_message_data, days_of_the_week, trigger_check_milestones_day
 from .scheduler import generate_report, register_login_check
 from .protect import ProtectedCreate, ProtectedDelete, ProtectedUpdate, ProtectedView
 from django import forms
 from django.db.models import Q
 import json
+
+from .scheduler_process import scheduler
 
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
@@ -1201,6 +1203,7 @@ class TeamView(LoginRequiredMixin, View):
         for rep in all_reports:
             reports_list.append(Document.objects.get(object_id=rep.id, 
                                                      content_type_id=content_type.id))
+      
             
         if form.is_valid():
             role = form.cleaned_data['role']
@@ -1510,7 +1513,7 @@ class HistoryView(LoginRequiredMixin, View):
         range_dict = {}
         for key, value in data['empty_count_dict'].items():
             range_dict[key] = range(value)
-
+      
         return {
             'months_set': list(data['months_set']),
             'milestones': data['milestones'],
@@ -1520,6 +1523,8 @@ class HistoryView(LoginRequiredMixin, View):
             'allowed_roles':allowed_roles_management,
             'now':now,
             'goals':goals,
+            'milestones_count': len(data['milestones']),
+            'months_count' : len(data['months_set']),
             'goal_form': GoalForm()
         }
      
@@ -1532,13 +1537,15 @@ class HistoryView(LoginRequiredMixin, View):
 
         return render(request, self.template_name, ctx)
     
+
     def post(self, request, pk):
+        now = timezone.now()
         goal_form = GoalForm(request.POST)
         if 'del' in request.POST:
             pk = request.POST.get('del')  
             goal = Goal.objects.get(id=pk)
             goal.delete()
-            return redirect(reverse('dashboard:history_view'))
+            return redirect(reverse('dashboard:history_view', args=[pk]))
         
         if not goal_form.is_valid():
             ctx = self.get_context_data()
@@ -1546,8 +1553,31 @@ class HistoryView(LoginRequiredMixin, View):
               
             return render(request, self.template_name, ctx)
         
-        goal_form.save()
-        return redirect(reverse_lazy('dashboard:history_view'))
+
+        goal = goal_form.save(commit=False)
+       
+        goal.team = request.user.userprofile.team
+        goal.save()
+
+        if goal.accomplished == True:
+           
+
+            Milestone.objects.create(date=now.date(), name=goal.name, team=goal.team)
+            notify.delay(goal.id, 'goal')
+
+        if goal.type.value_type == 'Days':
+              run_date = now + relativedelta(days=goal.value)
+              scheduler.add_job(func=trigger_check_milestones_day,
+                                    trigger='date',
+                                    run_date=run_date,
+                                    args=(goal.id,),
+                                    id=f"trigger_goal_check{goal.id}_{run_date.isoformat()}",
+                                    replace_existing=True,
+                                    jobstore='default')
+            
+
+
+        return redirect(reverse_lazy('dashboard:history_view', args=[pk]))
 
 
 
