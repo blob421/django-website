@@ -44,6 +44,70 @@
     
       <input type="submit" class="schedule_update_button" value="Confirm">
 
+<div class="texareas_div">
+    <div class="schedule_update_message_message">
+       Message
+       <textarea class="schedule_update_message_text" placeholder="{{message}}" name="message"></textarea>
+       
+    </div>
+
+    <div id="textareaMonday" class="schedule_update_message" style="display:none">
+            Monday
+          <textarea class="schedule_update_message_text" name="text_monday">{{schedule.textmonday}}
+           
+          </textarea>
+    </div>
+        <div id="textareaTuesday" class="schedule_update_message" style="display:none">
+            Tuesday
+          <textarea class="schedule_update_message_text" name="text_tuesday">{{schedule.texttuesday}}
+           
+          </textarea>
+    </div>
+        <div id="textareaWednesday" class="schedule_update_message" style="display:none">
+            Wednesday
+          <textarea class="schedule_update_message_text" name="text_wednesday">{{schedule.textwednesday}}
+            
+          </textarea>
+    </div>
+        <div id="textareaThursday" class="schedule_update_message" style="display:none">
+            Thursday
+          <textarea class="schedule_update_message_text" name="text_thursday">{{schedule.textthursday}}
+            
+          </textarea>
+    </div>
+        <div id="textareaFriday" class="schedule_update_message" style="display:none">
+            Friday
+          <textarea class="schedule_update_message_text" name="text_friday">{{schedule.textfriday}}
+
+          </textarea>
+    </div>
+        <div id="textareaSaturday" class="schedule_update_message" style="display:none">
+            Saturday
+          <textarea class="schedule_update_message_text" name="text_saturday">{{schedule.textsaturday}}
+            
+          </textarea>
+    </div>
+        <div id="textareaSunday" class="schedule_update_message" style="display:none">
+            Sunday
+          <textarea class="schedule_update_message_text" name="text_sunday">{{schedule.textsunday}}
+           
+          </textarea>
+    </div>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </form>
 </div>
 <div class="sched_update_error">
@@ -54,12 +118,8 @@
 
     </div>
     
-  {% if schedule.message %}
-    <div class="schedule_update_message">
-
-      {{form.message}}
-    </div>
-    {% endif %}
+  
+  
     
 
 
@@ -71,6 +131,33 @@
 {% endblock %}
 
 <script>
+  const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  const textareas = document.querySelectorAll('[id^="textarea"]');
+  const messageArea = document.getElementById('textarea_message');
+
+ days.forEach(day => {
+  const input = document.getElementById(`id_${day}`);
+  const textarea = document.getElementById(`textarea${capitalize(day)}`);
+
+  input.addEventListener('focus', ()=>{
+    textareas.forEach(t => t.style.display = 'none');
+    textarea.style.display = 'block';
+
+  })
+input.addEventListener('blur', (e) => {
+  setTimeout(() => {
+    const active = document.activeElement;
+    if (!textarea.contains(active)) {
+      textarea.style.display = 'none';
+    
+    }
+  }, 100); // slight delay to allow focus shift
+});
+});
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
   const inputs = document.querySelectorAll('.dayfield')
   inputs.forEach(input=>{
       Inputmask("99:99-99:99").mask(input);

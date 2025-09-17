@@ -38,7 +38,7 @@ function setVisible(selected , show, hide= null, hide2 = null, hide3 = null, typ
 
   btn.forEach(bt => bt.classList.remove('active'));
   selected.classList.add('active');
-
+  
   if (hide3) {
       document.getElementById(hide3).style.display='none';
   }

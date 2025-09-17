@@ -47,33 +47,33 @@ def start():
 
 
     DjangoJobExecution.objects.all().delete()
-    DjangoJob.objects.all().delete()
+   
     CheckWeekRanges.delay()
 
-    if not scheduler.get_jobs():
+ 
      
 
 
-        scheduler.add_job(trigger_CheckWeekRanges, 'interval', hours=12, name='my_job', 
-                           replace_existing=True)
-        
-        scheduler.add_job(trigger_clear_pictures, 'interval', days=7, name='clear_pics',
-                          replace_existing=True)
-        
-        scheduler.add_job(trigger_clear_files, 'interval', days=7, name='clear_files',
-                          replace_existing=True)
-        
-        first_run = timezone.now().replace(hour=23, minute=55, second=0, microsecond=0) + relativedelta(days=1)
-        scheduler.add_job(trigger_gen_all_reports, 'interval', days=1, name='gen_report',
-                          replace_existing=True, next_run_time=first_run)
-        
-        scheduler.add_job(trigger_clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
-                          replace_existing=True)
-        
-        scheduler.add_job(trigger_milestone_check, 'interval', minutes =1, name='milestones',
-                          replace_existing=True)
-        
-        register_events(scheduler)
+    scheduler.add_job(trigger_CheckWeekRanges, 'interval', hours=12, name='my_job', 
+                        replace_existing=True)
+    
+    scheduler.add_job(trigger_clear_pictures, 'interval', days=7, name='clear_pics',
+                        replace_existing=True)
+    
+    scheduler.add_job(trigger_clear_files, 'interval', days=7, name='clear_files',
+                        replace_existing=True)
+    
+    first_run = timezone.now().replace(hour=23, minute=55, second=0, microsecond=0) + relativedelta(days=1)
+    scheduler.add_job(trigger_gen_all_reports, 'interval', days=1, name='gen_report',
+                        replace_existing=True, next_run_time=first_run)
+    
+    scheduler.add_job(trigger_clear_chat_msg, 'interval', days=7, name='clear_chat_msgs',
+                        replace_existing=True)
+    
+    scheduler.add_job(trigger_milestone_check, 'interval', minutes =60, name='milestones',
+                        replace_existing=True)
+    
+    register_events(scheduler)
      
 
 
@@ -342,7 +342,7 @@ def CheckWeekRanges():
                 last_schedule = Schedule.objects.get(user=user, week_range=target_week_range)
 
                 total_days = calculate_days_scheduled(user, last_schedule)         
-                logs = LogginRecord.objects.filter(schedule = last_schedule)
+                logs = LogginRecord.objects.filter(schedule = last_schedule, user=user)
                 days_list = set()
 
                 for log in logs:
@@ -352,7 +352,7 @@ def CheckWeekRanges():
                 days_missed = total_days - len(days_list)
 
                 if days_missed > 0:
-                        Stats.objects.create(object_id = user.id, days_missed=days_missed)
+                        Stats.objects.create(content_object = user, days_missed=days_missed)
 
                 Schedule.objects.create(user=user, week_range=week_range)
 

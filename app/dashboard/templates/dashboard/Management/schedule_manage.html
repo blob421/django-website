@@ -69,7 +69,8 @@
                      {% if schedule.user == user %}
                      {% if schedule.monday or schedule.tuesday or schedule.wednesday or schedule.thursday or schedule.friday or schedule.friday or schedule.saturday or schedule.sunday %}
                      <a href="{% url 'dashboard:schedule_update' schedule.id %}">
-                        <div class="day_separator"> 
+                        <div class="day_separator {% if schedule.request_pending %}
+                        schedule_container_management_ammend {% endif %}"> 
                             
                                         <div>                  
                                     Mon: {{schedule.monday|default:"--"}} 
@@ -125,6 +126,7 @@
                           </div>
                       </a>   
 
+                    
 
                       {% else %}
 

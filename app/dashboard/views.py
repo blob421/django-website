@@ -1098,7 +1098,7 @@ class ScheduleDetail(LoginRequiredMixin, View):
         
         days_hours = zip(week_days, hours)
 
-        ctx = {'schedule':schedule, 'days_hours':days_hours}
+        ctx = {'schedule':schedule, 'days_hours':days_hours, 'week_days':week_days}
         return render(request, self.template_name, ctx)
 
 
@@ -1121,11 +1121,15 @@ class ScheduleUpdate(ProtectedUpdate):
     model = Schedule
     success_url = reverse_lazy('dashboard:schedule_manage')
     fields =['monday','tuesday','wednesday','thursday','friday','saturday','sunday', 
-             'unscheduled', 'vacation']
+             'unscheduled', 'vacation', 'message']
     
     def get(self, request, pk):
         form = ScheduleForm(instance=self.get_object())
-        return render(request, self.template_name, {'form':form})
+        message = self.get_object().message
+        schedule = self.get_object()
+      
+        return render(request, self.template_name, {'form':form, 'message':message, 
+                                                    'schedule':schedule})
     
     def post(self, request,pk, *args, **kwargs):
         schedule = self.get_object()
@@ -1133,20 +1137,26 @@ class ScheduleUpdate(ProtectedUpdate):
         if not form.is_valid():
             
             return render(request, self.template_name, {'form':form})
-        
 
         schedule.monday = request.POST.get('monday', '')
+        schedule.textmonday = request.POST.get('text_monday', '')
         schedule.tuesday = request.POST.get('tuesday', '')
+        schedule.texttuesday = request.POST.get('text_tuesday', '')
         schedule.wednesday = request.POST.get('wednesday', '')
+        schedule.textwednesday = request.POST.get('text_wednesday', '')
         schedule.thursday = request.POST.get('thursday', '')
+        schedule.textthursday = request.POST.get('text_thursday', '')
         schedule.friday = request.POST.get('friday', '')
+        schedule.textfriday = request.POST.get('text_friday', '')
         schedule.saturday = request.POST.get('saturday', '')
+        schedule.textsaturday = request.POST.get('text_saturday', '')
         schedule.sunday = request.POST.get('sunday', '')
+        schedule.textsunday = request.POST.get('text_sunday', '')
         schedule.unscheduled = 'unscheduled' in request.POST
         schedule.vacation = 'vacation' in request.POST
-        schedule.message = None
+        schedule.message = request.POST.get('message', '')
         schedule.request_pending = False
-        schedule.user = request.user.userprofile
+        
        
         schedule.save()
         register_login_check.delay(schedule.user.id, schedule.week_range.id)
@@ -1564,9 +1574,12 @@ class HistoryView(LoginRequiredMixin, View):
 
             Milestone.objects.create(date=now.date(), name=goal.name, team=goal.team)
             notify.delay(goal.id, 'goal')
-
-        if goal.type.value_type == 'Days':
+    
+        if goal.type.value_type.name == 'Days':
+             
               run_date = now + relativedelta(days=goal.value)
+             
+          
               scheduler.add_job(func=trigger_check_milestones_day,
                                     trigger='date',
                                     run_date=run_date,
@@ -1695,7 +1708,7 @@ def ChatUpdate(request):
             except:
                  pic_path = 'userprofile/0/avatar.png'
             
-            time = naturaltime(message.created_at)
+            time = message.created_at
             timed_message = {'id':id, 'user':user, 'text':text,'time': time, 'pic_path':pic_path}
             new_msg_list.append(timed_message)
 
@@ -1718,7 +1731,7 @@ def ChatUpdate(request):
             except:
                 pic_path = 'userprofile/0/avatar.png'
         
-            time = naturaltime(message.created_at)
+            time = message.created_at
             timed_message = {'id':id,'user':user, 'text':text,'time': time, 'pic_path':pic_path}
             data.append(timed_message)
 

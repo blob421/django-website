@@ -79,10 +79,10 @@ class UserProfile(models.Model):
 class Stats(models.Model):
   
     timestamp = models.DateTimeField(auto_now_add=True) 
-
+  
     completed_tasks = models.PositiveIntegerField(default=0)
     late_tasks = models.PositiveIntegerField(default=0)
-    unfinished_tasks = models.PositiveIntegerField(default=0)
+
     denied_tasks= models.PositiveIntegerField(default=0)
     urgent_tasks_success = models.PositiveIntegerField(default=0)
 
@@ -362,9 +362,22 @@ class Schedule(models.Model):
     friday = models.CharField(null=True, blank=True)
     saturday = models.CharField(null=True, blank=True)
     sunday = models.CharField(null=True, blank=True)
-    unscheduled = models.BooleanField(default=True)
+    unscheduled = models.BooleanField(default=False)
     vacation = models.BooleanField(default=False)
 
+    textmonday = models.CharField(null=True, blank=True)
+    texttuesday = models.CharField(null=True, blank=True)
+    textwednesday = models.CharField(null=True, blank=True)
+    textthursday = models.CharField(null=True, blank=True)
+    textfriday = models.CharField(null=True, blank=True)
+    textsaturday = models.CharField(null=True, blank=True)
+    textsunday = models.CharField(null=True, blank=True)
+
+
+
+    
+    
+ 
     message = models.TextField(null=True, blank=True)
     request_pending = models.BooleanField(default=False)
     

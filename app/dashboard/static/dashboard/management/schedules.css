@@ -217,29 +217,29 @@ border: 2px solid rgb(41, 41, 41);
     
 }
 .schedule_container_management_unscheduled{
-     border: 2px solid rgb(51, 51, 51);
-    height: 100%;
-    width: 18%;
-     border-top: 0px;
-    border-bottom: 0px;
-    color: #7f7979;
+     
+    height:30%;
+    color: #212020;
+    display: flex;
+    
+    justify-content: center;
+    font-size: 12px;
     align-items: center;
-     display: flex;
-     font-size: 14px;
-     font-style: italic;
-     justify-content: center;
+    font-family: 'Consolas';
+   border-bottom: 0px;
+   border-right: 2px solid black;
+   border-top: 2px solid black;
      background-color: rgba(0, 0, 0, 0.024)
 
 }
 .schedule_container_management_ammend{
-    border: 2px solid rgb(69, 69, 68);
-    height: 100%;
-    width: 18%;
-     border-top: 0px;
-    border-bottom: 0px;
-    font-size: 13px;
-
+     height:30%;
+    font-size: 12px;
   
+    font-family: 'Consolas';
+   border-bottom: 0px;
+   border-right: 2px solid black;
+   border-top: 2px solid black;
     color: #af4242;
     font-family:'Consolas';
      display: flex;
@@ -325,18 +325,35 @@ display: flex;
 }
 
 /***************SCHEDULE FORM *******************/
-.schedule_update_message{
- 
+.texareas_div{
+     text-align: center;
     position: absolute;
    
-    right: 5%;
+   
+    right: -22vw;
     top: 50%;
+    width:20vw;
     transform: translateY(-50%);
+    height: 80vh;
+   
 }
-.schedule_update_message textarea{
-  border: 2px solid black;
-    height: 100%;
-    pointer-events: none;
+.schedule_update_message{
+   padding-left: 0;
+  
+
+    top: 0%;
+   
+}
+.schedule_update_message_message{
+ 
+    
+
+}
+.schedule_update_message_text{
+ border: 2px solid black;
+    height: 30vh;
+    margin-top: 1vh;
+    
 }
 .update_form{
     margin-top: 14%;
@@ -457,7 +474,7 @@ display: flex;
 
 .request_pending_counter{
     position: absolute;
-    right: 2%;
+    right: 4%;
     top: 0%;
     color: rgb(245, 183, 70);
     

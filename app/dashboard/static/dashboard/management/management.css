@@ -173,17 +173,23 @@
  
     
 }
+
 .management_tog_btn{
   
     cursor: pointer;
 }
+
 #toggle_manage{
     background-color:#f0f0f0;
     border: 1px solid rgb(74, 74, 74);
     border-radius: 3px;
+    height: 5vh;
 }
 #toggle_manage.active{
-    background-color: #e1e1e1
+     border: 1px solid rgb(74, 74, 74);
+    background-color: #bba0a0;
+    height: 5vh;
+
 }
 .manage_all_task_list_container{
     padding:2%;

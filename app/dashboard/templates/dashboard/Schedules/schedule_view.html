@@ -53,7 +53,7 @@
 
 
 
-
+{% if schedule %}
     <div class="schedule_right_area">
 
          
@@ -67,7 +67,10 @@
                   <div class="hour_range_div {% if schedule.request_pending %} 
                   hour_range_div_pending {% endif %}">
                             <div class="hour_range">
-                                  {{hours}}
+                                   {% if hours %}
+                                  <div class="hour_text">{{hours}}</div>
+                                    {% else %}
+                                    {% endif %}
                             </div>
                     
 
@@ -77,15 +80,43 @@
 
            </div>
               {% endfor %}
+          
        
 
 
     </div>
-
+     
+<div class="right_memo_area">
+              <div class="message_schedule">
+                      <div class="message_title">
+                        Message
+                      </div> 
+                     <div class="message_texarea">
+                            {% if schedule.message %}
+                        {{schedule.message}}
+                        {% else %}
+                        {% endif %}
+                     </div>
+              </div>
+              {% for week in week_days %}
+              <div class="memo_day">
+                     <div class="day">
+                            {{week}}
+                     </div>
+                     <div class="textarea_day">{{ schedule|get_schedule_text:week }}  
+                    
+                     </div>
+              </div>
+              
+              {% endfor %}
+            
+    </div>  
 
 
 
 </div>
+ {% endif %}
  </div>
+
     {% endwith %}
  {% endblock %}

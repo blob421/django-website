@@ -45,6 +45,14 @@ def get_item(dictionary, key):
     return dictionary.get(key)
 
 @register.filter
+def get_schedule_text(schedule, day_name):
+    field_name = f"text{day_name.lower()}"
+    text = getattr(schedule, field_name, "")
+    if not text:
+      return ""
+    else: return text
+
+@register.filter
 def get_schedules(user, manage = False):
             
     weeks = WeekRange.objects.filter().order_by('-starting_day')[:4][::-1]

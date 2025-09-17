@@ -350,8 +350,9 @@ def get_graph_data(stats, ytick_var):
         total_denied = 0
         total_urgent = 0
         total_submissions = 0
+
         for stat in stats:
-       
+           
             total_submissions += stat.submission  
             late_task_count += stat.late_tasks
             total_denied += stat.denied_tasks
@@ -591,6 +592,8 @@ def get_stats_data(user_profile, page=None):
             
             plot_div1 = plot(fig1, output_type='div')
 
+       
+
     ##### PROCEEDS FOR BOTH ######
     if page:
         stats = None
@@ -781,6 +784,7 @@ def check_milestones_day(goal_id):
                         name=f'No late tasks for {goal.value} days', 
                         team=goal.team)
             notify.delay(goal.id, 'milestone')
+
 
     if 'All reports done (days)' in goal.type.name:
         start_date = now - relativedelta(days=goal.value)
