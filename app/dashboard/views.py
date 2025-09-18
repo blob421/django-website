@@ -6,13 +6,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from .models import (Messages, UserProfile, Task, Team, ChatMessages, Resource, 
                      ResourceCategory,MessagesCopy, Chart, ChartData, ChartSection, Schedule, 
-                    Goal, Stats, Report, DailyReport, Document, SubTask, Options, Milestone)
-
+                    Goal, Stats, Report, DailyReport, Document, SubTask, Options, Milestone,
+                    Users)
+from django.db.models import F, Prefetch
 from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask, 
                     DenyCompletedTask, ForwardMessages,ChatForm,AddTaskChart,LoginForm,
                     SubTaskForm,FileFieldForm, ProfilePictureForm, GoalForm, StatsForm2, 
                     StatsForm, TransferTaskForm, AddTask, UpdateTask, ReportForm, StatusForm,
-                    TeamSearchForm, ScheduleForm)
+                    TeamSearchForm, ScheduleForm, DateFilterForm)
 
 from .utility import (get_stats_data, save_files, create_stats, save_stats, 
                       save_profile_picture, calculate_milestones, get_team_graph, send_sms,
@@ -34,7 +35,8 @@ from django.db.models import Q
 import json
 
 from .scheduler_process import scheduler
-
+from django.utils.timezone import make_aware
+from django.utils.dateparse import parse_datetime
 from django.utils.timezone import timedelta
 from dateutil.relativedelta import relativedelta
 from django.utils.encoding import smart_str
@@ -551,17 +553,51 @@ class TasksList(LoginRequiredMixin, View):
     template_name = 'dashboard/tasks/tasks_list.html'
 
     def get(self, request):   
-      
+        
         tasks = Task.objects.filter(users=self.request.user.userprofile.id, approved_by = None)
         user = request.user.userprofile
         active = None
         if user.active_task:
             active = user.active_task.id
-
+       
         time = timezone.now()
-      
-        context = {'tasks': tasks, 'time': time, 'active':active}
+        pending_tasks = []
+
+        for task in tasks:
+            if task.pending:
+                pending_tasks.append(task)
+            
+              
+                    
+        context = {'tasks': tasks, 'time': time, 'active':active, 
+                   'pending_tasks':pending_tasks}
         return render(request, self.template_name, context)
+    
+    def post(self, request):
+       
+        tasks = Task.objects.filter(users=self.request.user.userprofile.id, approved_by = None)
+        user_profile = request.user.userprofile
+        for task in tasks:
+             if f'approval_{task.id}' in request.POST:
+
+                approval = task.task_approvals.filter(user=user_profile.user)
+
+                if not approval.exists() and request.POST.get(f'approval_{task.id}') == 'on':
+                    task.task_approvals.add(user_profile)
+                    task.save()
+                    team_number = task.users.count()
+                    team_approvals = task.task_approvals.count()
+                
+                    if team_approvals >= (team_number /2):
+                        task.completed = True
+                        task.pending = False
+                        task.completion_time = round(((((timezone.now()-task.creation_date).total_seconds())/60)/60), 2)
+                        notify.delay(task.id, 'task_submit')
+                        task.save()
+                else :
+                    task.task_approvals.remove(user_profile)
+
+        return redirect(reverse_lazy('dashboard:tasks_list'))
 
 
 
@@ -777,23 +813,46 @@ class TaskSubmit(LoginRequiredMixin, View):
 
     def post(self, request, pk):
         form = SubmitTask(request.POST, request.FILES or None)
+        user_profile = self.request.user.userprofile
         task = Task.objects.get(id = pk)
         if not form.is_valid():
             ctx = {'form': form, 'task':task}
             return render(request, self.template, ctx)
         
-        
-        user_profile = self.request.user.userprofile
+      
         note = form.cleaned_data['completion_note']
+        
+        team_number = task.users.count()
+        team_approvals = task.task_approvals.count()
+      
+        if team_approvals >= (team_number /2) or team_number == 1:
+            task.completion_note = note
+            task.completed = True
+            task.pending = False
+            task.submitted_by = user_profile
+            task.submitted_at = timezone.now()
+            task.completion_time = round(((((timezone.now()-task.creation_date).total_seconds())/60)/60), 2)
+            notify.delay(task.id, 'task_submit')
 
-        task.completion_note = note
-        task.completed = True
-        task.submitted_by = user_profile
-        task.submitted_at = timezone.now()
-        task.completion_time = round(((((timezone.now()-task.creation_date).total_seconds())/60)/60), 2)
+        else:
+            notify.delay(task.id, 'task_approval')
+            task.completion_note = note
+            task.submitted_by = user_profile
+            task.submitted_at = timezone.now()
+            task.task_approvals.add(user_profile)
+            
+            if not team_number == 1:
+                for user in task.users.all():
+                    options, _ = Options.objects.get_or_create(user=user)
+                    options.task_approval_modal = True
+                    options.save()
+                task.pending = True
+           
+
+
+
         task.save() 
-        notify.delay(task.id, 'task_submit')
-       
+
         return redirect(self.success_url)
     
 
@@ -843,7 +902,7 @@ class ChartTaskCreate(ProtectedCreate):
       
         chart = Chart.objects.get(id=pk)
         last_task = Task.objects.filter(chart=chart).order_by('-position').first()
-        print(last_task.position)
+        
         form = AddTaskChart(request.POST, chart=chart)
         file_form = FileFieldForm(request.POST, request.FILES)
 
@@ -859,7 +918,11 @@ class ChartTaskCreate(ProtectedCreate):
        
         saved_form = form.save(commit=False)
         saved_form.chart = chart
-        saved_form.position = last_task.position + 1
+        if last_task.exists():
+            saved_form.position = last_task.position + 1
+        else:
+            saved_form.position = 0
+            
         saved_form.save()
         users = form.cleaned_data['users']
         saved_form.users.set(users.all())
@@ -1188,6 +1251,35 @@ class ScheduleChangeRequest(LoginRequiredMixin, UpdateView):
 
 
 ######### TEAM ############################################
+class TaskHistoryView(ProtectedView):
+    template_name = 'dashboard/Management/task_history.html'
+    def get(self, request):
+        date_form = DateFilterForm()
+        
+        team = request.user.userprofile.team
+
+        tasks = Task.objects.filter(
+            completed=True, users__team=team).order_by('-submitted_at').distinct().prefetch_related(
+    Prefetch(
+        'users',
+        queryset=UserProfile.objects.select_related('user')
+    )
+)
+
+        if request.GET.get('late'):
+            tasks = tasks.filter(due_date__lt=F('submitted_at'))
+        if request.GET.get('date_filter'):
+            from_date = make_aware(parse_datetime(request.GET.get('from_field')))
+            to = make_aware(parse_datetime(request.GET.get('to')))
+            tasks = tasks.filter(submitted_at__gte=from_date, submitted_at__lte=to)
+         
+
+       
+       
+        ctx = {'tasks':tasks, 'form':date_form}
+        return render(request, self.template_name, ctx)
+
+
 
 class TeamView(LoginRequiredMixin, View):
     template_name='dashboard/Management/team_view.html'
@@ -1195,11 +1287,22 @@ class TeamView(LoginRequiredMixin, View):
         form = TeamSearchForm(request.GET)    
         time = timezone.now()
         team = request.user.userprofile.team
-        team_member = UserProfile.objects.filter(team__name=team.name)
+        team_member = UserProfile.objects.filter(team=team).prefetch_related(
+        Prefetch(
+        'task_users',
+        queryset=Task.objects.select_related('chart', 'section', 'approved_by').prefetch_related(
+            Prefetch(
+                'users',
+                queryset=UserProfile.objects.select_related('user')
+            )
+        )
+    )
+)
 
 
         tasks = Task.objects.filter(
-                         users__team = team, completed=False).order_by('due_date').distinct()
+            completed=False, users__team=team).order_by('due_date').distinct()
+
         
         query = Q(completed=True, submitted_by__team__name = team.name) & Q(approved_by__isnull=True)
         completed_task_count = Task.objects.filter(query).count()  
@@ -1889,6 +1992,11 @@ def SwapTask(request, task_id, section_id, chart_id, prev, next):
 def setOptions(request):
     options, _ = Options.objects.get_or_create(id = request.user.userprofile.id)
     if request.method == 'POST':
+        if request.POST.get('approved_modal'):
+                options.task_approval_modal = False
+                options.save()
+                return redirect(reverse_lazy('dashboard:tasks_list'))
+
         login = request.POST.get('login')
         late = request.POST.get('late')
         help = request.POST.get('help')

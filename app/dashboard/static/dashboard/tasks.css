@@ -46,6 +46,7 @@
 }
 .task_blocks1{
     background-color: rgba(150, 218, 252, 0.75); 
+    position: relative;
    display: flex; flex-direction: column;
 
   border: 1.5px grey solid;
@@ -62,7 +63,7 @@
          background-color: rgba(247, 187, 132, 0.817);
     
    display: flex; flex-direction: column;
-
+ position: relative;
   border: 1.5px grey solid;
   padding-left: 1.5%;
   margin-top: 1%;
@@ -83,6 +84,7 @@
     padding: 2%;
 }
 .task_blocks2_denied{
+     position: relative;
     background-color: #f1eeeefc;
     box-shadow: inset 2px 2px 0px white;
    display: flex; flex-direction: column;
@@ -98,7 +100,7 @@
 .task_blocks2_employee{
         background-color: rgba(239, 237, 237, 0.681);
    display: flex; flex-direction: column;
-
+ position: relative;
   border: 1.5px grey solid;
   padding-left: 1.5%;
   margin-top: 1%;
@@ -214,6 +216,7 @@
 .task_blocks_urgent{
     background-color: rgb(172, 203, 240);
    display: flex; flex-direction: column;
+ position: relative;
 
   border: 1.5px grey solid;
   padding-left: 1.5%;
@@ -279,8 +282,8 @@
   display: flex; padding:0%; width:99%; justify-content: flex-end;
 }
 .title_people_div{
-    display: flex;align-items: center;  padding-left: 1%; width:99.5%; 
-    padding-top: 4%;
+    display: flex;  padding-left: 1%; width:87%; 
+    padding-top: 4%; 
 }
 
 
@@ -343,7 +346,7 @@
     background-color: #e9e9e9;
 }
 .people_img_div{
-     
+     position: absolute; right: 1.2%; top: 5%;
 }
 .chart_icon_div{
 
@@ -1320,6 +1323,70 @@ position: absolute;
               border:2px solid rgb(70, 70, 70);
             
         
+}
+.x_btn_pending{
+    position: absolute;
+    right: 2%;
+    top: 4%;
+   background-color: rgb(202, 103, 103);
+   color: white;
+   border: 1px solid black;
+   height: 4.2vh;
+   border-radius: 4px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   cursor: pointer;
+
+}
+.x_btn_pending:focus{
+  border: 0px solid black;
+
+}
+.pending_tasks_scroll{
+    overflow-y: auto;
+    overflow-x:hidden ;
+    position: relative;
+    height: 30vh;
+   
+    
+    width: 33vw;
+}
+.pending_frame{
+     width: 40vw;
+    height: 60vh; 
+    text-align: center;
+    background-color: rgba(191, 200, 205, 0.988);
+    left: 50%;
+    top: 50%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+    border: 2px solid black;
+    border-radius: 4px;
+   
+    position: absolute;
+    transform: translate(-50%,-50%);
+}
+.pending_task_div{
+    border: 1px solid black;
+    padding: 2.5%;
+    margin-top: 2%;
+  
+    background-color: #a8a7a7;
+}
+.approve_btn_pending{
+    position: absolute;
+    bottom: 4%;
+    padding: 2%;
+    right: 2%;
+    border-radius: 2px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.pending_frame_hidden{
+  
 }
 @media (max-width:900px){
     .flex_container_tasks{

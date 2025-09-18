@@ -80,4 +80,12 @@ class MyConsumer(AsyncWebsocketConsumer):
                 'type':event['type']
             
             }))
+    async def task_approval(self, event):
+         await self.send(text_data=json.dumps({
+            
+                'message': event['message'],
+                'type':event['type']
+            
+            }))
+
 

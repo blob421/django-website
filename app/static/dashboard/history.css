@@ -27,18 +27,24 @@
     height: 10%;
 }
 .history_left_pane{
+    position:sticky;
+    left: 0;
     width: 10%;
     display: flex;
     flex-direction: column;
     background-color: rgb(196, 142, 72);
    
 }
+.right_content_wrapper{
+   width: 90%;
+}
 .history_right_content{
-    width: 90%;
+    width: 100%;
    overflow-y: scroll;
+   overflow-x: scroll;
    display: flex;
    background-color: rgb(236, 236, 236);
-   flex-direction: column;
+   flex-direction: row;
 }
 .left_months_outer_history{
     height: 90%;
@@ -46,21 +52,21 @@
 }
 .top_timeline{
     height: 10%;
-  
+    white-space: nowrap;
     display: flex;
 
 }
 .bottom_events{
-  
+    
     height: 90%;
    
 }
 .weeks_history{
     border-left: 2px solid rgba(8, 8, 8, 0);
     border-right: 2px solid rgba(0, 0, 0, 0);
-    width: 10%;
-      padding: 1%;
+    width: 115px;
     display: flex;
+    flex: 0 0 auto;
     font-size: small;
     align-items: center;
     justify-content: center;
@@ -75,24 +81,27 @@
    background-color: rgb(222, 185, 115);
    align-items: center;
    justify-content: center;
+   border-top: 2px solid rgba(245, 245, 245, 0);
+   border-bottom: 2px solid rgba(255, 255, 255, 0);
 
 }
 .milestone_div{
-    width: 10%;
+    flex: 0 0 auto;
+
+    width: 115px;
     font-size: small;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid rgb(255, 255, 255);
     border-top: 0px;
-    border-bottom: 0px;
-    padding: 1%;
+  
     background-color: rgb(249, 192, 119);
     
  
 }
 .glowing_milestone{
-        width: 10%;
+       width: 115px;
     font-size: small;
     display: flex;
     text-align: center;
@@ -109,7 +118,9 @@
 }
 
 .milestone_div_empty{
-        width: 10%;
+  flex: 0 0 auto;
+
+      width: 115px;
     font-size: small;
     display: flex;
     align-items: center;
@@ -118,7 +129,7 @@
     border-top: 0px;
     border-bottom: 0px;
     background-color: rgb(224, 224, 224);
-      padding: 1%;
+     
 }
 .month_row_history{
     
@@ -127,7 +138,10 @@
     border-right: 0px;
     border-left: 0px;
     display: flex;
+    min-width: 100%;
+    white-space: nowrap;
 }
+
 .set_goals{
     right: 1%;
     position: fixed;
@@ -188,10 +202,25 @@
     gap: 3vh;
     
 }
+#value_bubble{
+
+}
 .goals_form{
   
    
     margin-left: 5%;
+}
+#info_bubble{
+    width: 20vw;
+    height: 6vh;
+      display: none;
+    z-index: 10000;
+        border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border: 2px solid black;
+    background-color: rgba(231, 231, 231, 0.937);
 }
 .pending_goals_div{
     display: flex;
@@ -201,18 +230,35 @@
     height: 100%;
     font-size: small;
     border: 1px solid black;
+    
     cursor: pointer;
-    background-color: rgb(152, 152, 152);    
+    background-color: rgb(230, 230, 230);    
 }
 .goal_form_value_type select{
     height: 5vh;
 }
 .goal_form_type select{
     height: 5vh;
-    width: 16vw;
-    margin-left: 7%;
+    width: 15.5vw;
+    margin-left: 2%;
     margin-bottom: 5%;
 }
+.pending_failed_div{
+       background-color: rgb(90, 90, 90);    
+        display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    height: 100%;
+      text-decoration:line-through;
+    font-size: small;
+        color: white;
+
+    border: 1px solid black;
+    cursor: pointer;
+    
+}
+
 .goal_form_name input{
     margin-top: 20%;
     margin-bottom: 2%;

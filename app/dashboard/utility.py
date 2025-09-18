@@ -155,6 +155,23 @@ def notify(object, type):
                                 }
                     }
                 )
+        if type == 'task_approval':
+             task = Task.objects.get(id= object)
+             for user in task.users.all():
+                    id = user.id
+                    async_to_sync(channel_layer.group_send)(
+                    f"user_{id}",
+                    {
+                        'type': type,
+                        'message': {
+                                'id': f'task_approval{object}',
+                                'task_name': task.name,
+                              
+
+                                }
+                    }
+                )
+                  
            
                  
                     

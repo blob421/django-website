@@ -707,6 +707,7 @@
 }
 .task_form_chart_select select{
 height: 51.2vh;
+width: 16vw;
 }
 .task_form_chart_select{
     width: 40%;

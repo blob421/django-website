@@ -35,6 +35,14 @@ class ScheduleForm(ModelForm):
           self.fields['vacation'].required = False
 
 
+class DateFilterForm(forms.Form):
+    from_field = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'})
+    )
+    to = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'})
+    )
+
 
 class TeamSearchForm(ModelForm):
      

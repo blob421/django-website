@@ -64,8 +64,13 @@
               <div>
                <a href="{% url 'dashboard:team' %}" class="filter_clear">Clear</a>
              </div>
-            
+          
       </div>
+     <a href="{% url 'dashboard:task_history' %}" class="task_history_div">
+     
+        <img src="{% static 'arrow_icon2.png' %}" style="height: 70%;">
+        History
+      </a>
 
      
     
@@ -361,6 +366,7 @@
     </a>
    {% endfor %}
 </div>
+
 
 
 <script>

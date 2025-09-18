@@ -204,6 +204,7 @@ class ChatMessages(models.Model):
             ]
 
 
+
 class Task(models.Model):
         
         users = models.ManyToManyField(UserProfile, related_name='task_users')
@@ -216,23 +217,28 @@ class Task(models.Model):
         due_date = models.DateTimeField()
         completed = models.BooleanField(default=False)
         urgent = models.BooleanField(default=False)
-
-        picture = models.BinaryField(null=True, blank=True, editable=True)
+        pending= models.BooleanField(default=False)
+        documents = GenericRelation('Document')
         content_type = models.CharField(max_length=50, null=True, blank=True)
         completion_note = models.TextField(null=True , blank=True)
+    
+        ### MANAGEMENT ###
         submitted_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
         approved_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
                                  related_name='aproved_by', null=True, blank=True)
         submitted_at = models.DateTimeField(null=True, blank=True)
-
-        documents = GenericRelation('Document')
+        task_approvals = models.ManyToManyField(UserProfile, related_name='approval_task')
+        approvals= models.IntegerField(default=0)
+        denied = models.BooleanField(default=False)
+        deny_reason = models.TextField(null=True, blank=True)
+   
+        ### CHART ###
         section = models.ForeignKey(
             'ChartSection', on_delete=models.CASCADE, null=True, blank=True)
         chart = models.ForeignKey(
             'Chart', on_delete=models.CASCADE, null=True, blank=True)
         
-        denied = models.BooleanField(default=False)
-        deny_reason = models.TextField(null=True, blank=True)
+ 
         position = models.PositiveIntegerField(default=0)
 
         @property
@@ -256,6 +262,7 @@ class Task(models.Model):
                 models.Index(fields=['id']),
                 models.Index(fields=['creation_date']),
             ]
+
 
 
 class Report(models.Model):
@@ -421,6 +428,7 @@ class Options(models.Model):
     late = models.BooleanField(default=True)
     help = models.BooleanField(default=True)
     active_task = models.BooleanField(default=True)
+    task_approval_modal = models.BooleanField(default=False)
    
 
 

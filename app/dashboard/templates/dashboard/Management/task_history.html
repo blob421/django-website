@@ -1,0 +1,99 @@
+{% extends 'dashboard/base.html' %}
+{% load user_data %}
+{% block content %}
+<div class="big_wrapper">
+
+
+<div class="outer_history">
+  
+ 
+        <div class="title_div">
+         Tasks history
+        </div>
+        <div class="grid_titles">
+                <div class="name_title">
+                    Name
+                </div>
+                <div class="submitted_at_title">
+                    Submitted at
+                </div>
+                 
+            </div>
+        <div class="main_content">
+            
+             {% for task in tasks %}
+             
+             <div class="task_div">
+
+                <div class="task_title"  id="people{{task.id}}"
+            data-member="{{task|get_team}}">
+                     {{task.name}}
+                </div>
+                <div class="task_submitted {% if task.submitted_at > task.due_date %} 
+                task_late {% endif %}">
+                  {{task.submitted_at}}
+                </div>
+                
+             </div>
+             {% endfor %}
+
+        </div>
+</div>
+<div class="filters">
+    <div class="filter_title">
+        Filters
+    </div>
+
+
+    <div class="reset_div"> 
+      <form method="GET">
+        
+       <input type="submit" name="late" class="late_input" value="Late tasks">
+    </form>
+      <a href="{% url 'dashboard:task_history' %}">
+        <input type="button" value="Reset filters">
+      </a>
+    </div>
+
+
+      <form method="GET" class="date_filters">
+        <div>
+           From: {{form.from_field}}
+        </div>
+          <div class="to_input">
+         To: {{form.to}}
+          </div>
+          <div>
+            
+          </div>
+               <input type="submit" value="Filter" class="date_submit" name="date_filter">
+             
+     </form>
+    
+
+</div>
+</div>
+   <div id="info_modal_team" style="z-index: 1000;">
+         <div class="team_list_title">
+             Team
+
+         </div>
+         <div id="text_team"></div>
+          
+       </div>
+
+
+ </div>
+        <div class="send_msg_back">
+          <a href="{% url 'dashboard:team' %}"><button class="del_btn2" type="button">Back</button></a>
+
+        </div>
+   </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+ 
+    setTeamBubble();
+});
+
+</script>
+{% endblock %}

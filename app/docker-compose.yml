@@ -51,6 +51,7 @@ services:
        - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - web
+      - static_init
     
   db:
     image: postgres:17
@@ -95,10 +96,15 @@ services:
      env_file:
         - .env
   
- 
+
+  static_init:
+    image: busybox
+    volumes:
+      - static_data:/static
+      - ./static:/from
+    command: sh -c "cp -r /from/* /static/"
 
 volumes:
     pgdata:
-
     static_data:
     media_data:

@@ -173,17 +173,23 @@
  
     
 }
+
 .management_tog_btn{
   
     cursor: pointer;
 }
+
 #toggle_manage{
     background-color:#f0f0f0;
     border: 1px solid rgb(74, 74, 74);
     border-radius: 3px;
+    height: 5vh;
 }
 #toggle_manage.active{
-    background-color: #e1e1e1
+     border: 1px solid rgb(74, 74, 74);
+    background-color: #bba0a0;
+    height: 5vh;
+
 }
 .manage_all_task_list_container{
     padding:2%;
@@ -327,15 +333,21 @@
      
 
 }
-.chart_icon_div_manage{
+.chart_icon_div_man{
 
+width:100%; justify-content: flex-end; display: flex; flex-direction: row; 
+padding-left: 5%; padding-top: 45%; 
+
+  
 }
 .chart_img{
     width: 85%;
     margin-left: 15%;
     cursor: pointer;
     
-    
+}
+.chart_img_man{
+
 }
 .team_list_title{
 
@@ -411,16 +423,16 @@ justify-content: center;
 .new_report{
     
     background-color: rgb(140, 184, 219);
-    left: 50%;
+   
     width: 85%;
     height: 10%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    position: absolute;
+
     border: 1.5px solid rgb(48, 48, 48);
-    transform: translateX(-50%);
+   
 }
 .x_btn_reports{
     position: fixed;
@@ -437,16 +449,7 @@ justify-content: center;
 .seen_report{
    
     background-color: rgb(189, 189, 189);
-     left: 50%;
-    width: 85%;
-    height: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    position: absolute;
-    border: 1.5px solid rgb(48, 48, 48);
-    transform: translateX(-50%);
+   
 }
 #reports_modal{
     padding-top: 4%;
@@ -457,7 +460,11 @@ justify-content: center;
     border: 2px solid black;
     position: absolute;
     z-index: 1000;
-    display:none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2%;
+    display: none;
     left: 50%;
     top: 50%;
     transform: translate(0%, -45%);

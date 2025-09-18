@@ -4,6 +4,7 @@ from django.db.models import Q
 import mimetypes
 from django.utils.html import format_html
 from django.contrib.contenttypes.models import ContentType
+import math
 
 register = template.Library()
 @register.filter
@@ -39,6 +40,13 @@ def get_picture(id):
     if document:
       return document.id
     return 1
+
+@register.filter
+def get_remaining_approvals(task):
+  approvals = task.task_approvals.count()
+  needed_approvals = task.users.count()
+  return math.ceil((needed_approvals /2 ) - approvals)
+
 
 @register.filter
 def get_item(dictionary, key):

@@ -13,6 +13,7 @@
      <link rel="stylesheet" href="{% static 'dashboard/management/management.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/management/tasks.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/management/schedules.css' %}">
+     <link rel="stylesheet" href="{% static 'dashboard/management/history.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/chat.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/inbox.css' %}">
      <link rel="stylesheet" href="{% static 'dashboard/charts.css' %}">
@@ -56,11 +57,7 @@
 </div>
 {% load static %}
 
-{% if options.help %}
-<a href="{% url 'dashboard:ressources' %}">
- <img src= "{% static 'question_mark.png' %}" id="question_mark">
- </a>
-{% endif %}
+
 
 <div id="shade_logout">
   
@@ -105,10 +102,17 @@
 <!--------------------------------NOTIF MODAL---------------------------------------->
 
 <div class="notif_div" id=notif>
-  
+
+
+       
+    
 </div>
 
-
+{% if options.help %}
+<a href="{% url 'dashboard:ressources' %}">
+ <img src= "{% static 'question_mark.png' %}" id="question_mark">
+ </a>
+{% endif %}
 <script>
 
 const login = '{{options.login}}'
@@ -141,7 +145,7 @@ socket.onmessage = (event) => {
       <div class="notif_header">
           <img src="{% static 'msg_icon.png' %}" style="width:20%">
           <div class="right_header_notif">
-              <div>
+              <div style="margin-left: 1.5vw;">
                 New message
               </div>
               <div class="from_text_notif">
@@ -303,6 +307,46 @@ socket.onmessage = (event) => {
       </div>
      
     </div>`
+    }
+    else if (data.type === 'task_approval'){
+      notif.innerHTML +=
+      `      <div id="notifBubble${data.message.id}" class="notifBubble">
+         
+      <button class="x_btn_notif" onclick="document.getElementById(
+        'notifBubble${data.message.id}').style.display='none'" type="button">X 
+      </button> 
+      <a href="/dashboard/tasks/">
+
+   
+      <div class="notif_header_approve">
+      
+            
+            <img src="{% static 'task_icon.png' %}" style="height:70%; ">
+           
+           <div class="head_text_approve">
+              <div style="padding-right: 2vw;"> 
+                  Task approval
+                  </div>
+            
+                  <div class="task_approve">
+                  Task with a long name that tests bound
+
+                  </div>
+          </div>
+      </div>
+         
+      <div class="notif_content_approve">
+          <div style="padding-bottom: 2%;">
+           
+         
+          A task was submitted and is pending team approval.
+           </div>
+      </div>
+      
+      
+    </div>
+       </a>   
+`
     }
 
 };

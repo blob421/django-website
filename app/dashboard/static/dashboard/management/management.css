@@ -212,7 +212,8 @@
    width: 20%;
    gap: 1%;
    display: flex;
-   margin-left: 0.2%;
+   margin-left: 0.35%;
+   margin-top: 0.15%;
     font-size: medium;
     height: 90%;
 }
@@ -527,8 +528,27 @@ justify-content: center;
 
 
 /**************************STATS*******************************/
-
-
+.task_history_div{
+    right: 16.3%;
+    margin-top: 0.1%;
+    position: absolute;
+    display: flex;
+    margin-left: 10vw;
+    align-items: center;
+    font-size: 15px;
+    justify-content: center;
+    gap: 2%;
+    padding-right: 1vw;
+    cursor: pointer;
+    border-radius: 2px;
+    border: 1px solid black;
+    height: 4.9vh;
+    background-color:  rgb(230, 229, 227);
+    width: 10vw;
+}
+.task_history_div:hover{
+     background-color:  rgb(211, 211, 210);
+}
 .perf_detail_outer_div{
   
 

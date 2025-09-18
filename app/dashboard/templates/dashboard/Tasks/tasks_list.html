@@ -1,7 +1,7 @@
  {% include 'dashboard/base.html' %}
 {% load user_data static %}
  {% block content %}
- 
+
  
  <div class="top_visual_frame_task_list"></div>
 <div class="flex_container_tasks">  
@@ -24,7 +24,7 @@
 
                <div class="title_people_div">
 
-                  <div class="task_title">{{task.name}}</div>
+                  {{task.name}}
 
 
                    <div class="chart_ico">
@@ -94,7 +94,7 @@
 
                <div class="title_people_div">
 
-                  <div class="task_title">{{task.name}}</div>
+                  {{task.name}}
 
 
                    <div class="chart_ico">
@@ -178,7 +178,7 @@
 
                <div class="title_people_div">
 
-                  <div class="task_title">{{task.name}}</div>
+                  {{task.name}}
 
 
                    <div class="chart_ico">
@@ -263,7 +263,7 @@
 
                <div class="title_people_div">
 
-                  <div class="task_title">{{task.name}}</div>
+                  {{task.name}}
 
 
                    <div class="chart_ico">
@@ -338,7 +338,7 @@
 
                <div class="title_people_div">
 
-                  <div class="task_title">{{task.name}}</div>
+                  {{task.name}}
 
 
                    <div class="chart_ico">
@@ -443,13 +443,47 @@
          </p>
          </div>
 
+<!----------------------------------Pending Modal----------------------------------------------->
+
+<div class="pending_frame" id="frame">
+
+  <form method="POST" action="{% url 'dashboard:options' %}">
+    {% csrf_token %}
+  <input type="submit" name="approved_modal" class="x_btn_pending" value="X">
+  </form>
+
+  <h1 style="font-size: large; margin-top: 5vh; margin-bottom: 4vh;" > Awaiting team approval:  </h1>
+    <form method="POST">
+     {% csrf_token %}
+    <div class="pending_tasks_scroll"> 
+    {% for task in pending_tasks %}
+
+    <div class="pending_task_div">
+      {{task.name}}<input type="checkbox" name="approval_{{task.id}}"
+      {% if user.userprofile in task.task_approvals.all %} checked {% endif %}> 
+      ({{task|get_remaining_approvals}} needed)
+
+    </div>
+      
+    {% endfor %}
+    </div>
+    <input type="submit" value="Approve" class="approve_btn_pending">
+    </form>
+</div>
+
+
 <script>
+pending_frame = '{{options.task_approval_modal}}'
+const pending = document.getElementById('frame')
 
-
+if (pending_frame === 'False'){
+  pending.style.display='none'
+}
 document.addEventListener('DOMContentLoaded', () => {
     setInfoBubble('chart_img', 'info_modal_task_list_chart');
     setInfoBubble('active_div', 'info_modal_task_list', 'Activate');
     setTeamBubble();
+  
 });
 
 

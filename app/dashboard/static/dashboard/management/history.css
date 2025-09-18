@@ -1,0 +1,72 @@
+.outer_history{
+  background-color: rgb(197, 198, 198); height: 93vh; width: 65%;
+  
+}
+.big_wrapper{
+    display: flex; width: 66vw; position: absolute; right: 5%; bottom:0%; 
+    border: 2px solid rgb(13, 13, 13); background-color: rgb(143, 107, 87);
+   
+  
+    
+}
+.filters{
+    display: flex; flex-direction: column; align-items: center; width: 35%;
+    border-left: 1px solid black;   color: white;
+}
+.date_filters{
+    margin-top: 4vh; position: relative;
+}
+.reset_div{
+   display: flex; width: 82%; justify-content: flex-end; padding-top: 5%;
+}
+.title_div{
+    height: 10%; border-bottom: 2px solid black; font-size: large;
+    display: flex; align-items: center; justify-content: center;  
+   
+}
+.late_input{
+}
+.date_submit{
+ position: absolute; right: 0%; margin-top: 1vh;
+}
+.to_input input{
+  margin-left: 1.65vw;  margin-top: 1vh;
+
+}
+.grid_titles{
+    display: flex; border: 1px solid black;  border-bottom:1px solid black; padding: 1%;
+    background-color: rgb(234, 239, 243); border-right: 0px;  border-left: 0px;
+}
+.name_title{
+    width: 50%; text-align: center; border-right: 1px solid black;
+}
+.submitted_at_title{
+    width: 50%; text-align: center;
+}
+.task_div{
+    display: flex;  border: 1px solid black; padding:1.5%; border-left: 0px;
+}
+.task_title{
+    width: 50%;  display: flex; padding-left: 1%; background-color: rgb(161, 163, 165);
+    padding:1.5%
+}
+.task_submitted{
+    width: 50%; display: flex; padding-left: 1%;  padding:1.5%
+    
+}
+.task_late{
+    width: 50%;
+    background-color: rgb(216, 136, 136);
+}
+.main_content{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: block;
+    height: 80%;
+    background-color: rgb(234, 239, 243);
+}
+.filter_title{
+    height: 10%;  width: 100%; display: flex; align-items: center;
+    justify-content: center; border-bottom: 2px solid black;
+    
+}
