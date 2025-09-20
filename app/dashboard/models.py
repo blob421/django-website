@@ -288,7 +288,39 @@ class SubTask(models.Model):
     description = models.TextField(null=True,blank=True)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
 
+class EventIcon(models.Model):
+    name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='event_icons/')
 
+class Event(models.Model):
+    name = models.CharField(max_length=40)
+    location = models.CharField(max_length=40)
+    time = models.DateTimeField()
+    users = models.ManyToManyField(UserProfile, related_name='event_users', null=True, blank=True)
+    days = models.ManyToManyField('Day', null=True, blank=True, related_name='events')
+    icon = models.ForeignKey(EventIcon, on_delete=models.SET_NULL, null=True, blank=True)
+    def __str__(self):
+        return self.time.strftime('%D')
+class Day(models.Model):
+    date = models.DateField()
+    content = models.CharField(null=True, blank=True)
+    agenda = models.ForeignKey('Agenda', on_delete=models.CASCADE, null=True, blank=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
+    def __str__(self):
+        return self.date.strftime('%A')
+    @property
+    def day(self):
+        return self.date.strftime('%d')
+
+class Agenda(models.Model):
+    
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True )
+    days = models.ManyToManyField(Day, related_name='agenda_day')
+    @property
+    def name(self):
+        return f'{self.days.first().date.strftime('%B%Y')}-{self.days.last().date.strftime('%B%Y')} '
 
 
 class Document(models.Model):

@@ -65,8 +65,8 @@
            <div class="user_col">
                   
                
-                     {% for schedule in schedules_ctx.schedules %}
-                     {% if schedule.user == user %}
+                     {% for schedule in schedules_ctx.schedules|get_item:user.id %}
+                   
                      {% if schedule.monday or schedule.tuesday or schedule.wednesday or schedule.thursday or schedule.friday or schedule.friday or schedule.saturday or schedule.sunday %}
                      <a href="{% url 'dashboard:schedule_update' schedule.id %}">
                         <div class="day_separator {% if schedule.request_pending %}
@@ -138,7 +138,7 @@
                        </a>   
                  
                      {% endif %}
-                     {% endif %}
+                  
                      {% endfor %}
             
                           

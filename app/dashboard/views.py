@@ -7,13 +7,13 @@ from django.contrib.contenttypes.models import ContentType
 from .models import (Messages, UserProfile, Task, Team, ChatMessages, Resource, 
                      ResourceCategory,MessagesCopy, Chart, ChartData, ChartSection, Schedule, 
                     Goal, Stats, Report, DailyReport, Document, SubTask, Options, Milestone,
-                    Users)
+                    Users, Agenda, Day, EventIcon, Event)
 from django.db.models import F, Prefetch
 from .forms import (MessageForm, RecipientForm, RecipientDelete, SubmitTask, 
                     DenyCompletedTask, ForwardMessages,ChatForm,AddTaskChart,LoginForm,
                     SubTaskForm,FileFieldForm, ProfilePictureForm, GoalForm, StatsForm2, 
-                    StatsForm, TransferTaskForm, AddTask, UpdateTask, ReportForm, StatusForm,
-                    TeamSearchForm, ScheduleForm, DateFilterForm)
+                    StatsForm, TransferTaskForm, AddTask, UpdateTask, EventForm, StatusForm,
+                    TeamSearchForm, ScheduleForm, DateFilterForm, DayFormSet)
 
 from .utility import (get_stats_data, save_files, create_stats, save_stats, 
                       save_profile_picture, calculate_milestones, get_team_graph, send_sms,
@@ -131,7 +131,7 @@ class AccountView(LoginRequiredMixin, View):
         relative_path = f'userprofile/{employee.id}/{uploaded_file.name}'
 
         file_path = default_storage.save(relative_path, uploaded_file)
-        print(file_path)
+   
         celery_task = save_profile_picture.delay(file_path, employee.id)
     
         return redirect(reverse('dashboard:loading', args=[celery_task.id, 'pillow', pk, 'None']))
@@ -170,19 +170,83 @@ class CustomLoginView(LoginView):
 
 class BillboardView(LoginRequiredMixin, View):
     template = 'dashboard/billboard_view.html'
-  
-    def get(self, request):
+    def get_context_data(self):
+
+        week_list = [n + 1 for n in range(180) if n%7 == 0]
+        agenda = Agenda.objects.filter(user=self.request.user.userprofile).prefetch_related(
+                Prefetch('days', queryset=Day.objects.prefetch_related('events'))
+            ).last()
         now = timezone.now()
+        
+        days = agenda.days.all()
+        return {'week_list':week_list, 'now':now, 'days':days, 'agenda':agenda}
+        
+
+    def get(self, request):
+        data = self.get_context_data()
+
+        formsets = DayFormSet(queryset=data['days'])
+        days_formsets = [(form.instance, form) for form in formsets]
         tasks = Task.objects.filter(users__in=[self.request.user.userprofile])
         form = StatusForm()
+        event_form = EventForm()
+        days_list = [day.id for day in data['days']]
         form.initial['status'] = request.user.userprofile.status
-        late = tasks.filter(due_date__lte=now, completed=False).count()
+        late = tasks.filter(due_date__lte=data['now'], completed=False).count()
+        events = Event.objects.filter(days__in=days_list).order_by('time')
+       
         
-        ctx = {'is_home':True, 'late':late,'form':form}
+        ctx = {'is_home':True, 'late':late,'form':form, 'days_formsets':days_formsets,
+               'week_list':data['week_list'], 'formsets':formsets, 'agenda':data['agenda'],
+               'event_form':event_form, 'events':events}
 
         return render(request, self.template, ctx)
+        
     
     def post(self, request):
+        data = self.get_context_data()
+        if 'agenda' in request.POST:
+                formset = DayFormSet(request.POST, queryset=data['days'])
+                if formset.is_valid():
+                   
+                    formset.save()
+                
+                    return redirect(reverse_lazy('dashboard:home'))
+                if not formset.is_valid():
+                    print(formset.errors)
+                    print(formset.non_form_errors())
+
+        if 'event' in request.POST:
+              event_form = EventForm(request.POST)
+              if event_form.is_valid():
+                  event = event_form.save(commit=False)
+                  icon_id = request.POST.get('icon')
+                  icon = EventIcon.objects.get(id=icon_id)
+                  event.icon = icon
+                  event.save()
+                  team = self.request.user.userprofile.team
+                  day = event_form.cleaned_data['time'].date()
+                  members = UserProfile.objects.filter(team=team)
+                  days_list = []
+                  for member in members:
+                      member_day = Day.objects.get(date=day, user=member)
+                      days_list.append(member_day)
+               
+                  event.days.set(days_list)
+        if 'update' in request.POST:
+            print(request.POST)
+            event_id = request.POST.get('event_id')
+            event = Event.objects.get(id=event_id)
+            event.name = request.POST.get('name')
+            event.location = request.POST.get('location')
+            event.time = request.POST.get('time')
+            event.icon_id = request.POST.get('icon')
+            event.save()
+
+                  
+
+
+
         form = StatusForm(request.POST)
         if form.is_valid():
             user = request.user.userprofile
@@ -218,7 +282,7 @@ class InboxView(LoginRequiredMixin, View):
            msg = Messages.objects.filter(query)
            
        else:
-            msg = Messages.objects.filter(recipient = self.request.user.userprofile).order_by('-timestamp')
+            msg = Messages.objects.filter(recipient = self.request.user.userprofile).order_by('-timestamp').select_related('user')
        
        ctx = {"messages": msg}
        return render(request, self.template_name, ctx)
@@ -243,7 +307,8 @@ class MessageDetail(LoginRequiredMixin, DetailView):
     def get_object(self):
        report_id = self.kwargs['id']
     
-       msg = Messages.objects.get(id=report_id, recipient=self.request.user.userprofile)
+       msg = Messages.objects.filter(
+           id=report_id, recipient=self.request.user.userprofile).select_related('user').get()
        msg.new = False
        msg.save()
        return msg
@@ -398,7 +463,7 @@ class MessageUpdate(LoginRequiredMixin, UpdateView):
             Q(team=profile.team) | Q(user__in=profile.recipients.all())
             ).distinct()
             allowed = combined_qs.exclude(id=sender_id)
-            form.fields['recipient'].queryset = allowed
+            form.fields['recipient'].queryset = allowed.prefetch_related('user')
             return form
 
 
@@ -519,12 +584,12 @@ class TaskManageCreate(ProtectedCreate):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['file_form'] = FileFieldForm()
-        context['form'] = AddTask()
+        context['form'] = AddTask(team=self.request.user.userprofile.team.id)
         return context
     
     def post(self, request):
   
-        form = AddTask(request.POST)
+        form = AddTask(request.POST, team = request.user.userprofile.team.id)
         file_form = FileFieldForm(request.POST, request.FILES)
         files = request.FILES.getlist('file_field')
 
@@ -554,7 +619,10 @@ class TasksList(LoginRequiredMixin, View):
 
     def get(self, request):   
         
-        tasks = Task.objects.filter(users=self.request.user.userprofile.id, approved_by = None)
+        tasks = Task.objects.filter(users=self.request.user.userprofile.id, approved_by = None).select_related(
+            'chart', 'section').prefetch_related(Prefetch(
+            'users', queryset=UserProfile.objects.select_related('user')
+        ))
         user = request.user.userprofile
         active = None
         if user.active_task:
@@ -607,7 +675,10 @@ class TaskDetail(LoginRequiredMixin, View):
     time_threshold = timezone.now() - relativedelta(hours=24)
     context_object_name = 'task'
     def get_context_data(self, pk):
-        task = Task.objects.get(id = pk, users=self.request.user.userprofile)
+        task = Task.objects.filter(id = pk, users=self.request.user.userprofile).prefetch_related(
+            Prefetch(
+         'users',  queryset=UserProfile.objects.select_related('user')
+        )).get()
         subtasks = SubTask.objects.filter(task=task).order_by('-id')
         user_files = Document.objects.filter(owner = self.request.user.userprofile, object_id=task.id)
         files = Document.objects.filter(object_id = task.id).order_by('-upload_time')      
@@ -692,8 +763,8 @@ class TaskUpdate(ProtectedUpdate):
         self.object = self.get_object()  
         context = super().get_context_data(**kwargs)
     
-        subtasks = SubTask.objects.filter(task = self.object)
-        files = Document.objects.filter(object_id = self.object.id)
+        subtasks = SubTask.objects.filter(task = self.object).prefetch_related('user')
+        files = Document.objects.filter(object_id = self.object.id).prefetch_related('owner')
         user_files = files.filter(owner= self.request.user.userprofile)
 
         context['form'] = UpdateTask(user=self.request.user.userprofile, instance=self.object)
@@ -711,7 +782,7 @@ class TaskUpdate(ProtectedUpdate):
         task = Task.objects.get(id=pk)
         form = UpdateTask(request.POST, user=request.user.userprofile, instance=task)
         file_form = FileFieldForm(request.POST, request.FILES)
-        print(request.POST)
+        
         if request.POST.get('delete'):
             task.delete()
             return redirect(reverse('dashboard:team'))
@@ -1171,7 +1242,7 @@ class ScheduleManage(ProtectedView):
 
     def get(self, request):
      
-        team_users = UserProfile.objects.filter(team = self.request.user.userprofile.team)
+        team_users = UserProfile.objects.filter(team = self.request.user.userprofile.team).select_related('user')
           
         ctx= {'users':team_users}
         
@@ -1287,7 +1358,7 @@ class TeamView(LoginRequiredMixin, View):
         form = TeamSearchForm(request.GET)    
         time = timezone.now()
         team = request.user.userprofile.team
-        team_member = UserProfile.objects.filter(team=team).prefetch_related(
+        team_member = UserProfile.objects.filter(team=team).prefetch_related('user', 'role',
         Prefetch(
         'task_users',
         queryset=Task.objects.select_related('chart', 'section', 'approved_by').prefetch_related(
@@ -1315,8 +1386,8 @@ class TeamView(LoginRequiredMixin, View):
         reports_list = []
         for rep in all_reports:
             reports_list.append(Document.objects.get(object_id=rep.id, 
-                                                     content_type_id=content_type.id))
-      
+                                    content_type_id=content_type.id))
+    
             
         if form.is_valid():
             role = form.cleaned_data['role']
@@ -1612,7 +1683,9 @@ class HistoryView(LoginRequiredMixin, View):
     def get_context_data(self):
     
         now = timezone.now()
-        goals = Goal.objects.filter(accomplished=False, team = self.request.user.userprofile.team)
+        goals = Goal.objects.filter(
+            accomplished=False, team = self.request.user.userprofile.team).prefetch_related(
+                'type')
         team = self.request.user.userprofile.team
 
         cache_key = f'Milestones_team_{team.id}'

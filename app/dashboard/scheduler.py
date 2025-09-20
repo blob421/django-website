@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events
-from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document, Team
-from .models import Report, ChatMessages, Task, DailyReport, Messages
+from .models import WeekRange, UserProfile, Schedule, LogginRecord, Stats, Document, Team, Day
+from .models import Report, ChatMessages, Task, DailyReport, Messages, Agenda
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
@@ -305,6 +305,37 @@ def clear_chat_msg():
 def CheckWeekRanges():
     last_range  = WeekRange.objects.last()     
     now= timezone.now()
+    
+
+    last_day = Day.objects.order_by('-date').first()
+    if not last_day or now.date() > last_day.date:
+        users = UserProfile.objects.all()
+        teams = Team.objects.all()
+        current_date = now.date()
+     
+       
+        for user in users:
+       
+            days_to_create = [
+            Day(user = user, date=current_date + relativedelta(days=n + 1)) for n in range(180)
+                ]
+            
+            days = Day.objects.bulk_create(days_to_create)
+            days_list = list(days)
+            agenda = Agenda.objects.create(user=user)  
+            agenda.days.set(days_list)
+            
+        for team in teams:
+            days_to_create = [
+            Day(team=team, date=current_date + relativedelta(days=n + 1)) for n in range(180)
+                ]
+            
+            days = Day.objects.bulk_create(days_to_create)
+            days_list = list(days)
+            agenda = Agenda.objects.create(team=team)  
+            agenda.days.set(days_list)
+
+    
     
     if now.weekday() == settings.SCHEDULE_DAY:
 

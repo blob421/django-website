@@ -19,6 +19,10 @@ admin.site.register(models.GoalType)
 admin.site.register(models.ValueType)
 admin.site.register(models.Report)
 admin.site.register(models.Options)
+admin.site.register(models.Agenda)
+admin.site.register(models.Event)
+admin.site.register(models.Day)
+admin.site.register(models.EventIcon)
 #class ResourceAdmin(admin.ModelAdmin):
    # def get_model_perms(self, request):
      

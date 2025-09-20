@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import Messages, UserProfile, Task,SubTask, ChatMessages, ChartSection, Document
-from .models import Goal, Stats, Chart, ChartSection, Report, Schedule
+from .models import Goal, Stats, Chart, ChartSection, Report, Schedule, Day, Event
 from django.contrib.auth import get_user_model
 user_model = get_user_model()
 from django import forms
@@ -13,6 +13,29 @@ from	crispy_forms.helper	import FormHelper
 from .models import Users
 from django_registration.forms import RegistrationForm
 from django.contrib.auth.forms import PasswordChangeForm
+from django.forms import modelformset_factory
+
+
+class EventForm(ModelForm):
+     class Meta:
+          model = Event
+          fields = ['name','location','time','icon']
+          widgets={ 
+               'time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            
+               'icon': forms.RadioSelect(),  # Override with image-based rendering in template
+        }
+    
+
+class DayForm(ModelForm):
+    class Meta:
+        model = Day
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'day_textarea'}),
+        }
+
+DayFormSet = modelformset_factory(Day, form=DayForm, extra=0)
 
 class ScheduleForm(ModelForm):
      class Meta:
@@ -156,9 +179,9 @@ class MessageForm(ModelForm):
                combined_qs = UserProfile.objects.filter(
                Q(team=profile.team) | Q(user__in=profile.recipients.all())
                ).distinct()
-      
+          
                allowed = combined_qs.exclude(id=sender_id)
-               self.fields['recipient'].queryset = allowed
+               self.fields['recipient'].queryset = allowed.prefetch_related('user')
             
 
 class ForwardMessages(ModelForm):
@@ -267,9 +290,13 @@ class AddTask(ModelForm):
           fields= ['name', 'description', 'users', 'due_date', 'urgent']
 
      def __init__(self, *args, **kwargs):
+                  team = kwargs.pop('team', None)
+
 
                   super().__init__(*args, **kwargs)
+                  
                   self.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+                  self.fields['users'].queryset = UserProfile.objects.filter(team_id=team).prefetch_related('user')
             
                    
 class ReportForm(ModelForm):
@@ -295,7 +322,7 @@ class UpdateTask(ModelForm):
 
           team = profile.team.name
           team_users = UserProfile.objects.filter(team__name=team)  
-          self.fields['users'].queryset = team_users
+          self.fields['users'].queryset = team_users.prefetch_related('user')
           self.fields['due_date'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
 
 

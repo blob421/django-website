@@ -19,7 +19,12 @@
                     {% endif %}
                 
           <div class="team_vs_billboard">
-                   
+                <div class="billboard_ticket" style="background-color: rgba(247, 247, 247, 0.995);
+                border: 0px; width:1.4vw; justify-content: center;">
+                       <img src="{% static 'agenda2.png' %}" class="agenda_img"
+                        onclick="document.getElementById('agenda_frame').style.display='block'">
+
+                </div>
 
                 <div class="billboard_ticket" style="background-color: rgb(221, 207, 173);">
                     <a href="{% url 'dashboard:schedule_view' %}">Schedule</a>
@@ -118,14 +123,346 @@ right: 3%; bottom: 0.5%; opacity: 0.7; cursor: pointer; border-radius: 3px;" onc
   </div>
   
 </div>
-<!----------------------------------------------------------------------------------------->
+<!-------------------------------------Calendar------------------------------------------>
+<div id="agenda_frame">
+    <div class="agenda_inner_frame">
+          <button class="x_btn_agenda"
+           onclick="document.getElementById('agenda_frame').style.display='none'">
+            X
+          </button>
+         
+         <form method="POST" class="agenda_form">
+              {% csrf_token %}
+              {{ formsets.management_form }}
+          <div class="agenda_main" id="agenda_main">
+            
+              {% for day, formset in days_formsets %}
+               
+                  {% if forloop.counter in week_list %}
+                  <div class="day_date_wrapper" id="day{{day.date|date:'Y-m-d'}}">
+
+                    
+                      <div class="week_mark">
+                        {{day.date|get_week_info}}
+                      
+                      </div>
+                      <div class="day_div">
+                        
+                             <div class="week_day">
+                          <div style="width: 90%;text-align: center;"> 
+                        {{day}} 
+                        </div>
+                        <div style="font-size: x-small; width: 10%;
+                        margin-right: 1vw;">{{day.day}}</div>
+                        </div>
+
+                          <div class="form">
+                            {{ formset.id }}
+                            {{formset.content}}
+                        </div>
+                        
+                            <div class="events_div">
+                      {% for ev in day.events.all %}
+                
+                        <img src="{{ ev.icon.image.url }}" alt="{{ ev.name }}" style="width: 85%; 
+                        aspect-ratio: 4/4;" 
+                        id="event_img{{event.id}}" data-id="{{ev.id}}" data-location="{{ev.location}}"
+                        data-name="{{ev.name}}" data-time="{{ev.time|date:'Y-m-d\\TH:i'}}" data-icon="{{ev.icon.id}}"
+                        data-event="{{ev|get_event}}" onclick="showUpdateEvent()">
+                    
+                        {% endfor %}
+                    </div>
 
 
+
+                   </div>
+                  {% else %}
+
+                  <div class="day_div" id="day{{day.date|date:'Y-m-d'}}">
+                        <div class="week_day">
+                          <div style="width: 90%;text-align: center;"> 
+                        {{day}} 
+                        </div>
+                        <div style="font-size: x-small; width: 10%;
+                        margin-right: 1vw;">{{day.day}}</div>
+                        </div>
+                      <div class="form">
+                        {{ formset.id }}
+                        {{formset.content}}
+                    </div>
+              
+
+             
+              
+             
+              <div class="events_div">
+                {% for ev in day.events.all %}
+           
+                  <img src="{{ ev.icon.image.url }}" alt="{{ ev.name }}" style="width: 85%; 
+                  aspect-ratio: 4/4;" 
+                  id="event_img{{event.id}}" data-id="{{ev.id}}" data-location="{{ev.location}}"
+                  data-name="{{ev.name}}" data-time="{{ev.time|date:'Y-m-d\\TH:i'}}" data-icon="{{ev.icon.id}}"
+                  data-event="{{ev|get_event}}" onclick="showUpdateEvent()">
+               
+                  {% endfor %}
+              </div>
+                 {% endif %}
+             </div>
+              {% endfor %}
+
+
+          </div>
+          <div class="bot_input_div">
+                <input type="submit" name="agenda" value="update" id="input_agenda">
+
+          </div>
+          
+          </form>
+
+    </div>
+   
+
+<div class="from_list_wrapper">
+   {% if user.userprofile.team.team_lead == user.userprofile %}
+  
+          <div class="event_title">Team event</div>
+        <form method="POST" class="event_form_main" id="form_event">
+            {% csrf_token %}
+          
+       
+                <div class="text_event">Name {{event_form.name}}</div>
+                <div class="text_event">Location{{event_form.location}}</div>
+                <div class="text_event">Time{{event_form.time}}</div>
+                
+            
+
+             
+                <div class="text_event">Icons</div>
+                <div class="icon_grid">
+
+                      {% for choice in event_form.icon.field.queryset %}
+                      <label>
+                      <input type="radio" name="icon" value="{{ choice.id }}" 
+                      id="radio{{choice.id}}">
+                      <img src="{{ choice.image.url }}" 
+                      alt="{{ choice.name }}" style="width:35%;">
+                    </label>
+                      {% endfor %}
+                 
+            
+              <input type="submit" name="event" value="Submit" class="input_event" 
+              id="input_event"> 
+              <input type="hidden" name="event_id" id="event_id">
+             
+        </form>
+       
+
+  
+
+
+  
+</div>
+{% endif %}
+ {% if user.userprofile.team.team_lead == user.userprofile %}
+          <div class="bottom_icon">
+                <img src="{% static 'expand.png' %}" style="width: 10%;  
+                margin-right: 0.5vw;" 
+                onclick="extendEvents()">
+          </div>
+       {% endif %}
+    <div class="event_list  {% if not user.userprofile.team.team_lead == user.userprofile %} 
+    event_list_extended {% endif %}" id="event_list">
+     
+       {% for event in events %}
+       <div class="event_div" onclick="navigateAgenda('{{event.time|date:'Y-m-d'}}')">
+        <div class="event_list_name">
+          {{event.name}}
+        </div>
+       
+       <div class="event_list_date">
+           {{event}}
+       </div>
+
+       </div>
+       {% endfor %}
+   
+    </div>
+        
+</div>
+
+
+<div id="info_event">
+   <div id="text_event">
+
+   </div>
+</div>
+
+<div class="events_form" id="event_update">
+    
+</div>
+
+
+{% if options.help %}
+<a href="{% url 'dashboard:ressources' %}">
+ <img src= "{% static 'question_mark.png' %}" id="question_mark">
+ </a>
+{% endif %}
+</div>
+<!---------------------------------------------------------------------------------------->
 
 <script>
-   function showOptions(){
+
+function extendEvents(){
+  const form = document.getElementById('form_event')
+  const list = document.getElementById('event_list')
+  if (form.style.display != 'none'){
+    form.style.display = 'none';
+    list.classList.remove('event_list')
+    list.classList.add('event_list_extended')
+  }
+  else{
+    form.style.display = 'flex';
+    list.classList.remove('event_list_extended')
+    list.classList.add('event_list')
+  }
+}
+function navigateAgenda(date){
+     document.getElementById(`day${date}`).scrollIntoView({ behavior: "smooth" });
+
+}
+
+
+
+function showUpdateEvent(){
+  document.getElementById('event_update').style.display='block'
+}
+
+function showOptions(){
     document.getElementById('options_overlay').style.display='block'
    } 
+
+
+
+
+const event_icon = document.querySelectorAll('[id^=event_img]');  
+
+function setEventBubble(){
+ 
+   const text_div = document.getElementById('text_event') 
+   
+   event_icon.forEach(icon => {
+   const info = document.getElementById('info_event');
+
+   icon.addEventListener('mouseenter', () => {
+        
+          const rect = icon.getBoundingClientRect();
+
+            //Set and calculate dimensions 
+            text_div.innerHTML= icon.dataset.event
+            info.style.visibility = 'hidden';
+            info.style.display = 'flex';
+
+            let top = rect.bottom 
+            let left = rect.left + 20;
+        
+            const modalWidth = info.offsetWidth;
+            const modalHeight = info.offsetHeight;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            if (left + modalWidth > viewportWidth) {
+               left = viewportWidth - modalWidth - 10;
+            }
+
+            const modalBottom = top + modalHeight;
+            const maxBottom = window.innerHeight;
+
+            if (modalBottom > maxBottom) {
+            top = rect.top - modalHeight - 10; // flip above
+            }
+            info.style.visibility = 'visible';
+          
+            // Apply position
+            info.style.position = 'absolute';
+            info.style.top = `${top}px`;
+            info.style.left = `${left}px`;
+            info.style.display = 'block';
+            });
+
+      icon.addEventListener('mouseout', () => {
+         info.style.display ='none';
+      });
+   });
+}
+
+const radios = document.querySelectorAll('[id^=radio]')
+const name_field = document.getElementById('id_name')
+const location_field = document.getElementById('id_location')
+const date = document.getElementById('id_time')
+const now = new Date();
+const yyyy = now.getFullYear();
+const mm = String(now.getMonth() + 1).padStart(2, '0');
+const dd = String(now.getDate()).padStart(2, '0');
+const formattedDate = `${yyyy}-${mm}-${dd}`;
+const event_input = document.getElementById('event_id')
+const wrapper = document.getElementById('agenda_frame');
+const input = document.getElementById('input_event')
+
+document.addEventListener('click', (e) => {
+  const allowedSelectors = [
+    '[id^=event_img]',
+    '.event_form_main',
+    'input',
+    '.icon_grid',
+    '.text_event',
+    'img'
+  ];
+
+  const isInsideAllowed = allowedSelectors.some(selector =>
+    e.target.closest(selector)
+  );
+
+  if (!isInsideAllowed) {
+    name_field.value = null;
+    location_field.value = null;
+    date.value = null;
+    input.value = 'Submit';
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    setEventBubble();
+    document.getElementById(`day${formattedDate}`).scrollIntoView({ behavior: "smooth" });
+
+
+    event_icon.forEach(icon =>{
+      icon.addEventListener('click', ()=>{
+      
+         const id = icon.dataset.id
+         
+       
+         input.name = 'update'
+         input.value ='Update'
+         event_input.value= id
+         radios.forEach(circle =>{
+           console.log(icon.dataset.icon)
+          if (circle.value === String(icon.dataset.icon)){
+
+          
+         
+           circle.checked = true
+       } })
+         name_field.value = icon.dataset.name
+         location_field.value= icon.dataset.location
+         date.value =icon.dataset.time
+         
+
+
+      })
+    })
+    
+});
 </script>
 
 {% endblock %}

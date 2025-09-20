@@ -26,13 +26,14 @@
     justify-content: end;
     position: sticky;
     top: 0;
+   
 }
 .late_tasks_modal{
     position: absolute;
     width: 20vw;
     height: 48vh;
     display: none;
-    background-color: rgba(97, 97, 97, 0.071);
+    background-color: rgb(71, 71, 71);
     overflow-y: scroll;
     left: 50%;
     padding-left: 0.5%;

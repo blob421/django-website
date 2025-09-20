@@ -5,8 +5,22 @@ import mimetypes
 from django.utils.html import format_html
 from django.contrib.contenttypes.models import ContentType
 import math
+from collections import defaultdict
+
 
 register = template.Library()
+
+@register.filter
+def get_event(event):
+  
+  html = ''
+  html +=f"<div>{event.name}</div>"
+  html +=f"<div class='location_info'>{event.location}</div>"
+  html +=f"<div>{event.time.strftime('%D')}</div>"
+  
+  return format_html(html)
+    
+    
 @register.filter
 def get_team(task):
   team = task.users.all()
@@ -53,6 +67,10 @@ def get_item(dictionary, key):
     return dictionary.get(key)
 
 @register.filter
+def get_week_info(date):
+  return f'Week of {date.strftime('%B %d')}'
+
+@register.filter
 def get_schedule_text(schedule, day_name):
     field_name = f"text{day_name.lower()}"
     text = getattr(schedule, field_name, "")
@@ -73,28 +91,34 @@ def get_schedules(user, manage = False):
     
     starting_month = week1.starting_day.strftime("%B")
     ending_month = week4.end_day.strftime("%B")
-    all_schedules = Schedule.objects.filter(user= user.userprofile)
+  
     query = Q(week_range = week1) | Q(week_range = week2) |Q(week_range = week3) | Q(
         week_range = week4)
-    
+        
 
     if not manage:
-        
+        all_schedules = Schedule.objects.filter(user= user.userprofile)
+     
         return {'schedules':all_schedules.filter(query).order_by('id'), 
                 'start_month': starting_month,
                 'end_month': ending_month,
                 'week_days':week_days}
     
     else: 
-        
-        schedules = Schedule.objects.filter(user__team = user.userprofile.team)
+        schedules = Schedule.objects.filter(user__team = user.userprofile.team).order_by('id')
+        user_schedules = defaultdict(list)
         last_month_schedules  = schedules.filter(query).order_by('id')
+
+        for schedule in schedules:   
+            user_schedules[schedule.user_id].append(schedule)
+
+      
         pending =  last_month_schedules.filter(request_pending=True).count()
       
         return {
             
                 'week_objects': weeks,
-                'schedules': last_month_schedules,
+                'schedules': user_schedules,
                 'start_month': starting_month,
                 'end_month': ending_month,
                 'pending':pending

@@ -5,6 +5,7 @@ This is my django website , a dynamic web portal made for production teams.
 
 ![Alt text](https://i.imgur.com/m62KLTu.png)
 ![Alt text](https://i.imgur.com/ev5uNx1.png)
+![Alt text](https://i.imgur.com/488lF59.png)
 ![Alt text](https://i.imgur.com/bVXBGsI.png)
 ![Alt text](https://i.imgur.com/NJzDFC8.png)
 ![Alt text](https://i.imgur.com/hMOfsAu.png)
